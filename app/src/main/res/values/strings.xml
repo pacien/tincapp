@@ -1,0 +1,33 @@
+<resources>
+	<string name="app_name">Tinc App</string>
+	<string name="app_label">Tinc</string>
+	<string name="app_short_desc">Android binding and user interface for the tinc mesh VPN daemon.</string>
+	<string name="app_copyright">Copyright 2017 Pacien.</string>
+	<string name="app_license">Software distributed under the terms of the GNU General Public License v3.</string>
+	<string name="app_website_url">http://tincapp.pacien.org</string>
+
+	<string name="info_version_format">App version %1$s (%2$s build)</string>
+	<string name="info_running_on_format">Running on Android %1$s %2$s</string>
+	<string name="info_supported_abis_format">Device ABIs: %1$s</string>
+
+	<string name="menu_about">About this app</string>
+	<string name="menu_display_conf_dir">Show configuration directory</string>
+
+	<string name="field_net_name">Tinc network name</string>
+
+	<string name="title_tinc_config_dir">Tinc config directory</string>
+	<string name="title_connect_to_network">Connect to network</string>
+	<string name="title_request_vpn_permissions">Request VPN permissions</string>
+
+	<string name="action_close">Close</string>
+	<string name="action_copy">Copy</string>
+	<string name="action_open_project_website">Project website</string>
+	<string name="action_fix_perms">Set conf editable</string>
+	<string name="action_connect">Connect</string>
+
+	<string name="message_perms_fixed">New permissions successfully applied.</string>
+	<string name="message_perms_fix_failure">Error encountered when setting new permissions.</string>
+	<string name="message_text_copied">Text copied to clipboard.</string>
+	<string name="message_vpn_permissions_granted">VPN permissions granted.</string>
+	<string name="message_vpn_permissions_denied">VPN permissions denied.</string>
+</resources>

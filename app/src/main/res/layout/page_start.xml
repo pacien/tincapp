@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:tools="http://schemas.android.com/tools"
+			  android:id="@+id/fragment_start"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:orientation="vertical"
+			  tools:context="org.pacien.tincapp.activities.StartActivity">
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="\nThis is a technical preview of the application, with a minimal user interface that should be sufficient for testing.
+		\nNo check is performed on user input, and the application will simply crash at the first encountered error (refer to ADB logs)."/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="\nActions"/>
+
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:onClick="requestVpnPermission"
+		android:text="@string/title_request_vpn_permissions"/>
+
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:onClick="startVpnDialog"
+		android:text="@string/title_connect_to_network"/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="\nInfo"/>
+
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:onClick="confDirDialog"
+		android:text="@string/menu_display_conf_dir"/>
+
+</LinearLayout>

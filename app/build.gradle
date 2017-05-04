@@ -1,0 +1,49 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+	compileSdkVersion 25
+	buildToolsVersion '25.0.0'
+	defaultConfig {
+		applicationId "org.pacien.tincapp"
+		minSdkVersion 21
+		targetSdkVersion 25
+		versionCode 1
+		versionName "0.1-preview"
+		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+	}
+	buildTypes {
+		release {
+			minifyEnabled true
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	externalNativeBuild {
+		cmake {
+			path "CMakeLists.txt"
+		}
+	}
+}
+
+dependencies {
+	compile fileTree(dir: 'libs', include: ['*.jar'])
+
+	compile 'com.android.support:appcompat-v7:25.3.1'
+	compile 'com.android.support:design:25.3.1'
+	compile 'com.android.support:support-v4:25.3.1'
+	compile 'com.android.support:recyclerview-v7:25.3.1'
+	compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
+
+	compile('org.apache.commons:commons-configuration2:2.1.1') {
+		exclude group: 'commons-logging', module: 'commons-logging'
+	}
+	compile('commons-beanutils:commons-beanutils:1.9.3') {
+		exclude group: 'commons-logging', module: 'commons-logging'
+	}
+
+	compile 'com.annimon:stream:1.1.5'
+}

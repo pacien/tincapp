@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto"
+	  xmlns:tools="http://schemas.android.com/tools"
+	  tools:context="org.pacien.tincapp.activities.BaseActivity">
+
+	<item
+		android:id="@+id/menu_about"
+		android:icon="@drawable/ic_help_primary_24dp"
+		android:onClick="aboutDialog"
+		android:tint="@color/colorAccent"
+		android:title="@string/menu_about"
+		app:showAsAction="ifRoom"/>
+
+</menu>
