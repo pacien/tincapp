@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
 	compileSdkVersion 25
@@ -7,20 +8,15 @@ android {
 	defaultConfig {
 		applicationId "org.pacien.tincapp"
 		minSdkVersion 21
-		targetSdkVersion 25
+		targetSdkVersion 21
 		versionCode 1
 		versionName "0.1-preview"
-		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 	}
 	buildTypes {
 		release {
 			minifyEnabled true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
-	}
-	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_8
-		targetCompatibility JavaVersion.VERSION_1_8
 	}
 	externalNativeBuild {
 		cmake {
@@ -45,5 +41,8 @@ dependencies {
 		exclude group: 'commons-logging', module: 'commons-logging'
 	}
 
-	compile 'com.annimon:stream:1.1.5'
+	compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
+repositories {
+	mavenCentral()
 }
