@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
 	compileSdkVersion 25
 	buildToolsVersion '25.0.0'
+
 	defaultConfig {
 		applicationId "org.pacien.tincapp"
 		minSdkVersion 21
@@ -15,12 +16,14 @@ android {
 			abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a'
 		}
 	}
+
 	buildTypes {
 		release {
 			minifyEnabled true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 	}
+
 	externalNativeBuild {
 		cmake {
 			path "CMakeLists.txt"
@@ -31,11 +34,11 @@ android {
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 
-	compile 'com.android.support:appcompat-v7:25.3.1'
-	compile 'com.android.support:design:25.3.1'
-	compile 'com.android.support:support-v4:25.3.1'
-	compile 'com.android.support:recyclerview-v7:25.3.1'
-	compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
+	compile 'com.android.support:appcompat-v7:25.4.0'
+	compile 'com.android.support:design:25.4.0'
+	compile 'com.android.support:support-v4:25.4.0'
+	compile 'com.android.support:recyclerview-v7:25.4.0'
+	compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
 	compile('org.apache.commons:commons-configuration2:2.1.1') {
 		exclude group: 'commons-logging', module: 'commons-logging'
@@ -46,6 +49,11 @@ dependencies {
 
 	compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
+
 repositories {
 	mavenCentral()
+	jcenter()
+	maven {
+		url "https://maven.google.com"
+	}
 }
