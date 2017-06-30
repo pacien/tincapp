@@ -11,6 +11,9 @@ android {
 		targetSdkVersion 21
 		versionCode 1
 		versionName "0.1-preview"
+		ndk {
+			abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+		}
 	}
 	buildTypes {
 		release {
