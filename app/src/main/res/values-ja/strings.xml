@@ -1,0 +1,33 @@
+<resources>
+	<string name="app_name">Tinc App</string>
+	<string name="app_label">Tinc</string>
+	<string name="app_short_desc">tinc mesh VPN デーモン用の Android バインディングとユーザーインターフェース。</string>
+	<string name="app_copyright">Copyright 2017 Pacien.</string>
+	<string name="app_license">GNU General Public License v3 の条件で配布されるソフトウェア。</string>
+	<string name="app_website_url">http://tincapp.pacien.org</string>
+
+	<string name="info_version_format">アプリバージョン %1$s (%2$s ビルド)</string>
+	<string name="info_running_on_format">Android %1$s %2$s で実行中</string>
+	<string name="info_supported_abis_format">デバイス ABI: %1$s</string>
+
+	<string name="menu_about">このアプリについて</string>
+	<string name="menu_display_conf_dir">設定ディレクトリを表示</string>
+
+	<string name="field_net_name">Tinc ネットワーク名</string>
+
+	<string name="title_tinc_config_dir">Tinc 設定ディレクトリ</string>
+	<string name="title_connect_to_network">ネットワークに接続</string>
+	<string name="title_request_vpn_permissions">VPN 権限のリクエスト</string>
+
+	<string name="action_close">閉じる</string>
+	<string name="action_copy">コピー</string>
+	<string name="action_open_project_website">プロジェクト Web サイト</string>
+	<string name="action_fix_perms">conf を編集可能に設定</string>
+	<string name="action_connect">接続</string>
+
+	<string name="message_perms_fixed">新しい権限を正常に適用しました。</string>
+	<string name="message_perms_fix_failure">新しい権限の設定中にエラーが発生しました。</string>
+	<string name="message_text_copied">テキストをクリップボードにコピーしました。</string>
+	<string name="message_vpn_permissions_granted">VPN 権限を付与しました。</string>
+	<string name="message_vpn_permissions_denied">VPN 権限が拒否されました。</string>
+</resources>
