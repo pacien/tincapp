@@ -22,11 +22,8 @@
 	<string name="action_close">閉じる</string>
 	<string name="action_copy">コピー</string>
 	<string name="action_open_project_website">プロジェクト Web サイト</string>
-	<string name="action_fix_perms">conf を編集可能に設定</string>
 	<string name="action_connect">接続</string>
 
-	<string name="message_perms_fixed">新しい権限を正常に適用しました。</string>
-	<string name="message_perms_fix_failure">新しい権限の設定中にエラーが発生しました。</string>
 	<string name="message_text_copied">テキストをクリップボードにコピーしました。</string>
 	<string name="message_vpn_permissions_granted">VPN 権限を付与しました。</string>
 	<string name="message_vpn_permissions_denied">VPN 権限が拒否されました。</string>

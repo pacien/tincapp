@@ -13,7 +13,6 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.base.*
 
 import org.pacien.tincapp.R
-import org.pacien.tincapp.commands.PermissionFixer
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.service.TincVpnService
 
@@ -63,7 +62,6 @@ class StartActivity : BaseActivity() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.title_tinc_config_dir)
                 .setMessage(confDir)
-                .setNeutralButton(R.string.action_fix_perms) { _, _ -> fixPerms() }
                 .setNegativeButton(R.string.action_copy) { _, _ -> copyIntoClipboard(resources.getString(R.string.title_tinc_config_dir), confDir) }
                 .setPositiveButton(R.string.action_close) { _, _ -> /* nop */ }
                 .show()
@@ -72,11 +70,6 @@ class StartActivity : BaseActivity() {
     private fun startVpn(netName: String) {
         startService(Intent(this, TincVpnService::class.java)
                 .putExtra(TincVpnService.INTENT_EXTRA_NET_NAME, netName))
-    }
-
-    private fun fixPerms() {
-        val ok = PermissionFixer.makePrivateDirsPublic(applicationContext)
-        notify(if (ok) R.string.message_perms_fixed else R.string.message_perms_fix_failure)
     }
 
 }

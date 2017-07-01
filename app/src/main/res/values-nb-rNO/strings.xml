@@ -22,11 +22,8 @@
 	<string name="action_close">Lukk</string>
 	<string name="action_copy">Kopier</string>
 	<string name="action_open_project_website">Prosjektets nettside</string>
-	<string name="action_fix_perms">Sett oppsett som skrivbart</string>
 	<string name="action_connect">Koble til</string>
 
-	<string name="message_perms_fixed">Nye tilganger lagt til.</string>
-	<string name="message_perms_fix_failure">Feil ved tillegg av nye tilganger.</string>
 	<string name="message_text_copied">Tekst kopiert til utklippstavle.</string>
 	<string name="message_vpn_permissions_granted">VPN-tilganger gitt.</string>
 	<string name="message_vpn_permissions_denied">VPN-tilganger nektet.</string>

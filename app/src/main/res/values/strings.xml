@@ -22,11 +22,8 @@
 	<string name="action_close">Close</string>
 	<string name="action_copy">Copy</string>
 	<string name="action_open_project_website">Project website</string>
-	<string name="action_fix_perms">Set conf editable</string>
 	<string name="action_connect">Connect</string>
 
-	<string name="message_perms_fixed">New permissions successfully applied.</string>
-	<string name="message_perms_fix_failure">Error encountered when setting new permissions.</string>
 	<string name="message_text_copied">Text copied to clipboard.</string>
 	<string name="message_vpn_permissions_granted">VPN permissions granted.</string>
 	<string name="message_vpn_permissions_denied">VPN permissions denied.</string>
