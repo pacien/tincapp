@@ -7,6 +7,7 @@ import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.Tincd
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.utils.applyIgnoringException
 import java.io.IOException
 
 /**
@@ -20,7 +21,7 @@ class TincVpnService : VpnService() {
         this.netName = intent.getStringExtra(INTENT_EXTRA_NET_NAME)
 
         val net = Builder().setSession(this.netName)
-        VpnInterfaceConfigurator.applyConfiguration(net, AppPaths.netConfFile(this, this.netName))
+        net.apply(VpnInterfaceConfiguration(AppPaths.netConfFile(this, this.netName)))
         applyIgnoringException(net::addDisallowedApplication, BuildConfig.APPLICATION_ID)
 
         try {
@@ -42,7 +43,6 @@ class TincVpnService : VpnService() {
     }
 
     companion object {
-
         val INTENT_EXTRA_NET_NAME = "netName"
     }
 
