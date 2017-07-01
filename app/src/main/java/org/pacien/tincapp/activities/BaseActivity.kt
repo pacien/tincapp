@@ -39,7 +39,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 .setMessage(resources.getString(R.string.app_short_desc) + "\n\n" +
                         resources.getString(R.string.app_copyright) + " " +
                         resources.getString(R.string.app_license) + "\n\n" +
-                        AppInfo.all(resources))
+                        AppInfo.all())
                 .setNeutralButton(R.string.action_open_project_website) { _, _ -> openWebsite(R.string.app_website_url) }
                 .setPositiveButton(R.string.action_close) { _, _ -> /* nop */ }
                 .show()

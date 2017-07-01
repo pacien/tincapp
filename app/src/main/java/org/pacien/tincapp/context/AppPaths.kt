@@ -29,15 +29,15 @@ object AppPaths {
         return f
     }
 
-    fun confDir(ctx: Context): File = ctx.getDir(CONFDIR, Context.MODE_PRIVATE)
-    fun confDir(ctx: Context, netName: String): File = File(confDir(ctx), netName)
-    fun logDir(ctx: Context): File = createDirIfNotExists(ctx.cacheDir, LOGDIR)
-    fun pidDir(ctx: Context): File = createDirIfNotExists(ctx.cacheDir, PIDDIR)
-    fun logFile(ctx: Context, netName: String): File = File(logDir(ctx), String.format(LOGFILE_FORMAT, netName))
-    fun pidFile(ctx: Context, netName: String): File = File(pidDir(ctx), String.format(PIDFILE_FORMAT, netName))
-    fun netConfFile(ctx: Context, netName: String): File = File(confDir(ctx, netName), NET_CONF_FILE)
-    fun binDir(ctx: Context): File = File(ctx.applicationInfo.nativeLibraryDir)
-    fun tincd(ctx: Context): File = File(binDir(ctx), TINCD_BIN)
-    fun tinc(ctx: Context): File = File(binDir(ctx), TINC_BIN)
+    fun confDir(): File = App.getContext().getDir(CONFDIR, Context.MODE_PRIVATE)
+    fun confDir(netName: String): File = File(confDir(), netName)
+    fun logDir(): File = createDirIfNotExists(App.getContext().cacheDir, LOGDIR)
+    fun pidDir(): File = createDirIfNotExists(App.getContext().cacheDir, PIDDIR)
+    fun logFile(netName: String): File = File(logDir(), String.format(LOGFILE_FORMAT, netName))
+    fun pidFile(netName: String): File = File(pidDir(), String.format(PIDFILE_FORMAT, netName))
+    fun netConfFile(netName: String): File = File(confDir(netName), NET_CONF_FILE)
+    fun binDir(): File = File(App.getContext().applicationInfo.nativeLibraryDir)
+    fun tincd(): File = File(binDir(), TINCD_BIN)
+    fun tinc(): File = File(binDir(), TINC_BIN)
 
 }

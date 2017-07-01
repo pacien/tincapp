@@ -1,9 +1,6 @@
 package org.pacien.tincapp.commands
 
-import android.content.Context
-
 import org.pacien.tincapp.context.AppPaths
-
 import java.io.IOException
 
 /**
@@ -12,12 +9,12 @@ import java.io.IOException
 object Tincd {
 
     @Throws(IOException::class)
-    fun start(ctx: Context, netName: String, fd: Int) {
-        Executor.forkExec(Command(AppPaths.tincd(ctx).absolutePath)
+    fun start(netName: String, fd: Int) {
+        Executor.forkExec(Command(AppPaths.tincd().absolutePath)
                 .withOption("no-detach")
-                .withOption("config", AppPaths.confDir(ctx, netName).absolutePath)
-                .withOption("pidfile", AppPaths.pidFile(ctx, netName).absolutePath)
-                .withOption("logfile", AppPaths.logFile(ctx, netName).absolutePath)
+                .withOption("config", AppPaths.confDir(netName).absolutePath)
+                .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
+                .withOption("logfile", AppPaths.logFile(netName).absolutePath)
                 .withOption("option", "DeviceType=fd")
                 .withOption("option", "Device=" + fd))
     }

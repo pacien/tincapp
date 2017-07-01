@@ -21,11 +21,11 @@ class TincVpnService : VpnService() {
         this.netName = intent.getStringExtra(INTENT_EXTRA_NET_NAME)
 
         val net = Builder().setSession(this.netName)
-        net.apply(VpnInterfaceConfiguration(AppPaths.netConfFile(this, this.netName)))
+        net.apply(VpnInterfaceConfiguration(AppPaths.netConfFile(this.netName)))
         applyIgnoringException(net::addDisallowedApplication, BuildConfig.APPLICATION_ID)
 
         try {
-            Tincd.start(this, this.netName, net.establish().detachFd())
+            Tincd.start(this.netName, net.establish().detachFd())
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -35,7 +35,7 @@ class TincVpnService : VpnService() {
 
     override fun onDestroy() {
         try {
-            Tinc.stop(this, this.netName)
+            Tinc.stop(this.netName)
         } catch (e: IOException) {
             e.printStackTrace()
         }

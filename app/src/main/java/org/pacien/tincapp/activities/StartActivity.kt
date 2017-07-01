@@ -57,7 +57,7 @@ class StartActivity : BaseActivity() {
     }
 
     fun confDirDialog(@Suppress("UNUSED_PARAMETER") v: View) {
-        val confDir = AppPaths.confDir(this).path
+        val confDir = AppPaths.confDir().path
 
         AlertDialog.Builder(this)
                 .setTitle(R.string.title_tinc_config_dir)
