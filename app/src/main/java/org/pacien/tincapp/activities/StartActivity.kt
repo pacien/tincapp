@@ -57,19 +57,18 @@ class StartActivity : BaseActivity() {
     }
 
     fun confDirDialog(@Suppress("UNUSED_PARAMETER") v: View) {
-        val confDir = AppPaths.confDir().path
-
         AlertDialog.Builder(this)
                 .setTitle(R.string.title_tinc_config_dir)
-                .setMessage(confDir)
-                .setNegativeButton(R.string.action_copy) { _, _ -> copyIntoClipboard(resources.getString(R.string.title_tinc_config_dir), confDir) }
+                .setMessage("Internal: " + AppPaths.confDir(AppPaths.Storage.INTERNAL) + "\n\n" +
+                        "External: " + AppPaths.confDir(AppPaths.Storage.EXTERNAL))
                 .setPositiveButton(R.string.action_close) { _, _ -> /* nop */ }
                 .show()
     }
 
     private fun startVpn(netName: String) {
-        startService(Intent(this, TincVpnService::class.java)
-                .putExtra(TincVpnService.INTENT_EXTRA_NET_NAME, netName))
+        startService(Intent(this, TincVpnService::class.java).putExtra(TincVpnService.INTENT_EXTRA_NET_CONF,
+                if (netName.startsWith("external/")) AppPaths.NetConf(AppPaths.Storage.EXTERNAL, netName.substringAfter("/"))
+                else AppPaths.NetConf(AppPaths.Storage.INTERNAL, netName)))
     }
 
 }

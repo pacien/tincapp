@@ -1,8 +1,7 @@
 package org.pacien.tincapp.context
 
-import android.content.Context
-
 import java.io.File
+import java.io.Serializable
 
 /**
  * @author pacien
@@ -11,9 +10,8 @@ import java.io.File
  */
 object AppPaths {
 
-    private val CONFDIR = "conf"
-    private val LOGDIR = "log"
-    private val PIDDIR = "pid"
+    enum class Storage { INTERNAL, EXTERNAL }
+    data class NetConf(val storage: Storage, val netName: String) : Serializable
 
     private val TINCD_BIN = "libtincd.so"
     private val TINC_BIN = "libtinc.so"
@@ -23,21 +21,26 @@ object AppPaths {
 
     private val NET_CONF_FILE = "network.conf"
 
-    private fun createDirIfNotExists(basePath: File, newDir: String): File {
-        val f = File(basePath, newDir)
-        f.mkdirs()
-        return f
+    fun filesDir(storage: Storage): File = when (storage) {
+        Storage.INTERNAL -> App.getContext().filesDir
+        Storage.EXTERNAL -> App.getContext().getExternalFilesDir(null)
     }
 
-    fun confDir(): File = App.getContext().getDir(CONFDIR, Context.MODE_PRIVATE)
-    fun confDir(netName: String): File = File(confDir(), netName)
-    fun logDir(): File = createDirIfNotExists(App.getContext().cacheDir, LOGDIR)
-    fun pidDir(): File = createDirIfNotExists(App.getContext().cacheDir, PIDDIR)
-    fun logFile(netName: String): File = File(logDir(), String.format(LOGFILE_FORMAT, netName))
-    fun pidFile(netName: String): File = File(pidDir(), String.format(PIDFILE_FORMAT, netName))
-    fun netConfFile(netName: String): File = File(confDir(netName), NET_CONF_FILE)
-    fun binDir(): File = File(App.getContext().applicationInfo.nativeLibraryDir)
-    fun tincd(): File = File(binDir(), TINCD_BIN)
-    fun tinc(): File = File(binDir(), TINC_BIN)
+    fun cacheDir(storage: Storage): File = when (storage) {
+        Storage.INTERNAL -> App.getContext().cacheDir
+        Storage.EXTERNAL -> App.getContext().externalCacheDir
+    }
+
+    fun binDir() = File(App.getContext().applicationInfo.nativeLibraryDir)
+
+    fun confDir(storage: Storage) = filesDir(storage)
+    fun confDir(netConf: NetConf) = File(confDir(netConf.storage), netConf.netName)
+
+    fun netConfFile(netConf: NetConf) = File(confDir(netConf), NET_CONF_FILE)
+    fun logFile(netConf: NetConf) = File(cacheDir(netConf.storage), String.format(LOGFILE_FORMAT, netConf.netName))
+    fun pidFile(netConf: NetConf) = File(cacheDir(Storage.INTERNAL), String.format(PIDFILE_FORMAT, netConf.netName))
+
+    fun tincd() = File(binDir(), TINCD_BIN)
+    fun tinc() = File(binDir(), TINC_BIN)
 
 }

@@ -8,22 +8,16 @@ import java.io.IOException
  */
 object Tinc {
 
-    private fun newCommand(netName: String): Command =
+    private fun newCommand(netConf: AppPaths.NetConf): Command =
             Command(AppPaths.tinc().absolutePath)
-                    .withOption("config", AppPaths.confDir(netName).absolutePath)
-                    .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
+                    .withOption("config", AppPaths.confDir(netConf).absolutePath)
+                    .withOption("pidfile", AppPaths.pidFile(netConf).absolutePath)
 
     // independently runnable commands
 
     @Throws(IOException::class)
-    fun network(): List<String> =
-            Executor.call(Command(AppPaths.tinc().absolutePath)
-                    .withOption("config", AppPaths.confDir().absolutePath)
-                    .withArguments("network"))
-
-    @Throws(IOException::class)
-    fun fsck(netName: String, fix: Boolean): List<String> {
-        var cmd = newCommand(netName).withArguments("fsck")
+    fun fsck(netConf: AppPaths.NetConf, fix: Boolean): List<String> {
+        var cmd = newCommand(netConf).withArguments("fsck")
         if (fix) cmd = cmd.withOption("force")
         return Executor.call(cmd)
     }
@@ -31,18 +25,18 @@ object Tinc {
     // commands requiring a running tinc daemon
 
     @Throws(IOException::class)
-    fun stop(netName: String) {
-        Executor.call(newCommand(netName).withArguments("stop"))
+    fun stop(netConf: AppPaths.NetConf) {
+        Executor.call(newCommand(netConf).withArguments("stop"))
     }
 
     @Throws(IOException::class)
-    fun dumpNodes(netName: String, reachable: Boolean): List<String> =
+    fun dumpNodes(netConf: AppPaths.NetConf, reachable: Boolean): List<String> =
             Executor.call(
-                    if (reachable) newCommand(netName).withArguments("dump", "reachable", "nodes")
-                    else newCommand(netName).withArguments("dump", "nodes"))
+                    if (reachable) newCommand(netConf).withArguments("dump", "reachable", "nodes")
+                    else newCommand(netConf).withArguments("dump", "nodes"))
 
     @Throws(IOException::class)
-    fun info(netName: String, node: String): String =
-            Executor.call(newCommand(netName).withArguments("info", node)).joinToString("\n")
+    fun info(netConf: AppPaths.NetConf, node: String): String =
+            Executor.call(newCommand(netConf).withArguments("info", node)).joinToString("\n")
 
 }

@@ -9,12 +9,12 @@ import java.io.IOException
 object Tincd {
 
     @Throws(IOException::class)
-    fun start(netName: String, fd: Int) {
+    fun start(netConf: AppPaths.NetConf, fd: Int) {
         Executor.forkExec(Command(AppPaths.tincd().absolutePath)
                 .withOption("no-detach")
-                .withOption("config", AppPaths.confDir(netName).absolutePath)
-                .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
-                .withOption("logfile", AppPaths.logFile(netName).absolutePath)
+                .withOption("config", AppPaths.confDir(netConf).absolutePath)
+                .withOption("pidfile", AppPaths.pidFile(netConf).absolutePath)
+                .withOption("logfile", AppPaths.logFile(netConf).absolutePath)
                 .withOption("option", "DeviceType=fd")
                 .withOption("option", "Device=" + fd))
     }
