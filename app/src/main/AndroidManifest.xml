@@ -23,6 +23,12 @@
 			</intent-filter>
 		</activity>
 
+		<activity
+			android:name=".activities.ConfigureActivity"
+			android:parentActivityName=".activities.StartActivity"
+			android:theme="@style/AppTheme.NoActionBar">
+		</activity>
+
 		<service
 			android:name="org.pacien.tincapp.service.TincVpnService"
 			android:permission="android.permission.BIND_VPN_SERVICE">

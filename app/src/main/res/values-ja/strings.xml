@@ -11,20 +11,16 @@
 	<string name="info_supported_abis_format">デバイス ABI: %1$s</string>
 
 	<string name="menu_about">このアプリについて</string>
-	<string name="menu_display_conf_dir">設定ディレクトリを表示</string>
 
 	<string name="field_net_name">Tinc ネットワーク名</string>
 
-	<string name="title_tinc_config_dir">Tinc 設定ディレクトリ</string>
 	<string name="title_connect_to_network">ネットワークに接続</string>
 	<string name="title_request_vpn_permissions">VPN 権限のリクエスト</string>
 
 	<string name="action_close">閉じる</string>
-	<string name="action_copy">コピー</string>
 	<string name="action_open_project_website">プロジェクト Web サイト</string>
 	<string name="action_connect">接続</string>
 
-	<string name="message_text_copied">テキストをクリップボードにコピーしました。</string>
 	<string name="message_vpn_permissions_granted">VPN 権限を付与しました。</string>
 	<string name="message_vpn_permissions_denied">VPN 権限が拒否されました。</string>
 </resources>

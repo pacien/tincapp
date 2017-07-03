@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:tools="http://schemas.android.com/tools"
+			  android:id="@+id/page_configure"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:orientation="vertical"
+			  tools:context="org.pacien.tincapp.activities.ConfigureActivity">
+
+	<TextView
+		style="@style/AppTheme.SectionTitle"
+		android:text="@string/title_path_info"/>
+
+	<LinearLayout style="@style/AppTheme.List">
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_configuration_directories"/>
+
+			<TextView
+				android:id="@+id/text_configuration_directories"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_log_directories"/>
+
+			<TextView
+				android:id="@+id/text_log_directories"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_tinc_binaries"/>
+
+			<TextView
+				android:id="@+id/text_tinc_binaries"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<TextView
+		style="@style/AppTheme.SectionTitle"
+		android:text="@string/title_tools"/>
+
+	<LinearLayout style="@style/AppTheme.List">
+
+		<LinearLayout
+			style="@style/AppTheme.ListBlock.Clickable"
+			android:onClick="generateConf">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/action_generate_node_configuration_and_keys"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/AppTheme.ListBlock.Clickable"
+			android:onClick="joinNetwork">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/action_join_network_via_invitation_url"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>

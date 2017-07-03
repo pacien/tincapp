@@ -1,4 +1,5 @@
 <resources>
+
 	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -13,4 +14,48 @@
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+	<style name="AppTheme.SectionTitle">
+		<item name="android:textColor">@color/colorAccent</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+		<item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+		<item name="android:paddingTop">@dimen/activity_vertical_margin</item>
+	</style>
+
+	<style name="AppTheme.List">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:divider">@drawable/horizontal_line</item>
+		<item name="android:orientation">vertical</item>
+		<item name="android:showDividers">middle</item>
+	</style>
+
+	<style name="AppTheme.ListBlock">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
+		<item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+		<item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+		<item name="android:paddingTop">@dimen/activity_vertical_margin</item>
+		<item name="android:orientation">vertical</item>
+	</style>
+
+	<style name="AppTheme.ListBlock.Clickable">
+		<item name="android:background">?attr/selectableItemBackground</item>
+		<item name="android:clickable">true</item>
+	</style>
+
+	<style name="AppTheme.BlockTitle">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textAppearance">@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle</item>
+	</style>
+
+	<style name="AppTheme.BlockContent">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/colorPrimaryLight</item>
+	</style>
 </resources>

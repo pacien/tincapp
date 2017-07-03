@@ -6,6 +6,8 @@ import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -24,6 +26,11 @@ class StartActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         layoutInflater.inflate(R.layout.page_start, main_content)
+    }
+
+    override fun onCreateOptionsMenu(m: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_start, m)
+        return super.onCreateOptionsMenu(m)
     }
 
     override fun onActivityResult(request: Int, result: Int, data: Intent?) {
@@ -45,7 +52,7 @@ class StartActivity : BaseActivity() {
         i.setHint(R.string.field_net_name)
 
         @SuppressLint("InflateParams")
-        val vg = layoutInflater.inflate(R.layout.dialog_frame, null) as ViewGroup
+        val vg = layoutInflater.inflate(R.layout.dialog_frame, main_content, false) as ViewGroup
         vg.addView(i)
 
         AlertDialog.Builder(this)
@@ -56,14 +63,7 @@ class StartActivity : BaseActivity() {
                 .show()
     }
 
-    fun confDirDialog(@Suppress("UNUSED_PARAMETER") v: View) {
-        AlertDialog.Builder(this)
-                .setTitle(R.string.title_tinc_config_dir)
-                .setMessage("Internal: " + AppPaths.confDir(AppPaths.Storage.INTERNAL) + "\n\n" +
-                        "External: " + AppPaths.confDir(AppPaths.Storage.EXTERNAL))
-                .setPositiveButton(R.string.action_close) { _, _ -> /* nop */ }
-                .show()
-    }
+    fun openConfigureActivity(@Suppress("UNUSED_PARAMETER") i: MenuItem) = startActivity(Intent(this, ConfigureActivity::class.java))
 
     private fun startVpn(netName: String) {
         startService(Intent(this, TincVpnService::class.java).putExtra(TincVpnService.INTENT_EXTRA_NET_CONF,

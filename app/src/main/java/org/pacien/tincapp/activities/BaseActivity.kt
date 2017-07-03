@@ -1,8 +1,5 @@
 package org.pacien.tincapp.activities
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -45,18 +42,8 @@ abstract class BaseActivity : AppCompatActivity() {
                 .show()
     }
 
-    protected fun openWebsite(@StringRes url: Int) {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(url))))
-    }
-
-    protected fun notify(@StringRes msg: Int) {
-        Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
-    }
-
-    protected fun copyIntoClipboard(label: String, str: String) {
-        val c = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        c.primaryClip = ClipData.newPlainText(label, str)
-        notify(R.string.message_text_copied)
-    }
+    protected fun openWebsite(@StringRes url: Int) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(url))))
+    protected fun notify(@StringRes msg: Int) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
+    protected fun notify(msg: String) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
 
 }
