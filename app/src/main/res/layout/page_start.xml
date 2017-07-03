@@ -1,27 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  xmlns:tools="http://schemas.android.com/tools"
-			  android:id="@+id/page_start"
-			  android:layout_width="match_parent"
-			  android:layout_height="wrap_content"
-			  android:orientation="vertical"
-			  tools:context="org.pacien.tincapp.activities.StartActivity">
+<ListView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/network_list"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:divider="@drawable/horizontal_line"
+	android:footerDividersEnabled="false"
+	android:headerDividersEnabled="false"
+	android:orientation="vertical"
+	tools:context="org.pacien.tincapp.activities.StartActivity">
 
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="\nThis is a technical preview of the application, with a minimal user interface that should be sufficient for testing.
-		\nNo check is performed on user input, and the application will simply crash at the first encountered error (refer to ADB logs)."/>
-
-	<Button
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:onClick="requestVpnPermission"
-		android:text="@string/title_request_vpn_permissions"/>
-
-	<Button
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:onClick="startVpnDialog"
-		android:text="@string/title_connect_to_network"/>
-
-</LinearLayout>
+</ListView>

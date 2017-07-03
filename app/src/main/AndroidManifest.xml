@@ -29,6 +29,11 @@
 			android:theme="@style/AppTheme.NoActionBar">
 		</activity>
 
+		<activity
+			android:name=".activities.PromptActivity"
+			android:theme="@android:style/Theme.Translucent.NoTitleBar">
+		</activity>
+
 		<service
 			android:name="org.pacien.tincapp.service.TincVpnService"
 			android:permission="android.permission.BIND_VPN_SERVICE">

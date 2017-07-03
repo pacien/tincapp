@@ -6,6 +6,7 @@ import android.net.VpnService
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.Tincd
+import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.utils.applyIgnoringException
 import java.io.IOException
@@ -43,7 +44,12 @@ class TincVpnService : VpnService() {
     }
 
     companion object {
-        val INTENT_EXTRA_NET_NAME = "netName"
+        private val INTENT_EXTRA_NET_NAME = "netName"
+
+        fun startVpn(netName: String) {
+            App.getContext().startService(Intent(App.getContext(), TincVpnService::class.java)
+                    .putExtra(TincVpnService.INTENT_EXTRA_NET_NAME, netName))
+        }
     }
 
 }

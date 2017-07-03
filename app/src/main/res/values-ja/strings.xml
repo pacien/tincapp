@@ -19,8 +19,4 @@
 
 	<string name="action_close">閉じる</string>
 	<string name="action_open_project_website">プロジェクト Web サイト</string>
-	<string name="action_connect">接続</string>
-
-	<string name="message_vpn_permissions_granted">VPN 権限を付与しました。</string>
-	<string name="message_vpn_permissions_denied">VPN 権限が拒否されました。</string>
 </resources>

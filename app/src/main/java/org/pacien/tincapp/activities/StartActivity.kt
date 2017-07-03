@@ -1,29 +1,27 @@
 package org.pacien.tincapp.activities
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.net.VpnService
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.FrameLayout
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import kotlinx.android.synthetic.main.base.*
+import kotlinx.android.synthetic.main.page_start.*
 import org.pacien.tincapp.R
-import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.context.AppPaths
 
 /**
  * @author pacien
  */
-class StartActivity : BaseActivity() {
+class StartActivity : BaseActivity(), AdapterView.OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         layoutInflater.inflate(R.layout.page_start, main_content)
+        writeContent()
     }
 
     override fun onCreateOptionsMenu(m: Menu): Boolean {
@@ -31,39 +29,20 @@ class StartActivity : BaseActivity() {
         return super.onCreateOptionsMenu(m)
     }
 
-    override fun onActivityResult(request: Int, result: Int, data: Intent?) {
-        notify(if (result == Activity.RESULT_OK) R.string.message_vpn_permissions_granted else R.string.message_vpn_permissions_denied)
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        PromptActivity.requestVpnPermission((view as TextView).text.toString())
     }
 
-    fun requestVpnPermission(@Suppress("UNUSED_PARAMETER") v: View) {
-        val askPermIntent = VpnService.prepare(this)
-
-        if (askPermIntent != null)
-            startActivityForResult(askPermIntent, 0)
-        else
-            onActivityResult(0, Activity.RESULT_OK, null)
+    fun openConfigureActivity(@Suppress("UNUSED_PARAMETER") i: MenuItem) {
+        startActivity(Intent(this, ConfigureActivity::class.java))
     }
 
-    fun startVpnDialog(@Suppress("UNUSED_PARAMETER") v: View) {
-        val i = EditText(this)
-        i.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        i.setHint(R.string.field_net_name)
-
-        @SuppressLint("InflateParams")
-        val vg = layoutInflater.inflate(R.layout.dialog_frame, main_content, false) as ViewGroup
-        vg.addView(i)
-
-        AlertDialog.Builder(this)
-                .setTitle(R.string.title_connect_to_network)
-                .setView(vg)
-                .setPositiveButton(R.string.action_connect) { _, _ -> startVpn(i.text.toString()) }
-                .setNegativeButton(R.string.action_close) { _, _ -> /* nop */ }
-                .show()
+    private fun writeContent() {
+        network_list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_list_header, network_list, false))
+        network_list.addFooterView(View(this))
+        network_list.emptyView = layoutInflater.inflate(R.layout.fragment_network_list_empty_placeholder, network_list, false)
+        network_list.adapter = ArrayAdapter<String>(this, R.layout.fragment_list_item, AppPaths.confDir().list())
+        network_list.onItemClickListener = this
     }
-
-    fun openConfigureActivity(@Suppress("UNUSED_PARAMETER") i: MenuItem) = startActivity(Intent(this, ConfigureActivity::class.java))
-
-    private fun startVpn(netName: String) =
-            startService(Intent(this, TincVpnService::class.java).putExtra(TincVpnService.INTENT_EXTRA_NET_NAME, netName))
 
 }

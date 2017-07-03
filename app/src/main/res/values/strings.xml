@@ -25,10 +25,8 @@
 
 	<string name="action_close">Close</string>
 	<string name="action_open_project_website">Project website</string>
-	<string name="action_connect">Connect</string>
 	<string name="action_generate_node_configuration_and_keys">Generate node configuration and keys</string>
 	<string name="action_join_network_via_invitation_url">Join network via invitation URL</string>
 
-	<string name="message_vpn_permissions_granted">VPN permissions granted.</string>
-	<string name="message_vpn_permissions_denied">VPN permissions denied.</string>
+	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
 </resources>

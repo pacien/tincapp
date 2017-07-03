@@ -26,12 +26,12 @@
 
 	</android.support.design.widget.AppBarLayout>
 
-	<ScrollView
+	<FrameLayout
 		android:id="@+id/main_content"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-	</ScrollView>
+	</FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

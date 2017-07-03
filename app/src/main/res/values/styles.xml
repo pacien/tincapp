@@ -47,6 +47,10 @@
 		<item name="android:clickable">true</item>
 	</style>
 
+	<style name="AppTheme.ListBlock.Placeholder">
+		<item name="android:textStyle">italic</item>
+	</style>
+
 	<style name="AppTheme.BlockTitle">
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>

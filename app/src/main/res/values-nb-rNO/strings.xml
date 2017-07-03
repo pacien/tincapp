@@ -19,8 +19,4 @@
 
 	<string name="action_close">Lukk</string>
 	<string name="action_open_project_website">Prosjektets nettside</string>
-	<string name="action_connect">Koble til</string>
-
-	<string name="message_vpn_permissions_granted">VPN-tilganger gitt.</string>
-	<string name="message_vpn_permissions_denied">VPN-tilganger nektet.</string>
 </resources>

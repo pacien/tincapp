@@ -1,81 +1,88 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  xmlns:tools="http://schemas.android.com/tools"
-			  android:id="@+id/page_configure"
-			  android:layout_width="match_parent"
-			  android:layout_height="wrap_content"
-			  android:orientation="vertical"
-			  tools:context="org.pacien.tincapp.activities.ConfigureActivity">
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-	<TextView
-		style="@style/AppTheme.SectionTitle"
-		android:text="@string/title_path_info"/>
+	<LinearLayout
+		android:id="@+id/page_configure"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		tools:context="org.pacien.tincapp.activities.ConfigureActivity">
 
-	<LinearLayout style="@style/AppTheme.List">
+		<TextView
+			style="@style/AppTheme.SectionTitle"
+			android:text="@string/title_path_info"/>
 
-		<LinearLayout style="@style/AppTheme.ListBlock">
+		<LinearLayout style="@style/AppTheme.List">
 
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/title_configuration_directory"/>
+			<LinearLayout style="@style/AppTheme.ListBlock">
 
-			<TextView
-				android:id="@+id/text_configuration_directory"
-				style="@style/AppTheme.BlockContent"/>
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/title_configuration_directory"/>
+
+				<TextView
+					android:id="@+id/text_configuration_directory"
+					style="@style/AppTheme.BlockContent"/>
+
+			</LinearLayout>
+
+			<LinearLayout style="@style/AppTheme.ListBlock">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/title_log_directory"/>
+
+				<TextView
+					android:id="@+id/text_log_directory"
+					style="@style/AppTheme.BlockContent"/>
+
+			</LinearLayout>
+
+			<LinearLayout style="@style/AppTheme.ListBlock">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/title_tinc_binary"/>
+
+				<TextView
+					android:id="@+id/text_tinc_binary"
+					style="@style/AppTheme.BlockContent"/>
+
+			</LinearLayout>
 
 		</LinearLayout>
 
-		<LinearLayout style="@style/AppTheme.ListBlock">
+		<TextView
+			style="@style/AppTheme.SectionTitle"
+			android:text="@string/title_tools"/>
 
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/title_log_directory"/>
+		<LinearLayout style="@style/AppTheme.List">
 
-			<TextView
-				android:id="@+id/text_log_directory"
-				style="@style/AppTheme.BlockContent"/>
+			<LinearLayout
+				style="@style/AppTheme.ListBlock.Clickable"
+				android:onClick="generateConf">
 
-		</LinearLayout>
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/action_generate_node_configuration_and_keys"/>
 
-		<LinearLayout style="@style/AppTheme.ListBlock">
+			</LinearLayout>
 
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/title_tinc_binary"/>
+			<LinearLayout
+				style="@style/AppTheme.ListBlock.Clickable"
+				android:onClick="joinNetwork">
 
-			<TextView
-				android:id="@+id/text_tinc_binary"
-				style="@style/AppTheme.BlockContent"/>
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/action_join_network_via_invitation_url"/>
+
+			</LinearLayout>
 
 		</LinearLayout>
 
 	</LinearLayout>
 
-	<TextView
-		style="@style/AppTheme.SectionTitle"
-		android:text="@string/title_tools"/>
-
-	<LinearLayout style="@style/AppTheme.List">
-
-		<LinearLayout
-			style="@style/AppTheme.ListBlock.Clickable"
-			android:onClick="generateConf">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/action_generate_node_configuration_and_keys"/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			style="@style/AppTheme.ListBlock.Clickable"
-			android:onClick="joinNetwork">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/action_join_network_via_invitation_url"/>
-
-		</LinearLayout>
-
-	</LinearLayout>
-
-</LinearLayout>
+</ScrollView>
