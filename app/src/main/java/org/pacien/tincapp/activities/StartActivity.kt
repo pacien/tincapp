@@ -13,9 +13,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.base.*
-
 import org.pacien.tincapp.R
-import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.service.TincVpnService
 
 /**
@@ -65,10 +63,7 @@ class StartActivity : BaseActivity() {
 
     fun openConfigureActivity(@Suppress("UNUSED_PARAMETER") i: MenuItem) = startActivity(Intent(this, ConfigureActivity::class.java))
 
-    private fun startVpn(netName: String) {
-        startService(Intent(this, TincVpnService::class.java).putExtra(TincVpnService.INTENT_EXTRA_NET_CONF,
-                if (netName.startsWith("external/")) AppPaths.NetConf(AppPaths.Storage.EXTERNAL, netName.substringAfter("/"))
-                else AppPaths.NetConf(AppPaths.Storage.INTERNAL, netName)))
-    }
+    private fun startVpn(netName: String) =
+            startService(Intent(this, TincVpnService::class.java).putExtra(TincVpnService.INTENT_EXTRA_NET_NAME, netName))
 
 }

@@ -15,17 +15,17 @@ import java.io.IOException
  */
 class TincVpnService : VpnService() {
 
-    private var netConf: AppPaths.NetConf? = null
+    private var netName: String? = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        netConf = intent.getSerializableExtra(INTENT_EXTRA_NET_CONF)!! as AppPaths.NetConf
+        netName = intent.getStringExtra(INTENT_EXTRA_NET_NAME)!!
 
-        val net = Builder().setSession(netConf!!.netName)
-        net.apply(VpnInterfaceConfiguration(AppPaths.netConfFile(netConf!!)))
+        val net = Builder().setSession(netName)
+        net.apply(VpnInterfaceConfiguration(AppPaths.netConfFile(netName!!)))
         applyIgnoringException(net::addDisallowedApplication, BuildConfig.APPLICATION_ID)
 
         try {
-            Tincd.start(netConf!!, net.establish().detachFd())
+            Tincd.start(netName!!, net.establish().detachFd())
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -35,7 +35,7 @@ class TincVpnService : VpnService() {
 
     override fun onDestroy() {
         try {
-            Tinc.stop(netConf!!)
+            Tinc.stop(netName!!)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -43,7 +43,7 @@ class TincVpnService : VpnService() {
     }
 
     companion object {
-        val INTENT_EXTRA_NET_CONF = "netConf"
+        val INTENT_EXTRA_NET_NAME = "netName"
     }
 
 }

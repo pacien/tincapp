@@ -16,10 +16,10 @@
 
 			<TextView
 				style="@style/AppTheme.BlockTitle"
-				android:text="@string/title_configuration_directories"/>
+				android:text="@string/title_configuration_directory"/>
 
 			<TextView
-				android:id="@+id/text_configuration_directories"
+				android:id="@+id/text_configuration_directory"
 				style="@style/AppTheme.BlockContent"/>
 
 		</LinearLayout>
@@ -28,10 +28,10 @@
 
 			<TextView
 				style="@style/AppTheme.BlockTitle"
-				android:text="@string/title_log_directories"/>
+				android:text="@string/title_log_directory"/>
 
 			<TextView
-				android:id="@+id/text_log_directories"
+				android:id="@+id/text_log_directory"
 				style="@style/AppTheme.BlockContent"/>
 
 		</LinearLayout>
@@ -40,10 +40,10 @@
 
 			<TextView
 				style="@style/AppTheme.BlockTitle"
-				android:text="@string/title_tinc_binaries"/>
+				android:text="@string/title_tinc_binary"/>
 
 			<TextView
-				android:id="@+id/text_tinc_binaries"
+				android:id="@+id/text_tinc_binary"
 				style="@style/AppTheme.BlockContent"/>
 
 		</LinearLayout>

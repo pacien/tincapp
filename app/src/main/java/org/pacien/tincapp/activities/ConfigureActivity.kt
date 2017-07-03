@@ -20,9 +20,9 @@ class ConfigureActivity : BaseActivity() {
     }
 
     private fun writeContent() {
-        text_configuration_directories.text = AppPaths.Storage.values().map { AppPaths.confDir(it) }.joinToString("\n")
-        text_log_directories.text = AppPaths.Storage.values().map { AppPaths.cacheDir(it) }.joinToString("\n")
-        text_tinc_binaries.text = listOf(AppPaths.tinc(), AppPaths.tincd()).joinToString("\n")
+        text_configuration_directory.text = AppPaths.confDir().absolutePath
+        text_log_directory.text = AppPaths.cacheDir().absolutePath
+        text_tinc_binary.text = AppPaths.tinc().absolutePath
     }
 
     fun generateConf(@Suppress("UNUSED_PARAMETER") v: View) = notify("Not implemented yet")

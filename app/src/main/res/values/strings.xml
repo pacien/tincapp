@@ -19,9 +19,9 @@
 	<string name="title_request_vpn_permissions">Request VPN permissions</string>
 	<string name="title_path_info">Path info</string>
 	<string name="title_tools">Tools</string>
-	<string name="title_configuration_directories">Configuration directories</string>
-	<string name="title_log_directories">Log directories</string>
-	<string name="title_tinc_binaries">Tinc binaries</string>
+	<string name="title_configuration_directory">Configuration directory</string>
+	<string name="title_log_directory">Log directory</string>
+	<string name="title_tinc_binary">Tinc binary</string>
 
 	<string name="action_close">Close</string>
 	<string name="action_open_project_website">Project website</string>
