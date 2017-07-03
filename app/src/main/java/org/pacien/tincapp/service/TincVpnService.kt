@@ -19,28 +19,31 @@ class TincVpnService : VpnService() {
     private var netName: String? = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        netName = intent.getStringExtra(INTENT_EXTRA_NET_NAME)!!
-
-        val net = Builder().setSession(netName)
-        net.apply(VpnInterfaceConfiguration(AppPaths.netConfFile(netName!!)))
-        applyIgnoringException(net::addDisallowedApplication, BuildConfig.APPLICATION_ID)
-
-        try {
-            Tincd.start(netName!!, net.establish().detachFd())
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
+        startVpn(intent.getStringExtra(INTENT_EXTRA_NET_NAME)!!)
         return Service.START_STICKY
     }
 
-    override fun onDestroy() {
+    override fun onDestroy() = try {
+        Tinc.stop(netName!!)
+    } catch (e: IOException) {
+        e.printStackTrace()
+    } finally {
+        netName = null
+    }
+
+    private fun startVpn(netName: String) {
+        if (netName == this.netName) onDestroy()
+        this.netName = netName
+
+        val net = Builder().setSession(netName)
+        net.apply(VpnInterfaceConfiguration(AppPaths.netConfFile(netName)))
+        applyIgnoringException(net::addDisallowedApplication, BuildConfig.APPLICATION_ID)
+
         try {
-            Tinc.stop(netName!!)
+            Tincd.start(netName, net.establish().detachFd())
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
     companion object {
