@@ -40,7 +40,7 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener {
     private fun writeContent() {
         network_list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_list_header, network_list, false), null, false)
         network_list.addFooterView(View(this), null, false)
-        network_list.emptyView = layoutInflater.inflate(R.layout.fragment_network_list_empty_placeholder, network_list, false)
+        network_list.emptyView = network_list_empty
         network_list.adapter = ArrayAdapter<String>(this, R.layout.fragment_list_item, AppPaths.confDir().list())
         network_list.onItemClickListener = this
     }

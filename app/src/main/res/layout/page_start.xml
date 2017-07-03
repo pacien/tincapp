@@ -1,13 +1,33 @@
-<ListView
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/network_list"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:divider="@drawable/horizontal_line"
-	android:footerDividersEnabled="false"
-	android:headerDividersEnabled="false"
 	android:orientation="vertical"
 	tools:context="org.pacien.tincapp.activities.StartActivity">
 
-</ListView>
+	<ListView
+		android:id="@+id/network_list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:divider="@drawable/horizontal_line"
+		android:footerDividersEnabled="false"
+		android:headerDividersEnabled="false"/>
+
+	<LinearLayout
+		android:id="@+id/network_list_empty"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<TextView
+			style="@style/AppTheme.SectionTitle"
+			android:text="@string/title_connect_to_network"/>
+
+		<TextView
+			style="@style/AppTheme.ListBlock.Placeholder"
+			android:text="@string/message_no_network_configuration_found"/>
+
+	</LinearLayout>
+
+</LinearLayout>
