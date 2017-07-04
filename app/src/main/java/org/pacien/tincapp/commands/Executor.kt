@@ -3,7 +3,6 @@ package org.pacien.tincapp.commands
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.util.*
 
 /**
  * @author pacien
@@ -29,15 +28,7 @@ internal object Executor {
     fun call(cmd: Command): List<String> {
         val proc = ProcessBuilder(cmd.asList()).start()
         val outputReader = BufferedReader(InputStreamReader(proc.inputStream))
-
-        var line: String? = outputReader.readLine()
-        val list = LinkedList<String>()
-        while (line != null) {
-            line = outputReader.readLine()
-            list.add(line)
-        }
-
-        return list
+        return outputReader.readLines()
     }
 
 }

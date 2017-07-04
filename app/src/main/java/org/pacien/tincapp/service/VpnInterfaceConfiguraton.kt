@@ -25,19 +25,25 @@ private fun Configuration.getIntList(key: String): List<Int> = getList(Int::clas
 
 data class CidrAddress(val address: String, val prefix: Int) {
     constructor(slashSeparated: String) :
-            this(slashSeparated.substringBefore("/"), Integer.parseInt(slashSeparated.substringAfter("/")))
+            this(slashSeparated.substringBefore(SEPARATOR), Integer.parseInt(slashSeparated.substringAfter(SEPARATOR)))
+
+    override fun toString() = address + SEPARATOR + prefix
+
+    companion object {
+        private val SEPARATOR = "/"
+    }
 }
 
-data class VpnInterfaceConfiguration(val addresses: List<CidrAddress>,
-                                     val routes: List<CidrAddress>,
-                                     val dnsServers: List<String>,
-                                     val searchDomains: List<String>,
-                                     val allowedApplications: List<String>,
-                                     val disallowedApplications: List<String>,
-                                     val allowedFamilies: List<Int>,
-                                     val allowBypass: Boolean,
-                                     val blocking: Boolean,
-                                     val mtu: Int?) {
+data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyList(),
+                                     val routes: List<CidrAddress> = emptyList(),
+                                     val dnsServers: List<String> = emptyList(),
+                                     val searchDomains: List<String> = emptyList(),
+                                     val allowedApplications: List<String> = emptyList(),
+                                     val disallowedApplications: List<String> = emptyList(),
+                                     val allowedFamilies: List<Int> = emptyList(),
+                                     val allowBypass: Boolean = false,
+                                     val blocking: Boolean = false,
+                                     val mtu: Int? = null) {
 
     constructor(cfg: Configuration) : this(
             cfg.getCidrList(KEY_ADDRESSES),

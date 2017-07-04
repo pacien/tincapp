@@ -32,6 +32,11 @@
 		</activity>
 
 		<activity
+			android:name=".activities.StatusActivity"
+			android:theme="@style/AppTheme.NoActionBar">
+		</activity>
+
+		<activity
 			android:name=".activities.PromptActivity"
 			android:theme="@android:style/Theme.Translucent.NoTitleBar">
 		</activity>

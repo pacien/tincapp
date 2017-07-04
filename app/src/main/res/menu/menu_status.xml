@@ -1,14 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:app="http://schemas.android.com/apk/res-auto"
 	  xmlns:tools="http://schemas.android.com/tools"
-	  tools:context="org.pacien.tincapp.activities.StartActivity">
+	  tools:context="org.pacien.tincapp.activities.StatusActivity">
 
 	<item
-		android:id="@+id/menu_about"
-		android:icon="@drawable/ic_build_primary_24dp"
-		android:onClick="openConfigureActivity"
+		android:id="@+id/menu_disconnect"
+		android:icon="@drawable/ic_stop_primary_24dp"
+		android:onClick="stopVpn"
 		android:tint="@color/colorAccent"
-		android:title="@string/menu_configure"
+		android:title="@string/menu_disconnect"
 		app:showAsAction="ifRoom"/>
 
 </menu>

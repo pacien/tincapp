@@ -30,7 +30,7 @@ object Tinc {
     }
 
     @Throws(IOException::class)
-    fun dumpNodes(netName: String, reachable: Boolean): List<String> =
+    fun dumpNodes(netName: String, reachable: Boolean = false): List<String> =
             Executor.call(
                     if (reachable) newCommand(netName).withArguments("dump", "reachable", "nodes")
                     else newCommand(netName).withArguments("dump", "nodes"))

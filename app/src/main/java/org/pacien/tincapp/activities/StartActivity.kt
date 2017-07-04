@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.base.*
 import kotlinx.android.synthetic.main.page_start.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.service.TincVpnService
 
 /**
  * @author pacien
@@ -27,6 +28,13 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener {
     override fun onCreateOptionsMenu(m: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_start, m)
         return super.onCreateOptionsMenu(m)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (TincVpnService.isConnected()) startActivity(Intent(this, StatusActivity::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

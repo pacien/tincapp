@@ -12,16 +12,28 @@
 
 	<string name="menu_about">About this app</string>
 	<string name="menu_configure">Configure</string>
+	<string name="menu_disconnect">Disconnect</string>
 
 	<string name="field_net_name">Tinc network name</string>
 
 	<string name="title_connect_to_network">Connect to network</string>
 	<string name="title_request_vpn_permissions">Request VPN permissions</string>
 	<string name="title_path_info">Path info</string>
+	<string name="title_node_info">Node info</string>
 	<string name="title_tools">Tools</string>
 	<string name="title_configuration_directory">Configuration directory</string>
 	<string name="title_log_directory">Log directory</string>
 	<string name="title_tinc_binary">Tinc binary</string>
+	<string name="title_network_info">Network info</string>
+	<string name="title_network_name">Network name</string>
+	<string name="title_ip_addresses">IP addresses</string>
+	<string name="title_routes">Routes</string>
+	<string name="title_dns_servers">DNS servers</string>
+	<string name="title_search_domains">Search domains</string>
+	<string name="title_allowed_applications">Allowed applications</string>
+	<string name="title_disallowed_applications">Disallowed applications</string>
+	<string name="title_allow_bypass">Allow bypass</string>
+	<string name="title_nodes">Nodes</string>
 
 	<string name="action_close">Close</string>
 	<string name="action_open_project_website">Project website</string>
@@ -29,4 +41,9 @@
 	<string name="action_join_network_via_invitation_url">Join network via invitation URL</string>
 
 	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
+	<string name="message_no_known_node">No known node</string>
+
+	<string name="value_none">none</string>
+	<string name="value_yes">yes</string>
+	<string name="value_no">no</string>
 </resources>

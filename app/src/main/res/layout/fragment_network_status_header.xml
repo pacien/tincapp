@@ -1,0 +1,122 @@
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/page_configure"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	tools:context="org.pacien.tincapp.activities.StatusActivity">
+
+	<TextView
+		style="@style/AppTheme.SectionTitle"
+		android:text="@string/title_network_info"/>
+
+	<LinearLayout style="@style/AppTheme.List">
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_network_name"/>
+
+			<TextView
+				android:id="@+id/text_network_name"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_ip_addresses"/>
+
+			<TextView
+				android:id="@+id/text_network_ip_addresses"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_routes"/>
+
+			<TextView
+				android:id="@+id/text_network_routes"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_dns_servers"/>
+
+			<TextView
+				android:id="@+id/text_network_dns_servers"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_search_domains"/>
+
+			<TextView
+				android:id="@+id/text_network_search_domains"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/block_network_allowed_applications"
+			style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_allowed_applications"/>
+
+			<TextView
+				android:id="@+id/text_network_allowed_applications"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/block_network_disallowed_applications"
+			style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_disallowed_applications"/>
+
+			<TextView
+				android:id="@+id/text_network_disallowed_applications"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/title_allow_bypass"/>
+
+			<TextView
+				android:id="@+id/text_network_allow_bypass"
+				style="@style/AppTheme.BlockContent"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<TextView
+		style="@style/AppTheme.SectionTitle"
+		android:text="@string/title_nodes"/>
+
+</LinearLayout>
