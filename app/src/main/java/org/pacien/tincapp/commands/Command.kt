@@ -8,16 +8,11 @@ import java.util.*
 internal class Command(private val cmd: String) {
 
     private data class Option(val key: String, val value: String?) {
-        override fun toString(): String = if (value != null) "--$key=$value" else "--$key"
+        fun toCommandLineOption(): String = if (value != null) "--$key=$value" else "--$key"
     }
 
-    private val opts: MutableList<Option>
-    private val args: MutableList<String>
-
-    init {
-        this.opts = LinkedList<Option>()
-        this.args = LinkedList<String>()
-    }
+    private val opts: MutableList<Option> = LinkedList()
+    private val args: MutableList<String> = LinkedList()
 
     fun withOption(key: String, value: String? = null): Command {
         this.opts.add(Option(key, value))
@@ -29,7 +24,7 @@ internal class Command(private val cmd: String) {
         return this
     }
 
-    fun asList(): List<String> = listOf(cmd) + opts.map { it.toString() } + args
+    fun asList(): List<String> = listOf(cmd) + opts.map { it.toCommandLineOption() } + args
 
     fun asArray(): Array<String> = this.asList().toTypedArray()
 

@@ -13,17 +13,6 @@ object Tinc {
                     .withOption("config", AppPaths.confDir(netName).absolutePath)
                     .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
 
-    // independently runnable commands
-
-    @Throws(IOException::class)
-    fun fsck(netName: String, fix: Boolean): List<String> {
-        var cmd = newCommand(netName).withArguments("fsck")
-        if (fix) cmd = cmd.withOption("force")
-        return Executor.call(cmd)
-    }
-
-    // commands requiring a running tinc daemon
-
     @Throws(IOException::class)
     fun stop(netName: String) {
         Executor.call(newCommand(netName).withArguments("stop"))

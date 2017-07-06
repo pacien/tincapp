@@ -27,16 +27,18 @@ class TincVpnService : VpnService() {
         return Service.START_STICKY
     }
 
-    override fun onDestroy() = try {
-        Tinc.stop(netName!!)
-        fd!!.close()
-    } catch (e: IOException) {
-        e.printStackTrace()
-    } finally {
-        netName = null
-        interfaceCfg = null
-        fd = null
-        super.onDestroy()
+    override fun onDestroy() {
+        try {
+            Tinc.stop(netName!!)
+            fd?.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            netName = null
+            interfaceCfg = null
+            fd = null
+            super.onDestroy()
+        }
     }
 
     private fun startVpn(netName: String) {
