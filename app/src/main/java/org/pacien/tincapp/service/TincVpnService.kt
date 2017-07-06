@@ -28,8 +28,10 @@ class TincVpnService : VpnService() {
     }
 
     override fun onDestroy() {
+        connected = false
+
         try {
-            Tinc.stop(netName!!)
+            if (netName != null) Tinc.stop(netName!!)
             fd?.close()
         } catch (e: IOException) {
             e.printStackTrace()
@@ -42,7 +44,7 @@ class TincVpnService : VpnService() {
     }
 
     private fun startVpn(netName: String) {
-        if (netName == TincVpnService.netName) onDestroy()
+        if (isConnected()) onDestroy()
         TincVpnService.netName = netName
         TincVpnService.interfaceCfg = VpnInterfaceConfiguration(AppPaths.netConfFile(netName))
 
@@ -55,6 +57,8 @@ class TincVpnService : VpnService() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+
+        connected = true
     }
 
     companion object {
@@ -64,6 +68,7 @@ class TincVpnService : VpnService() {
 
         private enum class Action { START, STOP }
 
+        private var connected: Boolean = false
         private var netName: String? = null
         private var interfaceCfg: VpnInterfaceConfiguration? = null
         private var fd: ParcelFileDescriptor? = null
@@ -81,7 +86,7 @@ class TincVpnService : VpnService() {
 
         fun getCurrentNetName() = netName
         fun getCurrentInterfaceCfg() = interfaceCfg
-        fun isConnected() = netName != null
+        fun isConnected() = connected
 
     }
 

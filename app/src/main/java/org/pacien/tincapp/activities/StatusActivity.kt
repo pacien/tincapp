@@ -72,11 +72,17 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
         updateView = false
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!TincVpnService.isConnected()) openStartActivity()
+    }
+
     override fun onRefresh() {
         val nodes = getNodeNames()
         runOnUiThread {
             nodeListAdapter?.setElements(nodes)
             node_list_wrapper.isRefreshing = false
+            if (!TincVpnService.isConnected()) openStartActivity()
         }
     }
 
@@ -114,9 +120,11 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
 
     fun stopVpn(@Suppress("UNUSED_PARAMETER") i: MenuItem) {
         TincVpnService.stopVpn()
-        startActivity(Intent(this, StartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        openStartActivity()
         finish()
     }
+
+    fun openStartActivity() = startActivity(Intent(this, StartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 
     companion object {
         private val REFRESH_RATE = 5000L
