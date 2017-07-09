@@ -1,13 +1,17 @@
 package org.pacien.tincapp.commands
 
+import java8.util.concurrent.CompletableFuture
 import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStream
 import java.io.InputStreamReader
 
 /**
  * @author pacien
  */
 internal object Executor {
+
+    class CommandExecutionException(msg: String) : Exception(msg)
 
     init {
         System.loadLibrary("exec")
@@ -18,17 +22,23 @@ internal object Executor {
      */
     private external fun forkExec(argcv: Array<String>): Int
 
-    @Throws(IOException::class)
+    private fun read(stream: InputStream) = BufferedReader(InputStreamReader(stream)).readLines()
+
     fun forkExec(cmd: Command) {
-        if (forkExec(cmd.asArray()) == -1)
-            throw IOException()
+        if (forkExec(cmd.asArray()) == -1) throw CommandExecutionException("Could not fork child process.")
     }
 
-    @Throws(IOException::class)
-    fun call(cmd: Command): List<String> {
-        val proc = ProcessBuilder(cmd.asList()).start()
-        val outputReader = BufferedReader(InputStreamReader(proc.inputStream))
-        return outputReader.readLines()
+    fun call(cmd: Command): CompletableFuture<List<String>> {
+        val proc = try {
+            ProcessBuilder(cmd.asList()).start()
+        } catch (e: IOException) {
+            throw CommandExecutionException(e.message ?: "Could not start process.")
+        }
+
+        return CompletableFuture.supplyAsync<List<String>> {
+            if (proc.waitFor() == 0) read(proc.inputStream)
+            else throw CommandExecutionException(read(proc.errorStream).lastOrNull() ?: "Non-zero exit status.")
+        }
     }
 
 }

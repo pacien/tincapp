@@ -1,14 +1,12 @@
 package org.pacien.tincapp.commands
 
 import org.pacien.tincapp.context.AppPaths
-import java.io.IOException
 
 /**
  * @author pacien
  */
 object Tincd {
 
-    @Throws(IOException::class)
     fun start(netName: String, fd: Int) {
         Executor.forkExec(Command(AppPaths.tincd().absolutePath)
                 .withOption("no-detach")

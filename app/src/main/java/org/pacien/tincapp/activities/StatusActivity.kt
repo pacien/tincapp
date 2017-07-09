@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import java8.util.concurrent.CompletableFuture
 import kotlinx.android.synthetic.main.base.*
 import kotlinx.android.synthetic.main.dialog_text_monopsace.view.*
 import kotlinx.android.synthetic.main.fragment_network_status_header.*
@@ -78,24 +79,28 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     }
 
     override fun onRefresh() {
-        val nodes = getNodeNames()
-        runOnUiThread {
-            nodeListAdapter?.setElements(nodes)
-            node_list_wrapper.isRefreshing = false
-            if (!TincVpnService.isConnected()) openStartActivity()
+        getNodeNames().thenAccept {
+            runOnUiThread {
+                nodeListAdapter?.setElements(it)
+                node_list_wrapper.isRefreshing = false
+                if (!TincVpnService.isConnected()) openStartActivity()
+            }
         }
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val nodeName = (view as TextView).text.toString()
         val dialogTextView = layoutInflater.inflate(R.layout.dialog_text_monopsace, main_content, false)
-        dialogTextView.dialog_text_monospace.text = Tinc.info(TincVpnService.getCurrentNetName()!!, nodeName)
-
-        AlertDialog.Builder(this)
-                .setTitle(R.string.title_node_info)
-                .setView(dialogTextView)
-                .setPositiveButton(R.string.action_close) { _, _ -> /* nop */ }
-                .show()
+        Tinc.info(TincVpnService.getCurrentNetName()!!, nodeName).thenAccept {
+            runOnUiThread {
+                dialogTextView.dialog_text_monospace.text = it
+                AlertDialog.Builder(this)
+                        .setTitle(R.string.title_node_info)
+                        .setView(dialogTextView)
+                        .setPositiveButton(R.string.action_close) { _, _ -> /* nop */ }
+                        .show()
+            }
+        }
     }
 
     fun writeNetworkInfo(cfg: VpnInterfaceConfiguration) {
@@ -129,9 +134,10 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     companion object {
         private val REFRESH_RATE = 5000L
 
-        fun getNodeNames() =
-                if (TincVpnService.isConnected()) Tinc.dumpNodes(TincVpnService.getCurrentNetName()!!).map { it.substringBefore(" ") }
-                else emptyList()
+        fun getNodeNames(): CompletableFuture<List<String>> = when (TincVpnService.isConnected()) {
+            true -> Tinc.dumpNodes(TincVpnService.getCurrentNetName()!!).thenApply<List<String>> { it.map { it.substringBefore(" ") } }
+            false -> CompletableFuture.supplyAsync<List<String>> { emptyList() }
+        }
     }
 
 }

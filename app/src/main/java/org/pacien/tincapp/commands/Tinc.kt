@@ -1,7 +1,7 @@
 package org.pacien.tincapp.commands
 
+import java8.util.concurrent.CompletableFuture
 import org.pacien.tincapp.context.AppPaths
-import java.io.IOException
 
 /**
  * @author pacien
@@ -13,19 +13,29 @@ object Tinc {
                     .withOption("config", AppPaths.confDir(netName).absolutePath)
                     .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
 
-    @Throws(IOException::class)
-    fun stop(netName: String) {
-        Executor.call(newCommand(netName).withArguments("stop"))
-    }
+    fun stop(netName: String): CompletableFuture<Unit> =
+            Executor.call(newCommand(netName).withArguments("stop"))
+                    .thenApply { }
 
-    @Throws(IOException::class)
-    fun dumpNodes(netName: String, reachable: Boolean = false): List<String> =
+    fun dumpNodes(netName: String, reachable: Boolean = false): CompletableFuture<List<String>> =
             Executor.call(
                     if (reachable) newCommand(netName).withArguments("dump", "reachable", "nodes")
                     else newCommand(netName).withArguments("dump", "nodes"))
 
-    @Throws(IOException::class)
-    fun info(netName: String, node: String): String =
-            Executor.call(newCommand(netName).withArguments("info", node)).joinToString("\n")
+    fun info(netName: String, node: String): CompletableFuture<String> =
+            Executor.call(newCommand(netName).withArguments("info", node))
+                    .thenApply<String> { it.joinToString("\n") }
+
+    fun init(netName: String): CompletableFuture<String> =
+            Executor.call(Command(AppPaths.tinc().absolutePath)
+                    .withOption("config", AppPaths.confDir(netName).absolutePath)
+                    .withArguments("init", netName))
+                    .thenApply<String> { it.joinToString("\n") }
+
+    fun join(netName: String, invitationUrl: String): CompletableFuture<String> =
+            Executor.call(Command(AppPaths.tinc().absolutePath)
+                    .withOption("config", AppPaths.confDir(netName).absolutePath)
+                    .withArguments("join", invitationUrl))
+                    .thenApply<String> { it.joinToString("\n") }
 
 }
