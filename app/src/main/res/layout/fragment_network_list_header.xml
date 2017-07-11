@@ -1,4 +1,16 @@
-<TextView
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	style="@style/AppTheme.SectionTitle"
-	android:text="@string/title_connect_to_network"/>
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
+
+	<TextView
+		style="@style/AppTheme.SectionTitle"
+		android:text="@string/title_connect_to_network"/>
+
+	<TextView
+		android:id="@+id/network_list_placeholder"
+		style="@style/AppTheme.ListBlock.Placeholder"
+		android:text="@string/message_no_network_configuration_found"/>
+
+</LinearLayout>

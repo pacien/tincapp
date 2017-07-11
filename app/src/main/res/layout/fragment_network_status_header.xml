@@ -119,4 +119,9 @@
 		style="@style/AppTheme.SectionTitle"
 		android:text="@string/title_nodes"/>
 
+	<TextView
+		android:id="@+id/node_list_placeholder"
+		style="@style/AppTheme.ListBlock.Placeholder"
+		android:text="@string/message_no_known_node"/>
+
 </LinearLayout>

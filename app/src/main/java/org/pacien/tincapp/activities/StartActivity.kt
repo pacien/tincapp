@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.base.*
+import kotlinx.android.synthetic.main.fragment_network_list_header.*
 import kotlinx.android.synthetic.main.page_start.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppPaths
@@ -35,7 +36,6 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
         network_list_wrapper.setOnRefreshListener(this)
         network_list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_list_header, network_list, false), null, false)
         network_list.addFooterView(View(this), null, false)
-        network_list.emptyView = network_list_empty
         network_list.adapter = networkListAdapter
         network_list.onItemClickListener = this
     }
@@ -71,6 +71,7 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
         val networks = AppPaths.confDir().list().toList()
         runOnUiThread {
             networkListAdapter?.setElements(networks)
+            network_list_placeholder.visibility = if (networkListAdapter?.isEmpty ?: true) View.VISIBLE else View.GONE
             network_list_wrapper.isRefreshing = false
         }
     }

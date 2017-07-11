@@ -43,7 +43,6 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
         node_list_wrapper.setOnRefreshListener(this)
         node_list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_status_header, node_list, false), null, false)
         node_list.addFooterView(View(this), null, false)
-        node_list.emptyView = node_list_empty
         node_list.onItemClickListener = this
         node_list.adapter = nodeListAdapter
     }
@@ -82,6 +81,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
         getNodeNames().thenAccept {
             runOnUiThread {
                 nodeListAdapter?.setElements(it)
+                node_list_placeholder.visibility = if (nodeListAdapter?.isEmpty ?: true) View.VISIBLE else View.GONE
                 node_list_wrapper.isRefreshing = false
                 if (!TincVpnService.isConnected()) openStartActivity()
             }
