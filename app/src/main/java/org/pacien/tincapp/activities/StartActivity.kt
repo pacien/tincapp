@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.base.*
 import kotlinx.android.synthetic.main.page_start.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.extensions.Android.setElements
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.utils.FileObserver
-import org.pacien.tincapp.utils.setElements
 
 /**
  * @author pacien

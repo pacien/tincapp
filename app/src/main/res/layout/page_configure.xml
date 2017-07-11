@@ -63,7 +63,7 @@
 
 			<LinearLayout
 				style="@style/AppTheme.ListBlock.Clickable"
-				android:onClick="generateConf">
+				android:onClick="openGenerateConfDialog">
 
 				<TextView
 					style="@style/AppTheme.BlockTitle"
@@ -73,7 +73,7 @@
 
 			<LinearLayout
 				style="@style/AppTheme.ListBlock.Clickable"
-				android:onClick="joinNetwork">
+				android:onClick="openJoinNetworkDialog">
 
 				<TextView
 					style="@style/AppTheme.BlockTitle"

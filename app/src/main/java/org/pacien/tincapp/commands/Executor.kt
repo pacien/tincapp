@@ -1,6 +1,8 @@
 package org.pacien.tincapp.commands
 
+import android.os.AsyncTask
 import java8.util.concurrent.CompletableFuture
+import java8.util.function.Supplier
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -35,10 +37,13 @@ internal object Executor {
             throw CommandExecutionException(e.message ?: "Could not start process.")
         }
 
-        return CompletableFuture.supplyAsync<List<String>> {
+        return supplyAsyncTask<List<String>> {
             if (proc.waitFor() == 0) read(proc.inputStream)
             else throw CommandExecutionException(read(proc.errorStream).lastOrNull() ?: "Non-zero exit status.")
         }
     }
+
+    fun runAsyncTask(r: () -> Unit) = CompletableFuture.runAsync(Runnable(r), AsyncTask.THREAD_POOL_EXECUTOR)!!
+    fun <U> supplyAsyncTask(s: () -> U) = CompletableFuture.supplyAsync(Supplier(s), AsyncTask.THREAD_POOL_EXECUTOR)!!
 
 }

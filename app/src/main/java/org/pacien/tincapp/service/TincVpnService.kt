@@ -9,9 +9,10 @@ import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.Tincd
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.utils.applyIgnoringException
+import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import org.pacien.tincapp.extensions.Java.applyIgnoringException
+import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg
 import java.io.IOException
-
 
 /**
  * @author pacien
@@ -46,9 +47,9 @@ class TincVpnService : VpnService() {
     private fun startVpn(netName: String) {
         if (isConnected()) onDestroy()
         TincVpnService.netName = netName
-        TincVpnService.interfaceCfg = VpnInterfaceConfiguration(AppPaths.netConfFile(netName))
+        TincVpnService.interfaceCfg = VpnInterfaceConfiguration.fromIfaceConfiguration(AppPaths.netConfFile(netName))
 
-        val net = Builder().setSession(netName).apply(TincVpnService.interfaceCfg!!)
+        val net = Builder().setSession(netName).applyCfg(TincVpnService.interfaceCfg!!)
         applyIgnoringException(net::addDisallowedApplication, BuildConfig.APPLICATION_ID)
 
         try {

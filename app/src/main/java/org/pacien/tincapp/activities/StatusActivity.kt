@@ -17,10 +17,10 @@ import kotlinx.android.synthetic.main.fragment_network_status_header.*
 import kotlinx.android.synthetic.main.page_status.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
+import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import org.pacien.tincapp.extensions.Android.setElements
+import org.pacien.tincapp.extensions.Android.setText
 import org.pacien.tincapp.service.TincVpnService
-import org.pacien.tincapp.service.VpnInterfaceConfiguration
-import org.pacien.tincapp.utils.setElements
-import org.pacien.tincapp.utils.setText
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -105,8 +105,8 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
 
     fun writeNetworkInfo(cfg: VpnInterfaceConfiguration) {
         text_network_name.text = TincVpnService.getCurrentNetName() ?: getString(R.string.value_none)
-        text_network_ip_addresses.setText(cfg.addresses.map { it.toString() })
-        text_network_routes.setText(cfg.routes.map { it.toString() })
+        text_network_ip_addresses.setText(cfg.addresses.map { it.toSlashSeparated() })
+        text_network_routes.setText(cfg.routes.map { it.toSlashSeparated() })
         text_network_dns_servers.setText(cfg.dnsServers)
         text_network_search_domains.setText(cfg.searchDomains)
         text_network_allow_bypass.text = getString(if (cfg.allowBypass) R.string.value_yes else R.string.value_no)
@@ -135,7 +135,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
         private val REFRESH_RATE = 5000L
 
         fun getNodeNames(): CompletableFuture<List<String>> = when (TincVpnService.isConnected()) {
-            true -> Tinc.dumpNodes(TincVpnService.getCurrentNetName()!!).thenApply<List<String>> { it.map { it.substringBefore(" ") } }
+            true -> Tinc.dumpNodes(TincVpnService.getCurrentNetName()!!).thenApply<List<String>> { it.map { it.substringBefore(' ') } }
             false -> CompletableFuture.supplyAsync<List<String>> { emptyList() }
         }
     }
