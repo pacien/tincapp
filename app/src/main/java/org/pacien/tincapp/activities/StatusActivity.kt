@@ -13,8 +13,8 @@ import android.widget.TextView
 import java8.util.concurrent.CompletableFuture
 import kotlinx.android.synthetic.main.base.*
 import kotlinx.android.synthetic.main.dialog_text_monopsace.view.*
+import kotlinx.android.synthetic.main.fragment_list_view.*
 import kotlinx.android.synthetic.main.fragment_network_status_header.*
-import kotlinx.android.synthetic.main.page_status.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
@@ -39,12 +39,12 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
         nodeListAdapter = ArrayAdapter<String>(this, R.layout.fragment_list_item)
         refreshTimer = Timer(true)
 
-        layoutInflater.inflate(R.layout.page_status, main_content)
-        node_list_wrapper.setOnRefreshListener(this)
-        node_list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_status_header, node_list, false), null, false)
-        node_list.addFooterView(View(this), null, false)
-        node_list.onItemClickListener = this
-        node_list.adapter = nodeListAdapter
+        layoutInflater.inflate(R.layout.fragment_list_view, main_content)
+        list_wrapper.setOnRefreshListener(this)
+        list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_status_header, list, false), null, false)
+        list.addFooterView(View(this), null, false)
+        list.onItemClickListener = this
+        list.adapter = nodeListAdapter
     }
 
     override fun onCreateOptionsMenu(m: Menu): Boolean {
@@ -82,7 +82,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
             runOnUiThread {
                 nodeListAdapter?.setElements(it)
                 node_list_placeholder.visibility = if (nodeListAdapter?.isEmpty ?: true) View.VISIBLE else View.GONE
-                node_list_wrapper.isRefreshing = false
+                list_wrapper.isRefreshing = false
                 if (!TincVpnService.isConnected()) openStartActivity()
             }
         }
