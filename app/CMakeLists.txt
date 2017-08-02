@@ -18,16 +18,16 @@ ExternalProject_Add(	lzo
 	URL					http://files.pacien.net/tmp/lzo-2.10.tar.gz
 	URL_HASH			SHA1=4924676a9bae5db58ef129dc1cebce3baa3c4b5d
 	CONFIGURE_COMMAND	<SOURCE_DIR>/configure ${xCONFIG} --disable-shared
-	BUILD_COMMAND		make -j4
+	BUILD_COMMAND		make -j8
 	INSTALL_COMMAND		make install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
 						rm -r <BINARY_DIR>
 )
 
 ExternalProject_Add(	libressl
-	URL					http://files.pacien.net/tmp/libressl-2.5.4.tar.gz
-	URL_HASH			SHA256=107a5b522fbb8318d4c3be668075e5e607296f0a9255d71674caa94571336efa
+	URL					http://files.pacien.net/tmp/libressl-2.5.5.tar.gz
+	URL_HASH			SHA256=e57f5e3d5842a81fe9351b6e817fcaf0a749ca4ef35a91465edba9e071dce7c4
 	CONFIGURE_COMMAND	<SOURCE_DIR>/configure ${xCONFIG} --disable-shared
-	BUILD_COMMAND		make -j4 -C crypto
+	BUILD_COMMAND		make -j8 -C crypto
 	INSTALL_COMMAND		make -C crypto install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
 						make -C include install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
 						rm -r <BINARY_DIR>
@@ -42,7 +42,7 @@ ExternalProject_Add(	tinc
 						--with-lzo=${CMAKE_CURRENT_BINARY_DIR}/usr/local
 						--disable-curses
 						--disable-readline
-	BUILD_COMMAND		make -j4 -C src
+	BUILD_COMMAND		make -j8 -C src
 	INSTALL_COMMAND		make -C src install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
 						${CMAKE_COMMAND} -E copy
 							${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tinc ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtinc.so &&
