@@ -33,11 +33,16 @@ class ConfigureActivity : BaseActivity() {
         netNameField.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         netNameField.setHint(R.string.field_net_name)
 
+        val nodeNameField = EditText(this)
+        nodeNameField.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+        nodeNameField.setHint(R.string.field_node_name)
+
         val dialogFrame = layoutInflater.inflate(R.layout.dialog_frame, main_content, false) as ViewGroup
         dialogFrame.addView(netNameField)
+        dialogFrame.addView(nodeNameField)
 
         AlertDialog.Builder(this).setTitle(R.string.title_new_network).setView(dialogFrame)
-                .setPositiveButton(R.string.action_create) { _, _ -> generateConf(netNameField.text.toString()) }
+                .setPositiveButton(R.string.action_create) { _, _ -> generateConf(netNameField.text.toString(), nodeNameField.text.toString()) }
                 .setNegativeButton(R.string.action_cancel, dismiss).show()
     }
 
@@ -65,9 +70,9 @@ class ConfigureActivity : BaseActivity() {
         text_tinc_binary.text = AppPaths.tinc().absolutePath
     }
 
-    private fun generateConf(netName: String) = execAction(
+    private fun generateConf(netName: String, nodeName: String) = execAction(
             R.string.message_generating_configuration,
-            Tinc.init(netName)
+            Tinc.init(netName, nodeName)
                     .thenCompose { TincApp.removeScripts(netName) })
 
     private fun joinNetwork(netName: String, url: String) = execAction(

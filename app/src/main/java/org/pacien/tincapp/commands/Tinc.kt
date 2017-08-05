@@ -26,10 +26,10 @@ object Tinc {
             Executor.call(newCommand(netName).withArguments("info", node))
                     .thenApply<String> { it.joinToString("\n") }
 
-    fun init(netName: String): CompletableFuture<String> =
+    fun init(netName: String, nodeName: String): CompletableFuture<String> =
             Executor.call(Command(AppPaths.tinc().absolutePath)
                     .withOption("config", AppPaths.confDir(netName).absolutePath)
-                    .withArguments("init", netName))
+                    .withArguments("init", nodeName))
                     .thenApply<String> { it.joinToString("\n") }
 
     fun join(netName: String, invitationUrl: String): CompletableFuture<String> =

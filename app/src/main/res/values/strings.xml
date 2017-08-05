@@ -15,6 +15,7 @@
 	<string name="menu_disconnect">Disconnect</string>
 
 	<string name="field_net_name">Tinc network name</string>
+	<string name="field_node_name">Name of this node</string>
 	<string name="field_invitation_url">Invitation URL</string>
 
 	<string name="title_connect_to_network">Connect to network</string>
