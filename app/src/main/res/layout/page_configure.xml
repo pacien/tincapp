@@ -25,7 +25,8 @@
 
 				<TextView
 					android:id="@+id/text_configuration_directory"
-					style="@style/AppTheme.BlockContent"/>
+					style="@style/AppTheme.BlockContent"
+					android:textIsSelectable="true" />
 
 			</LinearLayout>
 
@@ -37,7 +38,8 @@
 
 				<TextView
 					android:id="@+id/text_log_directory"
-					style="@style/AppTheme.BlockContent"/>
+					style="@style/AppTheme.BlockContent"
+					android:textIsSelectable="true" />
 
 			</LinearLayout>
 
@@ -49,7 +51,8 @@
 
 				<TextView
 					android:id="@+id/text_tinc_binary"
-					style="@style/AppTheme.BlockContent"/>
+					style="@style/AppTheme.BlockContent"
+					android:textIsSelectable="true" />
 
 			</LinearLayout>
 
