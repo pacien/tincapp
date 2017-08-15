@@ -35,7 +35,7 @@ ExternalProject_Add(	libressl
 
 ExternalProject_Add(	tinc
 	DEPENDS				lzo libressl
-	URL					http://files.pacien.net/tmp/tinc-1.1-acefa66.zip
+	URL					http://files.pacien.net/tmp/tinc-1.1-7c22391.zip
 	CONFIGURE_COMMAND	autoreconf -fsi <SOURCE_DIR> &&
 						<SOURCE_DIR>/configure ${xCONFIG}
 						--with-openssl=${CMAKE_CURRENT_BINARY_DIR}/usr/local
