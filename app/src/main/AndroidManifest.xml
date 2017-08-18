@@ -39,6 +39,15 @@
 		<activity
 			android:name=".activities.PromptActivity"
 			android:theme="@android:style/Theme.Translucent.NoTitleBar">
+			<intent-filter>
+				<action android:name="org.pacien.tincapp.intent.action.CONNECT"/>
+				<data android:scheme="tinc"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
+			<intent-filter>
+				<action android:name="org.pacien.tincapp.intent.action.DISCONNECT"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
 		</activity>
 
 		<service

@@ -2,6 +2,7 @@ package org.pacien.tincapp.service
 
 import android.app.Service
 import android.content.Intent
+import android.net.Uri
 import android.net.VpnService
 import android.os.ParcelFileDescriptor
 import org.pacien.tincapp.BuildConfig
@@ -12,6 +13,9 @@ import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
 import org.pacien.tincapp.extensions.Java.applyIgnoringException
 import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg
+import org.pacien.tincapp.intent.action.ACTION_START_SERVICE
+import org.pacien.tincapp.intent.action.ACTION_STOP_SERVICE
+import org.pacien.tincapp.intent.action.TINC_SCHEME
 import java.io.IOException
 
 /**
@@ -20,9 +24,9 @@ import java.io.IOException
 class TincVpnService : VpnService() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        when (intent.getSerializableExtra(INTENT_EXTRA_ACTION)) {
-            Action.START -> startVpn(intent.getStringExtra(INTENT_EXTRA_NET_NAME)!!)
-            Action.STOP -> onDestroy()
+        when (intent.action) {
+            ACTION_START_SERVICE -> startVpn(intent.data.schemeSpecificPart)
+            ACTION_STOP_SERVICE -> onDestroy()
         }
 
         return Service.START_STICKY
@@ -64,11 +68,6 @@ class TincVpnService : VpnService() {
 
     companion object {
 
-        private val INTENT_EXTRA_ACTION = "action"
-        private val INTENT_EXTRA_NET_NAME = "netName"
-
-        private enum class Action { START, STOP }
-
         private var connected: Boolean = false
         private var netName: String? = null
         private var interfaceCfg: VpnInterfaceConfiguration? = null
@@ -76,13 +75,13 @@ class TincVpnService : VpnService() {
 
         fun startVpn(netName: String) {
             App.getContext().startService(Intent(App.getContext(), TincVpnService::class.java)
-                    .putExtra(INTENT_EXTRA_ACTION, Action.START)
-                    .putExtra(TincVpnService.INTENT_EXTRA_NET_NAME, netName))
+                    .setAction(ACTION_START_SERVICE)
+                    .setData(Uri.Builder().scheme(TINC_SCHEME).opaquePart(netName).build()))
         }
 
         fun stopVpn() {
             App.getContext().startService(Intent(App.getContext(), TincVpnService::class.java)
-                    .putExtra(INTENT_EXTRA_ACTION, Action.STOP))
+                    .setAction(ACTION_STOP_SERVICE))
         }
 
         fun getCurrentNetName() = netName
