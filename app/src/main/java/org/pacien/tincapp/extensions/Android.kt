@@ -18,7 +18,8 @@ object Android {
         setNotifyOnChange(true)
     }
 
-    fun TextView.setText(list: List<String>) =
-            if (list.isNotEmpty()) text = list.joinToString("\n") else text = App.getContext().getString(R.string.value_none)
+    fun TextView.setText(list: List<String>) {
+        text = if (list.isNotEmpty()) list.joinToString("\n") else App.getContext().getString(R.string.value_none)
+    }
 
 }
