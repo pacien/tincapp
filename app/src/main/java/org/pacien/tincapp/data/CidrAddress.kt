@@ -1,5 +1,7 @@
 package org.pacien.tincapp.data
 
+import org.apache.commons.configuration2.ex.ConversionException
+
 /**
  * @author pacien
  */
@@ -9,7 +11,11 @@ data class CidrAddress(val address: String, val prefix: Int) {
 
         private val SEPARATOR = "/"
 
-        fun fromSlashSeparated(s: String) = CidrAddress(s.substringBefore(SEPARATOR), Integer.parseInt(s.substringAfter(SEPARATOR)))
+        fun fromSlashSeparated(s: String) = try {
+            CidrAddress(s.substringBefore(SEPARATOR), Integer.parseInt(s.substringAfter(SEPARATOR)))
+        } catch (e: Exception) {
+            throw ConversionException(e.message, e)
+        }
 
     }
 

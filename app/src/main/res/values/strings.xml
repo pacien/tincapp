@@ -5,6 +5,7 @@
 	<string name="app_copyright">Copyright 2017 Pacien.</string>
 	<string name="app_license">Software distributed under the terms of the GNU General Public License v3.</string>
 	<string name="app_website_url">http://tincapp.pacien.org</string>
+	<string name="app_doc_url_format">http://tincapp.pacien.org/doc.html#%1$s</string>
 
 	<string name="info_version_format">App version %1$s (%2$s build)</string>
 	<string name="info_running_on_format">Running on Android %1$s %2$s</string>
@@ -39,6 +40,7 @@
 	<string name="title_error">Error</string>
 	<string name="title_new_network">New network</string>
 	<string name="title_join_network">Join network</string>
+	<string name="title_unable_to_start_tinc">Unable to start tinc</string>
 
 	<string name="action_close">Close</string>
 	<string name="action_cancel">Cancel</string>
@@ -47,12 +49,17 @@
 	<string name="action_join_network_via_invitation_url">Join network via invitation URL</string>
 	<string name="action_create">Create</string>
 	<string name="action_join">Join</string>
+	<string name="action_open_manual">Open manual</string>
 
 	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
 	<string name="message_no_known_node">No known node</string>
 	<string name="message_generating_configuration">Generating node configuration…</string>
 	<string name="message_joining_network">Joining network…</string>
 	<string name="message_network_configuration_created">Network configuration successfully created.</string>
+	<string name="message_no_network_name_provided">No network name has been provided.</string>
+	<string name="message_no_configuration_for_network_format">No configuration has been found for network \"%1$s\".</string>
+	<string name="message_network_config_not_found_format">Network configuration file not found at \"%1$s\".</string>
+	<string name="message_network_config_invalid_format">Invalid network configuration:\n\n%1$s</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>

@@ -5,6 +5,7 @@
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
 	<application
 		android:name="org.pacien.tincapp.context.App"
@@ -37,7 +38,7 @@
 		</activity>
 
 		<activity
-			android:name=".activities.PromptActivity"
+			android:name=".activities.LaunchActivity"
 			android:theme="@android:style/Theme.Translucent.NoTitleBar">
 			<intent-filter>
 				<action android:name="org.pacien.tincapp.intent.action.CONNECT"/>

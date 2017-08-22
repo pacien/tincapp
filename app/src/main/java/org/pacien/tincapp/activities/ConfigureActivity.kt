@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.page_configure.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
+import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.extensions.Java.exceptionallyAccept
 
@@ -43,7 +44,7 @@ class ConfigureActivity : BaseActivity() {
 
         AlertDialog.Builder(this).setTitle(R.string.title_new_network).setView(dialogFrame)
                 .setPositiveButton(R.string.action_create) { _, _ -> generateConf(netNameField.text.toString(), nodeNameField.text.toString()) }
-                .setNegativeButton(R.string.action_cancel, dismiss).show()
+                .setNegativeButton(R.string.action_cancel, App.dismissAction).show()
     }
 
     fun openJoinNetworkDialog(@Suppress("UNUSED_PARAMETER") v: View) {
@@ -61,7 +62,7 @@ class ConfigureActivity : BaseActivity() {
 
         AlertDialog.Builder(this).setTitle(R.string.title_join_network).setView(dialogFrame)
                 .setPositiveButton(R.string.action_join) { _, _ -> joinNetwork(netNameField.text.toString(), joinUrlField.text.toString()) }
-                .setNegativeButton(R.string.action_cancel, dismiss).show()
+                .setNegativeButton(R.string.action_cancel, App.dismissAction).show()
     }
 
     private fun writeContent() {

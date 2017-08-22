@@ -1,6 +1,7 @@
 package org.pacien.tincapp.context
 
 import java.io.File
+import java.io.FileNotFoundException
 
 /**
  * @author pacien
@@ -29,6 +30,8 @@ object AppPaths {
     fun invitationFile(netName: String) = File(confDir(netName), NET_INVITATION_FILE)
     fun logFile(netName: String) = File(cacheDir(), String.format(LOGFILE_FORMAT, netName))
     fun pidFile(netName: String) = File(App.getContext().cacheDir, String.format(PIDFILE_FORMAT, netName))
+
+    fun existing(f: File) = f.apply { if (!exists()) throw FileNotFoundException(f.absolutePath) }
 
     fun tincd() = File(binDir(), TINCD_BIN)
     fun tinc() = File(binDir(), TINC_BIN)

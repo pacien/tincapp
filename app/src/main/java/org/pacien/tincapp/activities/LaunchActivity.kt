@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
-import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.intent.action.ACTION_CONNECT
 import org.pacien.tincapp.intent.action.ACTION_DISCONNECT
@@ -15,13 +14,13 @@ import org.pacien.tincapp.service.TincVpnService
 /**
  * @author pacien
  */
-class PromptActivity : Activity() {
+class LaunchActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         when (intent.action) {
-            ACTION_CONNECT -> connect()
+            ACTION_CONNECT -> requestPerm()
             ACTION_DISCONNECT -> disconnect()
         }
     }
@@ -31,7 +30,7 @@ class PromptActivity : Activity() {
         finish()
     }
 
-    private fun connect() = VpnService.prepare(this).let {
+    private fun requestPerm() = VpnService.prepare(this).let {
         if (it != null)
             startActivityForResult(it, 0)
         else
@@ -46,14 +45,14 @@ class PromptActivity : Activity() {
     companion object {
 
         fun connect(netName: String) {
-            App.getContext().startActivity(Intent(App.getContext(), PromptActivity::class.java)
+            App.getContext().startActivity(Intent(App.getContext(), LaunchActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .setAction(ACTION_CONNECT)
                     .setData(Uri.Builder().scheme(TINC_SCHEME).opaquePart(netName).build()))
         }
 
         fun disconnect() {
-            App.getContext().startActivity(Intent(App.getContext(), PromptActivity::class.java)
+            App.getContext().startActivity(Intent(App.getContext(), LaunchActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     .setAction(ACTION_DISCONNECT))
         }

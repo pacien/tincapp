@@ -77,7 +77,7 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
-            PromptActivity.connect((view as TextView).text.toString())
+            LaunchActivity.connect((view as TextView).text.toString())
 
     fun openConfigureActivity(@Suppress("UNUSED_PARAMETER") i: MenuItem) =
             startActivity(Intent(this, ConfigureActivity::class.java))

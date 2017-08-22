@@ -1,8 +1,6 @@
 package org.pacien.tincapp.activities
 
 import android.app.ProgressDialog
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
@@ -13,6 +11,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.base.*
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
+import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppInfo
 
 /**
@@ -38,19 +37,16 @@ abstract class BaseActivity : AppCompatActivity() {
                         resources.getString(R.string.app_copyright) + " " +
                         resources.getString(R.string.app_license) + "\n\n" +
                         AppInfo.all())
-                .setNeutralButton(R.string.action_open_project_website) { _, _ -> openWebsite(R.string.app_website_url) }
-                .setPositiveButton(R.string.action_close, dismiss)
+                .setNeutralButton(R.string.action_open_project_website) { _, _ -> App.openURL(resources.getString(R.string.app_website_url)) }
+                .setPositiveButton(R.string.action_close, App.dismissAction)
                 .show()
     }
 
-    protected fun openWebsite(@StringRes url: Int) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(url))))
     protected fun notify(@StringRes msg: Int) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
     protected fun notify(msg: String) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
     protected fun showProgressDialog(@StringRes msg: Int): ProgressDialog = ProgressDialog.show(this, null, getString(msg), true, false)
     protected fun showErrorDialog(msg: String): AlertDialog = AlertDialog.Builder(this)
             .setTitle(R.string.title_error).setMessage(msg)
-            .setPositiveButton(R.string.action_close, dismiss).show()
-
-    protected val dismiss = { _: Any, _: Any -> /* nop */ }
+            .setPositiveButton(R.string.action_close, App.dismissAction).show()
 
 }
