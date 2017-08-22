@@ -15,7 +15,7 @@ set(xCONFIG
 )
 
 ExternalProject_Add(	lzo
-	URL					http://files.pacien.net/tmp/lzo-2.10.tar.gz
+	URL					http://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz
 	URL_HASH			SHA1=4924676a9bae5db58ef129dc1cebce3baa3c4b5d
 	CONFIGURE_COMMAND	<SOURCE_DIR>/configure ${xCONFIG} --disable-shared
 	BUILD_COMMAND		make -j8
@@ -24,7 +24,7 @@ ExternalProject_Add(	lzo
 )
 
 ExternalProject_Add(	libressl
-	URL					http://files.pacien.net/tmp/libressl-2.5.5.tar.gz
+	URL					https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.5.5.tar.gz
 	URL_HASH			SHA256=e57f5e3d5842a81fe9351b6e817fcaf0a749ca4ef35a91465edba9e071dce7c4
 	CONFIGURE_COMMAND	<SOURCE_DIR>/configure ${xCONFIG} --disable-shared
 	BUILD_COMMAND		make -j8 -C crypto
@@ -35,7 +35,8 @@ ExternalProject_Add(	libressl
 
 ExternalProject_Add(	tinc
 	DEPENDS				lzo libressl
-	URL					http://files.pacien.net/tmp/tinc-1.1-7c22391.zip
+	URL					http://tinc-vpn.org/git/browse?p=tinc;a=snapshot;h=92fdabc439bdb5e16f64a4bf2ed1deda54f7c544;sf=tgz
+	URL_HASH            SHA256=ddc5071e9ecadc75709fead6b16241044a74765eb108727d8fe0206ee4fecd1d
 	CONFIGURE_COMMAND	autoreconf -fsi <SOURCE_DIR> &&
 						<SOURCE_DIR>/configure ${xCONFIG}
 						--with-openssl=${CMAKE_CURRENT_BINARY_DIR}/usr/local
