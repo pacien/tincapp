@@ -27,15 +27,21 @@ object Tinc {
                     .thenApply<String> { it.joinToString("\n") }
 
     fun init(netName: String, nodeName: String): CompletableFuture<String> =
-            Executor.call(Command(AppPaths.tinc().absolutePath)
-                    .withOption("config", AppPaths.confDir(netName).absolutePath)
-                    .withArguments("init", nodeName))
-                    .thenApply<String> { it.joinToString("\n") }
+            if (netName.isBlank())
+                CompletableFuture.failedFuture(IllegalArgumentException("Network name cannot be blank."))
+            else
+                Executor.call(Command(AppPaths.tinc().absolutePath)
+                        .withOption("config", AppPaths.confDir(netName).absolutePath)
+                        .withArguments("init", nodeName))
+                        .thenApply<String> { it.joinToString("\n") }
 
     fun join(netName: String, invitationUrl: String): CompletableFuture<String> =
-            Executor.call(Command(AppPaths.tinc().absolutePath)
-                    .withOption("config", AppPaths.confDir(netName).absolutePath)
-                    .withArguments("join", invitationUrl))
-                    .thenApply<String> { it.joinToString("\n") }
+            if (netName.isBlank())
+                CompletableFuture.failedFuture(IllegalArgumentException("Network name cannot be blank."))
+            else
+                Executor.call(Command(AppPaths.tinc().absolutePath)
+                        .withOption("config", AppPaths.confDir(netName).absolutePath)
+                        .withArguments("join", invitationUrl))
+                        .thenApply<String> { it.joinToString("\n") }
 
 }
