@@ -27,12 +27,14 @@
 
 		<activity
 			android:name=".activities.ConfigureActivity"
+			android:configChanges="orientation|screenSize"
 			android:parentActivityName=".activities.StartActivity"
 			android:theme="@style/AppTheme.NoActionBar">
 		</activity>
 
 		<activity
 			android:name=".activities.StatusActivity"
+			android:configChanges="orientation|screenSize"
 			android:theme="@style/AppTheme.NoActionBar">
 		</activity>
 
