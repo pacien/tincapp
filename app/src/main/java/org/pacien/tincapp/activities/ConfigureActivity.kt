@@ -1,14 +1,17 @@
 package org.pacien.tincapp.activities
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.app.AlertDialog
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.FrameLayout
 import java8.util.concurrent.CompletableFuture
 import kotlinx.android.synthetic.main.base.*
+import kotlinx.android.synthetic.main.dialog_network_generate.view.*
+import kotlinx.android.synthetic.main.dialog_network_join.view.*
 import kotlinx.android.synthetic.main.page_configure.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
@@ -22,6 +25,20 @@ import org.pacien.tincapp.extensions.Java.exceptionallyAccept
  */
 class ConfigureActivity : BaseActivity() {
 
+    companion object {
+        val REQUEST_SCAN = 0
+        val SCAN_PROVIDER = "com.google.zxing.client.android"
+    }
+
+    private var joinDialog: View? = null
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_SCAN && resultCode == Activity.RESULT_OK)
+            joinDialog?.invitation_url?.setText(data!!.getStringExtra("SCAN_RESULT").trim())
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -29,40 +46,32 @@ class ConfigureActivity : BaseActivity() {
         writeContent()
     }
 
+    fun scanCode(@Suppress("UNUSED_PARAMETER") v: View) {
+        try {
+            startActivityForResult(Intent("$SCAN_PROVIDER.SCAN"), REQUEST_SCAN)
+        } catch (e: ActivityNotFoundException) {
+            AlertDialog.Builder(this).setTitle(R.string.action_scan_qr_code)
+                    .setMessage(R.string.message_no_qr_code_scanner)
+                    .setPositiveButton(R.string.action_install) { _, _ ->
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$SCAN_PROVIDER")))
+                    }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
+        }
+    }
+
     fun openGenerateConfDialog(@Suppress("UNUSED_PARAMETER") v: View) {
-        val netNameField = EditText(this)
-        netNameField.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        netNameField.setHint(R.string.field_net_name)
-
-        val nodeNameField = EditText(this)
-        nodeNameField.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        nodeNameField.setHint(R.string.field_node_name)
-
-        val dialogFrame = layoutInflater.inflate(R.layout.dialog_frame, main_content, false) as ViewGroup
-        dialogFrame.addView(netNameField)
-        dialogFrame.addView(nodeNameField)
-
-        AlertDialog.Builder(this).setTitle(R.string.title_new_network).setView(dialogFrame)
-                .setPositiveButton(R.string.action_create) { _, _ -> generateConf(netNameField.text.toString(), nodeNameField.text.toString()) }
-                .setNegativeButton(R.string.action_cancel, App.dismissAction).show()
+        val genDialog = layoutInflater.inflate(R.layout.dialog_network_generate, main_content, false)
+        AlertDialog.Builder(this).setTitle(R.string.title_new_network).setView(genDialog)
+                .setPositiveButton(R.string.action_create) { _, _ ->
+                    generateConf(genDialog.new_net_name.text.toString(), genDialog.new_node_name.text.toString())
+                }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
     }
 
     fun openJoinNetworkDialog(@Suppress("UNUSED_PARAMETER") v: View) {
-        val netNameField = EditText(this)
-        netNameField.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        netNameField.setHint(R.string.field_net_name)
-
-        val joinUrlField = EditText(this)
-        joinUrlField.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        joinUrlField.setHint(R.string.field_invitation_url)
-
-        val dialogFrame = layoutInflater.inflate(R.layout.dialog_frame, main_content, false) as ViewGroup
-        dialogFrame.addView(netNameField)
-        dialogFrame.addView(joinUrlField)
-
-        AlertDialog.Builder(this).setTitle(R.string.title_join_network).setView(dialogFrame)
-                .setPositiveButton(R.string.action_join) { _, _ -> joinNetwork(netNameField.text.toString(), joinUrlField.text.toString()) }
-                .setNegativeButton(R.string.action_cancel, App.dismissAction).show()
+        joinDialog = layoutInflater.inflate(R.layout.dialog_network_join, main_content, false)
+        AlertDialog.Builder(this).setTitle(R.string.title_join_network).setView(joinDialog)
+                .setPositiveButton(R.string.action_join) { _, _ ->
+                    joinNetwork(joinDialog!!.net_name.text.toString(), joinDialog!!.invitation_url.text.toString())
+                }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
     }
 
     private fun writeContent() {

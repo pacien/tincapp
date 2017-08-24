@@ -7,7 +7,7 @@
 			android:paddingTop="@dimen/dialog_vertical_margin">
 
 	<TextView
-		android:id="@+id/dialog_text_monospace"
+		android:id="@+id/dialog_node_details"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:fontFamily="monospace"/>

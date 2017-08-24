@@ -50,6 +50,8 @@
 	<string name="action_create">Create</string>
 	<string name="action_join">Join</string>
 	<string name="action_open_manual">Open manual</string>
+	<string name="action_scan_qr_code">Scan QR code</string>
+	<string name="action_install">Install</string>
 
 	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
 	<string name="message_no_known_node">No known node</string>
@@ -60,6 +62,7 @@
 	<string name="message_no_configuration_for_network_format">No configuration has been found for network \"%1$s\".</string>
 	<string name="message_network_config_not_found_format">Network configuration file not found at \"%1$s\".</string>
 	<string name="message_network_config_invalid_format">Invalid network configuration:\n\n%1$s</string>
+	<string name="message_no_qr_code_scanner">No scanner could be started.\n\nInstall Barcode Scanner?</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>

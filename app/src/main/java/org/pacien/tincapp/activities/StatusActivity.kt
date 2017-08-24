@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import java8.util.concurrent.CompletableFuture
 import kotlinx.android.synthetic.main.base.*
-import kotlinx.android.synthetic.main.dialog_text_monopsace.view.*
+import kotlinx.android.synthetic.main.dialog_node_details.view.*
 import kotlinx.android.synthetic.main.fragment_list_view.*
 import kotlinx.android.synthetic.main.fragment_network_status_header.*
 import org.pacien.tincapp.R
@@ -36,7 +36,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        nodeListAdapter = ArrayAdapter<String>(this, R.layout.fragment_list_item)
+        nodeListAdapter = ArrayAdapter(this, R.layout.fragment_list_item)
         refreshTimer = Timer(true)
 
         layoutInflater.inflate(R.layout.fragment_list_view, main_content)
@@ -81,7 +81,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
         getNodeNames().thenAccept {
             runOnUiThread {
                 nodeListAdapter?.setElements(it)
-                node_list_placeholder.visibility = if (nodeListAdapter?.isEmpty ?: true) View.VISIBLE else View.GONE
+                node_list_placeholder.visibility = if (nodeListAdapter?.isEmpty != false) View.VISIBLE else View.GONE
                 list_wrapper.isRefreshing = false
                 if (!TincVpnService.isConnected()) openStartActivity()
             }
@@ -90,10 +90,10 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val nodeName = (view as TextView).text.toString()
-        val dialogTextView = layoutInflater.inflate(R.layout.dialog_text_monopsace, main_content, false)
+        val dialogTextView = layoutInflater.inflate(R.layout.dialog_node_details, main_content, false)
         Tinc.info(TincVpnService.getCurrentNetName()!!, nodeName).thenAccept {
             runOnUiThread {
-                dialogTextView.dialog_text_monospace.text = it
+                dialogTextView.dialog_node_details.text = it
                 AlertDialog.Builder(this)
                         .setTitle(R.string.title_node_info)
                         .setView(dialogTextView)
