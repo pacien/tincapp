@@ -68,7 +68,7 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
     }
 
     override fun onRefresh() {
-        val networks = AppPaths.confDir().list().toList()
+        val networks = AppPaths.confDir().list()?.toList() ?: emptyList()
         runOnUiThread {
             networkListAdapter?.setElements(networks)
             network_list_placeholder.visibility = if (networkListAdapter?.isEmpty ?: true) View.VISIBLE else View.GONE
