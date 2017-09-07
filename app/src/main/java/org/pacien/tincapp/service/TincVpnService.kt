@@ -7,16 +7,20 @@ import android.net.VpnService
 import android.os.ParcelFileDescriptor
 import android.util.Log
 import org.apache.commons.configuration2.ex.ConversionException
+import org.bouncycastle.openssl.PEMException
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.Tincd
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.data.TincConfiguration
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
 import org.pacien.tincapp.extensions.Java.applyIgnoringException
 import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg
 import org.pacien.tincapp.intent.action.TINC_SCHEME
+import org.pacien.tincapp.utils.PemUtils
+import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
@@ -32,11 +36,11 @@ class TincVpnService : VpnService() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         if (isConnected()) stopVpn()
-        startVpn(intent.data.schemeSpecificPart)
+        startVpn(intent.data.schemeSpecificPart, intent.data.fragment)
         return Service.START_REDELIVER_INTENT
     }
 
-    private fun startVpn(netName: String) {
+    private fun startVpn(netName: String, passphrase: String? = null) {
         if (netName.isBlank())
             return reportError(resources.getString(R.string.message_no_network_name_provided), docTopic = "intent-api")
 
@@ -53,7 +57,7 @@ class TincVpnService : VpnService() {
             return reportError(resources.getString(R.string.message_network_config_invalid_format, e.message!!), e, "network-interface")
         }
 
-        val fd = try {
+        val deviceFd = try {
             Builder().setSession(netName)
                     .applyCfg(interfaceCfg)
                     .also { applyIgnoringException(it::addDisallowedApplication, BuildConfig.APPLICATION_ID) }
@@ -62,9 +66,32 @@ class TincVpnService : VpnService() {
             return reportError(resources.getString(R.string.message_network_config_invalid_format, e.message!!), e, "network-interface")
         }
 
-        Tincd.start(netName, fd!!.fd)
-        setState(true, netName, interfaceCfg, fd)
+        val privateKeys = try {
+            val tincCfg = TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName)))
+
+            Pair(
+                    openPrivateKey(tincCfg.ed25519PrivateKeyFile ?: AppPaths.defaultEd25519PrivateKeyFile(netName), passphrase),
+                    openPrivateKey(tincCfg.privateKeyFile ?: AppPaths.defaultRsaPrivateKeyFile(netName), passphrase)
+            )
+        } catch (e: FileNotFoundException) {
+            Pair(null, null)
+        } catch (e: PEMException) {
+            return reportError(resources.getString(R.string.message_could_not_decrypt_private_keys_format, e.message!!))
+        }
+
+        Tincd.start(netName, deviceFd!!.fd, privateKeys.first?.fd, privateKeys.second?.fd)
+        setState(true, netName, interfaceCfg, deviceFd)
         Log.i(TAG, "tinc daemon started.")
+    }
+
+    private fun openPrivateKey(f: File?, passphrase: String?): ParcelFileDescriptor? {
+        if (f == null || !f.exists() || passphrase == null) return null
+
+        val pipe = ParcelFileDescriptor.createPipe()
+        val decryptedKey = PemUtils.decrypt(PemUtils.read(f), passphrase)
+        val outputStream = ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])
+        PemUtils.write(decryptedKey, outputStream.writer())
+        return pipe[0]
     }
 
     private fun reportError(msg: String, e: Throwable? = null, docTopic: String? = null) {
@@ -93,9 +120,9 @@ class TincVpnService : VpnService() {
             TincVpnService.fd = fd
         }
 
-        fun startVpn(netName: String) {
+        fun startVpn(netName: String, passphrase: String? = null) {
             App.getContext().startService(Intent(App.getContext(), TincVpnService::class.java)
-                    .setData(Uri.Builder().scheme(TINC_SCHEME).opaquePart(netName).build()))
+                    .setData(Uri.Builder().scheme(TINC_SCHEME).opaquePart(netName).fragment(passphrase).build()))
         }
 
         fun stopVpn() {

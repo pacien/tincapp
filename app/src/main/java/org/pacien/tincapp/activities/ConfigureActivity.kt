@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog
 import android.view.View
 import java8.util.concurrent.CompletableFuture
 import kotlinx.android.synthetic.main.base.*
+import kotlinx.android.synthetic.main.dialog_encrypt_decrypt_keys.view.*
 import kotlinx.android.synthetic.main.dialog_network_generate.view.*
 import kotlinx.android.synthetic.main.dialog_network_join.view.*
 import kotlinx.android.synthetic.main.page_configure.*
@@ -62,7 +63,10 @@ class ConfigureActivity : BaseActivity() {
         val genDialog = layoutInflater.inflate(R.layout.dialog_network_generate, main_content, false)
         AlertDialog.Builder(this).setTitle(R.string.title_new_network).setView(genDialog)
                 .setPositiveButton(R.string.action_create) { _, _ ->
-                    generateConf(genDialog.new_net_name.text.toString(), genDialog.new_node_name.text.toString())
+                    generateConf(
+                            genDialog.new_net_name.text.toString(),
+                            genDialog.new_node_name.text.toString(),
+                            genDialog.new_passphrase.text.toString())
                 }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
     }
 
@@ -70,7 +74,21 @@ class ConfigureActivity : BaseActivity() {
         joinDialog = layoutInflater.inflate(R.layout.dialog_network_join, main_content, false)
         AlertDialog.Builder(this).setTitle(R.string.title_join_network).setView(joinDialog)
                 .setPositiveButton(R.string.action_join) { _, _ ->
-                    joinNetwork(joinDialog!!.net_name.text.toString(), joinDialog!!.invitation_url.text.toString())
+                    joinNetwork(
+                            joinDialog!!.net_name.text.toString(),
+                            joinDialog!!.invitation_url.text.toString(),
+                            joinDialog!!.join_passphrase.text.toString())
+                }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
+    }
+
+    fun openEncryptDecryptPrivateKeyDialog(@Suppress("UNUSED_PARAMETER") v: View) {
+        val encryptDecryptDialog = layoutInflater.inflate(R.layout.dialog_encrypt_decrypt_keys, main_content, false)
+        AlertDialog.Builder(this).setTitle(R.string.title_private_keys_encryption).setView(encryptDecryptDialog)
+                .setPositiveButton(R.string.action_apply) { _, _ ->
+                    encryptDecryptPrivateKeys(
+                            encryptDecryptDialog!!.enc_dec_net_name.text.toString(),
+                            encryptDecryptDialog.enc_dec_current_passphrase.text.toString(),
+                            encryptDecryptDialog.enc_dec_new_passphrase.text.toString())
                 }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
     }
 
@@ -80,22 +98,28 @@ class ConfigureActivity : BaseActivity() {
         text_tinc_binary.text = AppPaths.tinc().absolutePath
     }
 
-    private fun generateConf(netName: String, nodeName: String) = execAction(
+    private fun generateConf(netName: String, nodeName: String, passphrase: String? = null) = execAction(
             R.string.message_generating_configuration,
             Tinc.init(netName, nodeName)
-                    .thenCompose { TincApp.removeScripts(netName) })
+                    .thenCompose { TincApp.removeScripts(netName) }
+                    .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) })
 
-    private fun joinNetwork(netName: String, url: String) = execAction(
+    private fun joinNetwork(netName: String, url: String, passphrase: String? = null) = execAction(
             R.string.message_joining_network,
             Tinc.join(netName, url)
                     .thenCompose { TincApp.removeScripts(netName) }
-                    .thenCompose { TincApp.generateIfaceCfg(netName) })
+                    .thenCompose { TincApp.generateIfaceCfg(netName) }
+                    .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) })
+
+    private fun encryptDecryptPrivateKeys(netName: String, currentPassphrase: String, newPassphrase: String) = execAction(
+            R.string.message_encrypting_decrypting_private_keys,
+            TincApp.setPassphrase(netName, currentPassphrase, newPassphrase))
 
     private fun execAction(@StringRes label: Int, action: CompletableFuture<Void>) {
         showProgressDialog(label).let { progressDialog ->
             action
                     .whenComplete { _, _ -> progressDialog.dismiss() }
-                    .thenAccept { notify(R.string.message_network_configuration_created) }
+                    .thenAccept { notify(R.string.message_network_configuration_written) }
                     .exceptionallyAccept { runOnUiThread { showErrorDialog(it.cause!!.localizedMessage) } }
         }
     }

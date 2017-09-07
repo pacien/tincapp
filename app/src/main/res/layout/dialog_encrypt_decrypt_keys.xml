@@ -8,37 +8,23 @@
 			  android:paddingTop="@dimen/dialog_vertical_margin">
 
 	<EditText
-		android:id="@+id/net_name"
+		android:id="@+id/enc_dec_net_name"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/field_net_name"/>
 
-	<LinearLayout
+	<EditText
+		android:id="@+id/enc_dec_current_passphrase"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="horizontal">
-
-		<EditText
-			android:id="@+id/invitation_url"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:hint="@string/field_invitation_url"/>
-
-		<ImageButton
-			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:contentDescription="@string/action_scan_qr_code"
-			android:onClick="scanCode"
-			android:src="@drawable/ic_photo_camera_primary_24dp"/>
-
-	</LinearLayout>
+		android:hint="@string/field_current_passphrase"
+		android:inputType="textVisiblePassword"/>
 
 	<EditText
-		android:id="@+id/join_passphrase"
+		android:id="@+id/enc_dec_new_passphrase"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:hint="@string/field_optional_passphrase"
+		android:hint="@string/field_new_passphrase"
 		android:inputType="textVisiblePassword"/>
 
 </LinearLayout>

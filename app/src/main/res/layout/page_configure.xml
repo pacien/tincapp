@@ -26,7 +26,7 @@
 				<TextView
 					android:id="@+id/text_configuration_directory"
 					style="@style/AppTheme.BlockContent"
-					android:textIsSelectable="true" />
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -39,7 +39,7 @@
 				<TextView
 					android:id="@+id/text_log_directory"
 					style="@style/AppTheme.BlockContent"
-					android:textIsSelectable="true" />
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -52,7 +52,7 @@
 				<TextView
 					android:id="@+id/text_tinc_binary"
 					style="@style/AppTheme.BlockContent"
-					android:textIsSelectable="true" />
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -81,6 +81,16 @@
 				<TextView
 					style="@style/AppTheme.BlockTitle"
 					android:text="@string/action_join_network_via_invitation_url"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				style="@style/AppTheme.ListBlock.Clickable"
+				android:onClick="openEncryptDecryptPrivateKeyDialog">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/action_encrypt_decrypt_private_keys"/>
 
 			</LinearLayout>
 

@@ -18,6 +18,10 @@
 	<string name="field_net_name">Tinc network name</string>
 	<string name="field_node_name">Name of this node</string>
 	<string name="field_invitation_url">Invitation URL</string>
+	<string name="field_current_passphrase">Current passphrase\n(leave empty if none)</string>
+	<string name="field_new_passphrase">New passphrase\n(leave empty to decrypt)</string>
+	<string name="field_optional_passphrase">Passphrase (optional)</string>
+	<string name="field_passphrase">Passphrase</string>
 
 	<string name="title_connect_to_network">Connect to network</string>
 	<string name="title_request_vpn_permissions">Request VPN permissions</string>
@@ -41,6 +45,8 @@
 	<string name="title_new_network">New network</string>
 	<string name="title_join_network">Join network</string>
 	<string name="title_unable_to_start_tinc">Unable to start tinc</string>
+	<string name="title_private_keys_encryption">Private keys encryption</string>
+	<string name="title_unlock_private_keys">Unlock tinc private keys</string>
 
 	<string name="action_close">Close</string>
 	<string name="action_cancel">Cancel</string>
@@ -52,17 +58,22 @@
 	<string name="action_open_manual">Open manual</string>
 	<string name="action_scan_qr_code">Scan QR code</string>
 	<string name="action_install">Install</string>
+	<string name="action_unlock">Unlock</string>
+	<string name="action_apply">Apply</string>
+	<string name="action_encrypt_decrypt_private_keys">Encrypt or decrypt private keys</string>
 
 	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
 	<string name="message_no_known_node">No known node</string>
 	<string name="message_generating_configuration">Generating node configuration…</string>
 	<string name="message_joining_network">Joining network…</string>
-	<string name="message_network_configuration_created">Network configuration successfully created.</string>
+	<string name="message_network_configuration_written">Network configuration successfully written.</string>
 	<string name="message_no_network_name_provided">No network name has been provided.</string>
 	<string name="message_no_configuration_for_network_format">No configuration has been found for network \"%1$s\".</string>
 	<string name="message_network_config_not_found_format">Network configuration file not found at \"%1$s\".</string>
 	<string name="message_network_config_invalid_format">Invalid network configuration:\n\n%1$s</string>
 	<string name="message_no_qr_code_scanner">No scanner could be started.\n\nInstall Barcode Scanner?</string>
+	<string name="message_encrypting_decrypting_private_keys">Encrypting/decrypting private keys</string>
+	<string name="message_could_not_decrypt_private_keys_format">Could not decrypt private keys:\n\n%1$s</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>

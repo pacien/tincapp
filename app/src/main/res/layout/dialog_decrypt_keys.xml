@@ -8,22 +8,10 @@
 			  android:paddingTop="@dimen/dialog_vertical_margin">
 
 	<EditText
-		android:id="@+id/new_net_name"
+		android:id="@+id/passphrase"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:hint="@string/field_net_name"/>
-
-	<EditText
-		android:id="@+id/new_node_name"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:hint="@string/field_node_name"/>
-
-	<EditText
-		android:id="@+id/new_passphrase"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:hint="@string/field_optional_passphrase"
-		android:inputType="textVisiblePassword"/>
+		android:hint="@string/field_passphrase"
+		android:inputType="textPassword"/>
 
 </LinearLayout>
