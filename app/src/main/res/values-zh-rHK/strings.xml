@@ -1,0 +1,81 @@
+<resources>
+	<string name="app_name">Tinc App</string>
+	<string name="app_label">Tinc</string>
+	<string name="app_short_desc">tinc mesh VPN 守護進程的 Android 綁定和用户界面。</string>
+	<string name="app_copyright">版權所有 2017 Pacien。</string>
+	<string name="app_license">軟件根據 GNU 通用公共許可證第3版的條款進行分發。</string>
+	<string name="app_website_url">http://tincapp.pacien.org</string>
+	<string name="app_doc_url_format">http://tincapp.pacien.org/doc.html#%1$s</string>
+
+	<string name="info_version_format">應用程序版本 %1$s（%2$s build）</string>
+	<string name="info_running_on_format">於 Android %1$s %2$s 上運行</string>
+	<string name="info_supported_abis_format">設備 ABI：%1$s</string>
+
+	<string name="menu_about">關於此應用</string>
+	<string name="menu_configure">配置</string>
+	<string name="menu_disconnect">斷開連接</string>
+
+	<string name="field_net_name">Tinc 網絡名稱</string>
+	<string name="field_node_name">此節點名稱</string>
+	<string name="field_invitation_url">邀請 URL</string>
+	<string name="field_current_passphrase">當前密碼\n（沒有則為空）</string>
+	<string name="field_new_passphrase">新密碼\n（空白以解密）</string>
+	<string name="field_optional_passphrase">密碼（可選）</string>
+	<string name="field_passphrase">密碼</string>
+
+	<string name="title_connect_to_network">連接到網絡</string>
+	<string name="title_request_vpn_permissions">請求 VPN 權限</string>
+	<string name="title_path_info">路徑信息</string>
+	<string name="title_node_info">節點信息</string>
+	<string name="title_tools">工具</string>
+	<string name="title_configuration_directory">配置目錄</string>
+	<string name="title_log_directory">日誌目錄</string>
+	<string name="title_tinc_binary">Tinc 二進制文件</string>
+	<string name="title_network_info">網絡信息</string>
+	<string name="title_network_name">網絡名稱</string>
+	<string name="title_ip_addresses">IP 地址</string>
+	<string name="title_routes">路由</string>
+	<string name="title_dns_servers">DNS 服務器</string>
+	<string name="title_search_domains">搜索域</string>
+	<string name="title_allowed_applications">允許的應用程序</string>
+	<string name="title_disallowed_applications">不允許的應用程序</string>
+	<string name="title_allow_bypass">允許旁路</string>
+	<string name="title_nodes">節點</string>
+	<string name="title_error">錯誤</string>
+	<string name="title_new_network">新建網絡</string>
+	<string name="title_join_network">加入網絡</string>
+	<string name="title_unable_to_start_tinc">無法啟動 tinc</string>
+	<string name="title_private_keys_encryption">私鑰加密</string>
+	<string name="title_unlock_private_keys">解鎖 tinc 私鑰</string>
+
+	<string name="action_close">關閉</string>
+	<string name="action_cancel">取消</string>
+	<string name="action_open_project_website">項目網站</string>
+	<string name="action_generate_node_configuration_and_keys">生成節點配置和密鑰</string>
+	<string name="action_join_network_via_invitation_url">通過邀請 URL 加入網絡</string>
+	<string name="action_create">創建</string>
+	<string name="action_join">加入</string>
+	<string name="action_open_manual">打開手冊</string>
+	<string name="action_scan_qr_code">掃描 QR 碼</string>
+	<string name="action_install">安裝</string>
+	<string name="action_unlock">解鎖</string>
+	<string name="action_apply">應用</string>
+	<string name="action_encrypt_decrypt_private_keys">加密或解密私鑰</string>
+
+	<string name="message_no_network_configuration_found">未找到網絡配置。</string>
+	<string name="message_no_known_node">沒有已知的節點</string>
+	<string name="message_generating_configuration">生成節點配置...</string>
+	<string name="message_joining_network">加入網絡...</string>
+	<string name="message_network_configuration_written">網絡配置寫入成功。</string>
+	<string name="message_no_network_name_provided">沒有提供網絡名稱。</string>
+	<string name="message_no_configuration_for_network_format">沒有找到網絡“%1$s”的配置。</string>
+	<string name="message_network_config_not_found_format">在“%1$s”找不到網絡配置文件。</string>
+	<string name="message_network_config_invalid_format">network.conf 中的網絡配置無效：\n\n%1$s</string>
+	<string name="message_no_qr_code_scanner">無法啟動掃描器。\n\n安裝 Barcode Scanner？</string>
+	<string name="message_encrypting_decrypting_private_keys">加密/解密私鑰</string>
+	<string name="message_could_not_decrypt_private_keys_format">無法解密私鑰：\n\n%1$s</string>
+
+	<string name="value_none">無</string>
+	<string name="value_yes">是</string>
+	<string name="value_no">否</string>
+</resources>
