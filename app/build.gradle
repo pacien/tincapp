@@ -8,7 +8,7 @@ android {
 
 	defaultConfig {
 		applicationId "org.pacien.tincapp"
-		minSdkVersion 21
+		minSdkVersion 14
 		targetSdkVersion 21
         multiDexEnabled true
 		versionCode 7
