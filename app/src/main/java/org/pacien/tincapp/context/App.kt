@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.annotation.StringRes
+import android.support.multidex.MultiDex
 import android.support.v7.app.AlertDialog
 import android.view.WindowManager
 import org.pacien.tincapp.R
@@ -17,6 +18,11 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     companion object {
