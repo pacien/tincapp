@@ -46,7 +46,7 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
     }
 
     override fun onStart() {
-        super.onRestart()
+        super.onStart()
         onRefresh()
     }
 
