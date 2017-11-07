@@ -76,7 +76,7 @@ class TincVpnService : VpnService() {
         } catch (e: FileNotFoundException) {
             Pair(null, null)
         } catch (e: PEMException) {
-            return reportError(resources.getString(R.string.message_could_not_decrypt_private_keys_format, e.message!!))
+            return reportError(resources.getString(R.string.message_could_not_decrypt_private_keys_format, e.message))
         }
 
         Tincd.start(netName, deviceFd!!.fd, privateKeys.first?.fd, privateKeys.second?.fd)
