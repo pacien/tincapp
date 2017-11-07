@@ -10,7 +10,6 @@
 
 	<TextView
 		android:id="@+id/network_list_placeholder"
-		style="@style/AppTheme.ListBlock.Placeholder"
-		android:text="@string/message_no_network_configuration_found"/>
+		style="@style/AppTheme.ListBlock.Placeholder"/>
 
 </LinearLayout>

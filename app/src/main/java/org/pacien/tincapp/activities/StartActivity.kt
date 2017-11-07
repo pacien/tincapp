@@ -16,7 +16,6 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.extensions.Android.setElements
 import org.pacien.tincapp.service.TincVpnService
-import org.pacien.tincapp.utils.FileObserver
 
 /**
  * @author pacien
@@ -24,14 +23,10 @@ import org.pacien.tincapp.utils.FileObserver
 class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private var networkListAdapter: ArrayAdapter<String>? = null
-    private var confChangeObserver: FileObserver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        networkListAdapter = ArrayAdapter<String>(this, R.layout.fragment_list_item)
-        confChangeObserver = FileObserver(AppPaths.confDir().absolutePath, FileObserver.CHANGE, { _, _ -> onRefresh() })
-
+        networkListAdapter = ArrayAdapter(this, R.layout.fragment_list_item)
         layoutInflater.inflate(R.layout.fragment_list_view, main_content)
         list_wrapper.setOnRefreshListener(this)
         list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_list_header, list, false), null, false)
@@ -46,7 +41,6 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
     }
 
     override fun onDestroy() {
-        confChangeObserver = null
         networkListAdapter = null
         super.onDestroy()
     }
@@ -54,12 +48,6 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
     override fun onStart() {
         super.onRestart()
         onRefresh()
-        confChangeObserver?.startWatching()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        confChangeObserver?.stopWatching()
     }
 
     override fun onResume() {
@@ -68,10 +56,10 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
     }
 
     override fun onRefresh() {
-        val networks = AppPaths.confDir().list()?.toList() ?: emptyList()
+        val networks = AppPaths.confDir()?.list()?.toList() ?: emptyList()
         runOnUiThread {
             networkListAdapter?.setElements(networks)
-            network_list_placeholder.visibility = if (networkListAdapter?.isEmpty ?: true) View.VISIBLE else View.GONE
+            setPlaceholderVisibility()
             list_wrapper.isRefreshing = false
         }
     }
@@ -85,5 +73,16 @@ class StartActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefr
     fun openStatusActivity() =
             startActivity(Intent(this, StatusActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+
+    private fun setPlaceholderVisibility() = if (networkListAdapter?.isEmpty != false) {
+        network_list_placeholder.text = getListPlaceholderText()
+        network_list_placeholder.visibility = View.VISIBLE
+    } else {
+        network_list_placeholder.visibility = View.GONE
+    }
+
+    private fun getListPlaceholderText() =
+            if (!AppPaths.storageAvailable()) getText(R.string.message_storage_unavailable)
+            else getText(R.string.message_no_network_configuration_found)
 
 }

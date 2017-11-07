@@ -1,11 +1,12 @@
 package org.pacien.tincapp.context
 
+import android.os.Environment
 import java.io.File
 import java.io.FileNotFoundException
 
 /**
  * @author pacien
- * *
+ *
  * @implNote Logs and PID files are stored in the cache directory for easy clean up.
  */
 object AppPaths {
@@ -23,8 +24,11 @@ object AppPaths {
     private val NET_DEFAULT_ED25519_PRIVATE_KEY_FILE = "ed25519_key.priv"
     private val NET_DEFAULT_RSA_PRIVATE_KEY_FILE = "rsa_key.priv"
 
-    fun cacheDir() = App.getContext().externalCacheDir!!
-    fun confDir() = App.getContext().getExternalFilesDir(null)!!
+    fun storageAvailable() =
+            Environment.getExternalStorageState().let { it == Environment.MEDIA_MOUNTED && it != Environment.MEDIA_MOUNTED_READ_ONLY }
+
+    fun cacheDir() = App.getContext().externalCacheDir
+    fun confDir() = App.getContext().getExternalFilesDir(null)
     fun binDir() = File(App.getContext().applicationInfo.nativeLibraryDir)
 
     fun confDir(netName: String) = File(confDir(), netName)

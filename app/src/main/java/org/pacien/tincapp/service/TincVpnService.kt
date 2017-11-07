@@ -44,6 +44,9 @@ class TincVpnService : VpnService() {
         if (netName.isBlank())
             return reportError(resources.getString(R.string.message_no_network_name_provided), docTopic = "intent-api")
 
+        if (!AppPaths.storageAvailable())
+            return reportError(resources.getString(R.string.message_storage_unavailable))
+
         if (!AppPaths.confDir(netName).exists())
             return reportError(resources.getString(R.string.message_no_configuration_for_network_format, netName), docTopic = "configuration")
 
