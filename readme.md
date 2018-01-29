@@ -9,7 +9,7 @@ Project website: http://tincapp.pacien.org
 Build
 -----
 
-The project can be built using the Gradle `build` task.
+The project can be built using the Gradle `build` task, on Linux.
 
 Requirements:
 
