@@ -10,16 +10,16 @@ import org.pacien.tincapp.context.App
  */
 object Android {
 
-    fun <T> ArrayAdapter<T>.setElements(elems: Collection<T>) {
-        setNotifyOnChange(false)
-        clear()
-        addAll(elems)
-        notifyDataSetChanged()
-        setNotifyOnChange(true)
-    }
+  fun <T> ArrayAdapter<T>.setElements(elems: Collection<T>) {
+    setNotifyOnChange(false)
+    clear()
+    addAll(elems)
+    notifyDataSetChanged()
+    setNotifyOnChange(true)
+  }
 
-    fun TextView.setText(list: List<String>) {
-        text = if (list.isNotEmpty()) list.joinToString("\n") else App.getContext().getString(R.string.value_none)
-    }
+  fun TextView.setText(list: List<String>) {
+    text = if (list.isNotEmpty()) list.joinToString("\n") else App.getContext().getString(R.string.value_none)
+  }
 
 }

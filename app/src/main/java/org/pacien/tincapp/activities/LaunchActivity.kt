@@ -24,75 +24,75 @@ import java.io.FileNotFoundException
  */
 class LaunchActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-        when (intent.action) {
-            ACTION_CONNECT -> requestPerm()
-            ACTION_DISCONNECT -> disconnect()
-        }
+    when (intent.action) {
+      ACTION_CONNECT -> requestPerm()
+      ACTION_DISCONNECT -> disconnect()
+    }
+  }
+
+  override fun onActivityResult(request: Int, result: Int, data: Intent?) {
+    if (request == PERMISSION_REQUEST_CODE && result == Activity.RESULT_OK) askPassphrase()
+  }
+
+  private fun requestPerm() = VpnService.prepare(this).let {
+    if (it != null)
+      startActivityForResult(it, PERMISSION_REQUEST_CODE)
+    else
+      onActivityResult(PERMISSION_REQUEST_CODE, Activity.RESULT_OK, null)
+  }
+
+  @SuppressLint("InflateParams")
+  private fun askPassphrase() {
+    val netName = intent.data.schemeSpecificPart
+
+    if (needPassphrase(netName) && intent.data.fragment == null) {
+      val dialog = layoutInflater.inflate(R.layout.dialog_decrypt_keys, null, false)
+      AlertDialog.Builder(this)
+        .setTitle(R.string.title_unlock_private_keys).setView(dialog)
+        .setPositiveButton(R.string.action_unlock) { _, _ -> connect(netName, dialog.passphrase.text.toString()) }
+        .setNegativeButton(R.string.action_cancel, { _, _ -> finish() })
+        .show()
+    } else {
+      connect(netName, intent.data.fragment)
+    }
+  }
+
+  private fun needPassphrase(netName: String) = try {
+    TincApp.listPrivateKeys(netName).filter { it.exists() }.any { PemUtils.isEncrypted(PemUtils.read(it)) }
+  } catch (e: FileNotFoundException) {
+    false
+  }
+
+  private fun connect(netName: String, passphrase: String? = null) {
+    TincVpnService.startVpn(netName, passphrase)
+    finish()
+  }
+
+  private fun disconnect() {
+    TincVpnService.stopVpn()
+    finish()
+  }
+
+  companion object {
+
+    private val PERMISSION_REQUEST_CODE = 0
+
+    fun connect(netName: String, passphrase: String? = null) {
+      App.getContext().startActivity(Intent(App.getContext(), LaunchActivity::class.java)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .setAction(ACTION_CONNECT)
+        .setData(Uri.Builder().scheme(TINC_SCHEME).opaquePart(netName).fragment(passphrase).build()))
     }
 
-    override fun onActivityResult(request: Int, result: Int, data: Intent?) {
-        if (request == PERMISSION_REQUEST_CODE && result == Activity.RESULT_OK) askPassphrase()
+    fun disconnect() {
+      App.getContext().startActivity(Intent(App.getContext(), LaunchActivity::class.java)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .setAction(ACTION_DISCONNECT))
     }
 
-    private fun requestPerm() = VpnService.prepare(this).let {
-        if (it != null)
-            startActivityForResult(it, PERMISSION_REQUEST_CODE)
-        else
-            onActivityResult(PERMISSION_REQUEST_CODE, Activity.RESULT_OK, null)
-    }
-
-    @SuppressLint("InflateParams")
-    private fun askPassphrase() {
-        val netName = intent.data.schemeSpecificPart
-
-        if (needPassphrase(netName) && intent.data.fragment == null) {
-            val dialog = layoutInflater.inflate(R.layout.dialog_decrypt_keys, null, false)
-            AlertDialog.Builder(this)
-                    .setTitle(R.string.title_unlock_private_keys).setView(dialog)
-                    .setPositiveButton(R.string.action_unlock) { _, _ -> connect(netName, dialog.passphrase.text.toString()) }
-                    .setNegativeButton(R.string.action_cancel, { _, _ -> finish() })
-                    .show()
-        } else {
-            connect(netName, intent.data.fragment)
-        }
-    }
-
-    private fun needPassphrase(netName: String) = try {
-        TincApp.listPrivateKeys(netName).filter { it.exists() }.any { PemUtils.isEncrypted(PemUtils.read(it)) }
-    } catch (e: FileNotFoundException) {
-        false
-    }
-
-    private fun connect(netName: String, passphrase: String? = null) {
-        TincVpnService.startVpn(netName, passphrase)
-        finish()
-    }
-
-    private fun disconnect() {
-        TincVpnService.stopVpn()
-        finish()
-    }
-
-    companion object {
-
-        private val PERMISSION_REQUEST_CODE = 0
-
-        fun connect(netName: String, passphrase: String? = null) {
-            App.getContext().startActivity(Intent(App.getContext(), LaunchActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .setAction(ACTION_CONNECT)
-                    .setData(Uri.Builder().scheme(TINC_SCHEME).opaquePart(netName).fragment(passphrase).build()))
-        }
-
-        fun disconnect() {
-            App.getContext().startActivity(Intent(App.getContext(), LaunchActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .setAction(ACTION_DISCONNECT))
-        }
-
-    }
+  }
 
 }

@@ -29,115 +29,115 @@ import kotlin.concurrent.timerTask
  */
 class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private var nodeListAdapter: ArrayAdapter<String>? = null
-    private var refreshTimer: Timer? = null
-    private var updateView: Boolean = false
+  private var nodeListAdapter: ArrayAdapter<String>? = null
+  private var refreshTimer: Timer? = null
+  private var updateView: Boolean = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-        nodeListAdapter = ArrayAdapter(this, R.layout.fragment_list_item)
-        refreshTimer = Timer(true)
+    nodeListAdapter = ArrayAdapter(this, R.layout.fragment_list_item)
+    refreshTimer = Timer(true)
 
-        layoutInflater.inflate(R.layout.fragment_list_view, main_content)
-        list_wrapper.setOnRefreshListener(this)
-        list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_status_header, list, false), null, false)
-        list.addFooterView(View(this), null, false)
-        list.onItemClickListener = this
-        list.adapter = nodeListAdapter
-    }
+    layoutInflater.inflate(R.layout.fragment_list_view, main_content)
+    list_wrapper.setOnRefreshListener(this)
+    list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_status_header, list, false), null, false)
+    list.addFooterView(View(this), null, false)
+    list.onItemClickListener = this
+    list.adapter = nodeListAdapter
+  }
 
-    override fun onCreateOptionsMenu(m: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_status, m)
-        return super.onCreateOptionsMenu(m)
-    }
+  override fun onCreateOptionsMenu(m: Menu): Boolean {
+    menuInflater.inflate(R.menu.menu_status, m)
+    return super.onCreateOptionsMenu(m)
+  }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        refreshTimer?.cancel()
-        nodeListAdapter = null
-        refreshTimer = null
-    }
+  override fun onDestroy() {
+    super.onDestroy()
+    refreshTimer?.cancel()
+    nodeListAdapter = null
+    refreshTimer = null
+  }
 
-    override fun onStart() {
-        super.onStart()
-        writeNetworkInfo(TincVpnService.getCurrentInterfaceCfg() ?: VpnInterfaceConfiguration())
-        updateView = true
-        onRefresh()
-        updateNodeList()
-    }
+  override fun onStart() {
+    super.onStart()
+    writeNetworkInfo(TincVpnService.getCurrentInterfaceCfg() ?: VpnInterfaceConfiguration())
+    updateView = true
+    onRefresh()
+    updateNodeList()
+  }
 
-    override fun onStop() {
-        super.onStop()
-        updateView = false
-    }
+  override fun onStop() {
+    super.onStop()
+    updateView = false
+  }
 
-    override fun onResume() {
-        super.onResume()
+  override fun onResume() {
+    super.onResume()
+    if (!TincVpnService.isConnected()) openStartActivity()
+  }
+
+  override fun onRefresh() {
+    getNodeNames().thenAccept {
+      runOnUiThread {
+        nodeListAdapter?.setElements(it)
+        node_list_placeholder.visibility = if (nodeListAdapter?.isEmpty != false) View.VISIBLE else View.GONE
+        list_wrapper.isRefreshing = false
         if (!TincVpnService.isConnected()) openStartActivity()
+      }
     }
+  }
 
-    override fun onRefresh() {
-        getNodeNames().thenAccept {
-            runOnUiThread {
-                nodeListAdapter?.setElements(it)
-                node_list_placeholder.visibility = if (nodeListAdapter?.isEmpty != false) View.VISIBLE else View.GONE
-                list_wrapper.isRefreshing = false
-                if (!TincVpnService.isConnected()) openStartActivity()
-            }
-        }
+  override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+    val nodeName = (view as TextView).text.toString()
+    val dialogTextView = layoutInflater.inflate(R.layout.dialog_node_details, main_content, false)
+    Tinc.info(TincVpnService.getCurrentNetName()!!, nodeName).thenAccept {
+      runOnUiThread {
+        dialogTextView.dialog_node_details.text = it
+        AlertDialog.Builder(this)
+          .setTitle(R.string.title_node_info)
+          .setView(dialogTextView)
+          .setPositiveButton(R.string.action_close) { _, _ -> /* nop */ }
+          .show()
+      }
     }
+  }
 
-    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val nodeName = (view as TextView).text.toString()
-        val dialogTextView = layoutInflater.inflate(R.layout.dialog_node_details, main_content, false)
-        Tinc.info(TincVpnService.getCurrentNetName()!!, nodeName).thenAccept {
-            runOnUiThread {
-                dialogTextView.dialog_node_details.text = it
-                AlertDialog.Builder(this)
-                        .setTitle(R.string.title_node_info)
-                        .setView(dialogTextView)
-                        .setPositiveButton(R.string.action_close) { _, _ -> /* nop */ }
-                        .show()
-            }
-        }
+  fun writeNetworkInfo(cfg: VpnInterfaceConfiguration) {
+    text_network_name.text = TincVpnService.getCurrentNetName() ?: getString(R.string.value_none)
+    text_network_ip_addresses.setText(cfg.addresses.map { it.toSlashSeparated() })
+    text_network_routes.setText(cfg.routes.map { it.toSlashSeparated() })
+    text_network_dns_servers.setText(cfg.dnsServers)
+    text_network_search_domains.setText(cfg.searchDomains)
+    text_network_allow_bypass.text = getString(if (cfg.allowBypass) R.string.value_yes else R.string.value_no)
+    block_network_allowed_applications.visibility = if (cfg.allowedApplications.isNotEmpty()) View.VISIBLE else View.GONE
+    text_network_allowed_applications.setText(cfg.allowedApplications)
+    block_network_disallowed_applications.visibility = if (cfg.disallowedApplications.isNotEmpty()) View.VISIBLE else View.GONE
+    text_network_disallowed_applications.setText(cfg.disallowedApplications)
+  }
+
+  fun updateNodeList() {
+    refreshTimer?.schedule(timerTask {
+      onRefresh()
+      if (updateView) updateNodeList()
+    }, REFRESH_RATE)
+  }
+
+  fun stopVpn(@Suppress("UNUSED_PARAMETER") i: MenuItem) {
+    TincVpnService.stopVpn()
+    openStartActivity()
+    finish()
+  }
+
+  fun openStartActivity() = startActivity(Intent(this, StartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+
+  companion object {
+    private val REFRESH_RATE = 5000L
+
+    fun getNodeNames(): CompletableFuture<List<String>> = when (TincVpnService.isConnected()) {
+      true -> Tinc.dumpNodes(TincVpnService.getCurrentNetName()!!).thenApply<List<String>> { it.map { it.substringBefore(' ') } }
+      false -> CompletableFuture.supplyAsync<List<String>> { emptyList() }
     }
-
-    fun writeNetworkInfo(cfg: VpnInterfaceConfiguration) {
-        text_network_name.text = TincVpnService.getCurrentNetName() ?: getString(R.string.value_none)
-        text_network_ip_addresses.setText(cfg.addresses.map { it.toSlashSeparated() })
-        text_network_routes.setText(cfg.routes.map { it.toSlashSeparated() })
-        text_network_dns_servers.setText(cfg.dnsServers)
-        text_network_search_domains.setText(cfg.searchDomains)
-        text_network_allow_bypass.text = getString(if (cfg.allowBypass) R.string.value_yes else R.string.value_no)
-        block_network_allowed_applications.visibility = if (cfg.allowedApplications.isNotEmpty()) View.VISIBLE else View.GONE
-        text_network_allowed_applications.setText(cfg.allowedApplications)
-        block_network_disallowed_applications.visibility = if (cfg.disallowedApplications.isNotEmpty()) View.VISIBLE else View.GONE
-        text_network_disallowed_applications.setText(cfg.disallowedApplications)
-    }
-
-    fun updateNodeList() {
-        refreshTimer?.schedule(timerTask {
-            onRefresh()
-            if (updateView) updateNodeList()
-        }, REFRESH_RATE)
-    }
-
-    fun stopVpn(@Suppress("UNUSED_PARAMETER") i: MenuItem) {
-        TincVpnService.stopVpn()
-        openStartActivity()
-        finish()
-    }
-
-    fun openStartActivity() = startActivity(Intent(this, StartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-
-    companion object {
-        private val REFRESH_RATE = 5000L
-
-        fun getNodeNames(): CompletableFuture<List<String>> = when (TincVpnService.isConnected()) {
-            true -> Tinc.dumpNodes(TincVpnService.getCurrentNetName()!!).thenApply<List<String>> { it.map { it.substringBefore(' ') } }
-            false -> CompletableFuture.supplyAsync<List<String>> { emptyList() }
-        }
-    }
+  }
 
 }

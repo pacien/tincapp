@@ -7,12 +7,12 @@ import java8.util.concurrent.CompletableFuture
  */
 object Java {
 
-    fun <T> CompletableFuture<T>.exceptionallyAccept(fn: (Throwable) -> Unit) = exceptionally { fn(it); null }!!
+  fun <T> CompletableFuture<T>.exceptionallyAccept(fn: (Throwable) -> Unit) = exceptionally { fn(it); null }!!
 
-    fun <A, R> applyIgnoringException(f: (A) -> R, x: A, alt: R? = null) = try {
-        f(x)
-    } catch (_: Exception) {
-        alt
-    }
+  fun <A, R> applyIgnoringException(f: (A) -> R, x: A, alt: R? = null) = try {
+    f(x)
+  } catch (_: Exception) {
+    alt
+  }
 
 }
