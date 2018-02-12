@@ -7,12 +7,12 @@ android {
   buildToolsVersion '26.0.2'
 
   defaultConfig {
-    applicationId "org.pacien.tincapp"
+    applicationId 'org.pacien.tincapp'
     minSdkVersion 21
     targetSdkVersion 21
     multiDexEnabled true
     versionCode 8
-    versionName "0.8"
+    versionName '0.8'
     ndk {
       abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a'
     }
@@ -27,12 +27,16 @@ android {
 
   externalNativeBuild {
     cmake {
-      path "CMakeLists.txt"
+      path 'CMakeLists.txt'
     }
   }
 
   lintOptions {
-    disable 'MissingTranslation'
+    // 20180212:
+    // Lint checks on Kotlin files only work from the Android Studio IDE.
+    // They currently do not run when you run lint directly from Gradle.
+    // https://developer.android.com/studio/preview/kotlin-issues.html
+    disable 'OnClick', 'UnusedResources'
   }
 }
 

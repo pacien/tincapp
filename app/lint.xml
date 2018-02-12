@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+	<issue id="InvalidPackage">
+		<!-- In unused library code -->
+		<ignore regexp="org.bouncycastle"/>
+		<ignore regexp="org.apache.commons"/>
+	</issue>
+
+	<issue id="TrustAllX509TrustManager">
+		<!-- In unused library code -->
+		<ignore regexp="org.bouncycastle"/>
+	</issue>
+
+	<issue id="MissingTranslation" severity="warning"/>
+</lint>
