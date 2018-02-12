@@ -60,9 +60,6 @@ dependencies {
 }
 
 repositories {
-  mavenCentral()
   jcenter()
-  maven {
-    url "https://maven.google.com"
-  }
+  google()
 }
