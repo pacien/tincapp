@@ -64,8 +64,8 @@
 
 	<string name="message_no_network_configuration_found">未找到网络配置。</string>
 	<string name="message_no_known_node">没有已知的节点</string>
-	<string name="message_generating_configuration">生成节点配置...</string>
-	<string name="message_joining_network">加入网络...</string>
+	<string name="message_generating_configuration">生成节点配置…</string>
+	<string name="message_joining_network">加入网络…</string>
 	<string name="message_network_configuration_written">网络配置写入成功。</string>
 	<string name="message_no_network_name_provided">没有提供网络名称。</string>
 	<string name="message_no_configuration_for_network_format">没有找到网络“%1$s”的配置。</string>
