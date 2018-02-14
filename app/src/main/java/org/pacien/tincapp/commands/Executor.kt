@@ -13,6 +13,8 @@ import java.io.InputStreamReader
  */
 internal object Executor {
 
+  private const val FAILED = -1
+
   class CommandExecutionException(msg: String) : Exception(msg)
 
   init {
@@ -20,14 +22,23 @@ internal object Executor {
   }
 
   /**
-   * @return -1 on error, forked child PID otherwise
+   * @return FAILED (-1) on error, forked child PID otherwise
    */
   private external fun forkExec(argcv: Array<String>): Int
 
+  /**
+   * @return FAILED (-1) on error, 0 on no-op, the supplied PID otherwise
+   */
+  private external fun wait(pid: Int): Int
+
   private fun read(stream: InputStream) = BufferedReader(InputStreamReader(stream)).readLines()
 
-  fun forkExec(cmd: Command) {
-    if (forkExec(cmd.asArray()) == -1) throw CommandExecutionException("Could not fork child process.")
+  fun forkExec(cmd: Command): CompletableFuture<Void> {
+    val pid = forkExec(cmd.asArray())
+    return when (pid) {
+      FAILED -> CompletableFuture.failedFuture(CommandExecutionException("Could not fork child process."))
+      else -> CompletableFuture.runAsync { wait(pid) }
+    }
   }
 
   fun call(cmd: Command): CompletableFuture<List<String>> {

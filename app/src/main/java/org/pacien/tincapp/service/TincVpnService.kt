@@ -6,6 +6,7 @@ import android.net.Uri
 import android.net.VpnService
 import android.os.ParcelFileDescriptor
 import android.util.Log
+import java8.util.concurrent.CompletableFuture
 import org.apache.commons.configuration2.ex.ConversionException
 import org.bouncycastle.openssl.PEMException
 import org.pacien.tincapp.BuildConfig
@@ -82,8 +83,8 @@ class TincVpnService : VpnService() {
       return reportError(resources.getString(R.string.message_could_not_decrypt_private_keys_format, e.message))
     }
 
-    Tincd.start(netName, deviceFd!!.fd, privateKeys.first?.fd, privateKeys.second?.fd)
-    setState(true, netName, interfaceCfg, deviceFd)
+    val daemon = Tincd.start(netName, deviceFd!!.fd, privateKeys.first?.fd, privateKeys.second?.fd)
+    setState(netName, interfaceCfg, deviceFd, daemon)
     Log.i(TAG, "tinc daemon started.")
   }
 
@@ -111,16 +112,17 @@ class TincVpnService : VpnService() {
 
     val TAG = this::class.java.canonicalName!!
 
-    private var connected: Boolean = false
     private var netName: String? = null
     private var interfaceCfg: VpnInterfaceConfiguration? = null
     private var fd: ParcelFileDescriptor? = null
+    private var daemon: CompletableFuture<Void>? = null
 
-    private fun setState(connected: Boolean, netName: String?, interfaceCfg: VpnInterfaceConfiguration?, fd: ParcelFileDescriptor?) {
-      TincVpnService.connected = connected
+    private fun setState(netName: String?, interfaceCfg: VpnInterfaceConfiguration?,
+                         fd: ParcelFileDescriptor?, daemon: CompletableFuture<Void>?) {
       TincVpnService.netName = netName
       TincVpnService.interfaceCfg = interfaceCfg
       TincVpnService.fd = fd
+      TincVpnService.daemon = daemon
     }
 
     fun startVpn(netName: String, passphrase: String? = null) {
@@ -132,18 +134,19 @@ class TincVpnService : VpnService() {
       try {
         Log.i(TAG, "Stopping any running tinc daemon.")
         if (netName != null) Tinc.stop(netName!!)
+        daemon?.get()
         fd?.close()
         Log.i(TAG, "All tinc daemons stopped.")
       } catch (e: IOException) {
         Log.wtf(TAG, e)
       } finally {
-        setState(false, null, null, null)
+        setState(null, null, null, null)
       }
     }
 
     fun getCurrentNetName() = netName
     fun getCurrentInterfaceCfg() = interfaceCfg
-    fun isConnected() = connected
+    fun isConnected() = !(daemon?.isDone ?: true)
 
   }
 

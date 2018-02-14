@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 
 static inline const char **to_string_array(JNIEnv *env, jobjectArray ja) {
   const int len = (*env)->GetArrayLength(env, ja);
@@ -31,4 +32,9 @@ Java_org_pacien_tincapp_commands_Executor_forkExec(JNIEnv *env, jclass class, jo
     default:
       return pid;
   }
+}
+
+JNIEXPORT jint JNICALL
+Java_org_pacien_tincapp_commands_Executor_wait(JNIEnv *env, jclass class, jint pid) {
+  return waitpid(pid, NULL, 0);
 }
