@@ -6,9 +6,7 @@ import org.apache.commons.configuration2.ex.ConversionException
  * @author pacien
  */
 data class CidrAddress(val address: String, val prefix: Int) {
-
   companion object {
-
     private val SEPARATOR = "/"
 
     fun fromSlashSeparated(s: String) = try {
@@ -16,9 +14,7 @@ data class CidrAddress(val address: String, val prefix: Int) {
     } catch (e: Exception) {
       throw ConversionException(e.message, e)
     }
-
   }
 
   fun toSlashSeparated() = address + SEPARATOR + prefix
-
 }

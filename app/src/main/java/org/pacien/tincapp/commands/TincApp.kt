@@ -14,7 +14,6 @@ import java.io.FileNotFoundException
  * @author pacien
  */
 object TincApp {
-
   private val SCRIPT_SUFFIXES = listOf("-up", "-down", "-created", "-accepted")
   private val STATIC_SCRIPTS = listOf("tinc", "host", "subnet", "invitation").flatMap { s -> SCRIPT_SUFFIXES.map { s + it } }
 
@@ -49,5 +48,4 @@ object TincApp {
       .map { Pair(if (newPassphrase?.isNotEmpty() == true) PemUtils.encrypt(it.first, newPassphrase) else it.first, it.second) }
       .forEach { PemUtils.write(it.first, it.second.writer()) }
   }
-
 }

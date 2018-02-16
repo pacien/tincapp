@@ -10,7 +10,6 @@ import java.io.File
  */
 data class TincConfiguration(val ed25519PrivateKeyFile: File? = null,
                              val privateKeyFile: File? = null) {
-
   companion object {
 
     private val KEY_ED25519_PRIVATE_KEY_FILE = "Ed25519PrivateKeyFile"
@@ -20,7 +19,5 @@ data class TincConfiguration(val ed25519PrivateKeyFile: File? = null,
     fun fromTincConfiguration(c: Configuration) = TincConfiguration(
       c.getFile(KEY_ED25519_PRIVATE_KEY_FILE),
       c.getFile(KEY_PRIVATE_KEY_FILE))
-
   }
-
 }

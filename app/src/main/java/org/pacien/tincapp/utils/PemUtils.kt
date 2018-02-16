@@ -16,7 +16,6 @@ import java.io.Writer
  * @author pacien
  */
 object PemUtils {
-
   private val PROVIDER = org.bouncycastle.jce.provider.BouncyCastleProvider()
   private val ENCRYPTED_PROC_TYPE_HEADER = PemHeader("Proc-Type", "4,ENCRYPTED")
   private val DEK_INFO_HEADER_KEY = "DEK-Info"
@@ -58,5 +57,4 @@ object PemUtils {
     } else {
       obj
     }
-
 }

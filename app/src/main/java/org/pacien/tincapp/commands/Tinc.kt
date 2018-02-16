@@ -7,7 +7,6 @@ import org.pacien.tincapp.context.AppPaths
  * @author pacien
  */
 object Tinc {
-
   private fun newCommand(netName: String): Command =
     Command(AppPaths.tinc().absolutePath)
       .withOption("config", AppPaths.confDir(netName).absolutePath)
@@ -47,5 +46,4 @@ object Tinc {
         .withOption("config", AppPaths.confDir(netName).absolutePath)
         .withArguments("join", invitationUrl))
         .thenApply<String> { it.joinToString("\n") }
-
 }

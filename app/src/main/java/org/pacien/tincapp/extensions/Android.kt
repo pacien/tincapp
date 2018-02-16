@@ -9,7 +9,6 @@ import org.pacien.tincapp.context.App
  * @author pacien
  */
 object Android {
-
   fun <T> ArrayAdapter<T>.setElements(elems: Collection<T>) {
     setNotifyOnChange(false)
     clear()
@@ -21,5 +20,4 @@ object Android {
   fun TextView.setText(list: List<String>) {
     text = if (list.isNotEmpty()) list.joinToString("\n") else App.getContext().getString(R.string.value_none)
   }
-
 }

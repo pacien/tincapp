@@ -13,14 +13,12 @@ import org.pacien.tincapp.R
  * @author pacien
  */
 class App : Application() {
-
   override fun onCreate() {
     super.onCreate()
     appContext = applicationContext
   }
 
   companion object {
-
     private var appContext: Context? = null
 
     fun getContext() = appContext!!
@@ -30,14 +28,10 @@ class App : Application() {
       AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Dialog)
         .setTitle(title).setMessage(msg)
         .apply { if (manualLink != null) setNeutralButton(R.string.action_open_manual) { _, _ -> openURL(manualLink) } }
-        .setPositiveButton(R.string.action_close, dismissAction)
+        .setPositiveButton(R.string.action_close, { _, _ -> Unit })
         .create().apply { window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR) }.show()
 
     fun openURL(url: String) =
       appContext?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-
-    val dismissAction = { _: Any, _: Any -> /* nop */ }
-
   }
-
 }

@@ -10,7 +10,6 @@ import java.io.FileNotFoundException
  * @implNote Logs and PID files are stored in the cache directory for easy clean up.
  */
 object AppPaths {
-
   private val TINCD_BIN = "libtincd.so"
   private val TINC_BIN = "libtinc.so"
 
@@ -46,5 +45,4 @@ object AppPaths {
 
   fun tincd() = File(binDir(), TINCD_BIN)
   fun tinc() = File(binDir(), TINC_BIN)
-
 }

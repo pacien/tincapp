@@ -9,7 +9,6 @@ import org.pacien.tincapp.extensions.Java.applyIgnoringException
  * @author pacien
  */
 object VpnServiceBuilder {
-
   fun VpnService.Builder.addAddress(cidr: CidrAddress): VpnService.Builder = addAddress(cidr.address, cidr.prefix)
   fun VpnService.Builder.addRoute(cidr: CidrAddress): VpnService.Builder = addRoute(cidr.address, cidr.prefix)
   fun VpnService.Builder.allowBypass(allow: Boolean): VpnService.Builder = if (allow) allowBypass() else this
@@ -47,5 +46,4 @@ object VpnServiceBuilder {
     .allowBypass(cfg.allowBypass)
     .setBlocking(cfg.blocking)
     .overrideMtu(cfg.mtu)
-
 }

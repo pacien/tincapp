@@ -8,7 +8,6 @@ import org.pacien.tincapp.R
  * @author pacien
  */
 object AppInfo {
-
   fun appVersion(): String = App.getResources().getString(
     R.string.info_version_format,
     BuildConfig.VERSION_NAME,
@@ -27,5 +26,4 @@ object AppInfo {
     appVersion(),
     androidVersion(),
     supportedABIs()).joinToString("\n")
-
 }

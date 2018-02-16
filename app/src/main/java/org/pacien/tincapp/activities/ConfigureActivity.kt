@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.page_configure.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
-import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.extensions.Java.exceptionallyAccept
 
@@ -25,7 +24,6 @@ import org.pacien.tincapp.extensions.Java.exceptionallyAccept
  * @author pacien
  */
 class ConfigureActivity : BaseActivity() {
-
   companion object {
     val REQUEST_SCAN = 0
     val SCAN_PROVIDER = "com.google.zxing.client.android"
@@ -55,7 +53,7 @@ class ConfigureActivity : BaseActivity() {
         .setMessage(R.string.message_no_qr_code_scanner)
         .setPositiveButton(R.string.action_install) { _, _ ->
           startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$SCAN_PROVIDER")))
-        }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
+        }.setNegativeButton(R.string.action_cancel, { _, _ -> Unit }).show()
     }
   }
 
@@ -67,7 +65,7 @@ class ConfigureActivity : BaseActivity() {
           genDialog.new_net_name.text.toString(),
           genDialog.new_node_name.text.toString(),
           genDialog.new_passphrase.text.toString())
-      }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
+      }.setNegativeButton(R.string.action_cancel, { _, _ -> Unit }).show()
   }
 
   fun openJoinNetworkDialog(@Suppress("UNUSED_PARAMETER") v: View) {
@@ -78,7 +76,7 @@ class ConfigureActivity : BaseActivity() {
           joinDialog!!.net_name.text.toString(),
           joinDialog!!.invitation_url.text.toString(),
           joinDialog!!.join_passphrase.text.toString())
-      }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
+      }.setNegativeButton(R.string.action_cancel, { _, _ -> Unit }).show()
   }
 
   fun openEncryptDecryptPrivateKeyDialog(@Suppress("UNUSED_PARAMETER") v: View) {
@@ -89,7 +87,7 @@ class ConfigureActivity : BaseActivity() {
           encryptDecryptDialog!!.enc_dec_net_name.text.toString(),
           encryptDecryptDialog.enc_dec_current_passphrase.text.toString(),
           encryptDecryptDialog.enc_dec_new_passphrase.text.toString())
-      }.setNegativeButton(R.string.action_cancel, App.dismissAction).show()
+      }.setNegativeButton(R.string.action_cancel, { _, _ -> Unit }).show()
   }
 
   private fun writeContent() {
@@ -123,5 +121,4 @@ class ConfigureActivity : BaseActivity() {
         .exceptionallyAccept { runOnUiThread { showErrorDialog(it.cause!!.localizedMessage) } }
     }
   }
-
 }

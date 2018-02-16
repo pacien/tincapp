@@ -25,9 +25,7 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
                                      val allowBypass: Boolean = false,
                                      val blocking: Boolean = false,
                                      val mtu: Int? = null) {
-
   companion object {
-
     private val KEY_ADDRESSES = "Address"
     private val KEY_ROUTES = "Route"
     private val KEY_DNS_SERVERS = "DNSServer"
@@ -63,7 +61,6 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
       c.getStringList(INVITATION_KEY_ROUTES)
         .map { it.substringBefore(' ') }
         .map { CidrAddress.fromSlashSeparated(it) })
-
   }
 
   fun write(f: File) = FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration::class.java)
@@ -74,5 +71,4 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
     }
     builder.save()
   }
-
 }

@@ -6,7 +6,6 @@ import java.util.*
  * @author pacien
  */
 internal class Command(private val cmd: String) {
-
   private data class Option(val key: String, val value: String?) {
     fun toCommandLineOption(): String = if (value != null) "--$key=$value" else "--$key"
   }
@@ -25,7 +24,5 @@ internal class Command(private val cmd: String) {
   }
 
   fun asList(): List<String> = listOf(cmd) + opts.map { it.toCommandLineOption() } + args
-
   fun asArray(): Array<String> = this.asList().toTypedArray()
-
 }

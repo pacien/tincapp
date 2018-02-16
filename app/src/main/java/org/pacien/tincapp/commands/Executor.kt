@@ -12,7 +12,6 @@ import java.io.InputStreamReader
  * @author pacien
  */
 internal object Executor {
-
   private const val FAILED = -1
 
   class CommandExecutionException(msg: String) : Exception(msg)
@@ -56,5 +55,4 @@ internal object Executor {
 
   fun runAsyncTask(r: () -> Unit) = CompletableFuture.runAsync(Runnable(r), AsyncTask.THREAD_POOL_EXECUTOR)!!
   fun <U> supplyAsyncTask(s: () -> U) = CompletableFuture.supplyAsync(Supplier(s), AsyncTask.THREAD_POOL_EXECUTOR)!!
-
 }

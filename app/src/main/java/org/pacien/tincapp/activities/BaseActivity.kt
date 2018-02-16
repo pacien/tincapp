@@ -18,7 +18,6 @@ import org.pacien.tincapp.context.AppInfo
  * @author pacien
  */
 abstract class BaseActivity : AppCompatActivity() {
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.base)
@@ -38,7 +37,7 @@ abstract class BaseActivity : AppCompatActivity() {
         resources.getString(R.string.app_license) + "\n\n" +
         AppInfo.all())
       .setNeutralButton(R.string.action_open_project_website) { _, _ -> App.openURL(resources.getString(R.string.app_website_url)) }
-      .setPositiveButton(R.string.action_close, App.dismissAction)
+      .setPositiveButton(R.string.action_close, { _, _ -> Unit })
       .show()
   }
 
@@ -47,6 +46,5 @@ abstract class BaseActivity : AppCompatActivity() {
   protected fun showProgressDialog(@StringRes msg: Int): ProgressDialog = ProgressDialog.show(this, null, getString(msg), true, false)
   protected fun showErrorDialog(msg: String): AlertDialog = AlertDialog.Builder(this)
     .setTitle(R.string.title_error).setMessage(msg)
-    .setPositiveButton(R.string.action_close, App.dismissAction).show()
-
+    .setPositiveButton(R.string.action_close, { _, _ -> Unit }).show()
 }
