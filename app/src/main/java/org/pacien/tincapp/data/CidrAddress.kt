@@ -17,4 +17,5 @@ data class CidrAddress(val address: String, val prefix: Int) {
   }
 
   fun toSlashSeparated() = address + SEPARATOR + prefix
+  override fun toString(): String = "$address/$prefix"
 }
