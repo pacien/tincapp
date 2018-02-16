@@ -24,6 +24,11 @@
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
+			<intent-filter>
+				<action android:name="org.pacien.tincapp.intent.action.CONNECT"/>
+				<data android:scheme="tinc"/>
+				<category android:name="android.intent.category.DEFAULT"/>
+			</intent-filter>
 		</activity>
 
 		<activity
@@ -37,16 +42,6 @@
 			android:name=".activities.StatusActivity"
 			android:configChanges="orientation|screenSize"
 			android:theme="@style/AppTheme.NoActionBar">
-		</activity>
-
-		<activity
-			android:name=".activities.LaunchActivity"
-			android:theme="@style/AppTheme.NoActionBar">
-			<intent-filter>
-				<action android:name="org.pacien.tincapp.intent.action.CONNECT"/>
-				<data android:scheme="tinc"/>
-				<category android:name="android.intent.category.DEFAULT"/>
-			</intent-filter>
 			<intent-filter>
 				<action android:name="org.pacien.tincapp.intent.action.DISCONNECT"/>
 				<category android:name="android.intent.category.DEFAULT"/>

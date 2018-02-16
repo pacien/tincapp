@@ -17,6 +17,10 @@ object Tinc {
     Executor.call(newCommand(netName).withArguments("stop"))
       .thenApply { }
 
+  fun pid(netName: String): CompletableFuture<Int> =
+    Executor.call(newCommand(netName).withArguments("pid"))
+      .thenApply { Integer.parseInt(it.first()) }
+
   fun dumpNodes(netName: String, reachable: Boolean = false): CompletableFuture<List<String>> =
     Executor.call(
       if (reachable) newCommand(netName).withArguments("dump", "reachable", "nodes")

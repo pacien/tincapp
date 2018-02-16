@@ -61,6 +61,7 @@
 	<string name="action_unlock">Unlock</string>
 	<string name="action_apply">Apply</string>
 	<string name="action_encrypt_decrypt_private_keys">Encrypt or decrypt private keys</string>
+	<string name="action_dismiss">Dismiss</string>
 
 	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
 	<string name="message_no_known_node">No known node</string>
@@ -75,6 +76,9 @@
 	<string name="message_encrypting_decrypting_private_keys">Encrypting/decrypting private keys</string>
 	<string name="message_could_not_decrypt_private_keys_format">Could not decrypt private keys:\n\n%1$s</string>
 	<string name="message_storage_unavailable">Storage directory is unavailable.</string>
+	<string name="message_starting_vpn">Starting VPN…</string>
+	<string name="message_disconnecting_vpn">Disconnecting VPN…</string>
+	<string name="message_passphrase_required">A passphrase is required to unlock the keyring.</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>
