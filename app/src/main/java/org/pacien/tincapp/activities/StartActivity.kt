@@ -117,6 +117,7 @@ class StartActivity : BaseActivity() {
   }
 
   private val startupBroadcastReceiver = SimpleBroadcastReceiver(IntentFilter(Actions.EVENT_CONNECTED), this::onVpnStart)
+  private val errorBroadcastReceiver = SimpleBroadcastReceiver(IntentFilter(Actions.EVENT_ABORTED), this::onVpnStartError)
 
   private var connectDialog: ProgressDialog? = null
 
@@ -148,10 +149,12 @@ class StartActivity : BaseActivity() {
     super.onResume()
     if (TincVpnService.isConnected()) openStatusActivity()
     startupBroadcastReceiver.register()
+    errorBroadcastReceiver.register()
   }
 
   override fun onPause() {
     startupBroadcastReceiver.unregister()
+    errorBroadcastReceiver.unregister()
     super.onPause()
   }
 
@@ -167,6 +170,10 @@ class StartActivity : BaseActivity() {
     connectDialog?.dismiss()
     if (connectionStarter.displayStatus()) openStatusActivity()
     finish()
+  }
+
+  private fun onVpnStartError() {
+    connectDialog?.dismiss()
   }
 
   private fun openStatusActivity() =

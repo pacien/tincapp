@@ -118,6 +118,7 @@ class TincVpnService : VpnService() {
     else
       Log.e(TAG, msg)
 
+    broadcastEvent(Actions.EVENT_ABORTED)
     App.alert(R.string.title_unable_to_start_tinc, msg,
       if (docTopic != null) resources.getString(R.string.app_doc_url_format, docTopic) else null)
   }
