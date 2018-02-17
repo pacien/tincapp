@@ -96,6 +96,8 @@ class TincVpnService : VpnService() {
     setState(netName, interfaceCfg, deviceFd, daemon)
     waitForDaemonStartup().thenRun {
       deviceFd.close()
+      privateKeys.first?.close()
+      privateKeys.second?.close()
       Log.i(TAG, "tinc daemon started.")
       broadcastEvent(Actions.EVENT_CONNECTED)
     }
