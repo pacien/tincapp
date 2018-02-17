@@ -2,7 +2,6 @@ package org.pacien.tincapp.activities
 
 import android.app.ProgressDialog
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
@@ -23,7 +22,7 @@ import org.pacien.tincapp.data.VpnInterfaceConfiguration
 import org.pacien.tincapp.extensions.Android.setElements
 import org.pacien.tincapp.extensions.Android.setText
 import org.pacien.tincapp.intent.Actions
-import org.pacien.tincapp.intent.SimpleBroadcastReceiver
+import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService
 import java.util.*
 import kotlin.concurrent.timerTask
@@ -32,7 +31,7 @@ import kotlin.concurrent.timerTask
  * @author pacien
  */
 class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
-  private val shutdownBroadcastReceiver = SimpleBroadcastReceiver(IntentFilter(Actions.EVENT_DISCONNECTED), this::onVpnShutdown)
+  private val broadcastMapper = BroadcastMapper(mapOf(Actions.EVENT_DISCONNECTED to this::onVpnShutdown))
   private var shutdownDialog: ProgressDialog? = null
   private var nodeListAdapter: ArrayAdapter<String>? = null
   private var refreshTimer: Timer? = null
@@ -82,12 +81,12 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
 
   override fun onResume() {
     super.onResume()
-    shutdownBroadcastReceiver.register()
+    broadcastMapper.register()
     updateView()
   }
 
   override fun onPause() {
-    shutdownBroadcastReceiver.unregister()
+    broadcastMapper.unregister()
     super.onPause()
   }
 

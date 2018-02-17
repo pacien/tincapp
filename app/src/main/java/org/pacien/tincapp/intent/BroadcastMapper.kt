@@ -10,10 +10,11 @@ import org.pacien.tincapp.context.App
 /**
  * @author pacien
  */
-class SimpleBroadcastReceiver(private val intentFilter: IntentFilter, private val eventHandler: () -> Unit) : BroadcastReceiver() {
+class BroadcastMapper(private val actionHandlers: Map<String, () -> Unit>) : BroadcastReceiver() {
   private val broadcastManager = LocalBroadcastManager.getInstance(App.getContext())
+  private val intentFilter = actionHandlers.keys.fold(IntentFilter(), { filter, action -> filter.apply { addAction(action) } })
 
   fun register() = broadcastManager.registerReceiver(this, intentFilter)
   fun unregister() = broadcastManager.unregisterReceiver(this)
-  override fun onReceive(context: Context?, intent: Intent?) = eventHandler()
+  override fun onReceive(context: Context?, intent: Intent?) = actionHandlers[intent?.action]?.invoke() ?: Unit
 }

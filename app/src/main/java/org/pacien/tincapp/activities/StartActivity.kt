@@ -3,7 +3,6 @@ package org.pacien.tincapp.activities
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.VpnService
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -22,7 +21,7 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.extensions.Android.setElements
 import org.pacien.tincapp.intent.Actions
-import org.pacien.tincapp.intent.SimpleBroadcastReceiver
+import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.utils.TincKeyring
 
@@ -116,8 +115,9 @@ class StartActivity : BaseActivity() {
     }
   }
 
-  private val startupBroadcastReceiver = SimpleBroadcastReceiver(IntentFilter(Actions.EVENT_CONNECTED), this::onVpnStart)
-  private val errorBroadcastReceiver = SimpleBroadcastReceiver(IntentFilter(Actions.EVENT_ABORTED), this::onVpnStartError)
+  private val broadcastMapper = BroadcastMapper(mapOf(
+    Actions.EVENT_CONNECTED to this::onVpnStart,
+    Actions.EVENT_ABORTED to this::onVpnStartError))
 
   private var connectDialog: ProgressDialog? = null
 
@@ -148,13 +148,11 @@ class StartActivity : BaseActivity() {
   override fun onResume() {
     super.onResume()
     if (TincVpnService.isConnected()) openStatusActivity()
-    startupBroadcastReceiver.register()
-    errorBroadcastReceiver.register()
+    broadcastMapper.register()
   }
 
   override fun onPause() {
-    startupBroadcastReceiver.unregister()
-    errorBroadcastReceiver.unregister()
+    broadcastMapper.unregister()
     super.onPause()
   }
 
