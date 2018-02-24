@@ -122,6 +122,6 @@
 	<TextView
 		android:id="@+id/node_list_placeholder"
 		style="@style/AppTheme.ListBlock.Placeholder"
-		android:text="@string/message_no_known_node"/>
+		android:text="@string/message_loading"/>
 
 </LinearLayout>

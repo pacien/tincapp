@@ -63,7 +63,6 @@
 	<string name="action_encrypt_decrypt_private_keys">加密或解密私钥</string>
 
 	<string name="message_no_network_configuration_found">未找到网络配置。</string>
-	<string name="message_no_known_node">没有已知的节点</string>
 	<string name="message_generating_configuration">生成节点配置…</string>
 	<string name="message_joining_network">加入网络…</string>
 	<string name="message_network_configuration_written">网络配置写入成功。</string>

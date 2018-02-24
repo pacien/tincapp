@@ -137,7 +137,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
 
   private fun writeNodeList(nodeList: List<String>) = runOnUiThread {
     nodeListAdapter?.setElements(nodeList)
-    node_list_placeholder.visibility = if (nodeListAdapter?.isEmpty != false) View.VISIBLE else View.GONE
+    node_list_placeholder.visibility = View.GONE
     list_wrapper.isRefreshing = false
   }
 
