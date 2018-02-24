@@ -113,7 +113,7 @@ class ConfigureActivity : BaseActivity() {
     R.string.message_encrypting_decrypting_private_keys,
     TincApp.setPassphrase(netName, currentPassphrase, newPassphrase))
 
-  private fun execAction(@StringRes label: Int, action: CompletableFuture<Void>) {
+  private fun execAction(@StringRes label: Int, action: CompletableFuture<Unit>) {
     showProgressDialog(label).let { progressDialog ->
       action
         .whenComplete { _, _ -> progressDialog.dismiss() }

@@ -1,6 +1,5 @@
 package org.pacien.tincapp.commands
 
-import java8.util.concurrent.CompletableFuture
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Executor.runAsyncTask
 import org.pacien.tincapp.context.App
@@ -30,17 +29,17 @@ object TincApp {
     throw FileNotFoundException(App.getResources().getString(R.string.message_network_config_not_found_format, e.message!!))
   }
 
-  fun removeScripts(netName: String): CompletableFuture<Void> = runAsyncTask {
+  fun removeScripts(netName: String) = runAsyncTask {
     listScripts(netName).forEach { it.delete() }
   }
 
-  fun generateIfaceCfg(netName: String): CompletableFuture<Void> = runAsyncTask {
+  fun generateIfaceCfg(netName: String) = runAsyncTask {
     VpnInterfaceConfiguration
       .fromInvitation(AppPaths.invitationFile(netName))
       .write(AppPaths.netConfFile(netName))
   }
 
-  fun setPassphrase(netName: String, currentPassphrase: String? = null, newPassphrase: String?): CompletableFuture<Void> = runAsyncTask {
+  fun setPassphrase(netName: String, currentPassphrase: String? = null, newPassphrase: String?) = runAsyncTask {
     listPrivateKeys(netName)
       .filter { it.exists() }
       .map { Pair(PemUtils.read(it), it) }

@@ -11,6 +11,7 @@ import org.apache.commons.configuration2.ex.ConversionException
 import org.bouncycastle.openssl.PEMException
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
+import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.Tincd
 import org.pacien.tincapp.context.App
@@ -136,9 +137,9 @@ class TincVpnService : VpnService() {
   }
 
   private fun waitForDaemonStartup() =
-    CompletableFuture
-      .runAsync { Thread.sleep(SETUP_DELAY) }
-      .thenCompose { if (daemon!!.isDone) daemon!! else CompletableFuture.runAsync { } }
+    Executor
+      .runAsyncTask { Thread.sleep(SETUP_DELAY) }
+      .thenCompose { if (daemon!!.isDone) daemon!! else Executor.runAsyncTask { Unit } }
 
   companion object {
     private const val SETUP_DELAY = 500L // ms
@@ -146,10 +147,10 @@ class TincVpnService : VpnService() {
     private var netName: String? = null
     private var interfaceCfg: VpnInterfaceConfiguration? = null
     private var fd: ParcelFileDescriptor? = null
-    private var daemon: CompletableFuture<Void>? = null
+    private var daemon: CompletableFuture<Unit>? = null
 
     private fun setState(netName: String?, interfaceCfg: VpnInterfaceConfiguration?,
-                         fd: ParcelFileDescriptor?, daemon: CompletableFuture<Void>?) {
+                         fd: ParcelFileDescriptor?, daemon: CompletableFuture<Unit>?) {
 
       TincVpnService.netName = netName
       TincVpnService.interfaceCfg = interfaceCfg

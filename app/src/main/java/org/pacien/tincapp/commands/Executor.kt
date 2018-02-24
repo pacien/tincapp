@@ -33,12 +33,12 @@ internal object Executor {
 
   private fun read(stream: InputStream) = BufferedReader(InputStreamReader(stream)).readLines()
 
-  fun forkExec(cmd: Command): CompletableFuture<Void> {
+  fun forkExec(cmd: Command): CompletableFuture<Unit> {
     val pid = forkExec(cmd.asArray()).also {
       if (it == FAILED) throw CommandExecutionException("Could not fork child process.")
     }
 
-    return CompletableFuture.runAsync {
+    return runAsyncTask {
       when (wait(pid)) {
         SUCCESS -> Unit
         FAILED -> throw CommandExecutionException("Process terminated abnormally.")
@@ -60,6 +60,6 @@ internal object Executor {
     }
   }
 
-  fun runAsyncTask(r: () -> Unit) = CompletableFuture.runAsync(Runnable(r), AsyncTask.THREAD_POOL_EXECUTOR)!!
+  fun runAsyncTask(r: () -> Unit) = CompletableFuture.supplyAsync(Supplier(r), AsyncTask.THREAD_POOL_EXECUTOR)!!
   fun <U> supplyAsyncTask(s: () -> U) = CompletableFuture.supplyAsync(Supplier(s), AsyncTask.THREAD_POOL_EXECUTOR)!!
 }

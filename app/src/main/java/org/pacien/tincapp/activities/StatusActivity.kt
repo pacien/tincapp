@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.dialog_node_details.view.*
 import kotlinx.android.synthetic.main.fragment_list_view.*
 import kotlinx.android.synthetic.main.fragment_network_status_header.*
 import org.pacien.tincapp.R
+import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
 import org.pacien.tincapp.extensions.Android.setElements
@@ -163,7 +164,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
       TincVpnService.isConnected() ->
         Tinc.dumpNodes(TincVpnService.getCurrentNetName()!!).thenApply<List<String>> { it.map { it.substringBefore(' ') } }
       else ->
-        CompletableFuture.supplyAsync<List<String>> { emptyList() }
+        Executor.supplyAsyncTask<List<String>> { emptyList() }
     }
   }
 }
