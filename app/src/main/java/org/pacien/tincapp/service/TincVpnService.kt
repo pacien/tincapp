@@ -94,12 +94,18 @@ class TincVpnService : VpnService() {
 
     val daemon = Tincd.start(netName, deviceFd.fd, privateKeys.first?.fd, privateKeys.second?.fd)
     setState(netName, interfaceCfg, deviceFd, daemon)
-    waitForDaemonStartup().thenRun {
+
+    waitForDaemonStartup().whenComplete { _, exception ->
       deviceFd.close()
       privateKeys.first?.close()
       privateKeys.second?.close()
-      Log.i(TAG, "tinc daemon started.")
-      broadcastEvent(Actions.EVENT_CONNECTED)
+
+      if (exception != null) {
+        reportError(resources.getString(R.string.message_daemon_exited, exception.cause!!.message!!), exception)
+      } else {
+        Log.i(TAG, "tinc daemon started.")
+        broadcastEvent(Actions.EVENT_CONNECTED)
+      }
     }
   }
 
@@ -132,7 +138,7 @@ class TincVpnService : VpnService() {
   private fun waitForDaemonStartup() =
     CompletableFuture
       .runAsync { Thread.sleep(SETUP_DELAY) }
-      .thenCompose { netName?.let { Tinc.pid(it) } ?: CompletableFuture.completedFuture(0) }
+      .thenCompose { if (daemon!!.isDone) daemon!! else CompletableFuture.runAsync { } }
 
   companion object {
     private const val SETUP_DELAY = 500L // ms

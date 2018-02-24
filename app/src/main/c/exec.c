@@ -36,5 +36,7 @@ Java_org_pacien_tincapp_commands_Executor_forkExec(JNIEnv *env, jclass class, jo
 
 JNIEXPORT jint JNICALL
 Java_org_pacien_tincapp_commands_Executor_wait(JNIEnv *env, jclass class, jint pid) {
-  return waitpid(pid, NULL, 0);
+  int status;
+  waitpid(pid, &status, 0);
+  return WIFEXITED(status) ? WEXITSTATUS(status) : -1;
 }

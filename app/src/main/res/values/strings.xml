@@ -79,6 +79,7 @@
 	<string name="message_starting_vpn">Starting VPN…</string>
 	<string name="message_disconnecting_vpn">Disconnecting VPN…</string>
 	<string name="message_passphrase_required">A passphrase is required to unlock the keyring.</string>
+	<string name="message_daemon_exited">Tinc daemon exited during startup:\n%1$s\n\nCheck the logs for more details.</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>
