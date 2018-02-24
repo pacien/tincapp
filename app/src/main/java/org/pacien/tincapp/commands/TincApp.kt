@@ -39,6 +39,12 @@ object TincApp {
       .write(AppPaths.netConfFile(netName))
   }
 
+  fun generateIfaceCfgTemplate(netName: String) = runAsyncTask {
+    App.getResources().openRawResource(R.raw.network).use { inputStream ->
+      AppPaths.netConfFile(netName).outputStream().use { inputStream.copyTo(it) }
+    }
+  }
+
   fun setPassphrase(netName: String, currentPassphrase: String? = null, newPassphrase: String?) = runAsyncTask {
     listPrivateKeys(netName)
       .filter { it.exists() }

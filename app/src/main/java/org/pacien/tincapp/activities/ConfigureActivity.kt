@@ -100,6 +100,7 @@ class ConfigureActivity : BaseActivity() {
     R.string.message_generating_configuration,
     Tinc.init(netName, nodeName)
       .thenCompose { TincApp.removeScripts(netName) }
+      .thenCompose { TincApp.generateIfaceCfgTemplate(netName) }
       .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) })
 
   private fun joinNetwork(netName: String, url: String, passphrase: String? = null) = execAction(
