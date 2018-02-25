@@ -47,16 +47,16 @@ internal object Executor {
     }
   }
 
-  fun call(cmd: Command): CompletableFuture<List<String>> {
-    val proc = try {
-      ProcessBuilder(cmd.asList()).start()
-    } catch (e: IOException) {
-      throw CommandExecutionException(e.message ?: "Could not start process.")
-    }
+  fun run(cmd: Command): Process = try {
+    ProcessBuilder(cmd.asList()).start()
+  } catch (e: IOException) {
+    throw CommandExecutionException(e.message ?: "Could not start process.")
+  }
 
-    return supplyAsyncTask<List<String>> {
-      if (proc.waitFor() == 0) read(proc.inputStream)
-      else throw CommandExecutionException(read(proc.errorStream).lastOrNull() ?: "Non-zero exit status.")
+  fun call(cmd: Command): CompletableFuture<List<String>> = run(cmd).let { process ->
+    supplyAsyncTask<List<String>> {
+      if (process.waitFor() == 0) read(process.inputStream)
+      else throw CommandExecutionException(read(process.errorStream).lastOrNull() ?: "Non-zero exit status.")
     }
   }
 

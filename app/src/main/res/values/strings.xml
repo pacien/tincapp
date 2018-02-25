@@ -14,6 +14,8 @@
 	<string name="menu_about">About this app</string>
 	<string name="menu_configure">Configure</string>
 	<string name="menu_disconnect">Disconnect</string>
+	<string name="menu_show_log">Show log</string>
+	<string name="menu_toggle_logging">Toggle logging</string>
 
 	<string name="field_net_name">Tinc network name</string>
 	<string name="field_node_name">Name of this node</string>
@@ -80,6 +82,7 @@
 	<string name="message_passphrase_required">A passphrase is required to unlock the keyring.</string>
 	<string name="message_daemon_exited">Tinc daemon exited during startup:\n%1$s\n\nCheck the logs for more details.</string>
 	<string name="message_loading">Loading…</string>
+	<string name="message_log_level_set">Log level set to %1$d.</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>

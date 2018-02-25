@@ -46,4 +46,9 @@ object Tinc {
         .withOption("config", AppPaths.confDir(netName).absolutePath)
         .withArguments("join", invitationUrl))
         .thenApply<String> { it.joinToString("\n") }
+
+  fun log(netName: String, level: Int? = null): Process =
+    Executor.run(newCommand(netName)
+      .withArguments("log")
+      .apply { if (level != null) withArguments(level.toString()) })
 }

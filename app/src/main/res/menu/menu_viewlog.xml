@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			xmlns:tools="http://schemas.android.com/tools"
+			tools:context="org.pacien.tincapp.activities.ViewLogActivity">
+
+	<item
+		android:icon="@drawable/ic_pause_circle_outline_primary_24dp"
+		android:onClick="toggleLogging"
+		android:tint="@color/colorAccent"
+		android:title="@string/menu_toggle_logging"
+		app:showAsAction="ifRoom"/>
+
+</menu>

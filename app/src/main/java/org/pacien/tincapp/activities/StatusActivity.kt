@@ -123,6 +123,9 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     TincVpnService.disconnect()
   }
 
+  fun openLogViewer(@Suppress("UNUSED_PARAMETER") i: MenuItem) =
+    startActivity(Intent(this, ViewLogActivity::class.java))
+
   private fun writeNetworkInfo(cfg: VpnInterfaceConfiguration) {
     text_network_name.text = TincVpnService.getCurrentNetName() ?: getString(R.string.value_none)
     text_network_ip_addresses.setText(cfg.addresses.map { it.toSlashSeparated() })
