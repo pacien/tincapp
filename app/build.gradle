@@ -57,9 +57,7 @@ dependencies {
   }
 
   compile 'org.bouncycastle:bcpkix-jdk15on:1.57'
-
   compile 'net.sourceforge.streamsupport:streamsupport-cfuture:1.5.5'
-
   compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
