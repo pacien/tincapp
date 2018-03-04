@@ -65,6 +65,7 @@
 	<string name="action_apply">Apply</string>
 	<string name="action_encrypt_decrypt_private_keys">Encrypt or decrypt private keys</string>
 	<string name="action_dismiss">Dismiss</string>
+	<string name="action_open_web_page">Open web page</string>
 
 	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
 	<string name="message_generating_configuration">Generating node configuration…</string>

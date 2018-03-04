@@ -35,7 +35,10 @@ class App : Application() {
         .create().apply { window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR) }.show()
     }
 
-    fun openURL(url: String) =
-      appContext?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    fun openURL(url: String) {
+      val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+      val chooser = Intent.createChooser(intent, getResources().getString(R.string.action_open_web_page))
+      appContext?.startActivity(chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
   }
 }
