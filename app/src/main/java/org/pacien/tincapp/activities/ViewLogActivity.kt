@@ -1,5 +1,6 @@
 package org.pacien.tincapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -21,8 +22,10 @@ class ViewLogActivity : BaseActivity() {
   companion object {
     private const val LOG_LINES = 250
     private const val LOG_LEVEL = 5
-    private const val NEW_LINE = "\n\n"
+    private const val NEW_LINE = "\n"
+    private const val SPACED_NEW_LINE = "\n\n"
     private const val UPDATE_INTERVAL = 250L // ms
+    private const val MIME_TYPE = "text/plain"
   }
 
   private val log = LinkedList<String>()
@@ -61,6 +64,17 @@ class ViewLogActivity : BaseActivity() {
     }
   }
 
+  fun share(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem) {
+    synchronized(this) {
+      val logFragment = log.joinToString(NEW_LINE)
+      val shareIntent = Intent(Intent.ACTION_SEND)
+        .setType(MIME_TYPE)
+        .putExtra(Intent.EXTRA_TEXT, logFragment)
+
+      startActivity(Intent.createChooser(shareIntent, resources.getString(R.string.menu_share_log)))
+    }
+  }
+
   private fun startLogging(level: Int = LOG_LEVEL) {
     disableUserScroll()
     appendLog(resources.getString(R.string.message_log_level_set, level))
@@ -96,7 +110,7 @@ class ViewLogActivity : BaseActivity() {
   }
 
   private fun printLog() = synchronized(this) {
-    log.joinToString(NEW_LINE).let {
+    log.joinToString(SPACED_NEW_LINE).let {
       logview_text.post {
         logview_text.text = it
         logview_frame.post { logview_frame.fullScroll(View.FOCUS_DOWN) }

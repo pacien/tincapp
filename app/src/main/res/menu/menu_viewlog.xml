@@ -10,4 +10,11 @@
 		android:title="@string/menu_toggle_logging"
 		app:showAsAction="ifRoom"/>
 
+	<item
+		android:icon="@drawable/ic_share_primary_24dp"
+		android:onClick="share"
+		android:tint="@color/colorAccent"
+		android:title="@string/menu_share_log"
+		app:showAsAction="ifRoom"/>
+
 </menu>

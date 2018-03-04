@@ -16,6 +16,7 @@
 	<string name="menu_disconnect">Disconnect</string>
 	<string name="menu_show_log">Show log</string>
 	<string name="menu_toggle_logging">Toggle logging</string>
+	<string name="menu_share_log">Share log</string>
 
 	<string name="field_net_name">Tinc network name</string>
 	<string name="field_node_name">Name of this node</string>
