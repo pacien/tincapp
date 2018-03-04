@@ -16,7 +16,7 @@ import org.pacien.tincapp.service.TincVpnService
  */
 class ViewLogActivity : BaseActivity() {
   companion object {
-    private const val LOG_LEVEL = 4
+    private const val LOG_LEVEL = 5
     private const val NEW_LINE = "\n"
   }
 
