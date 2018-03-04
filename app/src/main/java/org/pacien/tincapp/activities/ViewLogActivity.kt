@@ -1,9 +1,10 @@
 package org.pacien.tincapp.activities
 
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ScrollView
 import kotlinx.android.synthetic.main.base.*
 import kotlinx.android.synthetic.main.page_viewlog.*
 import org.pacien.tincapp.R
@@ -20,7 +21,7 @@ class ViewLogActivity : BaseActivity() {
   companion object {
     private const val LOG_LINES = 250
     private const val LOG_LEVEL = 5
-    private const val NEW_LINE = "\n"
+    private const val NEW_LINE = "\n\n"
     private const val UPDATE_INTERVAL = 250L // ms
   }
 
@@ -53,37 +54,35 @@ class ViewLogActivity : BaseActivity() {
   fun toggleLogging(menuItem: MenuItem) {
     if (logger == null) {
       startLogging()
-      text_log.movementMethod = null
-      text_log.setTextIsSelectable(false)
       menuItem.setIcon(R.drawable.ic_pause_circle_outline_primary_24dp)
     } else {
       stopLogging()
-      text_log.movementMethod = ScrollingMovementMethod.getInstance()
-      text_log.setTextIsSelectable(true)
       menuItem.setIcon(R.drawable.ic_pause_circle_filled_primary_24dp)
     }
   }
 
   private fun startLogging(level: Int = LOG_LEVEL) {
+    disableUserScroll()
     appendLog(resources.getString(R.string.message_log_level_set, level))
     Tinc.log(TincVpnService.getCurrentNetName()!!, level).let { process ->
       logger = process
-      Executor.runAsyncTask { printLog(process) }
+      Executor.runAsyncTask { captureLog(process) }
     }
-    logUpdateTimer = timer(period = UPDATE_INTERVAL, action = { updateLog() })
+    logUpdateTimer = timer(period = UPDATE_INTERVAL, action = { printLog() })
   }
 
   private fun stopLogging() {
+    enableUserScroll()
     logger?.destroy()
     logger = null
     logUpdateTimer?.cancel()
     logUpdateTimer?.purge()
     logUpdateTimer = null
     appendLog(resources.getString(R.string.message_log_paused))
-    updateLog()
+    printLog()
   }
 
-  private fun printLog(logger: Process) {
+  private fun captureLog(logger: Process) {
     logger.inputStream?.use { inputStream ->
       inputStream.bufferedReader().useLines { lines ->
         lines.forEach { appendLog(it) }
@@ -96,9 +95,28 @@ class ViewLogActivity : BaseActivity() {
     log.addLast(line)
   }
 
-  private fun updateLog() = synchronized(this) {
-    log.joinToString(NEW_LINE + NEW_LINE, NEW_LINE, NEW_LINE).let {
-      text_log.post { text_log.text = it }
+  private fun printLog() = synchronized(this) {
+    log.joinToString(NEW_LINE).let {
+      logview_text.post {
+        logview_text.text = it
+        logview_frame.post { logview_frame.fullScroll(View.FOCUS_DOWN) }
+      }
     }
+  }
+
+  private fun enableUserScroll() {
+    logview_text.setTextIsSelectable(true)
+    logview_frame.setState(true)
+  }
+
+  private fun disableUserScroll() {
+    logview_text.setTextIsSelectable(false)
+    logview_frame.setState(false)
+  }
+
+  private fun ScrollView.setState(enabled: Boolean) {
+    if (enabled) setOnTouchListener(null) else setOnTouchListener { _, _ -> true }
+    logview_frame.isSmoothScrollingEnabled = enabled
+    logview_frame.isVerticalScrollBarEnabled = enabled
   }
 }
