@@ -83,6 +83,7 @@
 	<string name="message_daemon_exited">Tinc daemon exited during startup:\n%1$s\n\nCheck the logs for more details.</string>
 	<string name="message_loading">Loading…</string>
 	<string name="message_log_level_set">Log level set to %1$d.</string>
+	<string name="message_log_paused">Logging paused.</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>

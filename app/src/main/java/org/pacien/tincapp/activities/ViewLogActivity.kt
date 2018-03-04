@@ -10,16 +10,22 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.service.TincVpnService
+import java.util.*
+import kotlin.concurrent.timer
 
 /**
  * @author pacien
  */
 class ViewLogActivity : BaseActivity() {
   companion object {
+    private const val LOG_LINES = 250
     private const val LOG_LEVEL = 5
     private const val NEW_LINE = "\n"
+    private const val UPDATE_INTERVAL = 250L // ms
   }
 
+  private val log = LinkedList<String>()
+  private var logUpdateTimer: Timer? = null
   private var logger: Process? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,32 +65,40 @@ class ViewLogActivity : BaseActivity() {
   }
 
   private fun startLogging(level: Int = LOG_LEVEL) {
-    text_log.append(NEW_LINE)
-    text_log.append(resources.getString(R.string.message_log_level_set, level))
-    text_log.append(NEW_LINE)
-
+    appendLog(resources.getString(R.string.message_log_level_set, level))
     Tinc.log(TincVpnService.getCurrentNetName()!!, level).let { process ->
       logger = process
       Executor.runAsyncTask { printLog(process) }
     }
+    logUpdateTimer = timer(period = UPDATE_INTERVAL, action = { updateLog() })
   }
 
   private fun stopLogging() {
     logger?.destroy()
     logger = null
+    logUpdateTimer?.cancel()
+    logUpdateTimer?.purge()
+    logUpdateTimer = null
+    appendLog(resources.getString(R.string.message_log_paused))
+    updateLog()
   }
 
   private fun printLog(logger: Process) {
     logger.inputStream?.use { inputStream ->
       inputStream.bufferedReader().useLines { lines ->
-        lines.forEach {
-          text_log.post {
-            text_log.append(NEW_LINE)
-            text_log.append(it)
-            text_log.append(NEW_LINE)
-          }
-        }
+        lines.forEach { appendLog(it) }
       }
+    }
+  }
+
+  private fun appendLog(line: String) = synchronized(this) {
+    if (log.size >= LOG_LINES) log.removeFirst()
+    log.addLast(line)
+  }
+
+  private fun updateLog() = synchronized(this) {
+    log.joinToString(NEW_LINE + NEW_LINE, NEW_LINE, NEW_LINE).let {
+      text_log.post { text_log.text = it }
     }
   }
 }
