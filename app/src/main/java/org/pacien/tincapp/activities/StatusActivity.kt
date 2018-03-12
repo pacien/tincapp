@@ -139,7 +139,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     text_network_disallowed_applications.setText(cfg.disallowedApplications)
   }
 
-  private fun writeNodeList(nodeList: List<String>) = runOnUiThread {
+  private fun writeNodeList(nodeList: List<String>) {
     nodeListAdapter?.setElements(nodeList)
     node_list_placeholder.visibility = View.GONE
     list_wrapper.isRefreshing = false

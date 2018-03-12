@@ -41,6 +41,10 @@ abstract class BaseActivity : AppCompatActivity() {
       .show()
   }
 
+  fun runOnUiThread(action: () -> Unit) {
+    if (!isFinishing && !isDestroyed) super.runOnUiThread(action)
+  }
+
   protected fun notify(@StringRes msg: Int) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
   protected fun notify(msg: String) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
   protected fun showProgressDialog(@StringRes msg: Int): ProgressDialog = ProgressDialog.show(this, null, getString(msg), true, false)
