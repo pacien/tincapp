@@ -79,6 +79,10 @@ class TincVpnService : VpnService() {
         .establish()!!
     } catch (e: IllegalArgumentException) {
       return reportError(resources.getString(R.string.message_network_config_invalid_format, e.message!!), e, "network-interface")
+    } catch (e: IllegalStateException) {
+      return reportError(resources.getString(R.string.message_could_not_configure_iface, e.message!!), e)
+    } catch (e: NullPointerException) {
+      return reportError(resources.getString(R.string.message_could_not_bind_iface), e)
     }
 
     val privateKeys = try {
