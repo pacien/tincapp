@@ -1,5 +1,9 @@
 -keep class org.bouncycastle.**
+-keep class ch.qos.** { *; }
+-keep class org.slf4j.** { *; }
+-keepattributes *Annotation*
 -dontwarn org.apache.commons.**
 -dontwarn org.bouncycastle.**
+-dontwarn ch.qos.logback.core.net.*
 -dontwarn sun.misc.Unsafe
 -dontwarn build.IgnoreJava8API

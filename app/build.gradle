@@ -58,6 +58,8 @@ dependencies {
 
   compile 'org.bouncycastle:bcpkix-jdk15on:1.57'
   compile 'net.sourceforge.streamsupport:streamsupport-cfuture:1.5.5'
+  compile 'org.slf4j:slf4j-api:1.7.25'
+  compile 'com.github.tony19:logback-android:1.1.1-9'
   compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 

@@ -10,21 +10,22 @@ import java.io.FileNotFoundException
  * @implNote Logs and PID files are stored in the cache directory for easy clean up.
  */
 object AppPaths {
-  private val TINCD_BIN = "libtincd.so"
-  private val TINC_BIN = "libtinc.so"
+  private const val TINCD_BIN = "libtincd.so"
+  private const val TINC_BIN = "libtinc.so"
 
-  private val LOGFILE_FORMAT = "tinc.%s.log"
-  private val PIDFILE_FORMAT = "tinc.%s.pid"
+  private const val APPLOG_FILE = "tincapp.log"
+  private const val LOGFILE_FORMAT = "tinc.%s.log"
+  private const val PIDFILE_FORMAT = "tinc.%s.pid"
 
-  private val NET_CONF_FILE = "network.conf"
-  private val NET_TINC_CONF_FILE = "tinc.conf"
-  private val NET_HOSTS_DIR = "hosts"
-  private val NET_INVITATION_FILE = "invitation-data"
-  private val NET_DEFAULT_ED25519_PRIVATE_KEY_FILE = "ed25519_key.priv"
-  private val NET_DEFAULT_RSA_PRIVATE_KEY_FILE = "rsa_key.priv"
+  private const val NET_CONF_FILE = "network.conf"
+  private const val NET_TINC_CONF_FILE = "tinc.conf"
+  private const val NET_HOSTS_DIR = "hosts"
+  private const val NET_INVITATION_FILE = "invitation-data"
+  private const val NET_DEFAULT_ED25519_PRIVATE_KEY_FILE = "ed25519_key.priv"
+  private const val NET_DEFAULT_RSA_PRIVATE_KEY_FILE = "rsa_key.priv"
 
   fun storageAvailable() =
-  Environment.getExternalStorageState().let { it == Environment.MEDIA_MOUNTED && it != Environment.MEDIA_MOUNTED_READ_ONLY }
+    Environment.getExternalStorageState().let { it == Environment.MEDIA_MOUNTED && it != Environment.MEDIA_MOUNTED_READ_ONLY }
 
   fun cacheDir() = App.getContext().externalCacheDir
   fun confDir() = App.getContext().getExternalFilesDir(null)
@@ -37,6 +38,7 @@ object AppPaths {
   fun invitationFile(netName: String) = File(confDir(netName), NET_INVITATION_FILE)
   fun logFile(netName: String) = File(cacheDir(), String.format(LOGFILE_FORMAT, netName))
   fun pidFile(netName: String) = File(App.getContext().cacheDir, String.format(PIDFILE_FORMAT, netName))
+  fun appLogFile() = File(cacheDir(), APPLOG_FILE)
 
   fun existing(f: File) = f.apply { if (!exists()) throw FileNotFoundException(f.absolutePath) }
 
