@@ -11,8 +11,8 @@ android {
     minSdkVersion 21
     targetSdkVersion 21
     multiDexEnabled true
-    versionCode 11
-    versionName '0.11'
+    versionCode 12
+    versionName '0.12'
     ndk {
       abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a'
     }
