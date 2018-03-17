@@ -2,6 +2,7 @@
 -keep class ch.qos.** { *; }
 -keep class org.slf4j.** { *; }
 -keepattributes *Annotation*
+-dontobfuscate
 -dontwarn org.apache.commons.**
 -dontwarn org.bouncycastle.**
 -dontwarn ch.qos.logback.core.net.*
