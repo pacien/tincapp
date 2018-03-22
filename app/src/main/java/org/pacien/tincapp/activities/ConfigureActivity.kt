@@ -19,14 +19,16 @@ import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.extensions.Java.exceptionallyAccept
+import java.util.regex.Pattern
 
 /**
  * @author pacien
  */
 class ConfigureActivity : BaseActivity() {
   companion object {
-    val REQUEST_SCAN = 0
-    val SCAN_PROVIDER = "com.google.zxing.client.android"
+    private const val REQUEST_SCAN = 0
+    private const val SCAN_PROVIDER = "com.google.zxing.client.android"
+    private val NETWORK_NAME_PATTERN = Pattern.compile("^[^\\x00/]*$")
   }
 
   private var joinDialog: View? = null
@@ -98,21 +100,24 @@ class ConfigureActivity : BaseActivity() {
 
   private fun generateConf(netName: String, nodeName: String, passphrase: String? = null) = execAction(
     R.string.message_generating_configuration,
-    Tinc.init(netName, nodeName)
+    validateNetName(netName)
+      .thenCompose { Tinc.init(netName, nodeName) }
       .thenCompose { TincApp.removeScripts(netName) }
       .thenCompose { TincApp.generateIfaceCfgTemplate(netName) }
       .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) })
 
   private fun joinNetwork(netName: String, url: String, passphrase: String? = null) = execAction(
     R.string.message_joining_network,
-    Tinc.join(netName, url)
+    validateNetName(netName)
+      .thenCompose { Tinc.join(netName, url) }
       .thenCompose { TincApp.removeScripts(netName) }
       .thenCompose { TincApp.generateIfaceCfg(netName) }
       .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) })
 
   private fun encryptDecryptPrivateKeys(netName: String, currentPassphrase: String, newPassphrase: String) = execAction(
     R.string.message_encrypting_decrypting_private_keys,
-    TincApp.setPassphrase(netName, currentPassphrase, newPassphrase))
+    validateNetName(netName)
+      .thenCompose { TincApp.setPassphrase(netName, currentPassphrase, newPassphrase) })
 
   private fun execAction(@StringRes label: Int, action: CompletableFuture<Unit>) {
     showProgressDialog(label).let { progressDialog ->
@@ -122,4 +127,10 @@ class ConfigureActivity : BaseActivity() {
         .exceptionallyAccept { runOnUiThread { showErrorDialog(it.cause!!.localizedMessage) } }
     }
   }
+
+  private fun validateNetName(netName: String): CompletableFuture<Unit> =
+    if (NETWORK_NAME_PATTERN.matcher(netName).matches())
+      CompletableFuture.completedFuture(Unit)
+    else
+      CompletableFuture.failedFuture(IllegalArgumentException(resources.getString(R.string.message_invalid_network_name)))
 }

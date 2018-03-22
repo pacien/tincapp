@@ -88,6 +88,7 @@
 	<string name="message_log_paused">Logging paused.</string>
 	<string name="message_could_not_configure_iface">Could not apply network interface configuration:\n\n%1$s</string>
 	<string name="message_could_not_bind_iface">Could not bind network interface. Is another VPN running?</string>
+	<string name="message_invalid_network_name">Invalid network name.</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>
