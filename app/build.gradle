@@ -4,11 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
   compileSdkVersion 25
-  buildToolsVersion '26.0.2'
 
   defaultConfig {
     applicationId 'org.pacien.tincapp'
     minSdkVersion 21
+    //noinspection OldTargetApi
     targetSdkVersion 21
     multiDexEnabled true
     versionCode 12
@@ -30,37 +30,29 @@ android {
       path 'CMakeLists.txt'
     }
   }
-
-  lintOptions {
-    // 20180212:
-    // Lint checks on Kotlin files only work from the Android Studio IDE.
-    // They currently do not run when you run lint directly from Gradle.
-    // https://developer.android.com/studio/preview/kotlin-issues.html
-    disable 'OnClick', 'UnusedResources'
-  }
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  compile 'com.android.support:appcompat-v7:25.4.0'
-  compile 'com.android.support:design:25.4.0'
-  compile 'com.android.support:support-v4:25.4.0'
-  compile 'com.android.support:recyclerview-v7:25.4.0'
-  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  implementation 'com.android.support:appcompat-v7:25.4.0'
+  implementation 'com.android.support:design:25.4.0'
+  implementation 'com.android.support:support-v4:25.4.0'
+  implementation 'com.android.support:recyclerview-v7:25.4.0'
+  implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-  compile('org.apache.commons:commons-configuration2:2.1.1') {
+  implementation('org.apache.commons:commons-configuration2:2.1.1') {
     exclude group: 'commons-logging', module: 'commons-logging'
   }
-  compile('commons-beanutils:commons-beanutils:1.9.3') {
+  implementation('commons-beanutils:commons-beanutils:1.9.3') {
     exclude group: 'commons-logging', module: 'commons-logging'
   }
 
-  compile 'org.bouncycastle:bcpkix-jdk15on:1.57'
-  compile 'net.sourceforge.streamsupport:streamsupport-cfuture:1.5.5'
-  compile 'org.slf4j:slf4j-api:1.7.25'
-  compile 'com.github.tony19:logback-android:1.1.1-9'
-  compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+  implementation 'org.bouncycastle:bcpkix-jdk15on:1.57'
+  implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.5.5'
+  implementation 'org.slf4j:slf4j-api:1.7.25'
+  implementation 'com.github.tony19:logback-android:1.1.1-9'
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 repositories {
