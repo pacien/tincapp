@@ -147,7 +147,7 @@ class StartActivity : BaseActivity() {
 
   override fun onResume() {
     super.onResume()
-    if (TincVpnService.isConnected()) openStatusActivity()
+    if (TincVpnService.isConnected()) openStatusActivity(false)
     broadcastMapper.register()
   }
 
@@ -174,6 +174,10 @@ class StartActivity : BaseActivity() {
     connectDialog?.dismiss()
   }
 
-  private fun openStatusActivity() =
-    startActivity(Intent(this, StatusActivity::class.java))
+  private fun openStatusActivity(transition: Boolean = true) =
+    startActivity(
+      Intent(this, StatusActivity::class.java)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        .apply { if (!transition) addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) })
 }
