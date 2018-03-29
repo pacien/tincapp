@@ -27,10 +27,21 @@
 	</android.support.design.widget.AppBarLayout>
 
 	<FrameLayout
-		android:id="@+id/main_content"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:background="@color/backgroundSecondary"
+		android:clipToPadding="false"
+		android:paddingLeft="@dimen/activity_horizontal_gutter"
+		android:paddingRight="@dimen/activity_horizontal_gutter"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+		<FrameLayout
+			android:id="@+id/main_content"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/backgroundPrimary"
+			android:elevation="@dimen/activity_page_elevation">
+		</FrameLayout>
 
 	</FrameLayout>
 

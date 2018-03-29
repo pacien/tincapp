@@ -6,4 +6,7 @@
 	<color name="colorPrimaryLight">#757575</color>
 	<color name="colorPrimaryLighter">#d9d9d9</color>
 	<color name="colorAccent">#f9a825</color>
+
+	<color name="backgroundPrimary">#FFFFFF</color>
+	<color name="backgroundSecondary">#d9d9d9</color>
 </resources>
