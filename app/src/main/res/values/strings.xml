@@ -6,6 +6,7 @@
 	<string name="app_license">Software distributed under the terms of the GNU General Public License v3.</string>
 	<string name="app_website_url">http://tincapp.pacien.org</string>
 	<string name="app_doc_url_format">http://tincapp.pacien.org/doc.html#%1$s</string>
+	<string name="app_dev_email">pacien.gplayfr@gmail.com</string>
 
 	<string name="info_version_format">App version %1$s (%2$s build)</string>
 	<string name="info_running_on_format">Running on Android %1$s %2$s</string>
@@ -50,6 +51,7 @@
 	<string name="title_unable_to_start_tinc">Unable to start tinc</string>
 	<string name="title_private_keys_encryption">Private keys encryption</string>
 	<string name="title_unlock_private_keys">Unlock tinc private keys</string>
+	<string name="title_app_crash">App crash</string>
 
 	<string name="action_close">Close</string>
 	<string name="action_cancel">Cancel</string>
@@ -66,6 +68,8 @@
 	<string name="action_encrypt_decrypt_private_keys">Encrypt or decrypt private keys</string>
 	<string name="action_dismiss">Dismiss</string>
 	<string name="action_open_web_page">Open web page</string>
+	<string name="action_send_email">Send e-mail</string>
+	<string name="action_send_report">Send report</string>
 
 	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
 	<string name="message_generating_configuration">Generating node configuration…</string>
@@ -89,6 +93,8 @@
 	<string name="message_could_not_configure_iface">Could not apply network interface configuration:\n\n%1$s</string>
 	<string name="message_could_not_bind_iface">Could not bind network interface. Is another VPN running?</string>
 	<string name="message_invalid_network_name">Invalid network name.</string>
+	<string name="message_app_crash">The application has previously encountered a fatal error.</string>
+	<string name="message_crash_logged">The crash details have been saved in \"%1$s\".</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>

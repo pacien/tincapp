@@ -14,6 +14,7 @@ object AppPaths {
   private const val TINC_BIN = "libtinc.so"
 
   private const val APPLOG_FILE = "tincapp.log"
+  private const val CRASHFLAG_FILE = "crash.flag"
   private const val LOGFILE_FORMAT = "tinc.%s.log"
   private const val PIDFILE_FORMAT = "tinc.%s.pid"
 
@@ -27,6 +28,7 @@ object AppPaths {
   fun storageAvailable() =
     Environment.getExternalStorageState().let { it == Environment.MEDIA_MOUNTED && it != Environment.MEDIA_MOUNTED_READ_ONLY }
 
+  fun internalCacheDir() = App.getContext().cacheDir
   fun cacheDir() = App.getContext().externalCacheDir
   fun confDir() = App.getContext().getExternalFilesDir(null)
   fun binDir() = File(App.getContext().applicationInfo.nativeLibraryDir)
@@ -39,6 +41,7 @@ object AppPaths {
   fun logFile(netName: String) = File(cacheDir(), String.format(LOGFILE_FORMAT, netName))
   fun pidFile(netName: String) = File(App.getContext().cacheDir, String.format(PIDFILE_FORMAT, netName))
   fun appLogFile() = File(cacheDir(), APPLOG_FILE)
+  fun crashFlagFile() = File(internalCacheDir(), CRASHFLAG_FILE)
 
   fun existing(f: File) = f.apply { if (!exists()) throw FileNotFoundException(f.absolutePath) }
 
