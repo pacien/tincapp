@@ -146,7 +146,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
   }
 
   private fun updateNodeList() {
-    getNodeNames().whenComplete { nodeList, _ -> runOnUiThread { writeNodeList(nodeList) } }
+    getNodeNames().thenAccept { nodeList -> runOnUiThread { writeNodeList(nodeList) } }
   }
 
   private fun updateView() = when {
@@ -163,11 +163,8 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     private const val REFRESH_RATE = 5000L
     private const val NOW = 0L
 
-    fun getNodeNames(): CompletableFuture<List<String>> = when {
-      TincVpnService.isConnected() ->
-        Tinc.dumpNodes(TincVpnService.getCurrentNetName()!!).thenApply<List<String>> { it.map { it.substringBefore(' ') } }
-      else ->
-        Executor.supplyAsyncTask<List<String>> { emptyList() }
-    }
+    fun getNodeNames(): CompletableFuture<List<String>> = TincVpnService.getCurrentNetName()?.let { netName ->
+      Tinc.dumpNodes(netName).thenApply<List<String>> { it.map { it.substringBefore(' ') } }
+    } ?: Executor.supplyAsyncTask<List<String>> { emptyList() }
   }
 }
