@@ -31,16 +31,18 @@ class ViewLogActivity : BaseActivity() {
   private val log = LinkedList<String>()
   private var logUpdateTimer: Timer? = null
   private var logger: Process? = null
+  private var toggleButton: MenuItem? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     layoutInflater.inflate(R.layout.page_viewlog, main_content)
-    startLogging()
+    toggleLogging(true)
   }
 
   override fun onCreateOptionsMenu(m: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_viewlog, m)
+    toggleButton = m.findItem(R.id.log_viewer_action_toggle)
     return super.onCreateOptionsMenu(m)
   }
 
@@ -50,18 +52,8 @@ class ViewLogActivity : BaseActivity() {
   }
 
   override fun onDestroy() {
-    stopLogging()
+    toggleLogging(false)
     super.onDestroy()
-  }
-
-  fun toggleLogging(menuItem: MenuItem) {
-    if (logger == null) {
-      startLogging()
-      menuItem.setIcon(R.drawable.ic_pause_circle_outline_primary_24dp)
-    } else {
-      stopLogging()
-      menuItem.setIcon(R.drawable.ic_pause_circle_filled_primary_24dp)
-    }
   }
 
   fun share(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem) {
@@ -75,18 +67,36 @@ class ViewLogActivity : BaseActivity() {
     }
   }
 
-  private fun startLogging(level: Int = LOG_LEVEL) {
-    disableUserScroll()
-    appendLog(resources.getString(R.string.message_log_level_set, level))
-    Tinc.log(TincVpnService.getCurrentNetName()!!, level).let { process ->
-      logger = process
-      Executor.runAsyncTask { captureLog(process) }
+  fun toggleLogging(@Suppress("UNUSED_PARAMETER") menuItem: MenuItem) = toggleLogging(logger == null)
+
+  private fun toggleLogging(enable: Boolean) {
+    if (enable) {
+      disableUserScroll()
+      toggleButton?.setIcon(R.drawable.ic_pause_circle_outline_primary_24dp)
+      startLogging()
+    } else {
+      enableUserScroll()
+      toggleButton?.setIcon(R.drawable.ic_pause_circle_filled_primary_24dp)
+      stopLogging()
     }
-    logUpdateTimer = timer(period = UPDATE_INTERVAL, action = { printLog() })
+  }
+
+  private fun startLogging(level: Int = LOG_LEVEL) {
+    appendLog(resources.getString(R.string.message_log_level_set, level))
+
+    TincVpnService.getCurrentNetName()?.let { netName ->
+      Tinc.log(netName, level).let { process ->
+        logger = process
+        Executor.runAsyncTask { captureLog(process) }
+      }
+      logUpdateTimer = timer(period = UPDATE_INTERVAL, action = { printLog() })
+    } ?: run {
+      appendLog(resources.getString(R.string.message_no_daemon))
+      toggleLogging(false)
+    }
   }
 
   private fun stopLogging() {
-    enableUserScroll()
     logger?.destroy()
     logger = null
     logUpdateTimer?.cancel()
