@@ -4,10 +4,12 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.support.annotation.StringRes
 import android.support.v7.app.AlertDialog
 import android.view.WindowManager
+import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -22,6 +24,10 @@ class App : Application() {
     handler = Handler()
     AppLogger.configure()
     setupCrashHandler()
+
+    val logger = LoggerFactory.getLogger(this.javaClass)
+    logger.info("Starting tinc app {} ({} build), running on {} ({})",
+      BuildConfig.VERSION_NAME, BuildConfig.BUILD_TYPE, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
   }
 
   private fun setupCrashHandler() {
