@@ -18,8 +18,7 @@
 		<activity
 			android:name=".activities.StartActivity"
 			android:configChanges="orientation|screenSize"
-			android:label="@string/app_label"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:label="@string/app_label">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
@@ -34,14 +33,12 @@
 		<activity
 			android:name=".activities.ConfigureActivity"
 			android:configChanges="orientation|screenSize"
-			android:parentActivityName=".activities.StartActivity"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:parentActivityName=".activities.StartActivity">
 		</activity>
 
 		<activity
 			android:name=".activities.StatusActivity"
-			android:configChanges="orientation|screenSize"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:configChanges="orientation|screenSize">
 			<intent-filter>
 				<action android:name="org.pacien.tincapp.intent.action.DISCONNECT"/>
 				<category android:name="android.intent.category.DEFAULT"/>
@@ -50,8 +47,7 @@
 
 		<activity
 			android:name=".activities.ViewLogActivity"
-			android:configChanges="orientation|screenSize"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:configChanges="orientation|screenSize">
 		</activity>
 
 		<service
