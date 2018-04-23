@@ -20,6 +20,8 @@ import org.pacien.tincapp.context.CrashRecorder
  * @author pacien
  */
 abstract class BaseActivity : AppCompatActivity() {
+  private var active = false
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.base)
@@ -29,6 +31,26 @@ abstract class BaseActivity : AppCompatActivity() {
   override fun onCreateOptionsMenu(m: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_base, m)
     return true
+  }
+
+  override fun onStart() {
+    super.onStart()
+    active = true
+  }
+
+  override fun onResume() {
+    super.onResume()
+    active = true
+  }
+
+  override fun onPause() {
+    active = false
+    super.onPause()
+  }
+
+  override fun onStop() {
+    active = false
+    super.onStop()
   }
 
   fun aboutDialog(@Suppress("UNUSED_PARAMETER") i: MenuItem) {
@@ -44,7 +66,7 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   fun runOnUiThread(action: () -> Unit) {
-    if (!isFinishing && !isDestroyed) super.runOnUiThread(action)
+    if (active) super.runOnUiThread(action)
   }
 
   private fun handleRecentCrash() {
