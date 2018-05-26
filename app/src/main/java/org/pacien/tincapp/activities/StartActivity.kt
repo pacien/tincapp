@@ -86,7 +86,7 @@ class StartActivity : BaseActivity() {
 
     fun tryStart(netName: String? = null, passphrase: String? = null, displayStatus: Boolean? = null) {
       if (netName != null) this.netName = netName
-      if (passphrase != null) this.passphrase = passphrase
+      this.passphrase = passphrase
       if (displayStatus != null) this.displayStatus = displayStatus
 
       val permissionRequestIntent = VpnService.prepare(this@StartActivity)
