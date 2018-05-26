@@ -96,6 +96,8 @@
 	<string name="message_app_crash">The application has previously encountered a fatal error.</string>
 	<string name="message_crash_logged">The crash details have been saved in \"%1$s\".</string>
 	<string name="message_no_daemon">No running tinc daemon has been found.</string>
+	<string name="message_could_not_read_network_configuration_format">Could not read network interface configuration:\n\n%1$s</string>
+	<string name="message_could_not_read_private_key_format">Could not read tinc private keys:\n\n%1$s</string>
 
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>

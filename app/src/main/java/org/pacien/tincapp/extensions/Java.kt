@@ -15,4 +15,6 @@ object Java {
     alt
   }
 
+  fun Throwable.defaultMessage() = this.message ?: "null"
+
 }
