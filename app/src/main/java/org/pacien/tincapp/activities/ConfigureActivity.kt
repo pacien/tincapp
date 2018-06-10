@@ -1,13 +1,12 @@
 package org.pacien.tincapp.activities
 
-import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.app.AlertDialog
 import android.view.View
+import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.integration.android.IntentResult
 import java8.util.concurrent.CompletableFuture
 import kotlinx.android.synthetic.main.base.*
 import kotlinx.android.synthetic.main.dialog_encrypt_decrypt_keys.view.*
@@ -26,8 +25,6 @@ import java.util.regex.Pattern
  */
 class ConfigureActivity : BaseActivity() {
   companion object {
-    private const val REQUEST_SCAN = 0
-    private const val SCAN_PROVIDER = "com.google.zxing.client.android"
     private val NETWORK_NAME_PATTERN = Pattern.compile("^[^\\x00/]*$")
   }
 
@@ -36,8 +33,10 @@ class ConfigureActivity : BaseActivity() {
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
 
-    if (requestCode == REQUEST_SCAN && resultCode == Activity.RESULT_OK)
-      joinDialog?.invitation_url?.setText(data!!.getStringExtra("SCAN_RESULT").trim())
+    IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+      ?.let(IntentResult::getContents)
+      ?.let(String::trim)
+      ?.let { joinDialog?.invitation_url?.setText(it) }
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +47,7 @@ class ConfigureActivity : BaseActivity() {
   }
 
   fun scanCode(@Suppress("UNUSED_PARAMETER") v: View) {
-    try {
-      startActivityForResult(Intent("$SCAN_PROVIDER.SCAN"), REQUEST_SCAN)
-    } catch (e: ActivityNotFoundException) {
-      AlertDialog.Builder(this).setTitle(R.string.action_scan_qr_code)
-        .setMessage(R.string.message_no_qr_code_scanner)
-        .setPositiveButton(R.string.action_install) { _, _ ->
-          startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$SCAN_PROVIDER")))
-        }.setNegativeButton(R.string.action_cancel, { _, _ -> Unit }).show()
-    }
+    IntentIntegrator(this).initiateScan()
   }
 
   fun openGenerateConfDialog(@Suppress("UNUSED_PARAMETER") v: View) {

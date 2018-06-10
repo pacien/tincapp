@@ -70,7 +70,6 @@
 	<string name="message_no_configuration_for_network_format">沒有找到網絡“%1$s”的配置。</string>
 	<string name="message_network_config_not_found_format">在“%1$s”找不到網絡配置文件。</string>
 	<string name="message_network_config_invalid_format">network.conf 中的網絡配置無效：\n\n%1$s</string>
-	<string name="message_no_qr_code_scanner">無法啟動掃描器。\n\n安裝 Barcode Scanner？</string>
 	<string name="message_encrypting_decrypting_private_keys">加密/解密私鑰</string>
 	<string name="message_could_not_decrypt_private_keys_format">無法解密私鑰：\n\n%1$s</string>
 
