@@ -11,13 +11,15 @@
 		android:id="@+id/new_net_name"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:hint="@string/field_net_name"/>
+		android:hint="@string/field_net_name"
+		android:inputType="text"/>
 
 	<EditText
 		android:id="@+id/new_node_name"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:hint="@string/field_node_name"/>
+		android:hint="@string/field_node_name"
+		android:inputType="text"/>
 
 	<EditText
 		android:id="@+id/new_passphrase"
