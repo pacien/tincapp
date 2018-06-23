@@ -36,7 +36,7 @@ dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-  implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.5.5'
+  implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.6.3'
   implementation 'com.android.support:design:25.4.0'
   implementation 'com.google.zxing:android-integration:3.3.0'
   implementation 'org.bouncycastle:bcpkix-jdk15on:1.59'
