@@ -43,7 +43,7 @@ dependencies {
   implementation 'org.slf4j:slf4j-api:1.7.25'
   //noinspection GradleDependency: inspection tool bug for logback-android
   implementation 'com.github.tony19:logback-android:1.1.1-12'
-  implementation('org.apache.commons:commons-configuration2:2.1.1') { exclude group: 'commons-logging', module: 'commons-logging' }
+  implementation('org.apache.commons:commons-configuration2:2.2') { exclude group: 'commons-logging', module: 'commons-logging' }
   implementation('commons-beanutils:commons-beanutils:1.9.3') { exclude group: 'commons-logging', module: 'commons-logging' }
 }
 
