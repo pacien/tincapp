@@ -38,8 +38,8 @@ ExternalProject_Add(libressl
 
 ExternalProject_Add(tinc
   DEPENDS           lzo libressl
-  URL               https://tinc-vpn.org/packages/tinc-1.1pre15.tar.gz
-  URL_HASH          SHA256=41dc3e40c5f8be497b779acd6f59ef4572e1430d0d0f0436f2de5cb21a59ef18
+  URL               https://tinc-vpn.org/packages/tinc-1.1pre16.tar.gz
+  URL_HASH          SHA256=9934c53f8b22bbcbfa0faae0cb7ea13875fe1990cce75af728a7f4ced2c0230b
   CONFIGURE_COMMAND autoreconf -fsi <SOURCE_DIR> &&
                     <SOURCE_DIR>/configure ${xCONFIG}
                       --with-openssl=${CMAKE_CURRENT_BINARY_DIR}/usr/local
