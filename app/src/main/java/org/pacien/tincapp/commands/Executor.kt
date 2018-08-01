@@ -57,10 +57,11 @@ internal object Executor {
     }
 
     return runAsyncTask {
-      when (wait(pid)) {
+      val exitCode = wait(pid)
+      when (exitCode) {
         SUCCESS -> Unit
         FAILED -> throw CommandExecutionException("Process terminated abnormally.")
-        else -> throw CommandExecutionException("Non-zero exit status code.")
+        else -> throw CommandExecutionException("Non-zero exit status code ($exitCode).")
       }
     }
   }
@@ -73,8 +74,9 @@ internal object Executor {
 
   fun call(cmd: Command): CompletableFuture<List<String>> = run(cmd).let { process ->
     supplyAsyncTask<List<String>> {
-      if (process.waitFor() == 0) read(process.inputStream)
-      else throw CommandExecutionException(read(process.errorStream).lastOrNull() ?: "Non-zero exit status.")
+      val exitCode = process.waitFor()
+      if (exitCode == 0) read(process.inputStream)
+      else throw CommandExecutionException(read(process.errorStream).lastOrNull() ?: "Non-zero exit status ($exitCode).")
     }
   }
 
