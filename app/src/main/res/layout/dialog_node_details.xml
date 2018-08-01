@@ -28,6 +28,7 @@
 		android:id="@+id/dialog_node_details"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:fontFamily="monospace"/>
+		android:fontFamily="monospace"
+		android:text="@string/message_loading"/>
 
 </ScrollView>

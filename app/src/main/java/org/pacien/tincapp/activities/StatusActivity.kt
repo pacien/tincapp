@@ -113,19 +113,9 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     refreshTimer?.schedule(timerTask { updateView() }, NOW)
   }
 
-  override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-    val nodeName = (view as TextView).text.toString()
-    val dialogTextView = layoutInflater.inflate(R.layout.dialog_node_details, main_content, false)
-    Tinc.info(TincVpnService.getCurrentNetName()!!, nodeName).thenAccept {
-      runOnUiThread {
-        dialogTextView.dialog_node_details.text = it
-        AlertDialog.Builder(this)
-          .setTitle(R.string.title_node_info)
-          .setView(dialogTextView)
-          .setPositiveButton(R.string.action_close) { _, _ -> Unit }
-          .show()
-      }
-    }
+  override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) = when (view) {
+    is TextView -> showNodeInfo(view.text.toString())
+    else -> Unit
   }
 
   private fun onVpnShutdown() {
@@ -165,6 +155,24 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
 
   private fun updateNodeList() {
     getNodeNames().thenAccept { nodeList -> runOnUiThread { writeNodeList(nodeList) } }
+  }
+
+  private fun showNodeInfo(nodeName: String) {
+    val dialogTextView = layoutInflater.inflate(R.layout.dialog_node_details, main_content, false)
+
+    runOnUiThread {
+      AlertDialog.Builder(this)
+        .setTitle(R.string.title_node_info)
+        .setView(dialogTextView)
+        .setPositiveButton(R.string.action_close) { _, _ -> Unit }
+        .show()
+    }
+
+    TincVpnService.getCurrentNetName()?.let { netName ->
+      Tinc.info(netName, nodeName).thenAccept { nodeInfo ->
+        runOnUiThread { dialogTextView.dialog_node_details.text = nodeInfo }
+      }
+    }
   }
 
   private fun updateView() = when {
