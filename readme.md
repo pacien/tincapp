@@ -1,9 +1,25 @@
 org.pacien.tincapp
 ==================
 
-Android binding and user interface for the tinc mesh VPN daemon.
+Android binding and user interface for the tinc mesh VPN daemon which does not require root privilege.
 
-Project website: http://tincapp.pacien.org
+
+Help and documentation
+----------------------
+
+The complete list of features, the quickstart guides and the user manual can be found on the project's website: https://tincapp.pacien.org.
+
+Community support is mainly provided through the dedicated IRC channel: `#tincapp` on `irc.freenode.net`.
+
+
+Download
+--------
+
+Compiled Android packages are available from:
+
+* [F-Droid](https://f-droid.org/packages/org.pacien.tincapp/)
+* [Google Play Store](https://play.google.com/store/apps/details?id=org.pacien.tincapp)
+* [The project's website](https://tincapp.pacien.org)
 
 
 Build
