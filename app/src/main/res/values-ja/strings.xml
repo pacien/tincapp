@@ -20,7 +20,7 @@
 	<string name="app_name">Tinc App</string>
 	<string name="app_label">Tinc</string>
 	<string name="app_short_desc">tinc mesh VPN デーモン用の Android バインディングとユーザーインターフェース。</string>
-	<string name="app_copyright">Copyright 2018 Pacien.</string>
+	<string name="app_copyright">Copyright 2017–2018 Pacien.</string>
 	<string name="app_license">GNU General Public License v3 の条件で配布されるソフトウェア。</string>
 	<string name="app_website_url">http://tincapp.pacien.org</string>
 
