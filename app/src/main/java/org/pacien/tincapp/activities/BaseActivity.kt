@@ -18,7 +18,6 @@
 
 package org.pacien.tincapp.activities
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
@@ -33,6 +32,7 @@ import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppInfo
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.context.CrashRecorder
+import org.pacien.tincapp.utils.ProgressModal
 
 /**
  * @author pacien
@@ -109,7 +109,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
   protected fun notify(@StringRes msg: Int) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
   protected fun notify(msg: String) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
-  protected fun showProgressDialog(@StringRes msg: Int): ProgressDialog = ProgressDialog.show(this, null, getString(msg), true, false)
+  protected fun showProgressDialog(@StringRes msg: Int): AlertDialog = ProgressModal.show(this, getString(msg))
   protected fun showErrorDialog(msg: String): AlertDialog = AlertDialog.Builder(this)
     .setTitle(R.string.title_error).setMessage(msg)
     .setPositiveButton(R.string.action_close, { _, _ -> Unit }).show()

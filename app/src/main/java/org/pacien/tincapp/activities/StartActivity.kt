@@ -19,7 +19,6 @@
 package org.pacien.tincapp.activities
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
@@ -137,7 +136,7 @@ class StartActivity : BaseActivity() {
     Actions.EVENT_CONNECTED to this::onVpnStart,
     Actions.EVENT_ABORTED to this::onVpnStartError))
 
-  private var connectDialog: ProgressDialog? = null
+  private var connectDialog: AlertDialog? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

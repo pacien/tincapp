@@ -18,7 +18,6 @@
 
 package org.pacien.tincapp.activities
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -51,7 +50,7 @@ import kotlin.concurrent.timerTask
  */
 class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
   private val broadcastMapper = BroadcastMapper(mapOf(Actions.EVENT_DISCONNECTED to this::onVpnShutdown))
-  private var shutdownDialog: ProgressDialog? = null
+  private var shutdownDialog: AlertDialog? = null
   private var nodeListAdapter: ArrayAdapter<String>? = null
   private var refreshTimer: Timer? = null
   private var listNetworksAfterExit = true
