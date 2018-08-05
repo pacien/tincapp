@@ -1,5 +1,5 @@
-org.pacien.tincapp
-==================
+tinc app
+========
 
 Android binding and user interface for the tinc mesh VPN daemon which does not require root privilege.
 
