@@ -26,7 +26,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.base.*
-import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppInfo
@@ -73,7 +72,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
   fun aboutDialog(@Suppress("UNUSED_PARAMETER") i: MenuItem) {
     AlertDialog.Builder(this)
-      .setTitle(BuildConfig.APPLICATION_ID)
+      .setTitle(resources.getString(R.string.app_name))
       .setMessage(resources.getString(R.string.app_short_desc) + "\n\n" +
         resources.getString(R.string.app_copyright) + " " +
         resources.getString(R.string.app_license) + "\n\n" +
