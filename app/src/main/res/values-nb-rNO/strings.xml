@@ -22,7 +22,7 @@
 	<string name="app_short_desc">Android-binding og brukergrensesnitt tiltenkt maskenett-VPN-nissen for Tinc.</string>
 	<string name="app_copyright">Opphavsrett © 2017–2018 Pacien.</string>
 	<string name="app_license">Programvare distribuert i henhold til vilkårene i GNU General Public Lisens v3.</string>
-	<string name="app_website_url">http://tincapp.pacien.org</string>
+	<string name="app_website_url">https://tincapp.pacien.org</string>
 
 	<string name="info_version_format">Programversjon %1$s (%2$s build)</string>
 	<string name="info_running_on_format">Kjører på Android %1$s %2$s</string>

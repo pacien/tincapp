@@ -22,8 +22,8 @@
 	<string name="app_short_desc">tinc mesh VPN 守護進程的 Android 綁定和用户界面。</string>
 	<string name="app_copyright">版權所有 2017–2018 Pacien。</string>
 	<string name="app_license">軟件根據 GNU 通用公共許可證第3版的條款進行分發。</string>
-	<string name="app_website_url">http://tincapp.pacien.org</string>
-	<string name="app_doc_url_format">http://tincapp.pacien.org/doc.html#%1$s</string>
+	<string name="app_website_url">https://tincapp.pacien.org</string>
+	<string name="app_doc_url_format">https://tincapp.pacien.org/doc.html#%1$s</string>
 
 	<string name="info_version_format">應用程序版本 %1$s（%2$s build）</string>
 	<string name="info_running_on_format">於 Android %1$s %2$s 上運行</string>

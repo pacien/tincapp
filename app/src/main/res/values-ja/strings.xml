@@ -22,7 +22,7 @@
 	<string name="app_short_desc">tinc mesh VPN デーモン用の Android バインディングとユーザーインターフェース。</string>
 	<string name="app_copyright">Copyright 2017–2018 Pacien.</string>
 	<string name="app_license">GNU General Public License v3 の条件で配布されるソフトウェア。</string>
-	<string name="app_website_url">http://tincapp.pacien.org</string>
+	<string name="app_website_url">https://tincapp.pacien.org</string>
 
 	<string name="info_version_format">アプリバージョン %1$s (%2$s ビルド)</string>
 	<string name="info_running_on_format">Android %1$s %2$s で実行中</string>
