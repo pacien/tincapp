@@ -68,7 +68,7 @@ class StartActivity : BaseActivity() {
     }
 
     override fun onRefresh() {
-      val networks = AppPaths.confDir()?.list()?.toList() ?: emptyList()
+      val networks = AppPaths.confDir().list()?.toList() ?: emptyList()
       runOnUiThread {
         networkListAdapter?.setElements(networks)
         setPlaceholderVisibility()
@@ -121,7 +121,7 @@ class StartActivity : BaseActivity() {
         AlertDialog.Builder(this@StartActivity)
           .setTitle(R.string.title_unlock_private_keys).setView(dialog)
           .setPositiveButton(R.string.action_unlock) { _, _ -> tryStart(passphrase = dialog.passphrase.text.toString()) }
-          .setNegativeButton(R.string.action_cancel, { _, _ -> Unit })
+          .setNegativeButton(R.string.action_cancel) { _, _ -> Unit }
           .show()
       }
     }

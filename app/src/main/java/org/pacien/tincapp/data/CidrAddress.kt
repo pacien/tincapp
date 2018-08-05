@@ -25,7 +25,7 @@ import org.apache.commons.configuration2.ex.ConversionException
  */
 data class CidrAddress(val address: String, val prefix: Int) {
   companion object {
-    private val SEPARATOR = "/"
+    private const val SEPARATOR = "/"
 
     fun fromSlashSeparated(s: String) = try {
       CidrAddress(s.substringBefore(SEPARATOR), Integer.parseInt(s.substringAfter(SEPARATOR)))

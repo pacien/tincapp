@@ -78,7 +78,7 @@ abstract class BaseActivity : AppCompatActivity() {
         resources.getString(R.string.app_license) + "\n\n" +
         AppInfo.all())
       .setNeutralButton(R.string.action_open_project_website) { _, _ -> App.openURL(resources.getString(R.string.app_website_url)) }
-      .setPositiveButton(R.string.action_close, { _, _ -> Unit })
+      .setPositiveButton(R.string.action_close) { _, _ -> Unit }
       .show()
   }
 
@@ -96,13 +96,13 @@ abstract class BaseActivity : AppCompatActivity() {
         resources.getString(R.string.message_app_crash),
         resources.getString(R.string.message_crash_logged, AppPaths.appLogFile().absolutePath)
       ).joinToString("\n\n"))
-      .setNeutralButton(R.string.action_send_report, { _, _ ->
+      .setNeutralButton(R.string.action_send_report) { _, _ ->
         App.sendMail(
           resources.getString(R.string.app_dev_email),
           listOf(R.string.app_name, R.string.title_app_crash).joinToString(" / ", transform = resources::getString),
           AppPaths.appLogFile().let { if (it.exists()) it.readText() else "" })
-      })
-      .setPositiveButton(R.string.action_close, { _, _ -> Unit })
+      }
+      .setPositiveButton(R.string.action_close) { _, _ -> Unit }
       .show()
   }
 
@@ -111,5 +111,5 @@ abstract class BaseActivity : AppCompatActivity() {
   protected fun showProgressDialog(@StringRes msg: Int): AlertDialog = ProgressModal.show(this, getString(msg))
   protected fun showErrorDialog(msg: String): AlertDialog = AlertDialog.Builder(this)
     .setTitle(R.string.title_error).setMessage(msg)
-    .setPositiveButton(R.string.action_close, { _, _ -> Unit }).show()
+    .setPositiveButton(R.string.action_close) { _, _ -> Unit }.show()
 }

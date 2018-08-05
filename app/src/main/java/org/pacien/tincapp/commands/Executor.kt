@@ -42,7 +42,7 @@ internal object Executor {
   /**
    * @return FAILED (-1) on error, forked child PID otherwise
    */
-  private external fun forkExec(argcv: Array<String>): Int
+  private external fun forkExec(args: Array<String>): Int
 
   /**
    * @return FAILED (-1) on error, the exit status of the process otherwise

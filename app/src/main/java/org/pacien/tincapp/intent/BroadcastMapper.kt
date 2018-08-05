@@ -30,7 +30,7 @@ import org.pacien.tincapp.context.App
  */
 class BroadcastMapper(private val actionHandlers: Map<String, () -> Unit>) : BroadcastReceiver() {
   private val broadcastManager = LocalBroadcastManager.getInstance(App.getContext())
-  private val intentFilter = actionHandlers.keys.fold(IntentFilter(), { filter, action -> filter.apply { addAction(action) } })
+  private val intentFilter = actionHandlers.keys.fold(IntentFilter()) { filter, action -> filter.apply { addAction(action) } }
 
   fun register() = broadcastManager.registerReceiver(this, intentFilter)
   fun unregister() = broadcastManager.unregisterReceiver(this)

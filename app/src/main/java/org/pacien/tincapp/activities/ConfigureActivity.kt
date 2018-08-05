@@ -76,7 +76,7 @@ class ConfigureActivity : BaseActivity() {
           genDialog.new_net_name.text.toString(),
           genDialog.new_node_name.text.toString(),
           genDialog.new_passphrase.text.toString())
-      }.setNegativeButton(R.string.action_cancel, { _, _ -> Unit }).show()
+      }.setNegativeButton(R.string.action_cancel) { _, _ -> Unit }.show()
   }
 
   fun openJoinNetworkDialog(@Suppress("UNUSED_PARAMETER") v: View) {
@@ -87,7 +87,7 @@ class ConfigureActivity : BaseActivity() {
           joinDialog!!.net_name.text.toString(),
           joinDialog!!.invitation_url.text.toString(),
           joinDialog!!.join_passphrase.text.toString())
-      }.setNegativeButton(R.string.action_cancel, { _, _ -> Unit }).show()
+      }.setNegativeButton(R.string.action_cancel) { _, _ -> Unit }.show()
   }
 
   fun openEncryptDecryptPrivateKeyDialog(@Suppress("UNUSED_PARAMETER") v: View) {
@@ -98,7 +98,7 @@ class ConfigureActivity : BaseActivity() {
           encryptDecryptDialog!!.enc_dec_net_name.text.toString(),
           encryptDecryptDialog.enc_dec_current_passphrase.text.toString(),
           encryptDecryptDialog.enc_dec_new_passphrase.text.toString())
-      }.setNegativeButton(R.string.action_cancel, { _, _ -> Unit }).show()
+      }.setNegativeButton(R.string.action_cancel) { _, _ -> Unit }.show()
   }
 
   private fun writeContent() {

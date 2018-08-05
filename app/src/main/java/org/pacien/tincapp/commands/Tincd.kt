@@ -31,7 +31,7 @@ object Tincd {
       .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
       .withOption("logfile", AppPaths.logFile(netName).absolutePath)
       .withOption("option", "DeviceType=fd")
-      .withOption("option", "Device=" + deviceFd)
+      .withOption("option", "Device=$deviceFd")
       .apply { if (ed25519PrivateKeyFd != null) withOption("option", "Ed25519PrivateKeyFile=/proc/self/fd/$ed25519PrivateKeyFd") }
       .apply { if (rsaPrivateKeyFd != null) withOption("option", "PrivateKeyFile=/proc/self/fd/$rsaPrivateKeyFd") })
 }

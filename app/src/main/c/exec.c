@@ -40,11 +40,11 @@ static inline void exec(const char **argcv) {
 }
 
 JNIEXPORT jint JNICALL
-Java_org_pacien_tincapp_commands_Executor_forkExec(JNIEnv *env, jclass class, jobjectArray argcv) {
+Java_org_pacien_tincapp_commands_Executor_forkExec(JNIEnv *env, __attribute__((unused)) jclass class, jobjectArray args) {
   pid_t pid = fork();
   switch (pid) {
     case 0:
-      exec(to_string_array(env, argcv));
+      exec(to_string_array(env, args));
       return 0;
 
     default:
@@ -53,7 +53,7 @@ Java_org_pacien_tincapp_commands_Executor_forkExec(JNIEnv *env, jclass class, jo
 }
 
 JNIEXPORT jint JNICALL
-Java_org_pacien_tincapp_commands_Executor_wait(JNIEnv *env, jclass class, jint pid) {
+Java_org_pacien_tincapp_commands_Executor_wait(__attribute__((unused))JNIEnv *env, __attribute__((unused)) jclass class, jint pid) {
   int status;
   waitpid(pid, &status, 0);
   return WIFEXITED(status) ? WEXITSTATUS(status) : -1;

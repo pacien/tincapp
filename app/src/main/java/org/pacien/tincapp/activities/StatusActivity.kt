@@ -189,7 +189,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     private const val NOW = 0L
 
     fun getNodeNames(): CompletableFuture<List<String>> = TincVpnService.getCurrentNetName()?.let { netName ->
-      Tinc.dumpNodes(netName).thenApply<List<String>> { it.map { it.substringBefore(' ') } }
+      Tinc.dumpNodes(netName).thenApply<List<String>> { list -> list.map { it.substringBefore(' ') } }
     } ?: Executor.supplyAsyncTask<List<String>> { emptyList() }
   }
 }

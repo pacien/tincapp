@@ -66,7 +66,7 @@ class App : Application() {
       AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Dialog)
         .setTitle(title).setMessage(msg)
         .apply { if (manualLink != null) setNeutralButton(R.string.action_open_manual) { _, _ -> openURL(manualLink) } }
-        .setPositiveButton(R.string.action_close, { _, _ -> Unit })
+        .setPositiveButton(R.string.action_close) { _, _ -> Unit }
         .create().apply { window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR) }.show()
     }
 

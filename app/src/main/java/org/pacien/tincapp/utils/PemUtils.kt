@@ -34,44 +34,60 @@ import java.io.Writer
  * @author pacien
  */
 object PemUtils {
+  private const val DEK_INFO_HEADER_KEY = "DEK-Info"
+  private const val ALGORITHM = "AES-256-CBC"
   private val PROVIDER = org.bouncycastle.jce.provider.BouncyCastleProvider()
   private val ENCRYPTED_PROC_TYPE_HEADER = PemHeader("Proc-Type", "4,ENCRYPTED")
-  private val DEK_INFO_HEADER_KEY = "DEK-Info"
-  private val ALGO = "AES-256-CBC"
 
   private class DekInfo(val algName: String, val iv: ByteArray)
 
-  private fun dekInfoHeader(iv: ByteArray) = PemHeader(DEK_INFO_HEADER_KEY, "$ALGO,${Hex.toHexString(iv)}")
-  private fun PemObject.getPemHeaders() = headers.map { it as PemHeader }
+  private fun dekInfoHeader(iv: ByteArray) = PemHeader(DEK_INFO_HEADER_KEY, "$ALGORITHM,${Hex.toHexString(iv)}")
 
-  fun read(f: File): PemObject = PEMParser(FileReader(f)).readPemObject()
-  fun write(obj: PemObject, out: Writer) = JcaPEMWriter(out).apply { writeObject(obj) }.apply { close() }
+  private fun PemObject.getPemHeaders() = headers.map { headerObj -> headerObj as PemHeader }
+
+  private fun PemObject.dekInfo() = try {
+    getPemHeaders()
+      .find { header -> header.name == DEK_INFO_HEADER_KEY }!!
+      .value!!
+      .split(',')
+      .let { headerParts -> DekInfo(headerParts[0], Hex.decode(headerParts[1])) }
+  } catch (e: Exception) {
+    throw PEMException("Malformed DEK-Info header.", e)
+  }
+
+  private fun encryptor(passPhrase: String) =
+    JcePEMEncryptorBuilder(ALGORITHM)
+      .setProvider(PROVIDER)
+      .build(passPhrase.toCharArray())!!
+
+  private fun decryptor(algName: String, passPhrase: String?) =
+    JcePEMDecryptorProviderBuilder()
+      .setProvider(PROVIDER)
+      .build(passPhrase?.toCharArray())
+      .get(algName)!!
+
+  fun read(f: File) = PEMParser(FileReader(f)).readPemObject()!!
+
+  fun write(obj: PemObject, out: Writer) =
+    JcaPEMWriter(out)
+      .apply { writeObject(obj) }
+      .apply { close() }
+
   fun isEncrypted(obj: PemObject) = obj.headers.contains(ENCRYPTED_PROC_TYPE_HEADER)
 
-  fun encrypt(obj: PemObject, passPhrase: String) =
-    JcePEMEncryptorBuilder(ALGO)
-      .setProvider(PROVIDER)
-      .build(passPhrase.toCharArray())
-      .let { PemObject(obj.type, listOf(ENCRYPTED_PROC_TYPE_HEADER, dekInfoHeader(it.iv)), it.encrypt(obj.content)) }
+  fun encrypt(obj: PemObject, passPhrase: String): PemObject {
+    val encryptor = encryptor(passPhrase)
+    val headers = listOf(ENCRYPTED_PROC_TYPE_HEADER, dekInfoHeader(encryptor.iv))
+    val body = encryptor.encrypt(obj.content)
+    return PemObject(obj.type, headers, body)
+  }
 
-  fun decrypt(obj: PemObject, passPhrase: String?) =
+  fun decrypt(obj: PemObject, passPhrase: String?): PemObject =
     if (isEncrypted(obj)) {
-      val dekInfo = try {
-        obj.getPemHeaders()
-          .find { it.name == DEK_INFO_HEADER_KEY }!!
-          .value!!
-          .split(',')
-          .let { DekInfo(it[0], Hex.decode(it[1])) }
-      } catch (e: Exception) {
-        throw PEMException("Malformed DEK-Info header.", e)
-      }
-
-      JcePEMDecryptorProviderBuilder()
-        .setProvider(PROVIDER)
-        .build(passPhrase?.toCharArray())
-        .get(dekInfo.algName)
-        .decrypt(obj.content, dekInfo.iv)
-        .let { PemObject(obj.type, it) }
+      val dekInfo = obj.dekInfo()
+      val decryptor = decryptor(dekInfo.algName, passPhrase)
+      val body = decryptor.decrypt(obj.content, dekInfo.iv)
+      PemObject(obj.type, body)
     } else {
       obj
     }

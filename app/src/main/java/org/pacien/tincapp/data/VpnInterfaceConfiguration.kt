@@ -44,22 +44,22 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
                                      val blocking: Boolean = false,
                                      val mtu: Int? = null) {
   companion object {
-    private val KEY_ADDRESSES = "Address"
-    private val KEY_ROUTES = "Route"
-    private val KEY_DNS_SERVERS = "DNSServer"
-    private val KEY_SEARCH_DOMAINS = "SearchDomain"
-    private val KEY_ALLOWED_APPLICATIONS = "AllowApplication"
-    private val KEY_DISALLOWED_APPLICATIONS = "DisallowApplication"
-    private val KEY_ALLOWED_FAMILIES = "AllowFamily"
-    private val KEY_ALLOW_BYPASS = "AllowBypass"
-    private val KEY_BLOCKING = "Blocking"
-    private val KEY_MTU = "MTU"
+    private const val KEY_ADDRESSES = "Address"
+    private const val KEY_ROUTES = "Route"
+    private const val KEY_DNS_SERVERS = "DNSServer"
+    private const val KEY_SEARCH_DOMAINS = "SearchDomain"
+    private const val KEY_ALLOWED_APPLICATIONS = "AllowApplication"
+    private const val KEY_DISALLOWED_APPLICATIONS = "DisallowApplication"
+    private const val KEY_ALLOWED_FAMILIES = "AllowFamily"
+    private const val KEY_ALLOW_BYPASS = "AllowBypass"
+    private const val KEY_BLOCKING = "Blocking"
+    private const val KEY_MTU = "MTU"
 
-    private val INVITATION_KEY_ADDRESSES = "Ifconfig"
-    private val INVITATION_KEY_ROUTES = "Route"
+    private const val INVITATION_KEY_ADDRESSES = "Ifconfig"
+    private const val INVITATION_KEY_ROUTES = "Route"
 
     fun fromIfaceConfiguration(f: File) = fromIfaceConfiguration(Configurations().properties(f))
-    fun fromIfaceConfiguration(c: Configuration) = VpnInterfaceConfiguration(
+    private fun fromIfaceConfiguration(c: Configuration) = VpnInterfaceConfiguration(
       c.getCidrList(KEY_ADDRESSES),
       c.getCidrList(KEY_ROUTES),
       c.getStringList(KEY_DNS_SERVERS),
@@ -72,7 +72,7 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
       c.getInteger(KEY_MTU, null))
 
     fun fromInvitation(f: File) = fromInvitation(Configurations().properties(f))
-    fun fromInvitation(c: Configuration) = VpnInterfaceConfiguration(
+    private fun fromInvitation(c: Configuration) = VpnInterfaceConfiguration(
       c.getStringList(INVITATION_KEY_ADDRESSES)
         .map { applyIgnoringException(CidrAddress.Companion::fromSlashSeparated, it) }
         .filterNotNull(),
@@ -83,10 +83,10 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
 
   fun write(f: File) = FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration::class.java)
     .configure(Parameters().properties().setFile(f.apply { createNewFile() })).let { builder ->
-    builder.configuration.let { cfg ->
-      addresses.forEach { cfg.addProperty(KEY_ADDRESSES, it.toSlashSeparated()) }
-      routes.forEach { cfg.addProperty(KEY_ROUTES, it.toSlashSeparated()) }
+      builder.configuration.let { cfg ->
+        addresses.forEach { cfg.addProperty(KEY_ADDRESSES, it.toSlashSeparated()) }
+        routes.forEach { cfg.addProperty(KEY_ROUTES, it.toSlashSeparated()) }
+      }
+      builder.save()
     }
-    builder.save()
-  }
 }

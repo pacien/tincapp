@@ -27,10 +27,10 @@ import org.pacien.tincapp.context.App
  * @author pacien
  */
 object Android {
-  fun <T> ArrayAdapter<T>.setElements(elems: Collection<T>) {
+  fun <T> ArrayAdapter<T>.setElements(elements: Collection<T>) {
     setNotifyOnChange(false)
     clear()
-    addAll(elems)
+    addAll(elements)
     notifyDataSetChanged()
     setNotifyOnChange(true)
   }
