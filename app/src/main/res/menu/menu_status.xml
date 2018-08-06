@@ -25,7 +25,7 @@
 
 	<item
 		android:id="@+id/menu_disconnect"
-		android:icon="@drawable/ic_stop_primary_24dp"
+		android:icon="@drawable/ic_link_off_primary_24dp"
 		android:onClick="stopVpn"
 		android:tint="@color/colorAccent"
 		android:title="@string/menu_disconnect"
