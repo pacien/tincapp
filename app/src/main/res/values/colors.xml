@@ -19,12 +19,14 @@
 -->
 
 <resources>
-	<color name="textPrimary">#FFFFFFFF</color>
-	<color name="colorPrimary">#424242</color>
-	<color name="colorPrimaryDark">#212121</color>
-	<color name="colorPrimaryLight">#757575</color>
-	<color name="colorPrimaryLighter">#d9d9d9</color>
-	<color name="colorAccent">#f9a825</color>
+	<color name="headerBackgroundPrimary">#13af96</color>
+	<color name="headerBackgroundPrimaryDark">#007f68</color>
+
+	<color name="textTitle">#FFFFFFFF</color>
+	<color name="textAccent">#007f68</color>
+	<color name="textSecondary">#212121</color>
+
+	<color name="separator">#d9d9d9</color>
 
 	<color name="backgroundPrimary">#FFFFFF</color>
 	<color name="backgroundSecondary">#d9d9d9</color>

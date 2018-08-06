@@ -27,14 +27,14 @@
 		android:id="@+id/log_viewer_action_toggle"
 		android:icon="@drawable/ic_pause_circle_outline_primary_24dp"
 		android:onClick="toggleLogging"
-		android:tint="@color/colorAccent"
+		android:tint="@color/textAccent"
 		android:title="@string/menu_toggle_logging"
 		app:showAsAction="ifRoom"/>
 
 	<item
 		android:icon="@drawable/ic_share_primary_24dp"
 		android:onClick="share"
-		android:tint="@color/colorAccent"
+		android:tint="@color/textAccent"
 		android:title="@string/menu_share_log"
 		app:showAsAction="ifRoom"/>
 

@@ -20,5 +20,5 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 	<size android:height="1dp"/>
-	<solid android:color="@color/colorPrimaryLighter"/>
+	<solid android:color="@color/separator"/>
 </shape>

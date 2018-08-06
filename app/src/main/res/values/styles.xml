@@ -20,9 +20,9 @@
 
 <resources>
 	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorAccent">@color/colorAccent</item>
+		<item name="colorPrimary">@color/headerBackgroundPrimary</item>
+		<item name="colorPrimaryDark">@color/headerBackgroundPrimaryDark</item>
+		<item name="colorAccent">@color/textAccent</item>
 	</style>
 
 	<style name="AppTheme.NoActionBar">
@@ -35,7 +35,7 @@
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 	<style name="AppTheme.SectionTitle">
-		<item name="android:textColor">@color/colorAccent</item>
+		<item name="android:textColor">@color/textAccent</item>
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
@@ -79,6 +79,6 @@
 	<style name="AppTheme.BlockContent">
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
-		<item name="android:textColor">@color/colorPrimaryLight</item>
+		<item name="android:textColor">@color/textSecondary</item>
 	</style>
 </resources>
