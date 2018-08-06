@@ -19,6 +19,7 @@
 package org.pacien.tincapp.service
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.net.VpnService
 import android.os.ParcelFileDescriptor
@@ -40,7 +41,6 @@ import org.pacien.tincapp.extensions.Java.defaultMessage
 import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.utils.TincKeyring
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.FileNotFoundException
 
@@ -48,12 +48,7 @@ import java.io.FileNotFoundException
  * @author pacien
  */
 class TincVpnService : VpnService() {
-  private var logger: Logger? = null
-
-  override fun onCreate() {
-    super.onCreate()
-    logger = LoggerFactory.getLogger(this.javaClass)
-  }
+  private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
 
   override fun onDestroy() {
     stopVpn()
@@ -61,18 +56,31 @@ class TincVpnService : VpnService() {
   }
 
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-    logger?.info("Intent received: {}", intent.action)
+    log.info("Intent received: {}", intent.toString())
 
     when {
       intent.action == Actions.ACTION_CONNECT && intent.scheme == Actions.TINC_SCHEME ->
         startVpn(intent.data.schemeSpecificPart, intent.data.fragment)
       intent.action == Actions.ACTION_DISCONNECT ->
         stopVpn()
+      intent.action == Actions.ACTION_SYSTEM_CONNECT ->
+        restorePreviousConnection()
       else ->
         throw IllegalArgumentException("Invalid intent action received.")
     }
 
     return Service.START_NOT_STICKY
+  }
+
+  private fun restorePreviousConnection() {
+    val netName = getCurrentNetName()
+    if (netName == null) {
+      log.info("No connection to restore.")
+      return
+    }
+
+    log.info("Restoring previous connection to \"$netName\".")
+    startVpn(netName, getPassphrase())
   }
 
   private fun startVpn(netName: String, passphrase: String? = null): Unit = synchronized(this) {
@@ -88,7 +96,7 @@ class TincVpnService : VpnService() {
     if (!AppPaths.confDir(netName).exists())
       return reportError(resources.getString(R.string.message_no_configuration_for_network_format, netName), docTopic = "configuration")
 
-    logger?.info("Starting tinc daemon for network \"$netName\".")
+    log.info("Starting tinc daemon for network \"$netName\".")
     if (isConnected()) stopVpn()
 
     val privateKeys = try {
@@ -129,7 +137,7 @@ class TincVpnService : VpnService() {
     }
 
     val daemon = Tincd.start(netName, deviceFd.fd, privateKeys.first?.fd, privateKeys.second?.fd)
-    setState(netName, interfaceCfg, deviceFd, daemon)
+    setState(netName, passphrase, interfaceCfg, deviceFd, daemon)
 
     waitForDaemonStartup().whenComplete { _, exception ->
       deviceFd.close()
@@ -139,28 +147,28 @@ class TincVpnService : VpnService() {
       if (exception != null) {
         reportError(resources.getString(R.string.message_daemon_exited, exception.cause!!.defaultMessage()), exception)
       } else {
-        logger?.info("tinc daemon started.")
+        log.info("tinc daemon started.")
         broadcastEvent(Actions.EVENT_CONNECTED)
       }
     }
   }
 
   private fun stopVpn(): Unit = synchronized(this) {
-    logger?.info("Stopping any running tinc daemon.")
-    netName?.let {
+    log.info("Stopping any running tinc daemon.")
+    getCurrentNetName()?.let {
       Tinc.stop(it).thenRun {
-        logger?.info("All tinc daemons stopped.")
+        log.info("All tinc daemons stopped.")
         broadcastEvent(Actions.EVENT_DISCONNECTED)
-        setState(null, null, null, null)
+        setState(null, null, null, null, null)
       }
     }
   }
 
   private fun reportError(msg: String, e: Throwable? = null, docTopic: String? = null) {
     if (e != null)
-      logger?.error(msg, e)
+      log.error(msg, e)
     else
-      logger?.error(msg)
+      log.error(msg)
 
     broadcastEvent(Actions.EVENT_ABORTED)
     App.alert(R.string.title_unable_to_start_tinc, msg,
@@ -178,21 +186,35 @@ class TincVpnService : VpnService() {
 
   companion object {
     private const val SETUP_DELAY = 500L // ms
-    private var netName: String? = null
+
+    private val STORE_NAME = this::class.java.`package`.name
+    private const val STORE_KEY_NETNAME = "netname"
+    private const val STORE_KEY_PASSPHRASE = "passphrase"
+
+    private val context by lazy { App.getContext() }
+    private val store by lazy { context.getSharedPreferences(STORE_NAME, Context.MODE_PRIVATE)!! }
+
     private var interfaceCfg: VpnInterfaceConfiguration? = null
     private var fd: ParcelFileDescriptor? = null
     private var daemon: CompletableFuture<Unit>? = null
 
-    private fun setState(netName: String?, interfaceCfg: VpnInterfaceConfiguration?,
-                         fd: ParcelFileDescriptor?, daemon: CompletableFuture<Unit>?) {
+    private fun saveConnection(netName: String?, passphrase: String?) =
+      store.edit()
+        .putString(STORE_KEY_NETNAME, netName)
+        .putString(STORE_KEY_PASSPHRASE, passphrase)
+        .apply()
 
-      TincVpnService.netName = netName
+    private fun setState(netName: String?, passphrase: String?, interfaceCfg: VpnInterfaceConfiguration?,
+                         fd: ParcelFileDescriptor?, daemon: CompletableFuture<Unit>?) {
+      saveConnection(netName, passphrase)
       TincVpnService.interfaceCfg = interfaceCfg
       TincVpnService.fd = fd
       TincVpnService.daemon = daemon
     }
 
-    fun getCurrentNetName() = netName
+    private fun getPassphrase(): String? = store.getString(STORE_KEY_PASSPHRASE, null)
+    fun getCurrentNetName(): String? = store.getString(STORE_KEY_NETNAME, null)
+
     fun getCurrentInterfaceCfg() = interfaceCfg
     fun isConnected() = !(daemon?.isDone ?: true)
 
