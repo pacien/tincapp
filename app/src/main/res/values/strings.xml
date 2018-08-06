@@ -32,6 +32,8 @@
 	<string name="info_running_on_format">Running on Android %1$s %2$s</string>
 	<string name="info_supported_abis_format">Device ABIs: %1$s</string>
 
+	<string name="notification_channel_error_name">Errors</string>
+
 	<string name="menu_about">About this app</string>
 	<string name="menu_configure">Configure</string>
 	<string name="menu_disconnect">Disconnect</string>

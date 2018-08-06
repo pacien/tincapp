@@ -25,8 +25,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.support.annotation.StringRes
-import android.support.v7.app.AlertDialog
-import android.view.WindowManager
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.slf4j.LoggerFactory
@@ -59,16 +57,13 @@ class App : Application() {
     private var appContext: Context? = null
     private var handler: Handler? = null
 
+    val notificationManager: AppNotificationManager by lazy { AppNotificationManager(appContext!!) }
+
     fun getContext() = appContext!!
     fun getResources() = getContext().resources!!
 
-    fun alert(@StringRes title: Int, msg: String, manualLink: String? = null) = handler!!.post {
-      AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Dialog)
-        .setTitle(title).setMessage(msg)
-        .apply { if (manualLink != null) setNeutralButton(R.string.action_open_manual) { _, _ -> openURL(manualLink) } }
-        .setPositiveButton(R.string.action_close) { _, _ -> Unit }
-        .create().apply { window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ERROR) }.show()
-    }
+    fun alert(@StringRes title: Int, msg: String, manualLink: String? = null) =
+      notificationManager.notifyError(appContext!!.getString(title), msg, manualLink)
 
     fun openURL(url: String) {
       val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

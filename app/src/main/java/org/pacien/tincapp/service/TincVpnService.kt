@@ -197,6 +197,8 @@ class TincVpnService : VpnService() {
     fun isConnected() = !(daemon?.isDone ?: true)
 
     fun connect(netName: String, passphrase: String? = null) {
+      App.notificationManager.dismissAll()
+
       App.getContext().startService(
         Intent(App.getContext(), TincVpnService::class.java)
           .setAction(Actions.ACTION_CONNECT)

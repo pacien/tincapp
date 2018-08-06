@@ -55,6 +55,7 @@ dependencies {
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.6.3'
+  implementation "com.android.support:support-compat:27.1.1"
   implementation 'com.android.support:design:27.1.1'
   implementation 'com.google.zxing:android-integration:3.3.0'
   implementation 'org.bouncycastle:bcpkix-jdk15on:1.59'

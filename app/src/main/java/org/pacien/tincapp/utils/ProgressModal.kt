@@ -27,6 +27,8 @@ import android.widget.TextView
 import org.pacien.tincapp.R
 
 /**
+ * An indefinite progress dialog replacing the deprecated `android.app.ProgressDialog`.
+ *
  * @author pacien
  */
 object ProgressModal {
