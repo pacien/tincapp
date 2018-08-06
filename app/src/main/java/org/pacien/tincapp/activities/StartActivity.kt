@@ -166,6 +166,7 @@ class StartActivity : BaseActivity() {
     super.onResume()
     if (TincVpnService.isConnected()) openStatusActivity(false)
     broadcastMapper.register()
+    handleRecentCrash()
   }
 
   override fun onPause() {

@@ -101,6 +101,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     super.onResume()
     broadcastMapper.register()
     updateView()
+    handleRecentCrash()
   }
 
   override fun onPause() {

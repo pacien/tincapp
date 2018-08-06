@@ -42,7 +42,6 @@ abstract class BaseActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.base)
-    handleRecentCrash()
   }
 
   override fun onCreateOptionsMenu(m: Menu): Boolean {
@@ -86,7 +85,7 @@ abstract class BaseActivity : AppCompatActivity() {
     if (active) super.runOnUiThread(action)
   }
 
-  private fun handleRecentCrash() {
+  fun handleRecentCrash() {
     if (!CrashRecorder.hasPreviouslyCrashed()) return
     CrashRecorder.dismissPreviousCrash()
 
