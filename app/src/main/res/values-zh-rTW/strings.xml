@@ -89,9 +89,9 @@
 	<string name="message_no_network_name_provided">沒有提供網路名稱。</string>
 	<string name="message_no_configuration_for_network_format">沒有找到網路“%1$s”的配置。</string>
 	<string name="message_network_config_not_found_format">在“%1$s”找不到網路配置檔案。</string>
-	<string name="message_network_config_invalid_format">network.conf 中的網路配置無效：\n\n%1$s</string>
+	<string name="message_network_config_invalid_format">network.conf 中的網路配置無效：\n%1$s</string>
 	<string name="message_encrypting_decrypting_private_keys">加密/解密私鑰</string>
-	<string name="message_could_not_decrypt_private_keys_format">無法解密私鑰：\n\n%1$s</string>
+	<string name="message_could_not_decrypt_private_keys_format">無法解密私鑰：\n%1$s</string>
 
 	<string name="value_none">無</string>
 	<string name="value_yes">是</string>

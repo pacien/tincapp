@@ -89,9 +89,9 @@
 	<string name="message_no_network_name_provided">没有提供网络名称。</string>
 	<string name="message_no_configuration_for_network_format">没有找到网络“%1$s”的配置。</string>
 	<string name="message_network_config_not_found_format">在“%1$s”找不到网络配置文件。</string>
-	<string name="message_network_config_invalid_format">network.conf 中的网络配置无效：\n\n%1$s</string>
+	<string name="message_network_config_invalid_format">network.conf 中的网络配置无效：\n%1$s</string>
 	<string name="message_encrypting_decrypting_private_keys">加密/解密私钥</string>
-	<string name="message_could_not_decrypt_private_keys_format">无法解密私钥：\n\n%1$s</string>
+	<string name="message_could_not_decrypt_private_keys_format">无法解密私钥：\n%1$s</string>
 
 	<string name="value_none">无</string>
 	<string name="value_yes">是</string>
