@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Tinc App logo and icon made exclusively for Tinc App.
+ * Copyright (C) 2018 Philippe NGUYEN, Pacien TRAN-GIRARD
+-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+				android:width="108dp"
+				android:height="108dp"
+				android:viewportHeight="108.3"
+				android:viewportWidth="108.3">
+	<path
+		android:fillColor="#00000000"
+		android:pathData="M58.33,38.53l-19.8,19.8l27.05,7.25l-7.25,-27.05z"
+		android:strokeColor="#f0f0f0"
+		android:strokeWidth="3"/>
+	<path
+		android:fillColor="#fff"
+		android:pathData="M58.33,38.54m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+	<path
+		android:fillColor="#fff"
+		android:pathData="M38.54,58.33m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+	<path
+		android:fillColor="#fff"
+		android:pathData="M65.58,65.58m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+</vector>
