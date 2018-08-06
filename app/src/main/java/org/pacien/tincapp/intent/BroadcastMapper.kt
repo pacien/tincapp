@@ -1,5 +1,5 @@
 /*
- * tinc app, an Android binding and user interface for the tinc mesh VPN daemon
+ * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify

@@ -1,4 +1,4 @@
-tinc app
+Tinc App
 ========
 
 Android binding and user interface for the tinc mesh VPN daemon which does not require root privilege.
@@ -42,7 +42,7 @@ License
 
 Copyright (C) 2017-2018 Pacien TRAN-GIRARD
 
-_tinc app_ is distributed under the terms of GNU General Public License v3.0,
+_Tinc App_ is distributed under the terms of GNU General Public License v3.0,
 as detailed in the provided `license.md` file.
 
 Builds of this software embed and make use of the following libraries:
