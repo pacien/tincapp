@@ -91,6 +91,20 @@ class TincVpnService : VpnService() {
     logger?.info("Starting tinc daemon for network \"$netName\".")
     if (isConnected()) stopVpn()
 
+    val privateKeys = try {
+      TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let { tincCfg ->
+        Pair(
+          TincKeyring.openPrivateKey(tincCfg.ed25519PrivateKeyFile ?: AppPaths.defaultEd25519PrivateKeyFile(netName), passphrase),
+          TincKeyring.openPrivateKey(tincCfg.privateKeyFile ?: AppPaths.defaultRsaPrivateKeyFile(netName), passphrase))
+      }
+    } catch (e: FileNotFoundException) {
+      Pair(null, null)
+    } catch (e: PEMException) {
+      return reportError(resources.getString(R.string.message_could_not_decrypt_private_keys_format, e.message))
+    } catch (e: Exception) {
+      return reportError(resources.getString(R.string.message_could_not_read_private_key_format, e.defaultMessage()), e)
+    }
+
     val interfaceCfg = try {
       VpnInterfaceConfiguration.fromIfaceConfiguration(AppPaths.existing(AppPaths.netConfFile(netName)))
     } catch (e: FileNotFoundException) {
@@ -112,20 +126,6 @@ class TincVpnService : VpnService() {
       return reportError(resources.getString(R.string.message_could_not_bind_iface), e)
     } catch (e: Exception) {
       return reportError(resources.getString(R.string.message_could_not_configure_iface, e.defaultMessage()), e)
-    }
-
-    val privateKeys = try {
-      TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let { tincCfg ->
-        Pair(
-          TincKeyring.openPrivateKey(tincCfg.ed25519PrivateKeyFile ?: AppPaths.defaultEd25519PrivateKeyFile(netName), passphrase),
-          TincKeyring.openPrivateKey(tincCfg.privateKeyFile ?: AppPaths.defaultRsaPrivateKeyFile(netName), passphrase))
-      }
-    } catch (e: FileNotFoundException) {
-      Pair(null, null)
-    } catch (e: PEMException) {
-      return reportError(resources.getString(R.string.message_could_not_decrypt_private_keys_format, e.message))
-    } catch (e: Exception) {
-      return reportError(resources.getString(R.string.message_could_not_read_private_key_format, e.defaultMessage()), e)
     }
 
     val daemon = Tincd.start(netName, deviceFd.fd, privateKeys.first?.fd, privateKeys.second?.fd)
