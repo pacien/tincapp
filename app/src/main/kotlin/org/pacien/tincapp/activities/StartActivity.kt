@@ -68,7 +68,7 @@ class StartActivity : BaseActivity() {
     }
 
     override fun onRefresh() {
-      val networks = AppPaths.confDir().list()?.toList() ?: emptyList()
+      val networks = AppPaths.confDir().list()?.sorted() ?: emptyList()
       runOnUiThread {
         networkListAdapter?.setElements(networks)
         setPlaceholderVisibility()
