@@ -23,3 +23,5 @@
 /captures
 .externalNativeBuild
 /app/release
+/keyring
+
