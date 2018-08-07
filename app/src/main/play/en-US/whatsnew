@@ -1,2 +1,3 @@
-* update tinc to 1.1pre16
-* update libressl and other libraries
+ • add support for always-on VPN
+ • new theme and icon
+ • minor UI improvements
