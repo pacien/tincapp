@@ -21,6 +21,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.triplet.play'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
   compileSdkVersion 27
 
@@ -37,8 +41,18 @@ android {
     }
   }
 
+  signingConfigs {
+    release {
+      keyAlias keystoreProperties['keyAlias']
+      keyPassword keystoreProperties['keyPassword']
+      storeFile file(keystoreProperties['storeFile'])
+      storePassword keystoreProperties['storePassword']
+    }
+  }
+
   buildTypes {
     release {
+      signingConfig signingConfigs.release
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
@@ -73,7 +87,7 @@ repositories {
 }
 
 play {
-  jsonFile = file('../keyring/api-key.json')
+  jsonFile = file(keystoreProperties['apiKeyFile'])
   track = 'beta'
   untrackOld = true
   uploadImages = true
