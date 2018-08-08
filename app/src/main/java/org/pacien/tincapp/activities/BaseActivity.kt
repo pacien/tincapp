@@ -19,19 +19,18 @@
 package org.pacien.tincapp.activities
 
 import android.os.Bundle
+import android.support.annotation.LayoutRes
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import kotlinx.android.synthetic.main.base.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppInfo
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.context.CrashRecorder
-import org.pacien.tincapp.utils.ProgressModal
 
 /**
  * @author pacien
@@ -105,10 +104,13 @@ abstract class BaseActivity : AppCompatActivity() {
       .show()
   }
 
-  protected fun notify(@StringRes msg: Int) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
-  protected fun notify(msg: String) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
-  protected fun showProgressDialog(@StringRes msg: Int): AlertDialog = ProgressModal.show(this, getString(msg))
-  protected fun showErrorDialog(msg: String): AlertDialog = AlertDialog.Builder(this)
+  fun inflate(@LayoutRes layout: Int) = layoutInflater.inflate(layout, main_content, false)!!
+  fun inflate(inflateFunc: (LayoutInflater, ViewGroup, Boolean) -> View) = inflateFunc(layoutInflater, main_content, false)
+
+  fun notify(@StringRes msg: Int) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
+  fun notify(msg: String) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
+
+  fun showErrorDialog(msg: String): AlertDialog = AlertDialog.Builder(this)
     .setTitle(R.string.title_error).setMessage(msg)
     .setPositiveButton(R.string.action_close) { _, _ -> Unit }.show()
 }

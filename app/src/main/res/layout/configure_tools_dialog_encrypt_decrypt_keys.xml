@@ -31,21 +31,21 @@
 		android:id="@+id/enc_dec_net_name"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/field_net_name"
+		android:hint="@string/configure_tools_generate_config_net_name_hint"
 		android:inputType="text"/>
 
 	<EditText
 		android:id="@+id/enc_dec_current_passphrase"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:hint="@string/field_current_passphrase"
+		android:hint="@string/configure_tools_private_key_encryption_current_passphrase"
 		android:inputType="textVisiblePassword"/>
 
 	<EditText
 		android:id="@+id/enc_dec_new_passphrase"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:hint="@string/field_new_passphrase"
+		android:hint="@string/configure_tools_private_key_encryption_new_passphrase"
 		android:inputType="textVisiblePassword"/>
 
 </LinearLayout>

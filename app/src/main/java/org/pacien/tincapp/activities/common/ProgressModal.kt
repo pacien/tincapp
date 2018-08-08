@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.utils
+package org.pacien.tincapp.activities.common
 
 import android.annotation.SuppressLint
 import android.app.Activity

@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.dialog_node_details.view.*
 import kotlinx.android.synthetic.main.fragment_list_view.*
 import kotlinx.android.synthetic.main.fragment_network_status_header.*
 import org.pacien.tincapp.R
+import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
@@ -127,7 +128,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
   fun stopVpn(@Suppress("UNUSED_PARAMETER") i: MenuItem? = null) {
     refreshTimer?.cancel()
     list_wrapper.isRefreshing = false
-    shutdownDialog = showProgressDialog(R.string.message_disconnecting_vpn)
+    shutdownDialog = ProgressModal.show(this, getString(R.string.message_disconnecting_vpn))
     TincVpnService.disconnect()
   }
 

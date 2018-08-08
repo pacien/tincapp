@@ -43,13 +43,15 @@ object AppPaths {
   private const val NET_DEFAULT_ED25519_PRIVATE_KEY_FILE = "ed25519_key.priv"
   private const val NET_DEFAULT_RSA_PRIVATE_KEY_FILE = "rsa_key.priv"
 
+  private val context by lazy { App.getContext() }
+
   fun storageAvailable() =
     Environment.getExternalStorageState().let { it == Environment.MEDIA_MOUNTED && it != Environment.MEDIA_MOUNTED_READ_ONLY }
 
-  private fun internalCacheDir() = App.getContext().cacheDir!!
-  fun cacheDir() = App.getContext().externalCacheDir!!
-  fun confDir() = App.getContext().getExternalFilesDir(null)!!
-  private fun binDir() = File(App.getContext().applicationInfo.nativeLibraryDir)
+  private fun internalCacheDir() = context.cacheDir!!
+  fun cacheDir() = context.externalCacheDir!!
+  fun confDir() = context.getExternalFilesDir(null)!!
+  private fun binDir() = File(context.applicationInfo.nativeLibraryDir)
 
   fun confDir(netName: String) = File(confDir(), netName)
   fun hostsDir(netName: String) = File(confDir(netName), NET_HOSTS_DIR)
@@ -57,7 +59,7 @@ object AppPaths {
   fun tincConfFile(netName: String) = File(confDir(netName), NET_TINC_CONF_FILE)
   fun invitationFile(netName: String) = File(confDir(netName), NET_INVITATION_FILE)
   fun logFile(netName: String) = File(cacheDir(), String.format(LOGFILE_FORMAT, netName))
-  fun pidFile(netName: String) = File(App.getContext().cacheDir, String.format(PIDFILE_FORMAT, netName))
+  fun pidFile(netName: String) = File(context.cacheDir, String.format(PIDFILE_FORMAT, netName))
   fun appLogFile() = File(cacheDir(), APPLOG_FILE)
   fun crashFlagFile() = File(internalCacheDir(), CRASHFLAG_FILE)
 

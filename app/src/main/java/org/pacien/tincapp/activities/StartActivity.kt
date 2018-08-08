@@ -35,6 +35,8 @@ import kotlinx.android.synthetic.main.dialog_decrypt_keys.view.*
 import kotlinx.android.synthetic.main.fragment_list_view.*
 import kotlinx.android.synthetic.main.fragment_network_list_header.*
 import org.pacien.tincapp.R
+import org.pacien.tincapp.activities.common.ProgressModal
+import org.pacien.tincapp.activities.configure.ConfigureActivity
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.extensions.Android.setElements
 import org.pacien.tincapp.intent.Actions
@@ -127,7 +129,7 @@ class StartActivity : BaseActivity() {
     }
 
     private fun startVpn(netName: String, passphrase: String? = null) {
-      connectDialog = showProgressDialog(R.string.message_starting_vpn)
+      connectDialog = ProgressModal.show(this@StartActivity, getString(R.string.message_starting_vpn))
       TincVpnService.connect(netName, passphrase)
     }
   }

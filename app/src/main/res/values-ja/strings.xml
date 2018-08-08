@@ -32,7 +32,7 @@
 
 	<string name="menu_about">このアプリについて</string>
 
-	<string name="field_net_name">Tinc ネットワーク名</string>
+	<string name="configure_tools_generate_config_net_name_hint">Tinc ネットワーク名</string>
 
 	<string name="title_connect_to_network">ネットワークに接続</string>
 	<string name="title_request_vpn_permissions">VPN 権限のリクエスト</string>

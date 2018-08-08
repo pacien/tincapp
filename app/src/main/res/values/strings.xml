@@ -41,22 +41,11 @@
 	<string name="menu_toggle_logging">Toggle logging</string>
 	<string name="menu_share_log">Share log</string>
 
-	<string name="field_net_name">Tinc network name</string>
-	<string name="field_node_name">Name of this node</string>
-	<string name="field_invitation_url">Invitation URL</string>
-	<string name="field_current_passphrase">Current passphrase\n(leave empty if none)</string>
-	<string name="field_new_passphrase">New passphrase\n(leave empty to decrypt)</string>
-	<string name="field_optional_passphrase">Passphrase (optional)</string>
 	<string name="field_passphrase">Passphrase</string>
 
 	<string name="title_connect_to_network">Connect to network</string>
 	<string name="title_request_vpn_permissions">Request VPN permissions</string>
-	<string name="title_path_info">Path info</string>
 	<string name="title_node_info">Node info</string>
-	<string name="title_tools">Tools</string>
-	<string name="title_configuration_directory">Configuration directory</string>
-	<string name="title_log_directory">Log directory</string>
-	<string name="title_tinc_binary">Tinc binary</string>
 	<string name="title_network_info">Network info</string>
 	<string name="title_network_name">Network name</string>
 	<string name="title_ip_addresses">IP addresses</string>
@@ -68,40 +57,28 @@
 	<string name="title_allow_bypass">Allow bypass</string>
 	<string name="title_nodes">Nodes</string>
 	<string name="title_error">Error</string>
-	<string name="title_new_network">New network</string>
-	<string name="title_join_network">Join network</string>
 	<string name="title_unable_to_start_tinc">Unable to start tinc</string>
-	<string name="title_private_keys_encryption">Private keys encryption</string>
 	<string name="title_unlock_private_keys">Unlock tinc private keys</string>
 	<string name="title_app_crash">App crash</string>
 
 	<string name="action_close">Close</string>
 	<string name="action_cancel">Cancel</string>
 	<string name="action_open_project_website">Project website</string>
-	<string name="action_generate_node_configuration_and_keys">Generate node configuration and keys</string>
-	<string name="action_join_network_via_invitation_url">Join network via invitation URL</string>
-	<string name="action_create">Create</string>
-	<string name="action_join">Join</string>
 	<string name="action_open_manual">Open manual</string>
-	<string name="action_scan_qr_code">Scan QR code</string>
 	<string name="action_install">Install</string>
 	<string name="action_unlock">Unlock</string>
-	<string name="action_apply">Apply</string>
-	<string name="action_encrypt_decrypt_private_keys">Encrypt or decrypt private keys</string>
+
 	<string name="action_dismiss">Dismiss</string>
 	<string name="action_open_web_page">Open web page</string>
 	<string name="action_send_email">Send e-mail</string>
 	<string name="action_send_report">Send report</string>
 
 	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
-	<string name="message_generating_configuration">Generating node configuration…</string>
-	<string name="message_joining_network">Joining network…</string>
 	<string name="message_network_configuration_written">Network configuration successfully written.</string>
 	<string name="message_no_network_name_provided">No network name has been provided.</string>
 	<string name="message_no_configuration_for_network_format">No configuration has been found for network \"%1$s\".</string>
 	<string name="message_network_config_not_found_format">Network configuration file not found at \"%1$s\".</string>
 	<string name="message_network_config_invalid_format">Invalid network configuration in network.conf:\n%1$s</string>
-	<string name="message_encrypting_decrypting_private_keys">Encrypting/decrypting private keys</string>
 	<string name="message_could_not_decrypt_private_keys_format">Could not decrypt private keys:\n%1$s</string>
 	<string name="message_storage_unavailable">Storage directory is unavailable.</string>
 	<string name="message_starting_vpn">Starting VPN…</string>
@@ -123,4 +100,34 @@
 	<string name="value_none">none</string>
 	<string name="value_yes">yes</string>
 	<string name="value_no">no</string>
+
+	<!-- Configure activity -->
+	<string name="configure_activity_title_path_info">Path info</string>
+	<string name="configure_path_info_title_configuration_directory">Configuration directory</string>
+	<string name="configure_path_info_title_log_directory">Log directory</string>
+	<string name="configure_path_info_title_tinc_binary">Tinc binary</string>
+
+	<string name="configure_activity_title_tools">Tools</string>
+	<string name="configure_tools_action_generate_node_configuration_and_keys">Generate node configuration and keys</string>
+	<string name="configure_tools_action_join_network_via_invitation_url">Join network via invitation URL</string>
+	<string name="configure_tools_action_encrypt_decrypt_private_keys">Encrypt or decrypt private keys</string>
+
+	<string name="configure_tools_generate_config_title">New network</string>
+	<string name="configure_tools_generate_config_net_name_hint">Tinc network name</string>
+	<string name="configure_tools_generate_config_node_name_hint">Name of this node</string>
+	<string name="configure_tools_generate_config_optional_passphrase_hint">Passphrase (optional)</string>
+	<string name="configure_tools_generate_config_action">Create</string>
+	<string name="configure_tools_generate_config_generating">Generating node configuration…</string>
+
+	<string name="configure_tools_join_network_title">Join network</string>
+	<string name="configure_tools_join_network_field_invitation_url_hint">Invitation URL</string>
+	<string name="configure_tools_join_network_action_scan_qr_code_action">Scan QR code</string>
+	<string name="configure_tools_join_network_action">Join</string>
+	<string name="configure_tools_join_network_joining">Joining network…</string>
+
+	<string name="configure_tools_private_keys_encryption_title">Private keys encryption</string>
+	<string name="configure_tools_private_key_encryption_current_passphrase">Current passphrase\n(leave empty if none)</string>
+	<string name="configure_tools_private_key_encryption_new_passphrase">New passphrase\n(leave empty to decrypt)</string>
+	<string name="configure_tools_private_keys_encryption_action">Apply</string>
+	<string name="configure_tools_private_keys_encryption_encrypting">Encrypting/decrypting private keys</string>
 </resources>
