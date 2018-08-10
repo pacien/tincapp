@@ -45,17 +45,6 @@
 
 	<string name="title_connect_to_network">Connect to network</string>
 	<string name="title_request_vpn_permissions">Request VPN permissions</string>
-	<string name="title_node_info">Node info</string>
-	<string name="title_network_info">Network info</string>
-	<string name="title_network_name">Network name</string>
-	<string name="title_ip_addresses">IP addresses</string>
-	<string name="title_routes">Routes</string>
-	<string name="title_dns_servers">DNS servers</string>
-	<string name="title_search_domains">Search domains</string>
-	<string name="title_allowed_applications">Allowed applications</string>
-	<string name="title_disallowed_applications">Disallowed applications</string>
-	<string name="title_allow_bypass">Allow bypass</string>
-	<string name="title_nodes">Nodes</string>
 	<string name="title_error">Error</string>
 	<string name="title_unable_to_start_tinc">Unable to start tinc</string>
 	<string name="title_unlock_private_keys">Unlock tinc private keys</string>
@@ -85,7 +74,6 @@
 	<string name="message_disconnecting_vpn">Disconnecting VPN…</string>
 	<string name="message_passphrase_required">A passphrase is required to unlock the keyring.</string>
 	<string name="message_daemon_exited">Tinc daemon exited during startup:\n%1$s\nCheck the logs for more details.</string>
-	<string name="message_loading">Loading…</string>
 	<string name="message_log_level_set">Log level set to %1$d.</string>
 	<string name="message_log_paused">Logging paused.</string>
 	<string name="message_could_not_configure_iface">Could not apply network interface configuration:\n%1$s</string>
@@ -96,10 +84,6 @@
 	<string name="message_no_daemon">No running tinc daemon has been found.</string>
 	<string name="message_could_not_read_network_configuration_format">Could not read network interface configuration:\n%1$s</string>
 	<string name="message_could_not_read_private_key_format">Could not read tinc private keys:\n%1$s</string>
-
-	<string name="value_none">none</string>
-	<string name="value_yes">yes</string>
-	<string name="value_no">no</string>
 
 	<!-- Configure activity -->
 	<string name="configure_activity_title_path_info">Path info</string>
@@ -130,4 +114,26 @@
 	<string name="configure_tools_private_key_encryption_new_passphrase">New passphrase\n(leave empty to decrypt)</string>
 	<string name="configure_tools_private_keys_encryption_action">Apply</string>
 	<string name="configure_tools_private_keys_encryption_encrypting">Encrypting/decrypting private keys</string>
+
+	<!-- Status activity -->
+	<string name="status_activity_title_node_list">Nodes</string>
+	<string name="status_activity_title_network_info">Network info</string>
+
+	<string name="status_network_info_network_name_label">Network name</string>
+	<string name="status_network_info_ip_addresses_label">IP addresses</string>
+	<string name="status_network_info_routes_label">Routes</string>
+	<string name="status_network_info_dns_servers_label">DNS servers</string>
+	<string name="status_network_info_search_domains_label">Search domains</string>
+	<string name="status_network_info_allowed_applications_label">Allowed applications</string>
+	<string name="status_network_info_disallowed_applications_label">Disallowed applications</string>
+	<string name="status_network_info_allow_bypass_label">Allow bypass</string>
+
+	<string name="status_network_info_yes_value">yes</string>
+	<string name="status_network_info_no_value">no</string>
+	<string name="status_network_info_none_value">none</string>
+
+	<string name="status_activity_node_list_placeholder_text">Loading…</string>
+	<string name="status_node_list_modal_placeholder_text">Loading…</string>
+	<string name="status_node_info_dialog_title">Node info</string>
+	<string name="status_node_info_dialog_close_action">Close</string>
 </resources>

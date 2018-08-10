@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities
+package org.pacien.tincapp.activities.status
 
 import android.content.Intent
 import android.os.Bundle
@@ -30,16 +30,17 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import java8.util.concurrent.CompletableFuture
 import kotlinx.android.synthetic.main.base.*
-import kotlinx.android.synthetic.main.dialog_node_details.view.*
 import kotlinx.android.synthetic.main.fragment_list_view.*
-import kotlinx.android.synthetic.main.fragment_network_status_header.*
+import kotlinx.android.synthetic.main.status_activity_list_header.*
+import kotlinx.android.synthetic.main.status_node_info_dialog.view.*
 import org.pacien.tincapp.R
+import org.pacien.tincapp.activities.BaseActivity
+import org.pacien.tincapp.activities.StartActivity
+import org.pacien.tincapp.activities.ViewLogActivity
 import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
-import org.pacien.tincapp.data.VpnInterfaceConfiguration
 import org.pacien.tincapp.extensions.Android.setElements
-import org.pacien.tincapp.extensions.Android.setText
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService
@@ -62,7 +63,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
 
     layoutInflater.inflate(R.layout.fragment_list_view, main_content)
     list_wrapper.setOnRefreshListener(this)
-    list.addHeaderView(layoutInflater.inflate(R.layout.fragment_network_status_header, list, false), null, false)
+    list.addHeaderView(layoutInflater.inflate(R.layout.status_activity_list_header, list, false), null, false)
     list.addFooterView(View(this), null, false)
     list.onItemClickListener = this
     list.adapter = nodeListAdapter
@@ -90,7 +91,6 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     super.onStart()
     refreshTimer = Timer(true)
     refreshTimer?.schedule(timerTask { updateView() }, NOW, REFRESH_RATE)
-    writeNetworkInfo(TincVpnService.getCurrentInterfaceCfg() ?: VpnInterfaceConfiguration())
   }
 
   override fun onStop() {
@@ -135,22 +135,9 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
   fun openLogViewer(@Suppress("UNUSED_PARAMETER") i: MenuItem) =
     startActivity(Intent(this, ViewLogActivity::class.java))
 
-  private fun writeNetworkInfo(cfg: VpnInterfaceConfiguration) {
-    text_network_name.text = TincVpnService.getCurrentNetName() ?: getString(R.string.value_none)
-    text_network_ip_addresses.setText(cfg.addresses.map { it.toSlashSeparated() })
-    text_network_routes.setText(cfg.routes.map { it.toSlashSeparated() })
-    text_network_dns_servers.setText(cfg.dnsServers)
-    text_network_search_domains.setText(cfg.searchDomains)
-    text_network_allow_bypass.text = getString(if (cfg.allowBypass) R.string.value_yes else R.string.value_no)
-    block_network_allowed_applications.visibility = if (cfg.allowedApplications.isNotEmpty()) View.VISIBLE else View.GONE
-    text_network_allowed_applications.setText(cfg.allowedApplications)
-    block_network_disallowed_applications.visibility = if (cfg.disallowedApplications.isNotEmpty()) View.VISIBLE else View.GONE
-    text_network_disallowed_applications.setText(cfg.disallowedApplications)
-  }
-
   private fun writeNodeList(nodeList: List<String>) {
     nodeListAdapter?.setElements(nodeList)
-    node_list_placeholder.visibility = View.GONE
+    status_activity_node_list_placeholder.visibility = View.GONE
     list_wrapper.isRefreshing = false
   }
 
@@ -159,13 +146,13 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
   }
 
   private fun showNodeInfo(nodeName: String) {
-    val dialogTextView = layoutInflater.inflate(R.layout.dialog_node_details, main_content, false)
+    val dialogTextView = layoutInflater.inflate(R.layout.status_node_info_dialog, main_content, false)
 
     runOnUiThread {
       AlertDialog.Builder(this)
-        .setTitle(R.string.title_node_info)
+        .setTitle(R.string.status_node_info_dialog_title)
         .setView(dialogTextView)
-        .setPositiveButton(R.string.action_close) { _, _ -> Unit }
+        .setPositiveButton(R.string.status_node_info_dialog_close_action) { _, _ -> Unit }
         .show()
     }
 

@@ -46,21 +46,21 @@
 	<string name="title_connect_to_network">连接到网络</string>
 	<string name="title_request_vpn_permissions">请求 VPN 权限</string>
 	<string name="configure_activity_title_path_info">路径信息</string>
-	<string name="title_node_info">节点信息</string>
+	<string name="status_node_info_dialog_title">节点信息</string>
 	<string name="configure_activity_title_tools">工具</string>
 	<string name="configure_path_info_title_configuration_directory">配置目录</string>
 	<string name="configure_path_info_title_log_directory">日志目录</string>
 	<string name="configure_path_info_title_tinc_binary">Tinc 二进制文件</string>
-	<string name="title_network_info">网络信息</string>
-	<string name="title_network_name">网络名称</string>
-	<string name="title_ip_addresses">IP 地址</string>
-	<string name="title_routes">路由</string>
-	<string name="title_dns_servers">DNS 服务器</string>
-	<string name="title_search_domains">搜索域</string>
-	<string name="title_allowed_applications">允许的应用程序</string>
-	<string name="title_disallowed_applications">不允许的应用程序</string>
-	<string name="title_allow_bypass">允许旁路</string>
-	<string name="title_nodes">节点</string>
+	<string name="status_activity_title_network_info">网络信息</string>
+	<string name="status_network_info_network_name_label">网络名称</string>
+	<string name="status_network_info_ip_addresses_label">IP 地址</string>
+	<string name="status_network_info_routes_label">路由</string>
+	<string name="status_network_info_dns_servers_label">DNS 服务器</string>
+	<string name="status_network_info_search_domains_label">搜索域</string>
+	<string name="status_network_info_allowed_applications_label">允许的应用程序</string>
+	<string name="status_network_info_disallowed_applications_label">不允许的应用程序</string>
+	<string name="status_network_info_allow_bypass_label">允许旁路</string>
+	<string name="status_activity_title_node_list">节点</string>
 	<string name="title_error">错误</string>
 	<string name="configure_tools_generate_config_title">新建网络</string>
 	<string name="configure_tools_join_network_title">加入网络</string>
@@ -93,7 +93,7 @@
 	<string name="configure_tools_private_keys_encryption_encrypting">加密/解密私钥</string>
 	<string name="message_could_not_decrypt_private_keys_format">无法解密私钥：\n%1$s</string>
 
-	<string name="value_none">无</string>
-	<string name="value_yes">是</string>
-	<string name="value_no">否</string>
+	<string name="status_network_info_none_value">无</string>
+	<string name="status_network_info_yes_value">是</string>
+	<string name="status_network_info_no_value">否</string>
 </resources>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+/*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
  *
@@ -16,22 +14,28 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
+ */
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:paddingBottom="@dimen/dialog_vertical_margin"
-						android:paddingLeft="@dimen/dialog_horizontal_margin"
-						android:paddingRight="@dimen/dialog_horizontal_margin"
-						android:paddingTop="@dimen/dialog_vertical_margin">
+package org.pacien.tincapp.activities.status
 
-	<TextView
-		android:id="@+id/dialog_node_details"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:fontFamily="monospace"
-		android:text="@string/message_loading"
-		android:textColor="@color/textSecondary"/>
+import org.pacien.tincapp.R
+import org.pacien.tincapp.context.App
+import org.pacien.tincapp.data.CidrAddress
 
-</ScrollView>
+/**
+ * @author pacien
+ */
+object VpnInterfaceConfigurationFormatter {
+  private val resources by lazy { App.getResources() }
+
+  fun formatList(list: List<Any>) = when {
+    list.isNotEmpty() -> list.joinToString("\n", transform = this::formatListElement)
+    else -> resources.getString(R.string.status_network_info_none_value)!!
+  }
+
+  private fun formatListElement(element: Any) = when (element) {
+    is CidrAddress -> element.toSlashSeparated()
+    is String -> element
+    else -> element.toString()
+  }
+}

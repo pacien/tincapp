@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
+ * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<data>
+
+		<import type="android.view.View"/>
+
+		<variable
+			name="netName"
+			type="String"/>
+
+		<variable
+			name="vpnInterfaceConfiguration"
+			type="org.pacien.tincapp.data.VpnInterfaceConfiguration"/>
+
+		<variable
+			name="listFormatter"
+			type="org.pacien.tincapp.activities.status.VpnInterfaceConfigurationFormatter"/>
+
+	</data>
+
+	<LinearLayout style="@style/AppTheme.List">
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/status_network_info_network_name_label"/>
+
+			<TextView
+				style="@style/AppTheme.BlockContent"
+				android:text="@{netName ?? @string/status_network_info_yes_value}"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/status_network_info_ip_addresses_label"/>
+
+			<TextView
+				style="@style/AppTheme.BlockContent"
+				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.addresses)}"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/status_network_info_routes_label"/>
+
+			<TextView
+				style="@style/AppTheme.BlockContent"
+				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.routes)}"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/status_network_info_dns_servers_label"/>
+
+			<TextView
+				style="@style/AppTheme.BlockContent"
+				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.dnsServers)}"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/status_network_info_search_domains_label"/>
+
+			<TextView
+				style="@style/AppTheme.BlockContent"
+				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.searchDomains)}"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/AppTheme.ListBlock"
+			android:visibility="@{vpnInterfaceConfiguration.allowedApplications.isEmpty ? View.GONE : View.VISIBLE}">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/status_network_info_allowed_applications_label"/>
+
+			<TextView
+				style="@style/AppTheme.BlockContent"
+				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.allowedApplications)}"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			style="@style/AppTheme.ListBlock"
+			android:visibility="@{vpnInterfaceConfiguration.disallowedApplications.isEmpty ? View.GONE : View.VISIBLE}">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/status_network_info_disallowed_applications_label"/>
+
+			<TextView
+				style="@style/AppTheme.BlockContent"
+				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.disallowedApplications)}"/>
+
+		</LinearLayout>
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@string/status_network_info_allow_bypass_label"/>
+
+			<TextView
+				style="@style/AppTheme.BlockContent"
+				android:text="@{vpnInterfaceConfiguration.allowBypass ? @string/status_network_info_yes_value : @string/status_network_info_no_value}"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</layout>

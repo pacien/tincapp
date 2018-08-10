@@ -55,7 +55,7 @@
 		</activity>
 
 		<activity
-			android:name=".activities.StatusActivity"
+			android:name=".activities.status.StatusActivity"
 			android:configChanges="orientation|screenSize">
 			<intent-filter>
 				<action android:name="org.pacien.tincapp.intent.action.DISCONNECT"/>
