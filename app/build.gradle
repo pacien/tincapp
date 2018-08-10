@@ -23,8 +23,9 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.triplet.play'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreAvailable = keystorePropertiesFile.exists()
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+if (keystoreAvailable) keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
   compileSdkVersion 27
@@ -42,7 +43,7 @@ android {
     }
   }
 
-  signingConfigs {
+  if (keystoreAvailable) signingConfigs {
     release {
       keyAlias keystoreProperties['keyAlias']
       keyPassword keystoreProperties['keyPassword']
@@ -53,7 +54,7 @@ android {
 
   buildTypes {
     release {
-      signingConfig signingConfigs.release
+      if (keystoreAvailable) signingConfig signingConfigs.release
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
@@ -92,7 +93,7 @@ repositories {
 }
 
 play {
-  jsonFile = file(keystoreProperties['apiKeyFile'])
+  if (keystoreAvailable) jsonFile = file(keystoreProperties['apiKeyFile'])
   track = 'beta'
   untrackOld = true
   uploadImages = true
