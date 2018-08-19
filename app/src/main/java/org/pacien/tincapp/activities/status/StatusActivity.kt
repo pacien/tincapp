@@ -51,6 +51,8 @@ import kotlin.concurrent.timerTask
  * @author pacien
  */
 class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+  private val vpnService by lazy { TincVpnService }
+  private val netName by lazy { vpnService.getCurrentNetName() }
   private val broadcastMapper = BroadcastMapper(mapOf(Actions.EVENT_DISCONNECTED to this::onVpnShutdown))
   private var shutdownDialog: AlertDialog? = null
   private var nodeListAdapter: ArrayAdapter<String>? = null
@@ -59,6 +61,7 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    supportActionBar.subtitle = getString(R.string.status_activity_state_connected_to_format, netName)
     nodeListAdapter = ArrayAdapter(this, R.layout.fragment_list_item)
 
     layoutInflater.inflate(R.layout.fragment_list_view, main_content)

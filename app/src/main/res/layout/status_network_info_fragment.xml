@@ -25,10 +25,6 @@
 		<import type="android.view.View"/>
 
 		<variable
-			name="netName"
-			type="String"/>
-
-		<variable
 			name="vpnInterfaceConfiguration"
 			type="org.pacien.tincapp.data.VpnInterfaceConfiguration"/>
 
@@ -39,18 +35,6 @@
 	</data>
 
 	<LinearLayout style="@style/AppTheme.List">
-
-		<LinearLayout style="@style/AppTheme.ListBlock">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/status_network_info_network_name_label"/>
-
-			<TextView
-				style="@style/AppTheme.BlockContent"
-				android:text="@{netName ?? @string/status_network_info_yes_value}"/>
-
-		</LinearLayout>
 
 		<LinearLayout style="@style/AppTheme.ListBlock">
 

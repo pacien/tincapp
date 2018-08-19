@@ -112,6 +112,7 @@
 	<string name="configure_tools_private_keys_encryption_encrypting">Encrypting/decrypting private keys</string>
 
 	<!-- Status activity -->
+	<string name="status_activity_state_connected_to_format">Connected to %s</string>
 	<string name="status_activity_title_node_list">Nodes</string>
 	<string name="status_activity_title_network_info">Network info</string>
 

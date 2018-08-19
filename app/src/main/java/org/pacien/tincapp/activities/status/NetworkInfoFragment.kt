@@ -31,13 +31,11 @@ import org.pacien.tincapp.service.TincVpnService
  */
 class NetworkInfoFragment : Fragment() {
   private val vpnService by lazy { TincVpnService }
-  private val netName by lazy { vpnService.getCurrentNetName() }
   private val interfaceConfiguration by lazy { vpnService.getCurrentInterfaceCfg() }
   private val listFormatter = VpnInterfaceConfigurationFormatter
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val binding = StatusNetworkInfoFragmentBinding.inflate(inflater, container, false)
-    binding.netName = netName
     binding.vpnInterfaceConfiguration = interfaceConfiguration
     binding.listFormatter = listFormatter
     return binding.root
