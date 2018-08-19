@@ -18,16 +18,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-<resources>
-	<color name="headerBackgroundPrimary">#13af96</color>
-	<color name="headerBackgroundPrimaryDark">#007f68</color>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/list_wrapper"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
-	<color name="textTitle">#FFFFFFFF</color>
-	<color name="textAccent">#007f68</color>
-	<color name="textSecondary">#212121</color>
+	<ListView
+		android:id="@+id/status_node_list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:divider="@drawable/horizontal_line"/>
 
-	<color name="separator">#d9d9d9</color>
+	<TextView
+		android:id="@+id/status_node_list_placeholder"
+		style="@style/AppTheme.ListBlock.Placeholder"
+		android:text="@string/status_node_list_empty_placeholder_text"/>
 
-	<color name="backgroundPrimary">#FFFFFF</color>
-	<color name="backgroundSecondary">#dddddd</color>
-</resources>
+</LinearLayout>

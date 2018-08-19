@@ -18,29 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-<LinearLayout
+<android.support.v4.view.ViewPager
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/status_activity_pager"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical">
+	android:layout_height="match_parent">
 
-	<TextView
-		style="@style/AppTheme.SectionTitle"
-		android:text="@string/status_activity_title_network_info"/>
+	<android.support.design.widget.TabLayout
+		style="@style/AppTheme.TabLayout"/>
 
-	<fragment
-		android:id="@+id/status_activity_network_info_fragment"
-		android:name="org.pacien.tincapp.activities.status.NetworkInfoFragment"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"/>
-
-	<TextView
-		style="@style/AppTheme.SectionTitle"
-		android:text="@string/status_activity_title_node_list"/>
-
-	<TextView
-		android:id="@+id/status_activity_node_list_placeholder"
-		style="@style/AppTheme.ListBlock.Placeholder"
-		android:text="@string/status_activity_node_list_placeholder_text"/>
-
-</LinearLayout>
+</android.support.v4.view.ViewPager>

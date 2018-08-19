@@ -129,7 +129,7 @@
 	<string name="status_network_info_no_value">no</string>
 	<string name="status_network_info_none_value">none</string>
 
-	<string name="status_activity_node_list_placeholder_text">Loading…</string>
+	<string name="status_node_list_empty_placeholder_text">Loading…</string>
 	<string name="status_node_list_modal_placeholder_text">Loading…</string>
 	<string name="status_node_info_dialog_title">Node info</string>
 	<string name="status_node_info_dialog_close_action">Close</string>

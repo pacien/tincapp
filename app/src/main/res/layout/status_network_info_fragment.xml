@@ -30,100 +30,107 @@
 
 		<variable
 			name="listFormatter"
-			type="org.pacien.tincapp.activities.status.VpnInterfaceConfigurationFormatter"/>
+			type="org.pacien.tincapp.activities.status.networkinfo.VpnInterfaceConfigurationFormatter"/>
 
 	</data>
 
-	<LinearLayout style="@style/AppTheme.List">
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
 
-		<LinearLayout style="@style/AppTheme.ListBlock">
+		<LinearLayout style="@style/AppTheme.List">
 
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/status_network_info_ip_addresses_label"/>
+			<LinearLayout style="@style/AppTheme.ListBlock">
 
-			<TextView
-				style="@style/AppTheme.BlockContent"
-				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.addresses)}"/>
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/status_network_info_ip_addresses_label"/>
+
+				<TextView
+					style="@style/AppTheme.BlockContent"
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.addresses)}"/>
+
+			</LinearLayout>
+
+			<LinearLayout style="@style/AppTheme.ListBlock">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/status_network_info_routes_label"/>
+
+				<TextView
+					style="@style/AppTheme.BlockContent"
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.routes)}"/>
+
+			</LinearLayout>
+
+			<LinearLayout style="@style/AppTheme.ListBlock">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/status_network_info_dns_servers_label"/>
+
+				<TextView
+					style="@style/AppTheme.BlockContent"
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.dnsServers)}"/>
+
+			</LinearLayout>
+
+			<LinearLayout style="@style/AppTheme.ListBlock">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/status_network_info_search_domains_label"/>
+
+				<TextView
+					style="@style/AppTheme.BlockContent"
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.searchDomains)}"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				style="@style/AppTheme.ListBlock"
+				android:visibility="@{vpnInterfaceConfiguration.allowedApplications.isEmpty ? View.GONE : View.VISIBLE}">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/status_network_info_allowed_applications_label"/>
+
+				<TextView
+					style="@style/AppTheme.BlockContent"
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.allowedApplications)}"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				style="@style/AppTheme.ListBlock"
+				android:visibility="@{vpnInterfaceConfiguration.disallowedApplications.isEmpty ? View.GONE : View.VISIBLE}">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/status_network_info_disallowed_applications_label"/>
+
+				<TextView
+					style="@style/AppTheme.BlockContent"
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.disallowedApplications)}"/>
+
+			</LinearLayout>
+
+			<LinearLayout style="@style/AppTheme.ListBlock">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/status_network_info_allow_bypass_label"/>
+
+				<TextView
+					style="@style/AppTheme.BlockContent"
+					android:text="@{vpnInterfaceConfiguration.allowBypass ? @string/status_network_info_yes_value : @string/status_network_info_no_value}"/>
+
+			</LinearLayout>
 
 		</LinearLayout>
 
-		<LinearLayout style="@style/AppTheme.ListBlock">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/status_network_info_routes_label"/>
-
-			<TextView
-				style="@style/AppTheme.BlockContent"
-				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.routes)}"/>
-
-		</LinearLayout>
-
-		<LinearLayout style="@style/AppTheme.ListBlock">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/status_network_info_dns_servers_label"/>
-
-			<TextView
-				style="@style/AppTheme.BlockContent"
-				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.dnsServers)}"/>
-
-		</LinearLayout>
-
-		<LinearLayout style="@style/AppTheme.ListBlock">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/status_network_info_search_domains_label"/>
-
-			<TextView
-				style="@style/AppTheme.BlockContent"
-				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.searchDomains)}"/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			style="@style/AppTheme.ListBlock"
-			android:visibility="@{vpnInterfaceConfiguration.allowedApplications.isEmpty ? View.GONE : View.VISIBLE}">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/status_network_info_allowed_applications_label"/>
-
-			<TextView
-				style="@style/AppTheme.BlockContent"
-				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.allowedApplications)}"/>
-
-		</LinearLayout>
-
-		<LinearLayout
-			style="@style/AppTheme.ListBlock"
-			android:visibility="@{vpnInterfaceConfiguration.disallowedApplications.isEmpty ? View.GONE : View.VISIBLE}">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/status_network_info_disallowed_applications_label"/>
-
-			<TextView
-				style="@style/AppTheme.BlockContent"
-				android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.disallowedApplications)}"/>
-
-		</LinearLayout>
-
-		<LinearLayout style="@style/AppTheme.ListBlock">
-
-			<TextView
-				style="@style/AppTheme.BlockTitle"
-				android:text="@string/status_network_info_allow_bypass_label"/>
-
-			<TextView
-				style="@style/AppTheme.BlockContent"
-				android:text="@{vpnInterfaceConfiguration.allowBypass ? @string/status_network_info_yes_value : @string/status_network_info_no_value}"/>
-
-		</LinearLayout>
-
-	</LinearLayout>
+	</ScrollView>
 
 </layout>

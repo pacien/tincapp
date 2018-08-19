@@ -19,6 +19,7 @@
 -->
 
 <resources>
+
 	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 		<item name="colorPrimary">@color/headerBackgroundPrimary</item>
 		<item name="colorPrimaryDark">@color/headerBackgroundPrimaryDark</item>
@@ -81,4 +82,12 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:textColor">@color/textSecondary</item>
 	</style>
+
+	<style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
+		<item name="android:background">@color/backgroundSecondary</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="tabGravity">fill</item>
+	</style>
+
 </resources>

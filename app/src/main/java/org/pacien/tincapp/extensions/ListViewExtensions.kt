@@ -16,26 +16,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities.status
+package org.pacien.tincapp.extensions
 
-import org.pacien.tincapp.R
-import org.pacien.tincapp.context.App
-import org.pacien.tincapp.data.CidrAddress
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.ListView
 
 /**
  * @author pacien
  */
-object VpnInterfaceConfigurationFormatter {
-  private val resources by lazy { App.getResources() }
 
-  fun formatList(list: List<Any>) = when {
-    list.isNotEmpty() -> list.joinToString("\n", transform = this::formatListElement)
-    else -> resources.getString(R.string.status_network_info_none_value)!!
-  }
+fun <T> ArrayAdapter<T>.setElements(elements: Collection<T>?) {
+  if (elements == null) return
 
-  private fun formatListElement(element: Any) = when (element) {
-    is CidrAddress -> element.toSlashSeparated()
-    is String -> element
-    else -> element.toString()
+  synchronized(this) {
+    setNotifyOnChange(false)
+    clear()
+    addAll(elements)
+    notifyDataSetChanged()
+    setNotifyOnChange(true)
   }
+}
+
+fun ListView.hideTopSeparator() {
+  addHeaderView(View(context), null, false)
+}
+
+fun ListView.hideBottomSeparator() {
+  addFooterView(View(context), null, false)
 }

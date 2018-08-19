@@ -39,7 +39,7 @@ import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.activities.configure.ConfigureActivity
 import org.pacien.tincapp.activities.status.StatusActivity
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.extensions.Android.setElements
+import org.pacien.tincapp.extensions.setElements
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService

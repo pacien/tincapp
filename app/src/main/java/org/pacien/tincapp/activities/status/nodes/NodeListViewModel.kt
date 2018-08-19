@@ -16,19 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.extensions
+package org.pacien.tincapp.activities.status.nodes
 
-import android.widget.ArrayAdapter
+import android.arch.lifecycle.ViewModel
+import org.pacien.tincapp.service.TincVpnService
 
 /**
  * @author pacien
  */
-object Android {
-  fun <T> ArrayAdapter<T>.setElements(elements: Collection<T>) {
-    setNotifyOnChange(false)
-    clear()
-    addAll(elements)
-    notifyDataSetChanged()
-    setNotifyOnChange(true)
-  }
+class NodeListViewModel : ViewModel() {
+  private val netName by lazy { TincVpnService.getCurrentNetName()!! }
+  val nodeList by lazy { NodeListLiveData(netName) }
 }

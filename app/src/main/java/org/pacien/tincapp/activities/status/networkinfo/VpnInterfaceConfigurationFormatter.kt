@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+/*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
  *
@@ -16,18 +14,28 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
+ */
 
-<resources>
-	<color name="headerBackgroundPrimary">#13af96</color>
-	<color name="headerBackgroundPrimaryDark">#007f68</color>
+package org.pacien.tincapp.activities.status.networkinfo
 
-	<color name="textTitle">#FFFFFFFF</color>
-	<color name="textAccent">#007f68</color>
-	<color name="textSecondary">#212121</color>
+import org.pacien.tincapp.R
+import org.pacien.tincapp.context.App
+import org.pacien.tincapp.data.CidrAddress
 
-	<color name="separator">#d9d9d9</color>
+/**
+ * @author pacien
+ */
+object VpnInterfaceConfigurationFormatter {
+  private val resources by lazy { App.getResources() }
 
-	<color name="backgroundPrimary">#FFFFFF</color>
-	<color name="backgroundSecondary">#dddddd</color>
-</resources>
+  fun formatList(list: List<Any>) = when {
+    list.isNotEmpty() -> list.joinToString("\n", transform = this::formatListElement)
+    else -> resources.getString(R.string.status_network_info_none_value)!!
+  }
+
+  private fun formatListElement(element: Any) = when (element) {
+    is CidrAddress -> element.toSlashSeparated()
+    is String -> element
+    else -> element.toString()
+  }
+}

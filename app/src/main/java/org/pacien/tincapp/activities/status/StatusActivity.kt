@@ -20,63 +20,36 @@ package org.pacien.tincapp.activities.status
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import java8.util.concurrent.CompletableFuture
-import kotlinx.android.synthetic.main.base.*
-import kotlinx.android.synthetic.main.fragment_list_view.*
-import kotlinx.android.synthetic.main.status_activity_list_header.*
-import kotlinx.android.synthetic.main.status_node_info_dialog.view.*
+import kotlinx.android.synthetic.main.status_activity.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.activities.StartActivity
 import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.activities.viewlog.ViewLogActivity
-import org.pacien.tincapp.commands.Executor
-import org.pacien.tincapp.commands.Tinc
-import org.pacien.tincapp.extensions.Android.setElements
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService
-import java.util.*
-import kotlin.concurrent.timerTask
 
 /**
  * @author pacien
  */
-class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+class StatusActivity : BaseActivity() {
   private val vpnService by lazy { TincVpnService }
   private val netName by lazy { vpnService.getCurrentNetName() }
+  private val pagerAdapter by lazy { StatusFragmentPagerAdapter(supportFragmentManager) }
   private val broadcastMapper = BroadcastMapper(mapOf(Actions.EVENT_DISCONNECTED to this::onVpnShutdown))
   private var shutdownDialog: AlertDialog? = null
-  private var nodeListAdapter: ArrayAdapter<String>? = null
-  private var refreshTimer: Timer? = null
   private var listNetworksAfterExit = true
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setContentView(R.layout.status_activity)
+    status_activity_pager.adapter = pagerAdapter
     supportActionBar.subtitle = getString(R.string.status_activity_state_connected_to_format, netName)
-    nodeListAdapter = ArrayAdapter(this, R.layout.fragment_list_item)
-
-    layoutInflater.inflate(R.layout.fragment_list_view, main_content)
-    list_wrapper.setOnRefreshListener(this)
-    list.addHeaderView(layoutInflater.inflate(R.layout.status_activity_list_header, list, false), null, false)
-    list.addFooterView(View(this), null, false)
-    list.onItemClickListener = this
-    list.adapter = nodeListAdapter
-
-    if (intent.action == Actions.ACTION_DISCONNECT) {
-      listNetworksAfterExit = false
-      stopVpn()
-    } else {
-      listNetworksAfterExit = true
-    }
+    handleStartIntentAction(intent.action)
   }
 
   override fun onCreateOptionsMenu(m: Menu): Boolean {
@@ -84,27 +57,11 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     return super.onCreateOptionsMenu(m)
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
-    nodeListAdapter = null
-    refreshTimer = null
-  }
-
-  override fun onStart() {
-    super.onStart()
-    refreshTimer = Timer(true)
-    refreshTimer?.schedule(timerTask { updateView() }, NOW, REFRESH_RATE)
-  }
-
-  override fun onStop() {
-    refreshTimer?.cancel()
-    super.onStop()
-  }
-
   override fun onResume() {
     super.onResume()
+    if (!TincVpnService.isConnected()) openStartActivity()
+
     broadcastMapper.register()
-    updateView()
     handleRecentCrash()
   }
 
@@ -113,75 +70,36 @@ class StatusActivity : BaseActivity(), AdapterView.OnItemClickListener, SwipeRef
     super.onPause()
   }
 
-  override fun onRefresh() {
-    refreshTimer?.schedule(timerTask { updateView() }, NOW)
-  }
-
-  override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) = when (view) {
-    is TextView -> showNodeInfo(view.text.toString())
-    else -> Unit
-  }
-
   private fun onVpnShutdown() {
     shutdownDialog?.dismiss()
     if (listNetworksAfterExit) openStartActivity()
     finish()
   }
 
-  fun stopVpn(@Suppress("UNUSED_PARAMETER") i: MenuItem? = null) {
-    refreshTimer?.cancel()
-    list_wrapper.isRefreshing = false
-    shutdownDialog = ProgressModal.show(this, getString(R.string.message_disconnecting_vpn))
-    TincVpnService.disconnect()
-  }
+  @Suppress("UNUSED_PARAMETER")
+  fun stopVpn(m: MenuItem) =
+    stopVpn()
 
-  fun openLogViewer(@Suppress("UNUSED_PARAMETER") i: MenuItem) =
+  @Suppress("UNUSED_PARAMETER")
+  fun openLogViewer(m: MenuItem) =
     startActivity(Intent(this, ViewLogActivity::class.java))
 
-  private fun writeNodeList(nodeList: List<String>) {
-    nodeListAdapter?.setElements(nodeList)
-    status_activity_node_list_placeholder.visibility = View.GONE
-    list_wrapper.isRefreshing = false
-  }
-
-  private fun updateNodeList() {
-    getNodeNames().thenAccept { nodeList -> runOnUiThread { writeNodeList(nodeList) } }
-  }
-
-  private fun showNodeInfo(nodeName: String) {
-    val dialogTextView = layoutInflater.inflate(R.layout.status_node_info_dialog, main_content, false)
-
-    runOnUiThread {
-      AlertDialog.Builder(this)
-        .setTitle(R.string.status_node_info_dialog_title)
-        .setView(dialogTextView)
-        .setPositiveButton(R.string.status_node_info_dialog_close_action) { _, _ -> Unit }
-        .show()
+  private fun handleStartIntentAction(intentAction: String?) = when (intentAction) {
+    Actions.ACTION_DISCONNECT -> {
+      listNetworksAfterExit = false
+      stopVpn()
     }
 
-    TincVpnService.getCurrentNetName()?.let { netName ->
-      Tinc.info(netName, nodeName).thenAccept { nodeInfo ->
-        runOnUiThread { dialogTextView.dialog_node_details.text = nodeInfo }
-      }
-    }
+    else -> listNetworksAfterExit = true
   }
 
-  private fun updateView() = when {
-    TincVpnService.isConnected() -> updateNodeList()
-    else -> openStartActivity()
+  private fun stopVpn() {
+    shutdownDialog = ProgressModal.show(this, getString(R.string.message_disconnecting_vpn))
+    vpnService.disconnect()
   }
 
   private fun openStartActivity() {
     startActivity(Intent(this, StartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     finish()
-  }
-
-  companion object {
-    private const val REFRESH_RATE = 5000L
-    private const val NOW = 0L
-
-    fun getNodeNames(): CompletableFuture<List<String>> = TincVpnService.getCurrentNetName()?.let { netName ->
-      Tinc.dumpNodes(netName).thenApply<List<String>> { list -> list.map { it.substringBefore(' ') } }
-    } ?: Executor.supplyAsyncTask<List<String>> { emptyList() }
   }
 }
