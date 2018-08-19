@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+/*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
  *
@@ -16,23 +14,20 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
+ */
 
-<ScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/logview_frame"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+package org.pacien.tincapp.activities.viewlog
 
-	<TextView
-		android:id="@+id/logview_text"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:fontFamily="monospace"
-		android:paddingBottom="@dimen/activity_vertical_margin"
-		android:paddingLeft="@dimen/activity_horizontal_margin"
-		android:paddingRight="@dimen/activity_horizontal_margin"
-		android:paddingTop="@dimen/activity_vertical_margin"
-		android:textColor="@color/textSecondary"
-		android:textSize="12sp"/>
-</ScrollView>
+import android.arch.lifecycle.ViewModel
+import org.pacien.tincapp.service.TincVpnService
+
+/**
+ * @author pacien
+ */
+class LogViewModel : ViewModel() {
+  private val logLevelNumeric = 5
+  val logLevelText = "DEBUG"
+  val netName by lazy { TincVpnService.getCurrentNetName()!! }
+  val log by lazy { LogLiveData(netName, logLevelNumeric, 250) }
+  var logging = true
+}

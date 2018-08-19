@@ -38,8 +38,6 @@
 	<string name="menu_configure">Configure</string>
 	<string name="menu_disconnect">Disconnect</string>
 	<string name="menu_show_log">Show log</string>
-	<string name="menu_toggle_logging">Toggle logging</string>
-	<string name="menu_share_log">Share log</string>
 
 	<string name="field_passphrase">Passphrase</string>
 
@@ -74,8 +72,6 @@
 	<string name="message_disconnecting_vpn">Disconnecting VPN…</string>
 	<string name="message_passphrase_required">A passphrase is required to unlock the keyring.</string>
 	<string name="message_daemon_exited">Tinc daemon exited during startup:\n%1$s\nCheck the logs for more details.</string>
-	<string name="message_log_level_set">Log level set to %1$d.</string>
-	<string name="message_log_paused">Logging paused.</string>
 	<string name="message_could_not_configure_iface">Could not apply network interface configuration:\n%1$s</string>
 	<string name="message_could_not_bind_iface">Could not bind network interface. Is another VPN running?</string>
 	<string name="message_invalid_network_name">Invalid network name.</string>
@@ -136,4 +132,10 @@
 	<string name="status_node_list_modal_placeholder_text">Loading…</string>
 	<string name="status_node_info_dialog_title">Node info</string>
 	<string name="status_node_info_dialog_close_action">Close</string>
+
+	<!-- Log viewer activity -->
+	<string name="log_view_state_level_format">Log level: %s</string>
+	<string name="log_view_state_paused">Logging paused</string>
+	<string name="log_view_menu_toggle_logging">Toggle logging</string>
+	<string name="log_view_menu_share_log">Share log</string>
 </resources>

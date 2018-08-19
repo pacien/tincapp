@@ -36,8 +36,8 @@ import kotlinx.android.synthetic.main.status_node_info_dialog.view.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.activities.StartActivity
-import org.pacien.tincapp.activities.ViewLogActivity
 import org.pacien.tincapp.activities.common.ProgressModal
+import org.pacien.tincapp.activities.viewlog.ViewLogActivity
 import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.extensions.Android.setElements

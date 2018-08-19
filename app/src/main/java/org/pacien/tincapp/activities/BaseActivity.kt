@@ -18,6 +18,7 @@
 
 package org.pacien.tincapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.annotation.StringRes
@@ -66,6 +67,13 @@ abstract class BaseActivity : AppCompatActivity() {
   override fun onStop() {
     active = false
     super.onStop()
+  }
+
+  override fun getSupportActionBar() = super.getSupportActionBar()!!
+
+  fun startActivityChooser(target: Intent, title: String) {
+    val intentChooser = Intent.createChooser(target, title)
+    startActivity(intentChooser)
   }
 
   fun aboutDialog(@Suppress("UNUSED_PARAMETER") i: MenuItem) {
