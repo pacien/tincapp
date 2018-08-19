@@ -114,7 +114,7 @@
 	<!-- Status activity -->
 	<string name="status_activity_state_connected_to_format">Connected to %s</string>
 	<string name="status_activity_title_node_list">Nodes</string>
-	<string name="status_activity_title_network_info">Network info</string>
+	<string name="status_activity_title_network_info">Network</string>
 
 	<string name="status_network_info_network_name_label">Network name</string>
 	<string name="status_network_info_ip_addresses_label">IP addresses</string>
