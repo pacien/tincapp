@@ -18,28 +18,17 @@
 
 package org.pacien.tincapp.activities.start
 
-import android.arch.lifecycle.LiveData
+import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import org.pacien.tincapp.context.AppPaths
-import java.util.*
-import kotlin.concurrent.timer
+import java.util.concurrent.TimeUnit
 
 /**
  * @author pacien
  */
-class NetworkListLiveData : LiveData<List<String>>() {
-  private val updateInterval = 2 * 1000L // in milliseconds
+class NetworkListLiveData : SelfRefreshingLiveData<List<String>>(1, TimeUnit.SECONDS) {
   private val appPaths = AppPaths
-  private lateinit var updateTimer: Timer
 
-  override fun onActive() {
-    updateTimer = timer(period = updateInterval, action = { updateNetworkList() })
-  }
-
-  override fun onInactive() {
-    updateTimer.apply { cancel() }.apply { purge() }
-  }
-
-  private fun updateNetworkList() {
+  override fun onRefresh() {
     val networkList = appPaths.confDir().list()?.sorted() ?: emptyList()
     postValue(networkList)
   }

@@ -16,23 +16,27 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities.status.nodes
+package org.pacien.tincapp.activities.common
 
-import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
-import org.pacien.tincapp.commands.Tinc
+import android.arch.lifecycle.LiveData
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
 /**
  * @author pacien
  */
-class NodeListLiveData(private val netName: String) : SelfRefreshingLiveData<List<String>>(1, TimeUnit.SECONDS) {
-  private val tincCtl = Tinc
+abstract class SelfRefreshingLiveData<T>(private val refreshInterval: Long, private val timeUnit: TimeUnit) : LiveData<T>() {
+  private val scheduledExecutor = Executors.newSingleThreadScheduledExecutor()
+  private lateinit var scheduledFuture: ScheduledFuture<*>
 
-  override fun onRefresh() {
-    val nodeList = tincCtl.dumpNodes(netName)
-      .thenApply { list -> list.map { it.substringBefore(' ') } }
-      .get()
-
-    postValue(nodeList)
+  override fun onActive() {
+    scheduledFuture = scheduledExecutor.scheduleWithFixedDelay(this::onRefresh, 0, refreshInterval, timeUnit)
   }
+
+  override fun onInactive() {
+    scheduledFuture.cancel(false)
+  }
+
+  abstract fun onRefresh()
 }

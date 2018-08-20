@@ -18,30 +18,37 @@
 
 package org.pacien.tincapp.activities.viewlog
 
-import android.arch.lifecycle.LiveData
+import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
 import java.util.*
-import kotlin.concurrent.timer
+import java.util.concurrent.TimeUnit
 
 /**
  * @author pacien
  */
-class LogLiveData(private val netName: String, private val logLevel: Int, private val logLineSize: Int) : LiveData<List<String>>() {
-  private val updateInterval = 250L // milliseconds
+class LogLiveData(private val netName: String, private val logLevel: Int, private val logLineSize: Int)
+  : SelfRefreshingLiveData<List<String>>(250, TimeUnit.MILLISECONDS) {
+
   private val executor = Executor
   private val log = LinkedList<String>()
-  private var loggerProcess: Process? = null
-  private var logUpdateTimer: Timer? = null
+  private lateinit var loggerProcess: Process
 
   override fun onActive() {
+    super.onActive()
     loggerProcess = startNewLogger()
-    logUpdateTimer = timer(period = updateInterval, action = { outputLog() })
   }
 
   override fun onInactive() {
-    loggerProcess?.destroy()
-    logUpdateTimer?.apply { cancel() }?.apply { purge() }
+    loggerProcess.destroy()
+    super.onInactive()
+  }
+
+  override fun onRefresh() {
+    synchronized(log) {
+      val logView = ArrayList(log)
+      postValue(logView)
+    }
   }
 
   private fun startNewLogger(): Process {
@@ -62,13 +69,6 @@ class LogLiveData(private val netName: String, private val logLevel: Int, privat
     synchronized(log) {
       if (log.size >= logLineSize) log.removeFirst()
       log.addLast(line)
-    }
-  }
-
-  private fun outputLog() {
-    synchronized(log) {
-      val logView = ArrayList(log)
-      postValue(logView)
     }
   }
 }
