@@ -18,21 +18,28 @@
 
 package org.pacien.tincapp.activities.status.nodes
 
-import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
-import org.pacien.tincapp.commands.Tinc
-import java.util.concurrent.TimeUnit
+import android.content.Context
+import android.databinding.DataBindingUtil
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import org.pacien.tincapp.databinding.StatusNodeListItemBinding
 
 /**
  * @author pacien
  */
-class NodeListLiveData(private val netName: String) : SelfRefreshingLiveData<List<NodeInfo>>(1, TimeUnit.SECONDS) {
-  private val tincCtl = Tinc
+class NodeInfoArrayAdapter(context: Context?, private val onItemClick: (NodeInfo) -> Unit) : ArrayAdapter<NodeInfo>(context, -1) {
+  private val layoutInflater = LayoutInflater.from(context)!!
 
-  override fun onRefresh() {
-    val nodeList = tincCtl.dumpNodes(netName)
-      .thenApply { list -> list.map { NodeInfo.ofNodeDump(it) } }
-      .get()
+  override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+    val binding = when (convertView) {
+      null -> StatusNodeListItemBinding.inflate(layoutInflater, parent, false)
+      else -> DataBindingUtil.getBinding(convertView)!!
+    }
 
-    postValue(nodeList)
+    binding.nodeInfo = getItem(position)
+    binding.onClick = onItemClick
+    return binding.root
   }
 }

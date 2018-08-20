@@ -132,7 +132,12 @@
 	<string name="status_network_info_none_value">none</string>
 
 	<string name="status_node_list_empty_placeholder_text">Loading…</string>
-	<string name="status_node_list_modal_placeholder_text">Loading…</string>
+	<string name="status_node_reachability_unreachable">unreachable</string>
+	<string name="status_node_reachability_this_node">this node</string>
+	<string name="status_node_reachability_direct_connection">direct</string>
+	<string name="status_node_reachability_via_format">via %s</string>
+	<string name="status_node_reachability_unknown">…</string>
+	<string name="status_node_info_modal_placeholder_text">Loading…</string>
 	<string name="status_node_info_dialog_title">Node info</string>
 	<string name="status_node_info_dialog_close_action">Close</string>
 

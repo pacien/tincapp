@@ -26,9 +26,6 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.TextView
 import kotlinx.android.synthetic.main.base.*
 import kotlinx.android.synthetic.main.status_node_info_dialog.view.*
 import kotlinx.android.synthetic.main.status_node_list.*
@@ -47,8 +44,8 @@ class NodeListFragment : Fragment() {
   private val tincCtl = Tinc
   private val netName by lazy { vpnService.getCurrentNetName()!! }
   private val nodeListViewModel by lazy { ViewModelProviders.of(this).get(NodeListViewModel::class.java) }
-  private val nodeListAdapter by lazy { ArrayAdapter<String>(context, R.layout.status_node_list_item) }
-  private val nodeListObserver by lazy { Observer<List<String>> { nodeListAdapter.setElements(it) } }
+  private val nodeListAdapter by lazy { NodeInfoArrayAdapter(context, this::onItemClick) }
+  private val nodeListObserver by lazy { Observer<List<NodeInfo>> { nodeListAdapter.setElements(it) } }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -63,15 +60,11 @@ class NodeListFragment : Fragment() {
     status_node_list.hideTopSeparator()
     status_node_list.hideBottomSeparator()
     status_node_list.emptyView = status_node_list_placeholder
-    status_node_list.onItemClickListener = AdapterView.OnItemClickListener(this::onItemClick)
     status_node_list.adapter = nodeListAdapter
   }
 
-  @Suppress("UNUSED_PARAMETER")
-  private fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) = when (view) {
-    is TextView -> showNodeInfo(view.text.toString())
-    else -> Unit
-  }
+  private fun onItemClick(nodeInfo: NodeInfo) =
+    showNodeInfo(nodeInfo.name)
 
   private fun showNodeInfo(nodeName: String) {
     val dialogTextView = layoutInflater.inflate(R.layout.status_node_info_dialog, main_content, false)
