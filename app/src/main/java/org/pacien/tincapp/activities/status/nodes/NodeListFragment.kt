@@ -47,7 +47,7 @@ class NodeListFragment : Fragment() {
   private val tincCtl = Tinc
   private val netName by lazy { vpnService.getCurrentNetName()!! }
   private val nodeListViewModel by lazy { ViewModelProviders.of(this).get(NodeListViewModel::class.java) }
-  private val nodeListAdapter by lazy { ArrayAdapter<String>(context, R.layout.fragment_list_item) }
+  private val nodeListAdapter by lazy { ArrayAdapter<String>(context, R.layout.status_node_list_item) }
   private val nodeListObserver by lazy { Observer<List<String>> { nodeListAdapter.setElements(it) } }
 
   override fun onCreate(savedInstanceState: Bundle?) {

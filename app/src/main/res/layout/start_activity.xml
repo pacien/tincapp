@@ -18,17 +18,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
-			xmlns:tools="http://schemas.android.com/tools"
-			tools:context="org.pacien.tincapp.activities.start.StartActivity">
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-	<item
-		android:id="@+id/menu_about"
-		android:icon="@drawable/ic_build_primary_24dp"
-		android:onClick="openConfigureActivity"
-		android:tint="@color/textAccent"
-		android:title="@string/menu_configure"
-		app:showAsAction="ifRoom"/>
+	<fragment
+		android:id="@+id/start_activity_network_list_fragment"
+		android:name="org.pacien.tincapp.activities.start.NetworkListFragment"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
 
-</menu>
+</FrameLayout>

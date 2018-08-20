@@ -41,7 +41,6 @@
 
 	<string name="field_passphrase">Passphrase</string>
 
-	<string name="title_connect_to_network">Connect to network</string>
 	<string name="title_request_vpn_permissions">Request VPN permissions</string>
 	<string name="title_error">Error</string>
 	<string name="title_unable_to_start_tinc">Unable to start tinc</string>
@@ -60,14 +59,12 @@
 	<string name="action_send_email">Send e-mail</string>
 	<string name="action_send_report">Send report</string>
 
-	<string name="message_no_network_configuration_found">No network configuration has been found.</string>
 	<string name="message_network_configuration_written">Network configuration successfully written.</string>
 	<string name="message_no_network_name_provided">No network name has been provided.</string>
 	<string name="message_no_configuration_for_network_format">No configuration has been found for network \"%1$s\".</string>
 	<string name="message_network_config_not_found_format">Network configuration file not found at \"%1$s\".</string>
 	<string name="message_network_config_invalid_format">Invalid network configuration in network.conf:\n%1$s</string>
 	<string name="message_could_not_decrypt_private_keys_format">Could not decrypt private keys:\n%1$s</string>
-	<string name="message_storage_unavailable">Storage directory is unavailable.</string>
 	<string name="message_starting_vpn">Starting VPN…</string>
 	<string name="message_disconnecting_vpn">Disconnecting VPN…</string>
 	<string name="message_passphrase_required">A passphrase is required to unlock the keyring.</string>
@@ -80,6 +77,11 @@
 	<string name="message_no_daemon">No running tinc daemon has been found.</string>
 	<string name="message_could_not_read_network_configuration_format">Could not read network interface configuration:\n%1$s</string>
 	<string name="message_could_not_read_private_key_format">Could not read tinc private keys:\n%1$s</string>
+
+	<!-- Start activity -->
+	<string name="start_network_list_title">Connect to network</string>
+	<string name="start_network_list_empty_none_found">No network configuration has been found.</string>
+	<string name="start_network_list_empty_storage_not_available">Storage directory is unavailable.</string>
 
 	<!-- Configure activity -->
 	<string name="configure_activity_title_path_info">Path info</string>

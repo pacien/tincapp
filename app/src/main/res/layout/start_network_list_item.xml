@@ -18,17 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
-			xmlns:tools="http://schemas.android.com/tools"
-			tools:context="org.pacien.tincapp.activities.start.StartActivity">
-
-	<item
-		android:id="@+id/menu_about"
-		android:icon="@drawable/ic_build_primary_24dp"
-		android:onClick="openConfigureActivity"
-		android:tint="@color/textAccent"
-		android:title="@string/menu_configure"
-		app:showAsAction="ifRoom"/>
-
-</menu>
+<TextView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/AppTheme.BlockTitle"
+	android:paddingBottom="@dimen/activity_vertical_margin"
+	android:paddingLeft="@dimen/activity_horizontal_margin"
+	android:paddingRight="@dimen/activity_horizontal_margin"
+	android:paddingTop="@dimen/activity_vertical_margin"/>

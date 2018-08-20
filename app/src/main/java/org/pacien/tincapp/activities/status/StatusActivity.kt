@@ -26,8 +26,8 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.status_activity.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
-import org.pacien.tincapp.activities.StartActivity
 import org.pacien.tincapp.activities.common.ProgressModal
+import org.pacien.tincapp.activities.start.StartActivity
 import org.pacien.tincapp.activities.viewlog.ViewLogActivity
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper

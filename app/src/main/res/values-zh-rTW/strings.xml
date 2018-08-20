@@ -43,7 +43,7 @@
 	<string name="configure_tools_generate_config_optional_passphrase_hint">密碼（可選）</string>
 	<string name="field_passphrase">密碼</string>
 
-	<string name="title_connect_to_network">連線到網路</string>
+	<string name="start_network_list_title">連線到網路</string>
 	<string name="title_request_vpn_permissions">請求 VPN 許可權</string>
 	<string name="configure_activity_title_path_info">路徑資訊</string>
 	<string name="status_node_info_dialog_title">節點資訊</string>
@@ -82,7 +82,7 @@
 	<string name="configure_tools_private_keys_encryption_action">應用</string>
 	<string name="configure_tools_action_encrypt_decrypt_private_keys">加密或解密私鑰</string>
 
-	<string name="message_no_network_configuration_found">未找到網路配置。</string>
+	<string name="start_network_list_empty_none_found">未找到網路配置。</string>
 	<string name="configure_tools_generate_config_generating">生成節點配置…</string>
 	<string name="configure_tools_join_network_joining">加入網路…</string>
 	<string name="message_network_configuration_written">網路配置寫入成功。</string>

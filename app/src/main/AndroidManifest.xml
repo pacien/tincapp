@@ -34,7 +34,7 @@
 		tools:ignore="GoogleAppIndexingWarning">
 
 		<activity
-			android:name=".activities.StartActivity"
+			android:name=".activities.start.StartActivity"
 			android:configChanges="orientation|screenSize"
 			android:label="@string/app_name">
 			<intent-filter>
@@ -51,7 +51,7 @@
 		<activity
 			android:name=".activities.configure.ConfigureActivity"
 			android:configChanges="orientation|screenSize"
-			android:parentActivityName=".activities.StartActivity">
+			android:parentActivityName=".activities.start.StartActivity">
 		</activity>
 
 		<activity

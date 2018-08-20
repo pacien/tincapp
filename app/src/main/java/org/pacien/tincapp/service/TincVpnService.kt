@@ -91,7 +91,7 @@ class TincVpnService : VpnService() {
       return reportError(resources.getString(R.string.message_passphrase_required))
 
     if (!AppPaths.storageAvailable())
-      return reportError(resources.getString(R.string.message_storage_unavailable))
+      return reportError(resources.getString(R.string.start_network_list_empty_storage_not_available))
 
     if (!AppPaths.confDir(netName).exists())
       return reportError(resources.getString(R.string.message_no_configuration_for_network_format, netName), docTopic = "configuration")

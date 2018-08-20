@@ -34,7 +34,7 @@
 
 	<string name="configure_tools_generate_config_net_name_hint">Tinc-nettverksnavn</string>
 
-	<string name="title_connect_to_network">Koble til nettverk</string>
+	<string name="start_network_list_title">Koble til nettverk</string>
 	<string name="title_request_vpn_permissions">Forespør VPN-tilganger</string>
 
 	<string name="action_close">Lukk</string>

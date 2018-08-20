@@ -20,16 +20,31 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/start_network_list_wrapper"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<TextView
-		style="@style/AppTheme.SectionTitle"
-		android:text="@string/title_connect_to_network"/>
+	<ListView
+		android:id="@+id/start_network_list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:divider="@drawable/horizontal_line"/>
 
-	<TextView
-		android:id="@+id/network_list_placeholder"
-		style="@style/AppTheme.ListBlock.Placeholder"/>
+	<LinearLayout
+		android:id="@+id/start_network_list_placeholder"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<include
+			layout="@layout/start_network_list_header"/>
+
+		<TextView
+			android:id="@+id/start_network_list_placeholder_text"
+			style="@style/AppTheme.ListBlock.Placeholder"
+			android:text="@string/start_network_list_empty_none_found"/>
+
+	</LinearLayout>
 
 </LinearLayout>

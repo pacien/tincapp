@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+/*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
  *
@@ -16,21 +14,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
+ */
 
-<android.support.v4.widget.SwipeRefreshLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/list_wrapper"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical">
+package org.pacien.tincapp.activities.start
 
-	<ListView
-		android:id="@+id/list"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:divider="@drawable/horizontal_line"
-		android:footerDividersEnabled="false"
-		android:headerDividersEnabled="false"/>
+import android.arch.lifecycle.ViewModel
 
-</android.support.v4.widget.SwipeRefreshLayout>
+/**
+ * @author pacien
+ */
+class NetworkListViewModel : ViewModel() {
+  val networkList by lazy { NetworkListLiveData() }
+}

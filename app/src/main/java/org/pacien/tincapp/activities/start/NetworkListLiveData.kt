@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+/*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
  *
@@ -16,19 +14,33 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
+ */
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
-			xmlns:tools="http://schemas.android.com/tools"
-			tools:context="org.pacien.tincapp.activities.start.StartActivity">
+package org.pacien.tincapp.activities.start
 
-	<item
-		android:id="@+id/menu_about"
-		android:icon="@drawable/ic_build_primary_24dp"
-		android:onClick="openConfigureActivity"
-		android:tint="@color/textAccent"
-		android:title="@string/menu_configure"
-		app:showAsAction="ifRoom"/>
+import android.arch.lifecycle.LiveData
+import org.pacien.tincapp.context.AppPaths
+import java.util.*
+import kotlin.concurrent.timer
 
-</menu>
+/**
+ * @author pacien
+ */
+class NetworkListLiveData : LiveData<List<String>>() {
+  private val updateInterval = 2 * 1000L // in milliseconds
+  private val appPaths = AppPaths
+  private lateinit var updateTimer: Timer
+
+  override fun onActive() {
+    updateTimer = timer(period = updateInterval, action = { updateNetworkList() })
+  }
+
+  override fun onInactive() {
+    updateTimer.apply { cancel() }.apply { purge() }
+  }
+
+  private fun updateNetworkList() {
+    val networkList = appPaths.confDir().list()?.sorted() ?: emptyList()
+    postValue(networkList)
+  }
+}
