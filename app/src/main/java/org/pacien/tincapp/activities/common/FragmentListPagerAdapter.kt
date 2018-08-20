@@ -16,24 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities.status
+package org.pacien.tincapp.activities.common
 
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import org.pacien.tincapp.R
-import org.pacien.tincapp.activities.status.networkinfo.NetworkInfoFragment
-import org.pacien.tincapp.activities.status.nodes.NodeListFragment
 import org.pacien.tincapp.context.App
 
 /**
+ * @param pages ordered list of title and fragment pairs
  * @author pacien
  */
-class StatusFragmentPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+class FragmentListPagerAdapter(private val pages: List<Pair<Int, Fragment>>,
+                               fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+
   private val resources by lazy { App.getResources() }
-  private val pages = listOf(
-    R.string.status_activity_title_network_info to NetworkInfoFragment(),
-    R.string.status_activity_title_node_list to NodeListFragment()
-  )
 
   override fun getPageTitle(position: Int) = resources.getString(pages[position].first)!!
   override fun getItem(position: Int) = pages[position].second

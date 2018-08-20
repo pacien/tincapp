@@ -26,8 +26,11 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.status_activity.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
+import org.pacien.tincapp.activities.common.FragmentListPagerAdapter
 import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.activities.start.StartActivity
+import org.pacien.tincapp.activities.status.networkinfo.NetworkInfoFragment
+import org.pacien.tincapp.activities.status.nodes.NodeListFragment
 import org.pacien.tincapp.activities.viewlog.ViewLogActivity
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
@@ -39,8 +42,13 @@ import org.pacien.tincapp.service.TincVpnService
 class StatusActivity : BaseActivity() {
   private val vpnService by lazy { TincVpnService }
   private val netName by lazy { vpnService.getCurrentNetName() }
-  private val pagerAdapter by lazy { StatusFragmentPagerAdapter(supportFragmentManager) }
+  private val pagerAdapter by lazy { FragmentListPagerAdapter(pages, supportFragmentManager) }
   private val broadcastMapper = BroadcastMapper(mapOf(Actions.EVENT_DISCONNECTED to this::onVpnShutdown))
+  private val pages = listOf(
+    R.string.status_activity_title_network_info to NetworkInfoFragment(),
+    R.string.status_activity_title_node_list to NodeListFragment()
+  )
+
   private var shutdownDialog: AlertDialog? = null
   private var listNetworksAfterExit = true
 
