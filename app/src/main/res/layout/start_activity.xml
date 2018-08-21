@@ -18,15 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-<FrameLayout
+<fragment
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/start_activity_network_list_fragment"
+	android:name="org.pacien.tincapp.activities.start.NetworkListFragment"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
-
-	<fragment
-		android:id="@+id/start_activity_network_list_fragment"
-		android:name="org.pacien.tincapp.activities.start.NetworkListFragment"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
-
-</FrameLayout>
+	android:layout_height="match_parent"/>
