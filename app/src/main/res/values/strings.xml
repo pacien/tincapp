@@ -115,8 +115,9 @@
 
 	<!-- Status activity -->
 	<string name="status_activity_state_connected_to_format">Connected to %s</string>
-	<string name="status_activity_title_node_list">Nodes</string>
 	<string name="status_activity_title_network_info">Network</string>
+	<string name="status_activity_title_node_list">Nodes</string>
+	<string name="status_activity_title_subnet_list">Subnets</string>
 
 	<string name="status_network_info_network_name_label">Network name</string>
 	<string name="status_network_info_ip_addresses_label">IP addresses</string>
@@ -140,6 +141,7 @@
 	<string name="status_node_info_modal_placeholder_text">Loading…</string>
 	<string name="status_node_info_dialog_title">Node info</string>
 	<string name="status_node_info_dialog_close_action">Close</string>
+	<string name="status_subnet_list_empty_placeholder_text">Loading…</string>
 
 	<!-- Log viewer activity -->
 	<string name="log_view_state_level_format">Log level: %s</string>

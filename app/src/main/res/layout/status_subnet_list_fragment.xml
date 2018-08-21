@@ -20,20 +20,19 @@
 
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/status_node_list_wrapper"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
 	<ListView
-		android:id="@+id/status_node_list"
+		android:id="@+id/status_subnet_list"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:divider="@drawable/horizontal_line"/>
 
 	<TextView
-		android:id="@+id/status_node_list_placeholder"
+		android:id="@+id/status_subnet_list_placeholder"
 		style="@style/AppTheme.ListBlock.Placeholder"
-		android:text="@string/status_node_list_empty_placeholder_text"/>
+		android:text="@string/status_subnet_list_empty_placeholder_text"/>
 
 </LinearLayout>

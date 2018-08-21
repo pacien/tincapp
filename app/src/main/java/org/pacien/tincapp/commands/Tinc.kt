@@ -43,6 +43,10 @@ object Tinc {
       if (reachable) newCommand(netName).withArguments("dump", "reachable", "nodes")
       else newCommand(netName).withArguments("dump", "nodes"))
 
+  fun dumpSubnets(netName: String): CompletableFuture<List<String>> =
+    Executor.call(
+      newCommand(netName).withArguments("dump", "subnets"))
+
   fun info(netName: String, node: String): CompletableFuture<String> =
     Executor.call(newCommand(netName).withArguments("info", node))
       .thenApply<String> { it.joinToString("\n") }
