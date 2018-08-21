@@ -21,12 +21,12 @@ package org.pacien.tincapp.activities.status.subnets
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.status_subnet_list_fragment.*
 import org.pacien.tincapp.R
+import org.pacien.tincapp.activities.BaseFragment
 import org.pacien.tincapp.extensions.hideBottomSeparator
 import org.pacien.tincapp.extensions.hideTopSeparator
 import org.pacien.tincapp.extensions.setElements
@@ -34,7 +34,7 @@ import org.pacien.tincapp.extensions.setElements
 /**
  * @author pacien
  */
-class SubnetListFragment : Fragment() {
+class SubnetListFragment : BaseFragment() {
   private val subnetListViewModel by lazy { ViewModelProviders.of(this).get(SubnetListViewModel::class.java) }
   private val subnetListAdapter by lazy { SubnetInfoArrayAdapter(context) }
   private val subnetListObserver by lazy { Observer<List<SubnetInfo>> { subnetListAdapter.setElements(it) } }
