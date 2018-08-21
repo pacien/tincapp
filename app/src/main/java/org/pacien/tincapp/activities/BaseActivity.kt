@@ -26,7 +26,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.*
-import kotlinx.android.synthetic.main.base.*
+import kotlinx.android.synthetic.main.base_activity.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppInfo
@@ -37,11 +37,12 @@ import org.pacien.tincapp.context.CrashRecorder
  * @author pacien
  */
 abstract class BaseActivity : AppCompatActivity() {
+  private val rootView by lazy { base_activity_frame!! }
   private var active = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.base)
+    super.setContentView(R.layout.base_activity)
   }
 
   override fun onCreateOptionsMenu(m: Menu): Boolean {
@@ -69,6 +70,10 @@ abstract class BaseActivity : AppCompatActivity() {
     super.onStop()
   }
 
+  override fun setContentView(layoutResID: Int) {
+    layoutInflater.inflate(layoutResID, rootView)
+  }
+
   override fun getSupportActionBar() = super.getSupportActionBar()!!
 
   fun startActivityChooser(target: Intent, title: String) {
@@ -76,7 +81,8 @@ abstract class BaseActivity : AppCompatActivity() {
     startActivity(intentChooser)
   }
 
-  fun aboutDialog(@Suppress("UNUSED_PARAMETER") i: MenuItem) {
+  @Suppress("UNUSED_PARAMETER")
+  fun aboutDialog(m: MenuItem) {
     AlertDialog.Builder(this)
       .setTitle(resources.getString(R.string.app_name))
       .setMessage(resources.getString(R.string.app_short_desc) + "\n\n" +
@@ -112,11 +118,11 @@ abstract class BaseActivity : AppCompatActivity() {
       .show()
   }
 
-  fun inflate(@LayoutRes layout: Int) = layoutInflater.inflate(layout, main_content, false)!!
-  fun inflate(inflateFunc: (LayoutInflater, ViewGroup, Boolean) -> View) = inflateFunc(layoutInflater, main_content, false)
+  fun inflate(@LayoutRes layout: Int) = layoutInflater.inflate(layout, rootView, false)!!
+  fun inflate(inflateFunc: (LayoutInflater, ViewGroup?, Boolean) -> View) = inflateFunc(layoutInflater, rootView, false)
 
-  fun notify(@StringRes msg: Int) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
-  fun notify(msg: String) = Snackbar.make(activity_base, msg, Snackbar.LENGTH_LONG).show()
+  fun notify(@StringRes msg: Int) = Snackbar.make(base_activity_frame, msg, Snackbar.LENGTH_LONG).show()
+  fun notify(msg: String) = Snackbar.make(base_activity_frame, msg, Snackbar.LENGTH_LONG).show()
 
   fun showErrorDialog(msg: String): AlertDialog = AlertDialog.Builder(this)
     .setTitle(R.string.title_error).setMessage(msg)

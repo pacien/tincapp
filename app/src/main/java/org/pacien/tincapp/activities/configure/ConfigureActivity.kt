@@ -19,7 +19,6 @@
 package org.pacien.tincapp.activities.configure
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.base.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
 
@@ -30,6 +29,6 @@ class ConfigureActivity : BaseActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     supportActionBar.setDisplayHomeAsUpEnabled(true)
-    layoutInflater.inflate(R.layout.configure_activity, main_content)
+    setContentView(R.layout.configure_activity)
   }
 }

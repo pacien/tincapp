@@ -26,7 +26,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ScrollView
-import kotlinx.android.synthetic.main.base.*
 import kotlinx.android.synthetic.main.view_log_activity.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
@@ -42,7 +41,7 @@ class ViewLogActivity : BaseActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     supportActionBar.setDisplayHomeAsUpEnabled(true)
-    layoutInflater.inflate(R.layout.view_log_activity, main_content)
+    setContentView(R.layout.view_log_activity)
     enableLogging(viewModel.logging)
   }
 

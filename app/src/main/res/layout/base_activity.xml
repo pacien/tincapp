@@ -18,6 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-<resources>
-	<dimen name="activity_horizontal_gutter">64dp</dimen>
-</resources>
+<android.support.design.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/base_activity_frame"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"/>

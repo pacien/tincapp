@@ -20,7 +20,7 @@ package org.pacien.tincapp.activities.start
 
 import android.net.VpnService
 import android.support.v7.app.AlertDialog
-import kotlinx.android.synthetic.main.base.*
+import kotlinx.android.synthetic.main.base_activity.*
 import kotlinx.android.synthetic.main.dialog_decrypt_keys.view.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.service.TincVpnService
@@ -52,7 +52,7 @@ class ConnectionStarter(private val parentActivity: StartActivity) {
   }
 
   private fun askForPassphrase() {
-    val dialogView = parentActivity.layoutInflater.inflate(R.layout.dialog_decrypt_keys, parentActivity.main_content, false)
+    val dialogView = parentActivity.layoutInflater.inflate(R.layout.dialog_decrypt_keys, parentActivity.base_activity_frame, false)
 
     AlertDialog.Builder(parentActivity)
       .setTitle(R.string.title_unlock_private_keys)

@@ -26,7 +26,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.base.*
+import kotlinx.android.synthetic.main.base_activity.*
 import kotlinx.android.synthetic.main.status_node_info_dialog.view.*
 import kotlinx.android.synthetic.main.status_node_list_fragment.*
 import org.pacien.tincapp.R
@@ -67,7 +67,7 @@ class NodeListFragment : Fragment() {
     showNodeInfo(nodeInfo.name)
 
   private fun showNodeInfo(nodeName: String) {
-    val dialogTextView = layoutInflater.inflate(R.layout.status_node_info_dialog, main_content, false)
+    val dialogTextView = layoutInflater.inflate(R.layout.status_node_info_dialog, base_activity_frame, false)
 
     AlertDialog.Builder(context!!)
       .setTitle(R.string.status_node_info_dialog_title)
