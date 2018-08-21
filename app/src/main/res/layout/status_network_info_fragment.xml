@@ -49,7 +49,8 @@
 
 				<TextView
 					style="@style/AppTheme.BlockContent"
-					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.addresses)}"/>
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.addresses)}"
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -61,7 +62,8 @@
 
 				<TextView
 					style="@style/AppTheme.BlockContent"
-					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.routes)}"/>
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.routes)}"
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -73,7 +75,8 @@
 
 				<TextView
 					style="@style/AppTheme.BlockContent"
-					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.dnsServers)}"/>
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.dnsServers)}"
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -85,7 +88,8 @@
 
 				<TextView
 					style="@style/AppTheme.BlockContent"
-					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.searchDomains)}"/>
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.searchDomains)}"
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -99,7 +103,8 @@
 
 				<TextView
 					style="@style/AppTheme.BlockContent"
-					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.allowedApplications)}"/>
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.allowedApplications)}"
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -113,7 +118,8 @@
 
 				<TextView
 					style="@style/AppTheme.BlockContent"
-					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.disallowedApplications)}"/>
+					android:text="@{listFormatter.formatList(vpnInterfaceConfiguration.disallowedApplications)}"
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
@@ -125,7 +131,8 @@
 
 				<TextView
 					style="@style/AppTheme.BlockContent"
-					android:text="@{vpnInterfaceConfiguration.allowBypass ? @string/status_network_info_yes_value : @string/status_network_info_no_value}"/>
+					android:text="@{vpnInterfaceConfiguration.allowBypass ? @string/status_network_info_yes_value : @string/status_network_info_no_value}"
+					android:textIsSelectable="true"/>
 
 			</LinearLayout>
 
