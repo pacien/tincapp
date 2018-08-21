@@ -18,16 +18,16 @@
 
 package org.pacien.tincapp.activities.common
 
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import org.pacien.tincapp.activities.BaseFragment
 import org.pacien.tincapp.context.App
 
 /**
  * @param pages ordered list of title and fragment pairs
  * @author pacien
  */
-class FragmentListPagerAdapter(private val pages: List<Pair<Int, Fragment>>,
+class FragmentListPagerAdapter(private val pages: List<Pair<Int, BaseFragment>>,
                                fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
   private val resources by lazy { App.getResources() }

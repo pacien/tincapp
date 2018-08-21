@@ -18,7 +18,6 @@
 
 package org.pacien.tincapp.activities.configure.tools
 
-import android.app.Fragment
 import android.content.Intent
 import android.view.View
 import com.google.zxing.integration.android.IntentIntegrator
@@ -26,6 +25,7 @@ import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.configure_tools_dialog_network_join.view.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
+import org.pacien.tincapp.activities.BaseFragment
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.databinding.ConfigureToolsDialogNetworkJoinBinding
@@ -33,8 +33,8 @@ import org.pacien.tincapp.databinding.ConfigureToolsDialogNetworkJoinBinding
 /**
  * @author pacien
  */
-class JoinNetworkTool(parentFragment: Fragment, private val parentActivity: BaseActivity) : ConfigurationTool(parentActivity) {
-  private val scanner by lazy { IntentIntegrator(parentFragment) }
+class JoinNetworkTool(parentFragment: BaseFragment, private val parentActivity: BaseActivity) : ConfigurationTool(parentActivity) {
+  private val scanner by lazy { IntentIntegrator.forSupportFragment(parentFragment) }
   private var joinDialog: View? = null
 
   fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -21,15 +21,14 @@ package org.pacien.tincapp.activities.status.nodes
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.base_activity.*
 import kotlinx.android.synthetic.main.status_node_info_dialog.view.*
 import kotlinx.android.synthetic.main.status_node_list_fragment.*
 import org.pacien.tincapp.R
+import org.pacien.tincapp.activities.BaseFragment
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.extensions.hideBottomSeparator
 import org.pacien.tincapp.extensions.hideTopSeparator
@@ -39,7 +38,7 @@ import org.pacien.tincapp.service.TincVpnService
 /**
  * @author pacien
  */
-class NodeListFragment : Fragment() {
+class NodeListFragment : BaseFragment() {
   private val vpnService = TincVpnService
   private val tincCtl = Tinc
   private val netName by lazy { vpnService.getCurrentNetName()!! }
@@ -67,7 +66,7 @@ class NodeListFragment : Fragment() {
     showNodeInfo(nodeInfo.name)
 
   private fun showNodeInfo(nodeName: String) {
-    val dialogTextView = layoutInflater.inflate(R.layout.status_node_info_dialog, base_activity_frame, false)
+    val dialogTextView = inflate(R.layout.status_node_info_dialog)
 
     AlertDialog.Builder(context!!)
       .setTitle(R.string.status_node_info_dialog_title)

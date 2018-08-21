@@ -79,7 +79,7 @@ dependencies {
   implementation "android.arch.lifecycle:extensions:1.1.1"
   implementation "com.android.support:support-compat:27.1.1"
   implementation 'com.android.support:design:27.1.1'
-  implementation 'com.google.zxing:android-integration:3.3.0'
+  implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
   implementation 'org.bouncycastle:bcpkix-jdk15on:1.59'
   implementation 'org.slf4j:slf4j-api:1.7.25'
   //noinspection GradleDependency: inspection tool bug for logback-android

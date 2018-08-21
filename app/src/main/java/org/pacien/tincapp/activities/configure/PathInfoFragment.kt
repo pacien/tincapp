@@ -18,18 +18,18 @@
 
 package org.pacien.tincapp.activities.configure
 
-import android.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.pacien.tincapp.activities.BaseFragment
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.databinding.ConfigureToolsPathInfoFragmentBinding
 
 /**
  * @author pacien
  */
-class PathInfoFragment : Fragment() {
+class PathInfoFragment : BaseFragment() {
   private val appPaths = AppPaths
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

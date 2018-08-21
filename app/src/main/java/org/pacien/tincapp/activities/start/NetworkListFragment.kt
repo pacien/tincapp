@@ -20,7 +20,6 @@ package org.pacien.tincapp.activities.start
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +28,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.start_network_list.*
 import org.pacien.tincapp.R
+import org.pacien.tincapp.activities.BaseFragment
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.extensions.hideBottomSeparator
 import org.pacien.tincapp.extensions.setElements
@@ -36,7 +36,7 @@ import org.pacien.tincapp.extensions.setElements
 /**
  * @author pacien
  */
-class NetworkListFragment : Fragment() {
+class NetworkListFragment : BaseFragment() {
   private val appPaths = AppPaths
   private val networkListViewModel by lazy { NetworkListViewModel() }
   private val networkListAdapter by lazy { ArrayAdapter<String>(context, R.layout.start_network_list_item) }

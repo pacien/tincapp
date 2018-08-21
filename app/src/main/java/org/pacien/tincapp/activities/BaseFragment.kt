@@ -16,28 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities.status.networkinfo
+package org.pacien.tincapp.activities
 
-import android.os.Bundle
+import android.support.annotation.LayoutRes
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.pacien.tincapp.activities.BaseFragment
-import org.pacien.tincapp.databinding.StatusNetworkInfoFragmentBinding
-import org.pacien.tincapp.service.TincVpnService
+import kotlinx.android.synthetic.main.base_activity.*
 
 /**
  * @author pacien
  */
-class NetworkInfoFragment : BaseFragment() {
-  private val vpnService by lazy { TincVpnService }
-  private val interfaceConfiguration by lazy { vpnService.getCurrentInterfaceCfg() }
-  private val listFormatter = VpnInterfaceConfigurationFormatter
+abstract class BaseFragment : Fragment() {
+  private val rootView by lazy { base_activity_frame!! }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val binding = StatusNetworkInfoFragmentBinding.inflate(inflater, container, false)
-    binding.vpnInterfaceConfiguration = interfaceConfiguration
-    binding.listFormatter = listFormatter
-    return binding.root
-  }
+  fun inflate(@LayoutRes layout: Int) = layoutInflater.inflate(layout, rootView, false)!!
+  fun inflate(inflateFunc: (LayoutInflater, ViewGroup?, Boolean) -> View) = inflateFunc(layoutInflater, rootView, false)
 }

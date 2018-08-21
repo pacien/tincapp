@@ -18,13 +18,13 @@
 
 package org.pacien.tincapp.activities.configure
 
-import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.pacien.tincapp.activities.BaseActivity
+import org.pacien.tincapp.activities.BaseFragment
 import org.pacien.tincapp.activities.configure.tools.EncryptDecryptPrivateKeysTool
 import org.pacien.tincapp.activities.configure.tools.GenerateConfigTool
 import org.pacien.tincapp.activities.configure.tools.JoinNetworkTool
@@ -33,7 +33,7 @@ import org.pacien.tincapp.databinding.ConfigureToolsFragmentBinding
 /**
  * @author pacien
  */
-class ToolsFragment : Fragment() {
+class ToolsFragment : BaseFragment() {
   private val parentActivity by lazy { activity as BaseActivity }
   private val generateConfigTool by lazy { GenerateConfigTool(parentActivity) }
   private val joinNetworkTool by lazy { JoinNetworkTool(this, parentActivity) }
