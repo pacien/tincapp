@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.base_activity.*
  * @author pacien
  */
 abstract class BaseFragment : Fragment() {
-  private val rootView by lazy { base_activity_frame!! }
+  private val rootView by lazy { base_activity_frame }
 
   fun inflate(@LayoutRes layout: Int) = layoutInflater.inflate(layout, rootView, false)!!
   fun inflate(inflateFunc: (LayoutInflater, ViewGroup?, Boolean) -> View) = inflateFunc(layoutInflater, rootView, false)
