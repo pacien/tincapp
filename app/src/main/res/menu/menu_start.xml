@@ -28,7 +28,7 @@
 		android:icon="@drawable/ic_build_primary_24dp"
 		android:onClick="openConfigureActivity"
 		android:tint="@color/textAccent"
-		android:title="@string/menu_configure"
+		android:title="@string/start_activity_menu_configure"
 		app:showAsAction="ifRoom"/>
 
 </menu>

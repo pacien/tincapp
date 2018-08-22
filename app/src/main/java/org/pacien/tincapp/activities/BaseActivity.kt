@@ -85,12 +85,12 @@ abstract class BaseActivity : AppCompatActivity() {
   fun aboutDialog(m: MenuItem) {
     AlertDialog.Builder(this)
       .setTitle(resources.getString(R.string.app_name))
-      .setMessage(resources.getString(R.string.app_short_desc) + "\n\n" +
-        resources.getString(R.string.app_copyright) + " " +
-        resources.getString(R.string.app_license) + "\n\n" +
+      .setMessage(resources.getString(R.string.about_app_short_desc) + "\n\n" +
+        resources.getString(R.string.about_app_copyright) + " " +
+        resources.getString(R.string.about_app_license) + "\n\n" +
         AppInfo.all())
-      .setNeutralButton(R.string.action_open_project_website) { _, _ -> App.openURL(resources.getString(R.string.app_website_url)) }
-      .setPositiveButton(R.string.action_close) { _, _ -> Unit }
+      .setNeutralButton(R.string.about_app_open_project_website) { _, _ -> App.openURL(resources.getString(R.string.about_app_website_url)) }
+      .setPositiveButton(R.string.generic_action_close) { _, _ -> Unit }
       .show()
   }
 
@@ -103,18 +103,18 @@ abstract class BaseActivity : AppCompatActivity() {
     CrashRecorder.dismissPreviousCrash()
 
     AlertDialog.Builder(this)
-      .setTitle(R.string.title_app_crash)
+      .setTitle(R.string.crash_modal_title)
       .setMessage(listOf(
-        resources.getString(R.string.message_app_crash),
-        resources.getString(R.string.message_crash_logged, AppPaths.appLogFile().absolutePath)
+        resources.getString(R.string.crash_modal_message),
+        resources.getString(R.string.crash_modal_crash_logged, AppPaths.appLogFile().absolutePath)
       ).joinToString("\n\n"))
-      .setNeutralButton(R.string.action_send_report) { _, _ ->
+      .setNeutralButton(R.string.crash_modal_action_send_report) { _, _ ->
         App.sendMail(
-          resources.getString(R.string.app_dev_email),
-          listOf(R.string.app_name, R.string.title_app_crash).joinToString(" / ", transform = resources::getString),
+          resources.getString(R.string.crash_modal_dev_email),
+          listOf(R.string.app_name, R.string.crash_modal_title).joinToString(" / ", transform = resources::getString),
           AppPaths.appLogFile().let { if (it.exists()) it.readText() else "" })
       }
-      .setPositiveButton(R.string.action_close) { _, _ -> Unit }
+      .setPositiveButton(R.string.generic_action_close) { _, _ -> Unit }
       .show()
   }
 
@@ -125,6 +125,6 @@ abstract class BaseActivity : AppCompatActivity() {
   fun notify(msg: String) = Snackbar.make(base_activity_frame, msg, Snackbar.LENGTH_LONG).show()
 
   fun showErrorDialog(msg: String): AlertDialog = AlertDialog.Builder(this)
-    .setTitle(R.string.title_error).setMessage(msg)
-    .setPositiveButton(R.string.action_close) { _, _ -> Unit }.show()
+    .setTitle(R.string.generic_title_error).setMessage(msg)
+    .setPositiveButton(R.string.generic_action_close) { _, _ -> Unit }.show()
 }

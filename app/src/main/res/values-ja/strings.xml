@@ -20,24 +20,14 @@
 -->
 
 <resources>
-	<string name="app_name">Tinc App</string>
-	<string name="app_label">Tinc</string>
-	<string name="app_short_desc">tinc mesh VPN デーモン用の Android バインディングとユーザーインターフェース。</string>
-	<string name="app_copyright">Copyright © 2017–2018 Pacien TRAN-GIRARD.</string> <!-- TODO: add "and contributors" -->
-	<string name="app_license">GNU General Public License v3 の条件で配布されるソフトウェア。</string>
-	<string name="app_website_url">https://tincapp.pacien.org</string>
-
-	<string name="info_version_format">アプリバージョン %1$s (%2$s ビルド)</string>
-	<string name="info_running_on_format">Android %1$s %2$s で実行中</string>
-	<string name="info_supported_abis_format">デバイス ABI: %1$s</string>
-
-	<string name="menu_about">このアプリについて</string>
-
+	<string name="about_app_short_desc">tinc mesh VPN デーモン用の Android バインディングとユーザーインターフェース。</string>
+	<string name="about_app_license">GNU General Public License v3 の条件で配布されるソフトウェア。</string>
+	<string name="about_app_version_format">アプリバージョン %1$s (%2$s ビルド)</string>
+	<string name="about_app_running_on_format">Android %1$s %2$s で実行中</string>
+	<string name="about_app_supported_abis_format">デバイス ABI: %1$s</string>
+	<string name="about_app_menu_about">このアプリについて</string>
 	<string name="configure_tools_generate_config_net_name_hint">Tinc ネットワーク名</string>
-
 	<string name="start_network_list_title">ネットワークに接続</string>
-	<string name="title_request_vpn_permissions">VPN 権限のリクエスト</string>
-
-	<string name="action_close">閉じる</string>
-	<string name="action_open_project_website">プロジェクト Web サイト</string>
+	<string name="generic_action_close">閉じる</string>
+	<string name="about_app_open_project_website">プロジェクト Web サイト</string>
 </resources>

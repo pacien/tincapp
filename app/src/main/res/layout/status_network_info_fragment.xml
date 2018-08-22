@@ -131,7 +131,7 @@
 
 				<TextView
 					style="@style/AppTheme.BlockContent"
-					android:text="@{vpnInterfaceConfiguration.allowBypass ? @string/status_network_info_yes_value : @string/status_network_info_no_value}"
+					android:text="@{vpnInterfaceConfiguration.allowBypass ? @string/status_network_info_value_yes : @string/status_network_info_value_no}"
 					android:textIsSelectable="true"/>
 
 			</LinearLayout>

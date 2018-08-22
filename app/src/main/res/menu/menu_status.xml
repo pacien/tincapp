@@ -28,7 +28,7 @@
 		android:icon="@drawable/ic_link_off_primary_24dp"
 		android:onClick="stopVpn"
 		android:tint="@color/textAccent"
-		android:title="@string/menu_disconnect"
+		android:title="@string/status_activity_menu_disconnect"
 		app:showAsAction="ifRoom"/>
 
 	<item
@@ -36,7 +36,7 @@
 		android:icon="@drawable/ic_receipt_primary_24dp"
 		android:onClick="openLogViewer"
 		android:tint="@color/textAccent"
-		android:title="@string/menu_show_log"
+		android:title="@string/status_activity_menu_show_log"
 		app:showAsAction="ifRoom"/>
 
 </menu>

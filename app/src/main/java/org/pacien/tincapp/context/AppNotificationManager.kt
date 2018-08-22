@@ -64,7 +64,7 @@ class AppNotificationManager(private val context: Context) {
 
   @RequiresApi(Build.VERSION_CODES.O)
   private fun registerChannel() {
-    val name = context.getString(R.string.notification_channel_error_name)
+    val name = context.getString(R.string.notification_error_channel_name)
     val importance = NotificationManager.IMPORTANCE_HIGH
     val channel = NotificationChannel(CHANNEL_ID, name, importance)
     val notificationManager = context.getSystemService(NotificationManager::class.java)
@@ -79,6 +79,6 @@ class AppNotificationManager(private val context: Context) {
   private fun NotificationCompat.Builder.setManualLink(manualLink: String) = apply {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(manualLink))
     val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-    addAction(R.drawable.ic_help_primary_24dp, context.getString(R.string.action_open_manual), pendingIntent)
+    addAction(R.drawable.ic_help_primary_24dp, context.getString(R.string.notification_error_action_open_manual), pendingIntent)
   }
 }

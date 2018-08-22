@@ -44,7 +44,7 @@ object TincApp {
         it.ed25519PrivateKeyFile ?: AppPaths.defaultEd25519PrivateKeyFile(netName))
     }
   } catch (e: FileNotFoundException) {
-    throw FileNotFoundException(App.getResources().getString(R.string.message_network_config_not_found_format, e.message!!))
+    throw FileNotFoundException(App.getResources().getString(R.string.notification_error_message_network_config_not_found_format, e.message!!))
   }
 
   fun removeScripts(netName: String) = runAsyncTask {

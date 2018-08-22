@@ -28,7 +28,7 @@
 		android:icon="@drawable/ic_help_primary_24dp"
 		android:onClick="aboutDialog"
 		android:tint="@color/textAccent"
-		android:title="@string/menu_about"
+		android:title="@string/about_app_menu_about"
 		app:showAsAction="ifRoom"/>
 
 </menu>

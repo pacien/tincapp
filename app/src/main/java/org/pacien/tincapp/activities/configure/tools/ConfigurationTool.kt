@@ -43,7 +43,7 @@ abstract class ConfigurationTool(private val parentActivity: BaseActivity) {
       .setTitle(title)
       .setView(view)
       .setPositiveButton(applyButton) { _, _ -> applyAction(view) }
-      .setNegativeButton(R.string.action_cancel) { _, _ -> Unit }
+      .setNegativeButton(R.string.generic_action_cancel) { _, _ -> Unit }
       .show()
   }
 
@@ -51,7 +51,7 @@ abstract class ConfigurationTool(private val parentActivity: BaseActivity) {
     ProgressModal.show(parentActivity, parentActivity.getString(label)).let { progressDialog ->
       action
         .whenComplete { _, _ -> progressDialog.dismiss() }
-        .thenAccept { parentActivity.notify(R.string.message_network_configuration_written) }
+        .thenAccept { parentActivity.notify(R.string.configure_tools_message_network_configuration_written) }
         .exceptionallyAccept { parentActivity.runOnUiThread { parentActivity.showErrorDialog(it.cause!!.localizedMessage) } }
     }
   }
@@ -60,5 +60,5 @@ abstract class ConfigurationTool(private val parentActivity: BaseActivity) {
     if (networkNamePattern.matcher(netName).matches())
       CompletableFuture.completedFuture(Unit)
     else
-      CompletableFuture.failedFuture(IllegalArgumentException(parentActivity.getString(R.string.message_invalid_network_name)))
+      CompletableFuture.failedFuture(IllegalArgumentException(parentActivity.getString(R.string.configure_tools_message_invalid_network_name)))
 }

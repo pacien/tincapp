@@ -31,7 +31,7 @@
 		android:id="@+id/passphrase"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:hint="@string/field_passphrase"
+		android:hint="@string/decrypt_key_modal_field_passphrase"
 		android:inputType="textPassword"/>
 
 </LinearLayout>

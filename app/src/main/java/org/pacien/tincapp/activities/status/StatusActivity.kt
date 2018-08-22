@@ -104,7 +104,7 @@ class StatusActivity : BaseActivity() {
   }
 
   private fun stopVpn() {
-    shutdownDialog = ProgressModal.show(this, getString(R.string.message_disconnecting_vpn))
+    shutdownDialog = ProgressModal.show(this, getString(R.string.status_activity_disconnecting_vpn))
     vpnService.disconnect()
   }
 

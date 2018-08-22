@@ -55,10 +55,10 @@ class ConnectionStarter(private val parentActivity: StartActivity) {
     val dialogView = parentActivity.layoutInflater.inflate(R.layout.dialog_decrypt_keys, parentActivity.base_activity_frame, false)
 
     AlertDialog.Builder(parentActivity)
-      .setTitle(R.string.title_unlock_private_keys)
+      .setTitle(R.string.decrypt_key_modal_title)
       .setView(dialogView)
-      .setPositiveButton(R.string.action_unlock) { _, _ -> tryStart(passphrase = dialogView.passphrase.text.toString()) }
-      .setNegativeButton(R.string.action_cancel) { _, _ -> Unit }
+      .setPositiveButton(R.string.decrypt_key_modal_action_unlock) { _, _ -> tryStart(passphrase = dialogView.passphrase.text.toString()) }
+      .setNegativeButton(R.string.decrypt_key_modal_action_cancel) { _, _ -> Unit }
       .show()
   }
 

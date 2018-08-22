@@ -27,17 +27,17 @@ import org.pacien.tincapp.R
  */
 object AppInfo {
   private fun appVersion(): String = App.getResources().getString(
-    R.string.info_version_format,
+    R.string.about_app_version_format,
     BuildConfig.VERSION_NAME,
     BuildConfig.BUILD_TYPE)
 
   private fun androidVersion(): String = App.getResources().getString(
-    R.string.info_running_on_format,
+    R.string.about_app_running_on_format,
     Build.VERSION.CODENAME,
     Build.VERSION.RELEASE)
 
   private fun supportedABIs(): String = App.getResources().getString(
-    R.string.info_supported_abis_format,
+    R.string.about_app_supported_abis_format,
     Build.SUPPORTED_ABIS.joinToString(","))
 
   fun all(): String = listOf(

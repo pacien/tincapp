@@ -19,71 +19,72 @@
 -->
 
 <resources>
-	<string name="app_name">Tinc App</string>
-	<string name="app_label">Tinc</string>
-	<string name="app_short_desc">Android binding and user interface for the tinc mesh VPN daemon.</string>
-	<string name="app_copyright">Copyright © 2017–2018 Pacien TRAN-GIRARD and contributors.</string>
-	<string name="app_license">Software distributed under the terms of the GNU General Public License v3.</string>
-	<string name="app_website_url">https://tincapp.pacien.org</string>
-	<string name="app_doc_url_format">https://tincapp.pacien.org/doc.html#%1$s</string>
-	<string name="app_dev_email">pacien.gplayfr@gmail.com</string>
+	<string name="app_name" translatable="false">Tinc App</string>
+	<string name="app_doc_url_format" translatable="false">https://tincapp.pacien.org/doc.html#%1$s</string>
 
-	<string name="info_version_format">App version %1$s (%2$s build)</string>
-	<string name="info_running_on_format">Running on Android %1$s %2$s</string>
-	<string name="info_supported_abis_format">Device ABIs: %1$s</string>
+	<!-- generic strings -->
+	<string name="generic_title_error">Error</string>
+	<string name="generic_loading">Loading…</string>
+	<string name="generic_yes">yes</string>
+	<string name="generic_no">no</string>
+	<string name="generic_none">none</string>
+	<string name="generic_action_close">Close</string>
+	<string name="generic_action_cancel">Cancel</string>
+	<string name="generic_action_apply">Apply</string>
+	<string name="generic_action_open_web_page">Open web page</string>
 
-	<string name="notification_channel_error_name">Errors</string>
+	<!-- about modal -->
+	<string name="about_app_menu_about">About this app</string>
+	<string name="about_app_short_desc">Android binding and user interface for the tinc mesh VPN daemon.</string>
+	<string name="about_app_copyright">Copyright © 2017–2018 Pacien TRAN-GIRARD and contributors.</string>
+	<string name="about_app_license">Software distributed under the terms of the GNU General Public License v3.</string>
+	<string name="about_app_website_url" translatable="false">https://tincapp.pacien.org</string>
+	<string name="about_app_version_format">App version %1$s (%2$s build)</string>
+	<string name="about_app_running_on_format">Running on Android %1$s %2$s</string>
+	<string name="about_app_supported_abis_format">Device ABIs: %1$s</string>
+	<string name="about_app_open_project_website">Project website</string>
 
-	<string name="menu_about">About this app</string>
-	<string name="menu_configure">Configure</string>
-	<string name="menu_disconnect">Disconnect</string>
-	<string name="menu_show_log">Show log</string>
+	<!-- crash modal -->
+	<string name="crash_modal_title">App crash</string>
+	<string name="crash_modal_message">The application has previously encountered a fatal error.</string>
+	<string name="crash_modal_crash_logged">The crash details have been saved in \"%1$s\".</string>
+	<string name="crash_modal_action_send_email">Send e-mail</string>
+	<string name="crash_modal_action_send_report">Send report</string>
+	<string name="crash_modal_dev_email" translatable="false">pacien.gplayfr@gmail.com</string>
 
-	<string name="field_passphrase">Passphrase</string>
+	<!-- key decryption modal -->
+	<string name="decrypt_key_modal_title">Unlock tinc private keys</string>
+	<string name="decrypt_key_modal_field_passphrase">Passphrase</string>
+	<string name="decrypt_key_modal_action_unlock">Unlock</string>
+	<string name="decrypt_key_modal_action_cancel" translatable="false">@string/generic_action_cancel</string>
 
-	<string name="title_request_vpn_permissions">Request VPN permissions</string>
-	<string name="title_error">Error</string>
-	<string name="title_unable_to_start_tinc">Unable to start tinc</string>
-	<string name="title_unlock_private_keys">Unlock tinc private keys</string>
-	<string name="title_app_crash">App crash</string>
-
-	<string name="action_close">Close</string>
-	<string name="action_cancel">Cancel</string>
-	<string name="action_open_project_website">Project website</string>
-	<string name="action_open_manual">Open manual</string>
-	<string name="action_install">Install</string>
-	<string name="action_unlock">Unlock</string>
-
-	<string name="action_dismiss">Dismiss</string>
-	<string name="action_open_web_page">Open web page</string>
-	<string name="action_send_email">Send e-mail</string>
-	<string name="action_send_report">Send report</string>
-
-	<string name="message_network_configuration_written">Network configuration successfully written.</string>
-	<string name="message_no_network_name_provided">No network name has been provided.</string>
-	<string name="message_no_configuration_for_network_format">No configuration has been found for network \"%1$s\".</string>
-	<string name="message_network_config_not_found_format">Network configuration file not found at \"%1$s\".</string>
-	<string name="message_network_config_invalid_format">Invalid network configuration in network.conf:\n%1$s</string>
-	<string name="message_could_not_decrypt_private_keys_format">Could not decrypt private keys:\n%1$s</string>
-	<string name="message_starting_vpn">Starting VPN…</string>
-	<string name="message_disconnecting_vpn">Disconnecting VPN…</string>
-	<string name="message_passphrase_required">A passphrase is required to unlock the keyring.</string>
-	<string name="message_daemon_exited">Tinc daemon exited during startup:\n%1$s\nCheck the logs for more details.</string>
-	<string name="message_could_not_configure_iface">Could not apply network interface configuration:\n%1$s</string>
-	<string name="message_could_not_bind_iface">Could not bind network interface. Is another VPN running?</string>
-	<string name="message_invalid_network_name">Invalid network name.</string>
-	<string name="message_app_crash">The application has previously encountered a fatal error.</string>
-	<string name="message_crash_logged">The crash details have been saved in \"%1$s\".</string>
-	<string name="message_no_daemon">No running tinc daemon has been found.</string>
-	<string name="message_could_not_read_network_configuration_format">Could not read network interface configuration:\n%1$s</string>
-	<string name="message_could_not_read_private_key_format">Could not read tinc private keys:\n%1$s</string>
+	<!-- error notifications -->
+	<string name="notification_error_channel_name">Errors</string>
+	<string name="notification_error_action_open_manual">Open manual</string>
+	<string name="notification_error_title_unable_to_start_tinc">Unable to start tinc</string>
+	<string name="notification_error_message_could_not_read_private_key_format">Could not read tinc private keys:\n%1$s</string>
+	<string name="notification_error_message_could_not_read_network_configuration_format">Could not read network interface configuration:\n%1$s</string>
+	<string name="notification_error_message_could_not_bind_iface">Could not bind network interface. Is another VPN running?</string>
+	<string name="notification_error_message_could_not_configure_iface">Could not apply network interface configuration:\n%1$s</string>
+	<string name="notification_error_message_daemon_exited">Tinc daemon exited during startup:\n%1$s\nCheck the logs for more details.</string>
+	<string name="notification_error_message_passphrase_not_provided">No passphrase provided to unlock the keyring.</string>
+	<string name="notification_error_message_no_network_name_provided">No network name has been provided.</string>
+	<string name="notification_error_message_no_configuration_for_network_format">No configuration has been found for network \"%1$s\".</string>
+	<string name="notification_error_message_network_config_not_found_format">Network configuration file not found at \"%1$s\".</string>
+	<string name="notification_error_message_network_config_invalid_format">Invalid network configuration in network.conf:\n%1$s</string>
+	<string name="notification_error_message_could_not_decrypt_private_keys_format">Could not decrypt private keys:\n%1$s</string>
 
 	<!-- Start activity -->
+	<string name="start_activity_menu_configure">Configure</string>
 	<string name="start_network_list_title">Connect to network</string>
 	<string name="start_network_list_empty_none_found">No network configuration has been found.</string>
 	<string name="start_network_list_empty_storage_not_available">Storage directory is unavailable.</string>
+	<string name="start_starting_vpn">Starting VPN…</string>
 
 	<!-- Configure activity -->
+	<string name="configure_tools_message_invalid_network_name">Invalid network name.</string>
+	<string name="configure_tools_message_network_configuration_written">Network configuration successfully written.</string>
+
 	<string name="configure_activity_title_path_info">Path info</string>
 	<string name="configure_path_info_title_configuration_directory">Configuration directory</string>
 	<string name="configure_path_info_title_log_directory">Log directory</string>
@@ -110,15 +111,16 @@
 	<string name="configure_tools_private_keys_encryption_title">Private keys encryption</string>
 	<string name="configure_tools_private_key_encryption_current_passphrase">Current passphrase\n(leave empty if none)</string>
 	<string name="configure_tools_private_key_encryption_new_passphrase">New passphrase\n(leave empty to decrypt)</string>
-	<string name="configure_tools_private_keys_encryption_action">Apply</string>
+	<string name="configure_tools_private_keys_encryption_action" translatable="false">@string/generic_action_apply</string>
 	<string name="configure_tools_private_keys_encryption_encrypting">Encrypting/decrypting private keys</string>
 
 	<!-- Status activity -->
 	<string name="status_activity_state_connected_to_format">Connected to %s</string>
-	<string name="status_activity_title_network_info">Network</string>
-	<string name="status_activity_title_node_list">Nodes</string>
-	<string name="status_activity_title_subnet_list">Subnets</string>
+	<string name="status_activity_menu_disconnect">Disconnect</string>
+	<string name="status_activity_menu_show_log">Show log</string>
+	<string name="status_activity_disconnecting_vpn">Disconnecting VPN…</string>
 
+	<string name="status_activity_title_network_info">Network</string>
 	<string name="status_network_info_network_name_label">Network name</string>
 	<string name="status_network_info_ip_addresses_label">IP addresses</string>
 	<string name="status_network_info_routes_label">Routes</string>
@@ -127,21 +129,23 @@
 	<string name="status_network_info_allowed_applications_label">Allowed applications</string>
 	<string name="status_network_info_disallowed_applications_label">Disallowed applications</string>
 	<string name="status_network_info_allow_bypass_label">Allow bypass</string>
+	<string name="status_network_info_value_yes" translatable="false">@string/generic_yes</string>
+	<string name="status_network_info_value_no" translatable="false">@string/generic_no</string>
+	<string name="status_network_info_value_none" translatable="false">@string/generic_none</string>
 
-	<string name="status_network_info_yes_value">yes</string>
-	<string name="status_network_info_no_value">no</string>
-	<string name="status_network_info_none_value">none</string>
-
-	<string name="status_node_list_empty_placeholder_text">Loading…</string>
+	<string name="status_activity_title_node_list">Nodes</string>
+	<string name="status_node_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 	<string name="status_node_reachability_unreachable">unreachable</string>
 	<string name="status_node_reachability_this_node">this node</string>
 	<string name="status_node_reachability_direct_connection">direct</string>
 	<string name="status_node_reachability_via_format">via %s</string>
 	<string name="status_node_reachability_unknown">…</string>
-	<string name="status_node_info_modal_placeholder_text">Loading…</string>
+	<string name="status_node_info_modal_placeholder_text" translatable="false">@string/generic_loading</string>
 	<string name="status_node_info_dialog_title">Node info</string>
-	<string name="status_node_info_dialog_close_action">Close</string>
-	<string name="status_subnet_list_empty_placeholder_text">Loading…</string>
+	<string name="status_node_info_dialog_close_action" translatable="false">@string/generic_action_close</string>
+
+	<string name="status_activity_title_subnet_list">Subnets</string>
+	<string name="status_subnet_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 
 	<!-- Log viewer activity -->
 	<string name="log_view_state_level_format">Log level: %s</string>

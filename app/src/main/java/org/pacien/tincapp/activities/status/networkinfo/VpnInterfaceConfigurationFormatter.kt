@@ -30,7 +30,7 @@ object VpnInterfaceConfigurationFormatter {
 
   fun formatList(list: List<Any>) = when {
     list.isNotEmpty() -> list.joinToString("\n", transform = this::formatListElement)
-    else -> resources.getString(R.string.status_network_info_none_value)!!
+    else -> resources.getString(R.string.status_network_info_value_none)!!
   }
 
   private fun formatListElement(element: Any) = when (element) {

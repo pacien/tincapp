@@ -67,7 +67,7 @@ class App : Application() {
 
     fun openURL(url: String) {
       val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-      val chooser = Intent.createChooser(intent, getResources().getString(R.string.action_open_web_page))
+      val chooser = Intent.createChooser(intent, getResources().getString(R.string.generic_action_open_web_page))
       appContext?.startActivity(chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
@@ -78,7 +78,7 @@ class App : Application() {
         .apply { if (body != null) putExtra(Intent.EXTRA_TEXT, body) }
         .apply { if (attachment != null) putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment)) }
 
-      val chooser = Intent.createChooser(intent, getResources().getString(R.string.action_send_email))
+      val chooser = Intent.createChooser(intent, getResources().getString(R.string.crash_modal_action_send_email))
       appContext?.startActivity(chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
   }

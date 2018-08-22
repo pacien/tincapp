@@ -85,16 +85,16 @@ class TincVpnService : VpnService() {
 
   private fun startVpn(netName: String, passphrase: String? = null): Unit = synchronized(this) {
     if (netName.isBlank())
-      return reportError(resources.getString(R.string.message_no_network_name_provided), docTopic = "intent-api")
+      return reportError(resources.getString(R.string.notification_error_message_no_network_name_provided), docTopic = "intent-api")
 
     if (TincKeyring.needsPassphrase(netName) && passphrase == null)
-      return reportError(resources.getString(R.string.message_passphrase_required))
+      return reportError(resources.getString(R.string.notification_error_message_passphrase_not_provided))
 
     if (!AppPaths.storageAvailable())
       return reportError(resources.getString(R.string.start_network_list_empty_storage_not_available))
 
     if (!AppPaths.confDir(netName).exists())
-      return reportError(resources.getString(R.string.message_no_configuration_for_network_format, netName), docTopic = "configuration")
+      return reportError(resources.getString(R.string.notification_error_message_no_configuration_for_network_format, netName), docTopic = "configuration")
 
     log.info("Starting tinc daemon for network \"$netName\".")
     if (isConnected()) stopVpn()
@@ -108,19 +108,19 @@ class TincVpnService : VpnService() {
     } catch (e: FileNotFoundException) {
       Pair(null, null)
     } catch (e: PEMException) {
-      return reportError(resources.getString(R.string.message_could_not_decrypt_private_keys_format, e.message))
+      return reportError(resources.getString(R.string.notification_error_message_could_not_decrypt_private_keys_format, e.message))
     } catch (e: Exception) {
-      return reportError(resources.getString(R.string.message_could_not_read_private_key_format, e.defaultMessage()), e)
+      return reportError(resources.getString(R.string.notification_error_message_could_not_read_private_key_format, e.defaultMessage()), e)
     }
 
     val interfaceCfg = try {
       VpnInterfaceConfiguration.fromIfaceConfiguration(AppPaths.existing(AppPaths.netConfFile(netName)))
     } catch (e: FileNotFoundException) {
-      return reportError(resources.getString(R.string.message_network_config_not_found_format, e.defaultMessage()), e, "configuration")
+      return reportError(resources.getString(R.string.notification_error_message_network_config_not_found_format, e.defaultMessage()), e, "configuration")
     } catch (e: ConversionException) {
-      return reportError(resources.getString(R.string.message_network_config_invalid_format, e.defaultMessage()), e, "network-interface")
+      return reportError(resources.getString(R.string.notification_error_message_network_config_invalid_format, e.defaultMessage()), e, "network-interface")
     } catch (e: Exception) {
-      return reportError(resources.getString(R.string.message_could_not_read_network_configuration_format, e.defaultMessage()), e)
+      return reportError(resources.getString(R.string.notification_error_message_could_not_read_network_configuration_format, e.defaultMessage()), e)
     }
 
     val deviceFd = try {
@@ -129,11 +129,11 @@ class TincVpnService : VpnService() {
         .also { applyIgnoringException(it::addDisallowedApplication, BuildConfig.APPLICATION_ID) }
         .establish()!!
     } catch (e: IllegalArgumentException) {
-      return reportError(resources.getString(R.string.message_network_config_invalid_format, e.defaultMessage()), e, "network-interface")
+      return reportError(resources.getString(R.string.notification_error_message_network_config_invalid_format, e.defaultMessage()), e, "network-interface")
     } catch (e: NullPointerException) {
-      return reportError(resources.getString(R.string.message_could_not_bind_iface), e)
+      return reportError(resources.getString(R.string.notification_error_message_could_not_bind_iface), e)
     } catch (e: Exception) {
-      return reportError(resources.getString(R.string.message_could_not_configure_iface, e.defaultMessage()), e)
+      return reportError(resources.getString(R.string.notification_error_message_could_not_configure_iface, e.defaultMessage()), e)
     }
 
     val daemon = Tincd.start(netName, deviceFd.fd, privateKeys.first?.fd, privateKeys.second?.fd)
@@ -145,7 +145,7 @@ class TincVpnService : VpnService() {
       privateKeys.second?.close()
 
       if (exception != null) {
-        reportError(resources.getString(R.string.message_daemon_exited, exception.cause!!.defaultMessage()), exception)
+        reportError(resources.getString(R.string.notification_error_message_daemon_exited, exception.cause!!.defaultMessage()), exception)
       } else {
         log.info("tinc daemon started.")
         broadcastEvent(Actions.EVENT_CONNECTED)
@@ -171,7 +171,7 @@ class TincVpnService : VpnService() {
       log.error(msg)
 
     broadcastEvent(Actions.EVENT_ABORTED)
-    App.alert(R.string.title_unable_to_start_tinc, msg,
+    App.alert(R.string.notification_error_title_unable_to_start_tinc, msg,
       if (docTopic != null) resources.getString(R.string.app_doc_url_format, docTopic) else null)
   }
 

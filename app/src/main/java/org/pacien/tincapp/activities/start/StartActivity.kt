@@ -99,7 +99,7 @@ class StartActivity : BaseActivity() {
   }
 
   fun showConnectProgressDialog() {
-    connectDialog = ProgressModal.show(this, resources.getString(R.string.message_starting_vpn))
+    connectDialog = ProgressModal.show(this, resources.getString(R.string.start_starting_vpn))
   }
 
   @Suppress("UNUSED_PARAMETER")
