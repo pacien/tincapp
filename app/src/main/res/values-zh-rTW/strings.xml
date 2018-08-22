@@ -23,7 +23,7 @@
 	<string name="app_name">Tinc App</string>
 	<string name="app_label">Tinc</string>
 	<string name="app_short_desc">tinc mesh VPN 守護程序的 Android 繫結和使用者介面。</string>
-	<string name="app_copyright">版權所有 2017–2018 Pacien。</string>
+	<string name="app_copyright">版權所有 © 2017–2018 Pacien TRAN-GIRARD。</string> <!-- TODO: add "and contributors" -->
 	<string name="app_license">軟體根據 GNU 通用公共許可證第3版的條款進行分發。</string>
 	<string name="app_website_url">https://tincapp.pacien.org</string>
 	<string name="app_doc_url_format">https://tincapp.pacien.org/doc.html#%1$s</string>
