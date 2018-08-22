@@ -13,7 +13,7 @@ Main developer
 Other contributors
 ------------------
 
-* Allan Nordhøy (comradekingu): Norvegian Bokmål translation
+* Allan Nordhøy (comradekingu): Norwegian Bokmål translation
 * mahatma1: old Android backport
 * naofum: Japanese translation
 * yangfl: Chinese translation
