@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- * tinc App, an Android binding and user interface for the tinc mesh VPN daemon
+ * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 -->
 
 <resources>
-	<string name="app_name" translatable="false">tinc App</string>
+	<string name="app_name" translatable="false">Tinc App</string>
 	<string name="app_doc_url_format" translatable="false">https://tincapp.pacien.org/doc.html#%1$s</string>
 
 	<!-- generic strings -->
