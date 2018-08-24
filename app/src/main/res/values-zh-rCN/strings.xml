@@ -3,7 +3,7 @@
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
- *               2017 yangfl
+ *               2017-2018 yangfl
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,28 +20,107 @@
 -->
 
 <resources>
+	<string name="app_name" translatable="false">Tinc App</string>
+	<string name="app_doc_url_format" translatable="false">https://tincapp.pacien.org/doc.html#%1$s</string>
+
+	<!-- generic strings -->
+	<string name="generic_title_error">错误</string>
+	<string name="generic_loading">正在加载…</string>
+	<string name="generic_yes">是</string>
+	<string name="generic_no">否</string>
+	<string name="generic_none">无</string>
+	<string name="generic_action_close">关闭</string>
+	<string name="generic_action_cancel">取消</string>
+	<string name="generic_action_apply">应用</string>
+	<string name="generic_action_open_web_page">打开网页</string>
+
+	<!-- about modal -->
+	<string name="about_app_menu_about">关于</string>
 	<string name="about_app_short_desc">tinc mesh VPN 守护进程的 Android 绑定和用户界面。</string>
+	<string name="about_app_copyright">版权所有 © 2017–2018 Pacien TRAN-GIRARD 及其贡献者。</string>
 	<string name="about_app_license">软件根据 GNU 通用公共许可证第3版的条款进行分发。</string>
+	<string name="about_app_website_url" translatable="false">https://tincapp.pacien.org</string>
 	<string name="about_app_version_format">应用程序版本 %1$s（%2$s build）</string>
 	<string name="about_app_running_on_format">于 Android %1$s %2$s 上运行</string>
 	<string name="about_app_supported_abis_format">设备 ABI：%1$s</string>
-	<string name="about_app_menu_about">关于此应用</string>
-	<string name="start_activity_menu_configure">配置</string>
-	<string name="status_activity_menu_disconnect">断开连接</string>
-	<string name="configure_tools_generate_config_net_name_hint">Tinc 网络名称</string>
-	<string name="configure_tools_generate_config_node_name_hint">此节点名称</string>
-	<string name="configure_tools_join_network_field_invitation_url_hint">邀请 URL</string>
-	<string name="configure_tools_private_key_encryption_current_passphrase">当前密码\n（没有则为空）</string>
-	<string name="configure_tools_private_key_encryption_new_passphrase">新密码\n（空白以解密）</string>
-	<string name="configure_tools_generate_config_optional_passphrase_hint">密码（可选）</string>
+	<string name="about_app_open_project_website">项目网站</string>
+
+	<!-- crash modal -->
+	<string name="crash_modal_title">应用程序崩溃</string>
+	<string name="crash_modal_message">该应用程序遇到致命错误。</string>
+	<string name="crash_modal_crash_logged">崩溃的详细信息已保存到“%1$s”。</string>
+	<string name="crash_modal_action_send_email">发送电子邮件</string>
+	<string name="crash_modal_action_send_report">发送报告</string>
+	<string name="crash_modal_dev_email" translatable="false">pacien.gplayfr@gmail.com</string>
+
+	<!-- key decryption modal -->
+	<string name="decrypt_key_modal_title">解锁 tinc 私钥</string>
 	<string name="decrypt_key_modal_field_passphrase">密码</string>
+	<string name="decrypt_key_modal_action_unlock">解锁</string>
+	<string name="decrypt_key_modal_action_cancel" translatable="false">@string/generic_action_cancel</string>
+
+	<!-- error notifications -->
+	<string name="notification_error_channel_name">错误</string>
+	<string name="notification_error_action_open_manual">打开手册</string>
+	<string name="notification_error_title_unable_to_start_tinc">无法启动 tinc</string>
+	<string name="notification_error_message_could_not_read_private_key_format">无法读取 tinc 私钥：\n%1$s</string>
+	<string name="notification_error_message_could_not_read_network_configuration_format">无法读取网络接口配置：\n%1$s</string>
+	<string name="notification_error_message_could_not_bind_iface">无法绑定网络接口。是否有另一个 VPN 正在运行？</string>
+	<string name="notification_error_message_could_not_configure_iface">无法应用网络接口配置：\n%1$s</string>
+	<string name="notification_error_message_daemon_exited">tinc 守护程序在启动时退出：\n%1$s\n请检查日志获取更多详细信息。</string>
+	<string name="notification_error_message_passphrase_not_provided">没有提供解密密钥环的密码。</string>
+	<string name="notification_error_message_no_network_name_provided">没有提供网络名称。</string>
+	<string name="notification_error_message_no_configuration_for_network_format">没有找到网络“%1$s”的配置。</string>
+	<string name="notification_error_message_network_config_not_found_format">在“%1$s”找不到网络配置文件。</string>
+	<string name="notification_error_message_network_config_invalid_format">network.conf 中的网络配置无效：\n%1$s</string>
+	<string name="notification_error_message_could_not_decrypt_private_keys_format">无法解密私钥：\n%1$s</string>
+
+	<!-- Start activity -->
+	<string name="start_activity_menu_configure">配置</string>
 	<string name="start_network_list_title">连接到网络</string>
+	<string name="start_network_list_empty_none_found">未找到网络配置。</string>
+	<string name="start_network_list_empty_storage_not_available">无法访问存储目录。</string>
+	<string name="start_starting_vpn">正在启动 VPN…</string>
+
+	<!-- Configure activity -->
+	<string name="configure_tools_message_invalid_network_name">网络名称无效。</string>
+	<string name="configure_tools_message_network_configuration_written">网络配置写入成功。</string>
+
 	<string name="configure_activity_title_path_info">路径信息</string>
-	<string name="status_node_info_dialog_title">节点信息</string>
-	<string name="configure_activity_title_tools">工具</string>
 	<string name="configure_path_info_title_configuration_directory">配置目录</string>
 	<string name="configure_path_info_title_log_directory">日志目录</string>
 	<string name="configure_path_info_title_tinc_binary">Tinc 二进制文件</string>
+
+	<string name="configure_activity_title_tools">工具</string>
+	<string name="configure_tools_action_generate_node_configuration_and_keys">生成节点配置和密钥</string>
+	<string name="configure_tools_action_join_network_via_invitation_url">通过邀请 URL 加入网络</string>
+	<string name="configure_tools_action_encrypt_decrypt_private_keys">加密或解密私钥</string>
+
+	<string name="configure_tools_generate_config_title">新建网络</string>
+	<string name="configure_tools_generate_config_net_name_hint">Tinc 网络名称</string>
+	<string name="configure_tools_generate_config_node_name_hint">此节点名称</string>
+	<string name="configure_tools_generate_config_optional_passphrase_hint">密码（可选）</string>
+	<string name="configure_tools_generate_config_action">创建</string>
+	<string name="configure_tools_generate_config_generating">生成节点配置…</string>
+
+	<string name="configure_tools_join_network_title">加入网络</string>
+	<string name="configure_tools_join_network_field_invitation_url_hint">邀请 URL</string>
+	<string name="configure_tools_join_network_action_scan_qr_code_action">扫描 QR 码</string>
+	<string name="configure_tools_join_network_action">加入</string>
+	<string name="configure_tools_join_network_joining">加入网络…</string>
+
+	<string name="configure_tools_private_keys_encryption_title">私钥加密</string>
+	<string name="configure_tools_private_key_encryption_current_passphrase">当前密码\n（没有则为空）</string>
+	<string name="configure_tools_private_key_encryption_new_passphrase">新密码\n（空白以解密）</string>
+	<string name="configure_tools_private_keys_encryption_action" translatable="false">@string/generic_action_apply</string>
+	<string name="configure_tools_private_keys_encryption_encrypting">加密/解密私钥</string>
+
+	<!-- Status activity -->
+	<string name="status_activity_state_connected_to_format">已连接至 %s</string>
+	<string name="status_activity_menu_disconnect">断开连接</string>
+	<string name="status_activity_menu_show_log">显示日志</string>
+	<string name="status_activity_disconnecting_vpn">正在断开 VPN…</string>
+
 	<string name="status_activity_title_network_info">网络信息</string>
 	<string name="status_network_info_network_name_label">网络名称</string>
 	<string name="status_network_info_ip_addresses_label">IP 地址</string>
@@ -51,36 +130,27 @@
 	<string name="status_network_info_allowed_applications_label">允许的应用程序</string>
 	<string name="status_network_info_disallowed_applications_label">不允许的应用程序</string>
 	<string name="status_network_info_allow_bypass_label">允许旁路</string>
+	<string name="status_network_info_value_yes" translatable="false">@string/generic_yes</string>
+	<string name="status_network_info_value_no" translatable="false">@string/generic_no</string>
+	<string name="status_network_info_value_none" translatable="false">@string/generic_none</string>
+
 	<string name="status_activity_title_node_list">节点</string>
-	<string name="generic_title_error">错误</string>
-	<string name="configure_tools_generate_config_title">新建网络</string>
-	<string name="configure_tools_join_network_title">加入网络</string>
-	<string name="notification_error_title_unable_to_start_tinc">无法启动 tinc</string>
-	<string name="configure_tools_private_keys_encryption_title">私钥加密</string>
-	<string name="decrypt_key_modal_title">解锁 tinc 私钥</string>
-	<string name="generic_action_close">关闭</string>
-	<string name="generic_action_cancel">取消</string>
-	<string name="about_app_open_project_website">项目网站</string>
-	<string name="configure_tools_action_generate_node_configuration_and_keys">生成节点配置和密钥</string>
-	<string name="configure_tools_action_join_network_via_invitation_url">通过邀请 URL 加入网络</string>
-	<string name="configure_tools_generate_config_action">创建</string>
-	<string name="configure_tools_join_network_action">加入</string>
-	<string name="notification_error_action_open_manual">打开手册</string>
-	<string name="configure_tools_join_network_action_scan_qr_code_action">扫描 QR 码</string>
-	<string name="decrypt_key_modal_action_unlock">解锁</string>
-	<string name="generic_action_apply">应用</string>
-	<string name="configure_tools_action_encrypt_decrypt_private_keys">加密或解密私钥</string>
-	<string name="start_network_list_empty_none_found">未找到网络配置。</string>
-	<string name="configure_tools_generate_config_generating">生成节点配置…</string>
-	<string name="configure_tools_join_network_joining">加入网络…</string>
-	<string name="configure_tools_message_network_configuration_written">网络配置写入成功。</string>
-	<string name="notification_error_message_no_network_name_provided">没有提供网络名称。</string>
-	<string name="notification_error_message_no_configuration_for_network_format">没有找到网络“%1$s”的配置。</string>
-	<string name="notification_error_message_network_config_not_found_format">在“%1$s”找不到网络配置文件。</string>
-	<string name="notification_error_message_network_config_invalid_format">network.conf 中的网络配置无效：\n%1$s</string>
-	<string name="configure_tools_private_keys_encryption_encrypting">加密/解密私钥</string>
-	<string name="notification_error_message_could_not_decrypt_private_keys_format">无法解密私钥：\n%1$s</string>
-	<string name="generic_yes">是</string>
-	<string name="generic_none">无</string>
-	<string name="generic_no">否</string>
+	<string name="status_node_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
+	<string name="status_node_reachability_unreachable">无法访问</string>
+	<string name="status_node_reachability_this_node">此节点</string>
+	<string name="status_node_reachability_direct_connection">直接连接</string>
+	<string name="status_node_reachability_via_format">通过 %s</string>
+	<string name="status_node_reachability_unknown">…</string>
+	<string name="status_node_info_modal_placeholder_text" translatable="false">@string/generic_loading</string>
+	<string name="status_node_info_dialog_title">节点信息</string>
+	<string name="status_node_info_dialog_close_action" translatable="false">@string/generic_action_close</string>
+
+	<string name="status_activity_title_subnet_list">子网</string>
+	<string name="status_subnet_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
+
+	<!-- Log viewer activity -->
+	<string name="log_view_state_level_format">日志级别：%s</string>
+	<string name="log_view_state_paused">日志已暂停</string>
+	<string name="log_view_menu_toggle_logging">切换日志记录</string>
+	<string name="log_view_menu_share_log">分享日志</string>
 </resources>
