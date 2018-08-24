@@ -20,8 +20,6 @@
 -->
 
 <resources>
-	<string name="app_name" translatable="false">Tinc App</string>
-	<string name="app_doc_url_format" translatable="false">https://tincapp.pacien.org/doc.html#%1$s</string>
 
 	<!-- generic strings -->
 	<string name="generic_title_error">錯誤</string>
@@ -39,7 +37,6 @@
 	<string name="about_app_short_desc">tinc mesh VPN 守護進程的 Android 綁定和用户界面。</string>
 	<string name="about_app_copyright">版權所有 © 2017–2018 Pacien TRAN-GIRARD 及其貢獻者。</string>
 	<string name="about_app_license">軟件根據 GNU 通用公共許可證第3版的條款進行分發。</string>
-	<string name="about_app_website_url" translatable="false">https://tincapp.pacien.org</string>
 	<string name="about_app_version_format">應用程序版本 %1$s（%2$s build）</string>
 	<string name="about_app_running_on_format">於 Android %1$s %2$s 上運行</string>
 	<string name="about_app_supported_abis_format">設備 ABI：%1$s</string>
@@ -51,13 +48,11 @@
 	<string name="crash_modal_crash_logged">崩潰的詳細信息已保存到“%1$s”。</string>
 	<string name="crash_modal_action_send_email">發送電子郵件</string>
 	<string name="crash_modal_action_send_report">發送報告</string>
-	<string name="crash_modal_dev_email" translatable="false">pacien.gplayfr@gmail.com</string>
 
 	<!-- key decryption modal -->
 	<string name="decrypt_key_modal_title">解鎖 tinc 私鑰</string>
 	<string name="decrypt_key_modal_field_passphrase">密碼</string>
 	<string name="decrypt_key_modal_action_unlock">解鎖</string>
-	<string name="decrypt_key_modal_action_cancel" translatable="false">@string/generic_action_cancel</string>
 
 	<!-- error notifications -->
 	<string name="notification_error_channel_name">錯誤</string>
@@ -112,7 +107,6 @@
 	<string name="configure_tools_private_keys_encryption_title">私鑰加密</string>
 	<string name="configure_tools_private_key_encryption_current_passphrase">當前密碼\n（沒有則為空）</string>
 	<string name="configure_tools_private_key_encryption_new_passphrase">新密碼\n（空白以解密）</string>
-	<string name="configure_tools_private_keys_encryption_action" translatable="false">@string/generic_action_apply</string>
 	<string name="configure_tools_private_keys_encryption_encrypting">加密/解密私鑰</string>
 
 	<!-- Status activity -->
@@ -130,23 +124,16 @@
 	<string name="status_network_info_allowed_applications_label">允許的應用程序</string>
 	<string name="status_network_info_disallowed_applications_label">不允許的應用程序</string>
 	<string name="status_network_info_allow_bypass_label">允許旁路</string>
-	<string name="status_network_info_value_yes" translatable="false">@string/generic_yes</string>
-	<string name="status_network_info_value_no" translatable="false">@string/generic_no</string>
-	<string name="status_network_info_value_none" translatable="false">@string/generic_none</string>
 
 	<string name="status_activity_title_node_list">節點</string>
-	<string name="status_node_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 	<string name="status_node_reachability_unreachable">無法訪問</string>
 	<string name="status_node_reachability_this_node">此節點</string>
 	<string name="status_node_reachability_direct_connection">直接連接</string>
 	<string name="status_node_reachability_via_format">通過 %s</string>
 	<string name="status_node_reachability_unknown">…</string>
-	<string name="status_node_info_modal_placeholder_text" translatable="false">@string/generic_loading</string>
 	<string name="status_node_info_dialog_title">節點信息</string>
-	<string name="status_node_info_dialog_close_action" translatable="false">@string/generic_action_close</string>
 
 	<string name="status_activity_title_subnet_list">子網</string>
-	<string name="status_subnet_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 
 	<!-- Log viewer activity -->
 	<string name="log_view_state_level_format">日誌級別：%s</string>
