@@ -3,7 +3,13 @@
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
- *               2017 Allan Nordhøy (comradekingu)
+
+ *<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
+ * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ *               2017-2018 Allan Nordhøy (comradekingu)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +26,137 @@
 -->
 
 <resources>
-	<string name="about_app_short_desc">Android-binding og brukergrensesnitt tiltenkt maskenett-VPN-nissen for Tinc.</string>
-	<string name="about_app_license">Programvare distribuert i henhold til vilkårene i GNU General Public Lisens v3.</string>
-	<string name="about_app_version_format">Programversjon %1$s (%2$s build)</string>
-	<string name="about_app_running_on_format">Kjører på Android %1$s %2$s</string>
-	<string name="about_app_supported_abis_format">Enhets-binærkompabilitet: %1$s</string>
-	<string name="about_app_menu_about">Om</string>
-	<string name="configure_tools_generate_config_net_name_hint">Tinc-nettverksnavn</string>
-	<string name="start_network_list_title">Koble til nettverk</string>
+	<string name="app_name" translatable="false">Tinc App</string>
+	<string name="app_doc_url_format" translatable="false">https://tincapp.pacien.org/doc.html#%1$s</string>
+
+	<!-- generic strings -->
+	<string name="generic_title_error">Feil</string>
+	<string name="generic_loading">Laster…</string>
+	<string name="generic_yes">ja</string>
+	<string name="generic_no">nei</string>
+	<string name="generic_none">ingen</string>
 	<string name="generic_action_close">Lukk</string>
-	<string name="about_app_open_project_website">Prosjektets nettside</string>
+	<string name="generic_action_cancel">Avbryt</string>
+	<string name="generic_action_apply">Bruk</string>
+	<string name="generic_action_open_web_page">Åpne nettside</string>
+
+	<!-- about modal -->
+	<string name="about_app_menu_about">Om</string>
+	<string name="about_app_short_desc">Android-binding og brukergrensesnitt tiltenkt maskenett-VPN-nissen for Tinc.</string>
+	<string name="about_app_copyright">Copyright © 2017–2018 Pacien TRAN-GIRARD og bidragsytere.</string>
+	<string name="about_app_license">Programvare distribuert i henhold til vilkårene i GNU General Public Lisens v3.</string>
+	<string name="about_app_website_url" translatable="false">https://tincapp.pacien.org</string>
+	<string name="about_app_version_format">Programversion %1$s (%2$s-bygg)</string>
+	<string name="about_app_running_on_format">Kjører på Android %1$s %2$s</string>
+	<string name="about_app_supported_abis_format">Enhets-ABI-er: %1$s</string>
+	<string name="about_app_open_project_website">Prosjektnettside</string>
+
+	<!-- crash modal -->
+	<string name="crash_modal_title">Programkræsj</string>
+	<string name="crash_modal_message">Programmet støtte på en uopprettelig feil.</string>
+	<string name="crash_modal_crash_logged">Kræsjdetaljer lagret i \"%1$s\".</string>
+	<string name="crash_modal_action_send_email">Send e-post</string>
+	<string name="crash_modal_action_send_report">Send rapport</string>
+	<string name="crash_modal_dev_email" translatable="false">pacien.gplayfr@gmail.com</string>
+
+	<!-- key decryption modal -->
+	<string name="decrypt_key_modal_title">Lås opp private tinc-nøkler</string>
+	<string name="decrypt_key_modal_field_passphrase">Passord</string>
+	<string name="decrypt_key_modal_action_unlock">Lås opp</string>
+	<string name="decrypt_key_modal_action_cancel" translatable="false">@string/generic_action_cancel</string>
+
+	<!-- error notifications -->
+	<string name="notification_error_channel_name">Feil</string>
+	<string name="notification_error_action_open_manual">Åpne manual</string>
+	<string name="notification_error_title_unable_to_start_tinc">Kunne ikke starte tinc</string>
+	<string name="notification_error_message_could_not_read_private_key_format">Kunne ikke lese private tinc-nøkler:\n%1$s</string>
+	<string name="notification_error_message_could_not_read_network_configuration_format">Kunne ikke lese nettverksgrensesnittoppsett:\n%1$s</string>
+	<string name="notification_error_message_could_not_bind_iface">Kunne ikke binde nettverksgrensesnitt. Kjører en annen VPN?</string>
+	<string name="notification_error_message_could_not_configure_iface">Kunne ikke bruke nettverksgrensesnittsoppsett:\n%1$s</string>
+	<string name="notification_error_message_daemon_exited">tinc-nissen avsluttet under oppstart:\n%1$s\nSjekk loggen for ytterligere detaljer.</string>
+	<string name="notification_error_message_passphrase_not_provided">Inget passord angitt for opplåsing av nøkkelringen.</string>
+	<string name="notification_error_message_no_network_name_provided">Inget nettverksnavn angitt.</string>
+	<string name="notification_error_message_no_configuration_for_network_format">Fant ikke finne oppsett for \"%1$s\"-nettverk.</string>
+	<string name="notification_error_message_network_config_not_found_format">Fant ikke nettverksoppsettsfil i \"%1$s\".</string>
+	<string name="notification_error_message_network_config_invalid_format">Ugyldig nettverksoppsett i network.conf:\n%1$s</string>
+	<string name="notification_error_message_could_not_decrypt_private_keys_format">Kunne ikke dekryptere private nøkler:\n%1$s</string>
+
+	<!-- Start activity -->
+	<string name="start_activity_menu_configure">Sett opp</string>
+	<string name="start_network_list_title">Koble til nettverk</string>
+	<string name="start_network_list_empty_none_found">Kunne ikke finne noe nettverksoppsett.</string>
+	<string name="start_network_list_empty_storage_not_available">Fikk ikke tilgang til lagringsmappe.</string>
+	<string name="start_starting_vpn">Starter VPN…</string>
+
+	<!-- Configure activity -->
+	<string name="configure_tools_message_invalid_network_name">Ugyldig nettverksnavn.</string>
+	<string name="configure_tools_message_network_configuration_written">Nettverksoppsett skrevet.</string>
+
+	<string name="configure_activity_title_path_info">Sti-info</string>
+	<string name="configure_path_info_title_configuration_directory">Oppsettsmappe</string>
+	<string name="configure_path_info_title_log_directory">Loggingsmappe</string>
+	<string name="configure_path_info_title_tinc_binary">tinc-binærfil</string>
+
+	<string name="configure_activity_title_tools">Verktøy</string>
+	<string name="configure_tools_action_generate_node_configuration_and_keys">Generer nodeoppsett og nøkler</string>
+	<string name="configure_tools_action_join_network_via_invitation_url">Ta del i nettverk via invitasjonsnettadresse.</string>
+	<string name="configure_tools_action_encrypt_decrypt_private_keys">Krypter eller dekrypter private nøkler.</string>
+
+	<string name="configure_tools_generate_config_title">Nytt nettverk</string>
+	<string name="configure_tools_generate_config_net_name_hint">tinc-nettverksnavn</string>
+	<string name="configure_tools_generate_config_node_name_hint">Navn på denne noden</string>
+	<string name="configure_tools_generate_config_optional_passphrase_hint">Passord (valgfritt)</string>
+	<string name="configure_tools_generate_config_action">Opprett</string>
+	<string name="configure_tools_generate_config_generating">Genererer nodeoppsett…</string>
+
+	<string name="configure_tools_join_network_title">Ta del i nettverk</string>
+	<string name="configure_tools_join_network_field_invitation_url_hint">Invitasjonsnettadresse</string>
+	<string name="configure_tools_join_network_action_scan_qr_code_action">Skann QR-kode</string>
+	<string name="configure_tools_join_network_action">Ta del</string>
+	<string name="configure_tools_join_network_joining">Tar del i nettverk…</string>
+
+	<string name="configure_tools_private_keys_encryption_title">Kryptering av private nøkler</string>
+	<string name="configure_tools_private_key_encryption_current_passphrase">Nåværende passord\n(la stå tomt for å ikke bruke)</string>
+	<string name="configure_tools_private_key_encryption_new_passphrase">Nytt passord\n(la stå tomt for å dekryptere)</string>
+	<string name="configure_tools_private_keys_encryption_action" translatable="false">@string/generic_action_apply</string>
+	<string name="configure_tools_private_keys_encryption_encrypting">Krypterer/dekrypterer private tinc-nøkler.</string>
+
+	<!-- Status activity -->
+	<string name="status_activity_state_connected_to_format">Tilkoblet %s</string>
+	<string name="status_activity_menu_disconnect">Koble fra</string>
+	<string name="status_activity_menu_show_log">Vis logg</string>
+	<string name="status_activity_disconnecting_vpn">Kobler fra VPN…</string>
+
+	<string name="status_activity_title_network_info">Nettverk</string>
+	<string name="status_network_info_network_name_label">Nettverksnavn</string>
+	<string name="status_network_info_ip_addresses_label">IP-adresser</string>
+	<string name="status_network_info_routes_label">Ruter</string>
+	<string name="status_network_info_dns_servers_label">DNS-tjenere</string>
+	<string name="status_network_info_search_domains_label">Søk i domener</string>
+	<string name="status_network_info_allowed_applications_label">Tillatte programmer</string>
+	<string name="status_network_info_disallowed_applications_label">Ikke tillatte programmer</string>
+	<string name="status_network_info_allow_bypass_label">Tillat forbikobling</string>
+	<string name="status_network_info_value_yes" translatable="false">@string/generic_yes</string>
+	<string name="status_network_info_value_no" translatable="false">@string/generic_no</string>
+	<string name="status_network_info_value_none" translatable="false">@string/generic_none</string>
+
+	<string name="status_activity_title_node_list">Noder</string>
+	<string name="status_node_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
+	<string name="status_node_reachability_unreachable">kan ikke nås</string>
+	<string name="status_node_reachability_this_node">denne noden</string>
+	<string name="status_node_reachability_direct_connection">direkte</string>
+	<string name="status_node_reachability_via_format">via %s</string>
+	<string name="status_node_reachability_unknown">…</string>
+	<string name="status_node_info_modal_placeholder_text" translatable="false">@string/generic_loading</string>
+	<string name="status_node_info_dialog_title">Node-info</string>
+	<string name="status_node_info_dialog_close_action" translatable="false">@string/generic_action_close</string>
+
+	<string name="status_activity_title_subnet_list">Undernett</string>
+	<string name="status_subnet_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
+
+	<!-- Log viewer activity -->
+	<string name="log_view_state_level_format">Loggingsnivå: %s</string>
+	<string name="log_view_state_paused">Logging pauset</string>
+	<string name="log_view_menu_toggle_logging">Veksle loggføring</string>
+	<string name="log_view_menu_share_log">Del logg</string>
 </resources>
