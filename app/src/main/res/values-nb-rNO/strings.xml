@@ -3,12 +3,6 @@
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
-
- *<?xml version="1.0" encoding="utf-8"?>
-
-<!--
- * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
  *               2017-2018 Allan Nordhøy (comradekingu)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +20,6 @@
 -->
 
 <resources>
-	<string name="app_name" translatable="false">Tinc App</string>
-	<string name="app_doc_url_format" translatable="false">https://tincapp.pacien.org/doc.html#%1$s</string>
 
 	<!-- generic strings -->
 	<string name="generic_title_error">Feil</string>
@@ -45,7 +37,6 @@
 	<string name="about_app_short_desc">Android-binding og brukergrensesnitt tiltenkt maskenett-VPN-nissen for Tinc.</string>
 	<string name="about_app_copyright">Copyright © 2017–2018 Pacien TRAN-GIRARD og bidragsytere.</string>
 	<string name="about_app_license">Programvare distribuert i henhold til vilkårene i GNU General Public Lisens v3.</string>
-	<string name="about_app_website_url" translatable="false">https://tincapp.pacien.org</string>
 	<string name="about_app_version_format">Programversion %1$s (%2$s-bygg)</string>
 	<string name="about_app_running_on_format">Kjører på Android %1$s %2$s</string>
 	<string name="about_app_supported_abis_format">Enhets-ABI-er: %1$s</string>
@@ -57,13 +48,11 @@
 	<string name="crash_modal_crash_logged">Kræsjdetaljer lagret i \"%1$s\".</string>
 	<string name="crash_modal_action_send_email">Send e-post</string>
 	<string name="crash_modal_action_send_report">Send rapport</string>
-	<string name="crash_modal_dev_email" translatable="false">pacien.gplayfr@gmail.com</string>
 
 	<!-- key decryption modal -->
 	<string name="decrypt_key_modal_title">Lås opp private tinc-nøkler</string>
 	<string name="decrypt_key_modal_field_passphrase">Passord</string>
 	<string name="decrypt_key_modal_action_unlock">Lås opp</string>
-	<string name="decrypt_key_modal_action_cancel" translatable="false">@string/generic_action_cancel</string>
 
 	<!-- error notifications -->
 	<string name="notification_error_channel_name">Feil</string>
@@ -118,7 +107,6 @@
 	<string name="configure_tools_private_keys_encryption_title">Kryptering av private nøkler</string>
 	<string name="configure_tools_private_key_encryption_current_passphrase">Nåværende passord\n(la stå tomt for å ikke bruke)</string>
 	<string name="configure_tools_private_key_encryption_new_passphrase">Nytt passord\n(la stå tomt for å dekryptere)</string>
-	<string name="configure_tools_private_keys_encryption_action" translatable="false">@string/generic_action_apply</string>
 	<string name="configure_tools_private_keys_encryption_encrypting">Krypterer/dekrypterer private tinc-nøkler.</string>
 
 	<!-- Status activity -->
@@ -136,23 +124,16 @@
 	<string name="status_network_info_allowed_applications_label">Tillatte programmer</string>
 	<string name="status_network_info_disallowed_applications_label">Ikke tillatte programmer</string>
 	<string name="status_network_info_allow_bypass_label">Tillat forbikobling</string>
-	<string name="status_network_info_value_yes" translatable="false">@string/generic_yes</string>
-	<string name="status_network_info_value_no" translatable="false">@string/generic_no</string>
-	<string name="status_network_info_value_none" translatable="false">@string/generic_none</string>
 
 	<string name="status_activity_title_node_list">Noder</string>
-	<string name="status_node_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 	<string name="status_node_reachability_unreachable">kan ikke nås</string>
 	<string name="status_node_reachability_this_node">denne noden</string>
 	<string name="status_node_reachability_direct_connection">direkte</string>
 	<string name="status_node_reachability_via_format">via %s</string>
 	<string name="status_node_reachability_unknown">…</string>
-	<string name="status_node_info_modal_placeholder_text" translatable="false">@string/generic_loading</string>
 	<string name="status_node_info_dialog_title">Node-info</string>
-	<string name="status_node_info_dialog_close_action" translatable="false">@string/generic_action_close</string>
 
 	<string name="status_activity_title_subnet_list">Undernett</string>
-	<string name="status_subnet_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 
 	<!-- Log viewer activity -->
 	<string name="log_view_state_level_format">Loggingsnivå: %s</string>
