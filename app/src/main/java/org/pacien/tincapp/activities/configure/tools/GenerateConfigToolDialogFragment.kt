@@ -18,18 +18,18 @@
 
 package org.pacien.tincapp.activities.configure.tools
 
+import android.os.Bundle
 import kotlinx.android.synthetic.main.configure_tools_dialog_network_generate.view.*
 import org.pacien.tincapp.R
-import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
 
 /**
  * @author pacien
  */
-class GenerateConfigTool(parentActivity: BaseActivity) : ConfigurationTool(parentActivity) {
-  fun openGenerateConfDialog() =
-    showDialog(
+class GenerateConfigToolDialogFragment : ConfigurationToolDialogFragment() {
+  override fun onCreateDialog(savedInstanceState: Bundle?) =
+    makeDialog(
       R.layout.configure_tools_dialog_network_generate,
       R.string.configure_tools_generate_config_title,
       R.string.configure_tools_generate_config_action

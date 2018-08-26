@@ -18,17 +18,17 @@
 
 package org.pacien.tincapp.activities.configure.tools
 
+import android.os.Bundle
 import kotlinx.android.synthetic.main.configure_tools_dialog_encrypt_decrypt_keys.view.*
 import org.pacien.tincapp.R
-import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.commands.TincApp
 
 /**
  * @author pacien
  */
-class EncryptDecryptPrivateKeysTool(parentActivity: BaseActivity) : ConfigurationTool(parentActivity) {
-  fun openEncryptDecryptPrivateKeyDialog() =
-    showDialog(
+class EncryptDecryptPrivateKeysToolDialogFragment : ConfigurationToolDialogFragment() {
+  override fun onCreateDialog(savedInstanceState: Bundle?) =
+    makeDialog(
       R.layout.configure_tools_dialog_encrypt_decrypt_keys,
       R.string.configure_tools_private_keys_encryption_title,
       R.string.configure_tools_private_keys_encryption_action

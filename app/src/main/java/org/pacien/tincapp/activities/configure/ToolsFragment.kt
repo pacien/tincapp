@@ -18,36 +18,33 @@
 
 package org.pacien.tincapp.activities.configure
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.activities.BaseFragment
-import org.pacien.tincapp.activities.configure.tools.EncryptDecryptPrivateKeysTool
-import org.pacien.tincapp.activities.configure.tools.GenerateConfigTool
-import org.pacien.tincapp.activities.configure.tools.JoinNetworkTool
+import org.pacien.tincapp.activities.configure.tools.ConfigurationToolDialogFragment
+import org.pacien.tincapp.activities.configure.tools.EncryptDecryptPrivateKeysToolDialogFragment
+import org.pacien.tincapp.activities.configure.tools.GenerateConfigToolDialogFragment
+import org.pacien.tincapp.activities.configure.tools.JoinNetworkToolDialogFragment
 import org.pacien.tincapp.databinding.ConfigureToolsFragmentBinding
 
 /**
  * @author pacien
  */
 class ToolsFragment : BaseFragment() {
-  private val parentActivity by lazy { activity as BaseActivity }
-  private val generateConfigTool by lazy { GenerateConfigTool(parentActivity) }
-  private val joinNetworkTool by lazy { JoinNetworkTool(this, parentActivity) }
-  private val encryptDecryptPrivateKeysTool by lazy { EncryptDecryptPrivateKeysTool(parentActivity) }
+  private val generateConfigTool by lazy { GenerateConfigToolDialogFragment() }
+  private val joinNetworkTool by lazy { JoinNetworkToolDialogFragment() }
+  private val encryptDecryptPrivateKeysTool by lazy { EncryptDecryptPrivateKeysToolDialogFragment() }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val binding = ConfigureToolsFragmentBinding.inflate(inflater, container, false)
-    binding.generateConfigAction = generateConfigTool::openGenerateConfDialog
-    binding.joinNetworkAction = joinNetworkTool::openJoinNetworkDialog
-    binding.encryptDecryptPrivateKeysAction = encryptDecryptPrivateKeysTool::openEncryptDecryptPrivateKeyDialog
+    binding.generateConfigAction = openDialog(generateConfigTool)
+    binding.joinNetworkAction = openDialog(joinNetworkTool)
+    binding.encryptDecryptPrivateKeysAction = openDialog(encryptDecryptPrivateKeysTool)
     return binding.root
   }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    joinNetworkTool.onActivityResult(requestCode, resultCode, data)
-  }
+  private fun openDialog(tool: ConfigurationToolDialogFragment) =
+    { tool.show(fragmentManager, tool.javaClass.simpleName) }
 }

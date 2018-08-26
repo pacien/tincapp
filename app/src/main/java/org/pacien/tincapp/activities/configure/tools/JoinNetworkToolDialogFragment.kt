@@ -19,13 +19,12 @@
 package org.pacien.tincapp.activities.configure.tools
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.configure_tools_dialog_network_join.view.*
 import org.pacien.tincapp.R
-import org.pacien.tincapp.activities.BaseActivity
-import org.pacien.tincapp.activities.BaseFragment
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.databinding.ConfigureToolsDialogNetworkJoinBinding
@@ -33,21 +32,21 @@ import org.pacien.tincapp.databinding.ConfigureToolsDialogNetworkJoinBinding
 /**
  * @author pacien
  */
-class JoinNetworkTool(parentFragment: BaseFragment, private val parentActivity: BaseActivity) : ConfigurationTool(parentActivity) {
-  private val scanner by lazy { IntentIntegrator.forSupportFragment(parentFragment) }
+class JoinNetworkToolDialogFragment : ConfigurationToolDialogFragment() {
+  private val scanner by lazy { IntentIntegrator.forSupportFragment(this) }
   private var joinDialog: View? = null
 
-  fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
       ?.let(IntentResult::getContents)
       ?.let(String::trim)
       ?.let { joinDialog?.invitation_url?.setText(it) }
   }
 
-  fun openJoinNetworkDialog() =
+  override fun onCreateDialog(savedInstanceState: Bundle?) =
     makeJoinDialog().let { newDialog ->
       joinDialog = newDialog
-      showDialog(
+      makeDialog(
         newDialog,
         R.string.configure_tools_join_network_title,
         R.string.configure_tools_join_network_action
@@ -63,7 +62,7 @@ class JoinNetworkTool(parentFragment: BaseFragment, private val parentActivity: 
   private fun makeJoinDialog() =
     parentActivity.inflate { inflater, parent, attachToRoot ->
       ConfigureToolsDialogNetworkJoinBinding.inflate(inflater, parent, attachToRoot)
-        .apply { scanAction = this@JoinNetworkTool::scanCode }
+        .apply { scanAction = this@JoinNetworkToolDialogFragment::scanCode }
         .root
     }
 

@@ -18,13 +18,13 @@
 
 package org.pacien.tincapp.activities.configure.tools
 
-import android.app.AlertDialog
 import android.support.annotation.LayoutRes
 import android.support.annotation.StringRes
+import android.support.v7.app.AlertDialog
 import android.view.View
 import java8.util.concurrent.CompletableFuture
 import org.pacien.tincapp.R
-import org.pacien.tincapp.activities.BaseActivity
+import org.pacien.tincapp.activities.BaseDialogFragment
 import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.extensions.Java.exceptionallyAccept
 import java.util.regex.Pattern
@@ -32,23 +32,22 @@ import java.util.regex.Pattern
 /**
  * @author pacien
  */
-abstract class ConfigurationTool(private val parentActivity: BaseActivity) {
+abstract class ConfigurationToolDialogFragment : BaseDialogFragment() {
   private val networkNamePattern by lazy { Pattern.compile("^[^\\x00/]*$")!! }
 
-  protected fun showDialog(@LayoutRes layout: Int, @StringRes title: Int, @StringRes applyButton: Int, applyAction: (View) -> Unit) =
-    showDialog(parentActivity.inflate(layout), title, applyButton, applyAction)
+  protected fun makeDialog(@LayoutRes layout: Int, @StringRes title: Int, @StringRes applyButton: Int, applyAction: (View) -> Unit) =
+    makeDialog(inflate(layout), title, applyButton, applyAction)
 
-  protected fun showDialog(view: View, @StringRes title: Int, @StringRes applyButton: Int, applyAction: (View) -> Unit) {
+  protected fun makeDialog(view: View, @StringRes title: Int, @StringRes applyButton: Int, applyAction: (View) -> Unit) =
     AlertDialog.Builder(parentActivity)
       .setTitle(title)
       .setView(view)
       .setPositiveButton(applyButton) { _, _ -> applyAction(view) }
       .setNegativeButton(R.string.generic_action_cancel) { _, _ -> Unit }
-      .show()
-  }
+      .create()!!
 
   protected fun execAction(@StringRes label: Int, action: CompletableFuture<Unit>) {
-    ProgressModal.show(parentActivity, parentActivity.getString(label)).let { progressDialog ->
+    ProgressModal.show(parentActivity, getString(label)).let { progressDialog ->
       action
         .whenComplete { _, _ -> progressDialog.dismiss() }
         .thenAccept { parentActivity.notify(R.string.configure_tools_message_network_configuration_written) }
@@ -60,5 +59,5 @@ abstract class ConfigurationTool(private val parentActivity: BaseActivity) {
     if (networkNamePattern.matcher(netName).matches())
       CompletableFuture.completedFuture(Unit)
     else
-      CompletableFuture.failedFuture(IllegalArgumentException(parentActivity.getString(R.string.configure_tools_message_invalid_network_name)))
+      CompletableFuture.failedFuture(IllegalArgumentException(getString(R.string.configure_tools_message_invalid_network_name)))
 }
