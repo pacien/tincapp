@@ -86,6 +86,7 @@ dependencies {
   implementation 'com.github.tony19:logback-android:1.1.1-12'
   implementation('org.apache.commons:commons-configuration2:2.2') { exclude group: 'commons-logging', module: 'commons-logging' }
   implementation('commons-beanutils:commons-beanutils:1.9.3') { exclude group: 'commons-logging', module: 'commons-logging' }
+  implementation('commons-io:commons-io:2.6') { exclude group: 'commons-logging', module: 'commons-logging' }
 }
 
 repositories {

@@ -28,7 +28,6 @@ import android.support.annotation.StringRes
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.slf4j.LoggerFactory
-import java.io.File
 
 /**
  * @author pacien
@@ -71,12 +70,12 @@ class App : Application() {
       appContext?.startActivity(chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
-    fun sendMail(recipient: String, subject: String, body: String? = null, attachment: File? = null) {
+    // https://developer.android.com/guide/components/intents-common#Email
+    fun sendMail(recipient: String, subject: String, body: String) {
       val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
         .putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
         .putExtra(Intent.EXTRA_SUBJECT, subject)
-        .apply { if (body != null) putExtra(Intent.EXTRA_TEXT, body) }
-        .apply { if (attachment != null) putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment)) }
+        .putExtra(Intent.EXTRA_TEXT, body)
 
       val chooser = Intent.createChooser(intent, getResources().getString(R.string.crash_modal_action_send_email))
       appContext?.startActivity(chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

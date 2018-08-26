@@ -19,17 +19,20 @@
 package org.pacien.tincapp.activities.common
 
 import android.support.v7.app.AlertDialog
+import org.apache.commons.io.input.ReversedLinesFileReader
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.context.CrashRecorder
+import java.io.File
 
 /**
  * @author pacien
  */
 class RecentCrashHandler(private val parentActivity: BaseActivity) {
   private val resources by lazy { parentActivity.resources!! }
+  private val maxLines = 1000
 
   fun handleRecentCrash() {
     if (!CrashRecorder.hasPreviouslyCrashed()) return
@@ -53,6 +56,17 @@ class RecentCrashHandler(private val parentActivity: BaseActivity) {
     App.sendMail(
       resources.getString(R.string.crash_modal_dev_email),
       listOf(R.string.app_name, R.string.crash_modal_title).joinToString(" / ", transform = resources::getString),
-      AppPaths.appLogFile().let { if (it.exists()) it.readText() else "" }
+      AppPaths.appLogFile().let { if (it.exists()) it.readLastLines(maxLines) else "" }
     )
+
+  private fun File.readLastLines(n: Int): String {
+    val reader = ReversedLinesFileReader(this, Charsets.UTF_8)
+    val lastLines = generateSequence(reader::readLine)
+      .takeWhile { line: String? -> line != null }
+      .take(n)
+      .toList()
+      .asReversed()
+
+    return lastLines.joinToString("\n")
+  }
 }
