@@ -28,6 +28,7 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.activities.common.FragmentListPagerAdapter
 import org.pacien.tincapp.activities.common.ProgressModal
+import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.start.StartActivity
 import org.pacien.tincapp.activities.status.networkinfo.NetworkInfoFragment
 import org.pacien.tincapp.activities.status.nodes.NodeListFragment
@@ -41,6 +42,7 @@ import org.pacien.tincapp.service.TincVpnService
  * @author pacien
  */
 class StatusActivity : BaseActivity() {
+  private val recentCrashHandler by lazy { RecentCrashHandler(this) }
   private val vpnService by lazy { TincVpnService }
   private val netName by lazy { vpnService.getCurrentNetName() }
   private val pagerAdapter by lazy { FragmentListPagerAdapter(pages, supportFragmentManager) }
@@ -72,7 +74,7 @@ class StatusActivity : BaseActivity() {
     if (!TincVpnService.isConnected()) openStartActivity()
 
     broadcastMapper.register()
-    handleRecentCrash()
+    recentCrashHandler.handleRecentCrash()
   }
 
   override fun onPause() {

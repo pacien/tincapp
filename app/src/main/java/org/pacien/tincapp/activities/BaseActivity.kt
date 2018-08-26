@@ -30,8 +30,6 @@ import kotlinx.android.synthetic.main.base_activity.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppInfo
-import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.context.CrashRecorder
 
 /**
  * @author pacien
@@ -96,26 +94,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
   fun runOnUiThread(action: () -> Unit) {
     if (active) super.runOnUiThread(action)
-  }
-
-  fun handleRecentCrash() {
-    if (!CrashRecorder.hasPreviouslyCrashed()) return
-    CrashRecorder.dismissPreviousCrash()
-
-    AlertDialog.Builder(this)
-      .setTitle(R.string.crash_modal_title)
-      .setMessage(listOf(
-        resources.getString(R.string.crash_modal_message),
-        resources.getString(R.string.crash_modal_crash_logged, AppPaths.appLogFile().absolutePath)
-      ).joinToString("\n\n"))
-      .setNeutralButton(R.string.crash_modal_action_send_report) { _, _ ->
-        App.sendMail(
-          resources.getString(R.string.crash_modal_dev_email),
-          listOf(R.string.app_name, R.string.crash_modal_title).joinToString(" / ", transform = resources::getString),
-          AppPaths.appLogFile().let { if (it.exists()) it.readText() else "" })
-      }
-      .setPositiveButton(R.string.generic_action_close) { _, _ -> Unit }
-      .show()
   }
 
   fun inflate(@LayoutRes layout: Int) = layoutInflater.inflate(layout, rootView, false)!!

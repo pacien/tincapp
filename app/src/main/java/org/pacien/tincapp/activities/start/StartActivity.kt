@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.start_activity.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.activities.common.ProgressModal
+import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.configure.ConfigureActivity
 import org.pacien.tincapp.activities.status.StatusActivity
 import org.pacien.tincapp.intent.Actions
@@ -40,6 +41,7 @@ import org.pacien.tincapp.service.TincVpnService
 class StartActivity : BaseActivity() {
   val permissionRequestCode = 0
   private val connectionStarter by lazy { ConnectionStarter(this) }
+  private val recentCrashHandler by lazy { RecentCrashHandler(this) }
   private val broadcastMapper = BroadcastMapper(mapOf(
     Actions.EVENT_CONNECTED to this::onVpnStart,
     Actions.EVENT_ABORTED to this::onVpnStartError
@@ -75,7 +77,7 @@ class StartActivity : BaseActivity() {
     super.onResume()
     if (TincVpnService.isConnected()) openStatusActivity(false)
     broadcastMapper.register()
-    handleRecentCrash()
+    recentCrashHandler.handleRecentCrash()
   }
 
   override fun onPause() {
