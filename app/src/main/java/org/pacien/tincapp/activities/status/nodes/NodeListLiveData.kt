@@ -20,19 +20,20 @@ package org.pacien.tincapp.activities.status.nodes
 
 import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import org.pacien.tincapp.commands.Tinc
+import org.pacien.tincapp.service.TincVpnService
 import java.util.concurrent.TimeUnit
 
 /**
  * @author pacien
  */
-class NodeListLiveData(private val netName: String) : SelfRefreshingLiveData<List<NodeInfo>>(1, TimeUnit.SECONDS) {
+class NodeListLiveData : SelfRefreshingLiveData<List<NodeInfo>>(1, TimeUnit.SECONDS) {
+  private val vpnService = TincVpnService
   private val tincCtl = Tinc
 
   override fun onRefresh() {
-    val nodeList = tincCtl.dumpNodes(netName)
-      .thenApply { list -> list.map { NodeInfo.ofNodeDump(it) } }
-      .get()
-
-    postValue(nodeList)
+    vpnService.getCurrentNetName()
+      ?.let { netName -> tincCtl.dumpNodes(netName) }
+      ?.thenApply { list -> list.map { NodeInfo.ofNodeDump(it) } }
+      ?.thenAccept(this::postValue)
   }
 }

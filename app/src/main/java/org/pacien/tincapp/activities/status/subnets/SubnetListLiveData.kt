@@ -20,19 +20,20 @@ package org.pacien.tincapp.activities.status.subnets
 
 import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import org.pacien.tincapp.commands.Tinc
+import org.pacien.tincapp.service.TincVpnService
 import java.util.concurrent.TimeUnit
 
 /**
  * @author pacien
  */
-class SubnetListLiveData(private val netName: String) : SelfRefreshingLiveData<List<SubnetInfo>>(1, TimeUnit.SECONDS) {
+class SubnetListLiveData : SelfRefreshingLiveData<List<SubnetInfo>>(1, TimeUnit.SECONDS) {
+  private val vpnService = TincVpnService
   private val tincCtl = Tinc
 
   override fun onRefresh() {
-    val subnetList = tincCtl.dumpSubnets(netName)
-      .thenApply { list -> list.map { SubnetInfo.ofSubnetDump(it) } }
-      .get()
-
-    postValue(subnetList)
+    vpnService.getCurrentNetName()
+      ?.let { netName -> tincCtl.dumpSubnets(netName) }
+      ?.thenApply { list -> list.map { SubnetInfo.ofSubnetDump(it) } }
+      ?.thenAccept(this::postValue)
   }
 }

@@ -25,6 +25,5 @@ import org.pacien.tincapp.service.TincVpnService
  * @author pacien
  */
 class NodeListViewModel : ViewModel() {
-  private val netName by lazy { TincVpnService.getCurrentNetName()!! }
-  val nodeList by lazy { NodeListLiveData(netName) }
+  val nodeList by lazy { NodeListLiveData() }
 }
