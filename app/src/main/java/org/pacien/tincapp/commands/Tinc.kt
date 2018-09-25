@@ -34,6 +34,10 @@ object Tinc {
     Executor.call(newCommand(netName).withArguments("stop"))
       .thenApply { }
 
+  fun retry(netName: String): CompletableFuture<Unit> =
+    Executor.call(newCommand(netName).withArguments("retry"))
+      .thenApply { }
+
   fun pid(netName: String): CompletableFuture<Int> =
     Executor.call(newCommand(netName).withArguments("pid"))
       .thenApply { Integer.parseInt(it.first()) }

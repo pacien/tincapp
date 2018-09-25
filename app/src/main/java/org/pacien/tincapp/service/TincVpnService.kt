@@ -49,6 +49,7 @@ import java.io.FileNotFoundException
  */
 class TincVpnService : VpnService() {
   private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
+  private val connectivityChangeReceiver = ConnectivityChangeReceiver
 
   override fun onDestroy() {
     stopVpn()
@@ -150,11 +151,16 @@ class TincVpnService : VpnService() {
         log.info("tinc daemon started.")
         broadcastEvent(Actions.EVENT_CONNECTED)
       }
+
+      connectivityChangeReceiver.registerWatcher(this)
     }
   }
 
   private fun stopVpn(): Unit = synchronized(this) {
     log.info("Stopping any running tinc daemon.")
+
+    connectivityChangeReceiver.unregisterWatcher(this)
+
     getCurrentNetName()?.let {
       Tinc.stop(it).thenRun {
         log.info("All tinc daemons stopped.")
