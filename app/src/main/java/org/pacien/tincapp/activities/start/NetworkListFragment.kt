@@ -78,7 +78,7 @@ class NetworkListFragment : BaseFragment() {
     }
 
     start_network_list_placeholder.post {
-      start_network_list_placeholder_text.text = getString(placeholderTextResource)
+      start_network_list_placeholder_text?.text = getString(placeholderTextResource)
     }
   }
 }
