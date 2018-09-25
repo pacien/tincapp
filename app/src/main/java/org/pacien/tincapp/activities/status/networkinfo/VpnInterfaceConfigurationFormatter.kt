@@ -28,8 +28,8 @@ import org.pacien.tincapp.data.CidrAddress
 object VpnInterfaceConfigurationFormatter {
   private val resources by lazy { App.getResources() }
 
-  fun formatList(list: List<Any>) = when {
-    list.isNotEmpty() -> list.joinToString("\n", transform = this::formatListElement)
+  fun formatList(list: List<Any>?) = when {
+    list != null && list.isNotEmpty() -> list.joinToString("\n", transform = this::formatListElement)
     else -> resources.getString(R.string.status_network_info_value_none)!!
   }
 
