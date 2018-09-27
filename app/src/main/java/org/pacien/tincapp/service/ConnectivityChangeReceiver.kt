@@ -25,6 +25,7 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import org.pacien.tincapp.commands.Tinc
 import org.slf4j.LoggerFactory
+import java.lang.IllegalArgumentException
 
 /**
  * @author pacien
@@ -55,6 +56,10 @@ object ConnectivityChangeReceiver : BroadcastReceiver() {
   }
 
   fun unregisterWatcher(context: Context) {
-    context.unregisterReceiver(this)
+    try {
+      context.unregisterReceiver(this)
+    } catch (e: IllegalArgumentException) {
+      // already unregistered
+    }
   }
 }
