@@ -95,8 +95,7 @@ repositories {
 }
 
 play {
-  if (keystoreAvailable) jsonFile = file(keystoreProperties['apiKeyFile'])
+  if (keystoreAvailable) serviceAccountCredentials = file(keystoreProperties['apiKeyFile'])
   track = 'beta'
-  untrackOld = true
-  uploadImages = true
+  resolutionStrategy = "auto"
 }
