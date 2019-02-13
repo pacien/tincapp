@@ -54,8 +54,8 @@ ExternalProject_Add(libressl
 
 ExternalProject_Add(tinc
   DEPENDS           lzo libressl
-  URL               https://tinc-vpn.org/packages/tinc-1.1pre17.tar.gz
-  URL_HASH          SHA256=61b9c9f9f396768551f39216edcc41918c65909ffd9af071feb3b5f9f9ac1c27
+  URL               https://github.com/gsliepen/tinc/archive/017a7fb57655d9b1d706ee78f7e3d0000411b883.tar.gz
+  URL_HASH          SHA256=27f361706d09f81fbbef7021f37adf5375f01857b23272a490df066ca290a530
   PATCH_COMMAND     sed -i -e "s/test(void)/test(void *x)/" <SOURCE_DIR>/m4/attribute.m4
   CONFIGURE_COMMAND autoreconf -fsi <SOURCE_DIR> &&
                     <SOURCE_DIR>/configure ${xCONFIG}
