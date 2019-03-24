@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'com.github.triplet.play'
+plugins {
+  id 'com.android.application'
+  id 'kotlin-android'
+  id 'kotlin-android-extensions'
+  id 'kotlin-kapt'
+  id 'com.github.triplet.play' version '2.1.0'
+}
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreAvailable = keystorePropertiesFile.exists()
@@ -75,14 +77,14 @@ dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-  implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.6.3'
-  implementation "android.arch.lifecycle:extensions:1.1.1"
-  implementation "com.android.support:support-compat:27.1.1"
+  implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
+  implementation 'android.arch.lifecycle:extensions:1.1.1'
+  implementation 'com.android.support:support-compat:27.1.1'
   implementation 'com.android.support:design:27.1.1'
   implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
-  implementation 'org.bouncycastle:bcpkix-jdk15on:1.60'
-  implementation 'org.slf4j:slf4j-api:1.7.25'
-  implementation 'com.github.tony19:logback-android:1.3.0-2'
+  implementation 'org.bouncycastle:bcpkix-jdk15on:1.61'
+  implementation 'org.slf4j:slf4j-api:1.7.26'
+  implementation 'com.github.tony19:logback-android:2.0.0'
   // commons-configuration2:2.4 requires support for interface default methods, not available on SDK <24
   implementation('org.apache.commons:commons-configuration2:2.3') { exclude group: 'commons-logging', module: 'commons-logging' }
   implementation('commons-beanutils:commons-beanutils:1.9.3') { exclude group: 'commons-logging', module: 'commons-logging' }
