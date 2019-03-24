@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+/*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
  * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
@@ -16,23 +14,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
+ */
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:orientation="vertical"
-							android:paddingLeft="@dimen/dialog_horizontal_margin"
-							android:paddingTop="@dimen/dialog_vertical_margin"
-							android:paddingRight="@dimen/dialog_horizontal_margin"
-							android:paddingBottom="@dimen/dialog_vertical_margin">
+package org.pacien.tincapp.extensions
 
-	<EditText
-		android:id="@+id/passphrase"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:hint="@string/decrypt_key_modal_field_passphrase"
-		android:inputType="textPassword"
-		android:singleLine="true"/>
+import android.widget.EditText
 
-</LinearLayout>
+/**
+ * @author pacien
+ */
+object View {
+
+  fun EditText.on(actionId: Int, func: () -> Unit) {
+    setOnEditorActionListener { _, receivedActionId, _ ->
+      if (actionId == receivedActionId) func()
+      true
+    }
+  }
+
+}

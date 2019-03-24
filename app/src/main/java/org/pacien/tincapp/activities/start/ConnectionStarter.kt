@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,13 @@ package org.pacien.tincapp.activities.start
 
 import android.net.VpnService
 import android.support.v7.app.AlertDialog
+import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.base_activity.*
 import kotlinx.android.synthetic.main.dialog_decrypt_keys.view.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.utils.TincKeyring
+import org.pacien.tincapp.extensions.View.on
 
 /**
  * @author pacien
@@ -54,12 +56,19 @@ class ConnectionStarter(private val parentActivity: StartActivity) {
   private fun askForPassphrase() {
     val dialogView = parentActivity.layoutInflater.inflate(R.layout.dialog_decrypt_keys, parentActivity.base_activity_frame, false)
 
-    AlertDialog.Builder(parentActivity)
+    val dialog = AlertDialog.Builder(parentActivity)
       .setTitle(R.string.decrypt_key_modal_title)
       .setView(dialogView)
       .setPositiveButton(R.string.decrypt_key_modal_action_unlock) { _, _ -> tryStart(passphrase = dialogView.passphrase.text.toString()) }
       .setNegativeButton(R.string.decrypt_key_modal_action_cancel) { _, _ -> Unit }
-      .show()
+      .create()
+
+    dialogView.passphrase.on(EditorInfo.IME_ACTION_DONE) {
+      dialog.dismiss()
+      tryStart(passphrase = dialogView.passphrase.text.toString())
+    }
+
+    dialog.show()
   }
 
   private fun startVpn(netName: String, passphrase: String? = null) {
