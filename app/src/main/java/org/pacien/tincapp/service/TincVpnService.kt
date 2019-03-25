@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ class TincVpnService : VpnService() {
   private val connectivityChangeReceiver = ConnectivityChangeReceiver
 
   override fun onDestroy() {
-    stopVpn()
+    stopVpn().join()
     super.onDestroy()
   }
 
@@ -98,7 +98,7 @@ class TincVpnService : VpnService() {
       return reportError(resources.getString(R.string.notification_error_message_no_configuration_for_network_format, netName), docTopic = "configuration")
 
     log.info("Starting tinc daemon for network \"$netName\".")
-    if (isConnected()) stopVpn()
+    if (isConnected() || getCurrentNetName() != null) stopVpn().join()
 
     val privateKeys = try {
       TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let { tincCfg ->
@@ -156,18 +156,18 @@ class TincVpnService : VpnService() {
     }
   }
 
-  private fun stopVpn(): Unit = synchronized(this) {
+  private fun stopVpn(): CompletableFuture<Unit> = synchronized(this) {
     log.info("Stopping any running tinc daemon.")
 
     connectivityChangeReceiver.unregisterWatcher(this)
 
     getCurrentNetName()?.let {
-      Tinc.stop(it).thenRun {
+      Tinc.stop(it).handle { _, _ ->
         log.info("All tinc daemons stopped.")
         broadcastEvent(Actions.EVENT_DISCONNECTED)
         setState(null, null, null, null, null)
       }
-    }
+    } ?: CompletableFuture.completedFuture(Unit)
   }
 
   private fun reportError(msg: String, e: Throwable? = null, docTopic: String? = null) {
