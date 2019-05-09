@@ -9,7 +9,7 @@ Help and documentation
 
 The complete list of features, the quickstart guides and the user manual can be found on the project's website: https://tincapp.pacien.org.
 
-Community support is mainly provided through the dedicated IRC channel: `#tincapp` on `irc.freenode.net`.
+Community support is mainly provided through the dedicated Matrix Room and linked IRC channel: `#tincapp:pacien.net` and `#tincapp` on `irc.freenode.net`.
 
 
 Download
