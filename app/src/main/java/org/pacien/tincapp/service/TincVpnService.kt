@@ -152,7 +152,8 @@ class TincVpnService : VpnService() {
         broadcastEvent(Actions.EVENT_CONNECTED)
       }
 
-      connectivityChangeReceiver.registerWatcher(this)
+      if (interfaceCfg.reconnectOnNetworkChange)
+        connectivityChangeReceiver.registerWatcher(this)
     }
   }
 

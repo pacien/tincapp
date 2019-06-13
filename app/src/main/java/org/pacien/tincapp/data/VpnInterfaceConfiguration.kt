@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,8 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
                                      val allowedFamilies: List<Int> = emptyList(),
                                      val allowBypass: Boolean = false,
                                      val blocking: Boolean = false,
-                                     val mtu: Int? = null) {
+                                     val mtu: Int? = null,
+                                     val reconnectOnNetworkChange: Boolean = true) {
   companion object {
     private const val KEY_ADDRESSES = "Address"
     private const val KEY_ROUTES = "Route"
@@ -54,6 +55,7 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
     private const val KEY_ALLOW_BYPASS = "AllowBypass"
     private const val KEY_BLOCKING = "Blocking"
     private const val KEY_MTU = "MTU"
+    private const val KEY_RECONNECT_ON_NETWORK_CHANGE = "ReconnectOnNetworkChange"
 
     private const val INVITATION_KEY_ADDRESSES = "Ifconfig"
     private const val INVITATION_KEY_ROUTES = "Route"
@@ -69,7 +71,8 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
       c.getIntList(KEY_ALLOWED_FAMILIES),
       c.getBoolean(KEY_ALLOW_BYPASS, false),
       c.getBoolean(KEY_BLOCKING, false),
-      c.getInteger(KEY_MTU, null))
+      c.getInteger(KEY_MTU, null),
+      c.getBoolean(KEY_RECONNECT_ON_NETWORK_CHANGE, true))
 
     fun fromInvitation(f: File) = fromInvitation(Configurations().properties(f))
     private fun fromInvitation(c: Configuration) = VpnInterfaceConfiguration(
