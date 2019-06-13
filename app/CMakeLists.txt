@@ -43,8 +43,8 @@ ExternalProject_Add(lzo
 )
 
 ExternalProject_Add(libressl
-  URL               https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.8.3.tar.gz
-  URL_HASH          SHA256=9b640b13047182761a99ce3e4f000be9687566e0828b4a72709e9e6a3ef98477
+  URL               https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.2.tar.gz
+  URL_HASH          SHA256=c4c78167fae325b47aebd8beb54b6041d6f6a56b3743f4bd5d79b15642f9d5d4
   CONFIGURE_COMMAND <SOURCE_DIR>/configure ${xCONFIG} --disable-shared
   BUILD_COMMAND     make -j8 -C crypto
   INSTALL_COMMAND   make -C crypto install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
