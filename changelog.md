@@ -3,6 +3,12 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.26 - 2019-06-13
+- make tinc automatic reconnection on network change optional with new configuration key (`ReconnectOnNetworkChange`)
+- update LibreSSL to 2.9.2
+- update Kotlin to 1.3.31
+- update Gradle to 3.4.1
+
 ## v0.25 - 2019-03-25
 - implement a workaround for broken file permissions on Android-x86
 - kill any remnant tinc daemon when starting a new connection

@@ -38,8 +38,8 @@ android {
     //noinspection OldTargetApi
     targetSdkVersion 27
     multiDexEnabled true
-    versionCode 25
-    versionName '0.25'
+    versionCode 26
+    versionName '0.26'
     ndk {
       abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
     }
