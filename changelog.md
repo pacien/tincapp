@@ -3,6 +3,9 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.27 - 2019-06-14
+- fix R8 optimisation that made the app unable to load its libraries
+
 ## v0.26 - 2019-06-13
 - make tinc automatic reconnection on network change optional with new configuration key (`ReconnectOnNetworkChange`)
 - update LibreSSL to 2.9.2
