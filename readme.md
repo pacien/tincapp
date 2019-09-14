@@ -32,9 +32,10 @@ Requirements:
 - Android Platform Tools 27
 - Android Platform 27
 - Android SDK Tools 26
-- Android NDK 17
+- Android NDK 20
 - CMake
-- LLDB
+- automake
+- autoconf
 
 
 License
