@@ -125,10 +125,13 @@ class TincVpnService : VpnService() {
     }
 
     val deviceFd = try {
-      Builder().setSession(netName)
+      val appContextFd = Builder().setSession(netName)
         .applyCfg(interfaceCfg)
         .also { applyIgnoringException(it::addDisallowedApplication, BuildConfig.APPLICATION_ID) }
         .establish()!!
+      val daemonContextFd = appContextFd.dup() // necessary since Android 10
+      appContextFd.close()
+      daemonContextFd
     } catch (e: IllegalArgumentException) {
       return reportError(resources.getString(R.string.notification_error_message_network_config_invalid_format, e.defaultMessage()), e, "network-interface")
     } catch (e: NullPointerException) {
