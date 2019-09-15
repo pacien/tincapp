@@ -3,6 +3,11 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.28 - 2019-09-15
+- fix daemon startup on Android 10
+- notify user of missing VPN permission
+- update Kotlin to 1.3.50
+
 ## v0.27 - 2019-06-14
 - fix R8 optimisation that made the app unable to load its libraries
 
