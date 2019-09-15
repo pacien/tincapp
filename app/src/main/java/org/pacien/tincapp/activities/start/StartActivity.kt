@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.configure.ConfigureActivity
 import org.pacien.tincapp.activities.status.StatusActivity
+import org.pacien.tincapp.context.App
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService
@@ -86,8 +87,13 @@ class StartActivity : BaseActivity() {
   }
 
   override fun onActivityResult(request: Int, result: Int, data: Intent?): Unit = when (request) {
-    permissionRequestCode -> if (result == Activity.RESULT_OK) connectionStarter.tryStart() else Unit
+    permissionRequestCode -> continueConnectionStart(result)
     else -> throw IllegalArgumentException("Result for unknown request received.")
+  }
+
+  private fun continueConnectionStart(result: Int): Unit = when (result) {
+    Activity.RESULT_OK -> connectionStarter.tryStart()
+    else -> App.alert(R.string.notification_error_title_unable_to_start_tinc, getString(R.string.notification_error_message_could_not_bind_iface))
   }
 
   private fun onVpnStart() {
