@@ -21,7 +21,7 @@ package org.pacien.tincapp.activities.start
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.start_activity.*
@@ -56,7 +56,7 @@ class StartActivity : BaseActivity() {
     initNetworkListFragment()
 
     if (intent.action == Actions.ACTION_CONNECT && intent.data?.schemeSpecificPart != null)
-      connectionStarter.tryStart(intent.data.schemeSpecificPart, intent.data.fragment, false)
+      connectionStarter.tryStart(intent.data!!.schemeSpecificPart, intent.data!!.fragment, false)
   }
 
   private fun initNetworkListFragment() {

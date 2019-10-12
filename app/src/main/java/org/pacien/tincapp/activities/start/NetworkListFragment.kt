@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 package org.pacien.tincapp.activities.start
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +39,7 @@ import org.pacien.tincapp.extensions.setElements
 class NetworkListFragment : BaseFragment() {
   private val appPaths = AppPaths
   private val networkListViewModel by lazy { NetworkListViewModel() }
-  private val networkListAdapter by lazy { ArrayAdapter<String>(context, R.layout.start_network_list_item) }
+  private val networkListAdapter by lazy { ArrayAdapter<String>(requireContext(), R.layout.start_network_list_item) }
   var connectToNetworkAction = { _: String -> Unit }
 
   override fun onCreate(savedInstanceState: Bundle?) {

@@ -30,13 +30,12 @@ def keystoreProperties = new Properties()
 if (keystoreAvailable) keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-  compileSdkVersion 27
+  compileSdkVersion 29
 
   defaultConfig {
     applicationId 'org.pacien.tincapp'
     minSdkVersion 21
-    //noinspection OldTargetApi
-    targetSdkVersion 27
+    targetSdkVersion 28 // FIXME: bad file descriptor in daemon when targeting 29
     multiDexEnabled true
     versionCode 28
     versionName '0.28'
@@ -78,17 +77,17 @@ dependencies {
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
-  implementation 'android.arch.lifecycle:extensions:1.1.1'
-  implementation 'com.android.support:support-compat:27.1.1'
-  implementation 'com.android.support:design:27.1.1'
+  implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+  implementation 'androidx.core:core:1.1.0'
+  implementation 'com.google.android.material:material:1.0.0'
   implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
   implementation 'org.bouncycastle:bcpkix-jdk15on:1.61'
   implementation 'org.slf4j:slf4j-api:1.7.26'
   implementation 'com.github.tony19:logback-android:2.0.0'
   // commons-configuration2:2.4 requires support for interface default methods, not available on SDK <24
-  implementation('org.apache.commons:commons-configuration2:2.3') { exclude group: 'commons-logging', module: 'commons-logging' }
-  implementation('commons-beanutils:commons-beanutils:1.9.3') { exclude group: 'commons-logging', module: 'commons-logging' }
-  implementation('commons-io:commons-io:2.6') { exclude group: 'commons-logging', module: 'commons-logging' }
+  implementation 'org.apache.commons:commons-configuration2:2.3'
+  implementation 'commons-beanutils:commons-beanutils:1.9.3'
+  implementation 'commons-io:commons-io:2.6'
 }
 
 repositories {

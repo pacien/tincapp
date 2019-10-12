@@ -3,6 +3,9 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.29 - (next release)
+- set target SDK to 28
+
 ## v0.28 - 2019-09-15
 - fix daemon startup on Android 10
 - notify user of missing VPN permission

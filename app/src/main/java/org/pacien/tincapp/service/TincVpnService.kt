@@ -23,7 +23,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.VpnService
 import android.os.ParcelFileDescriptor
-import android.support.v4.content.LocalBroadcastManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import java8.util.concurrent.CompletableFuture
 import org.apache.commons.configuration2.ex.ConversionException
 import org.bouncycastle.openssl.PEMException
@@ -61,7 +61,7 @@ class TincVpnService : VpnService() {
 
     when {
       intent.action == Actions.ACTION_CONNECT && intent.scheme == Actions.TINC_SCHEME ->
-        startVpn(intent.data.schemeSpecificPart, intent.data.fragment)
+        startVpn(intent.data!!.schemeSpecificPart, intent.data!!.fragment)
       intent.action == Actions.ACTION_DISCONNECT ->
         stopVpn()
       intent.action == Actions.ACTION_SYSTEM_CONNECT ->
@@ -197,7 +197,7 @@ class TincVpnService : VpnService() {
   companion object {
     private const val SETUP_DELAY = 500L // ms
 
-    private val STORE_NAME = this::class.java.`package`.name
+    private val STORE_NAME = this::class.java.`package`!!.name
     private const val STORE_KEY_NETNAME = "netname"
     private const val STORE_KEY_PASSPHRASE = "passphrase"
 

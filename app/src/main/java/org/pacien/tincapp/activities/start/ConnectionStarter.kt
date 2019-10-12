@@ -19,7 +19,7 @@
 package org.pacien.tincapp.activities.start
 
 import android.net.VpnService
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.inputmethod.EditorInfo
 import kotlinx.android.synthetic.main.base_activity.*
 import kotlinx.android.synthetic.main.dialog_decrypt_keys.view.*

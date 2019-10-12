@@ -23,4 +23,5 @@
 /captures
 .externalNativeBuild
 /app/release
+/app/.cxx
 keystore.properties

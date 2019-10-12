@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 
 package org.pacien.tincapp.activities.status.nodes
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +43,7 @@ class NodeListFragment : BaseFragment() {
   private val tincCtl = Tinc
   private val netName by lazy { vpnService.getCurrentNetName()!! }
   private val nodeListViewModel by lazy { ViewModelProviders.of(this).get(NodeListViewModel::class.java) }
-  private val nodeListAdapter by lazy { NodeInfoArrayAdapter(context, this::onItemClick) }
+  private val nodeListAdapter by lazy { NodeInfoArrayAdapter(requireContext(), this::onItemClick) }
   private val nodeListObserver by lazy { Observer<List<NodeInfo>> { nodeListAdapter.setElements(it) } }
 
   override fun onCreate(savedInstanceState: Bundle?) {

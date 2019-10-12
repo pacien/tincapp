@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 package org.pacien.tincapp.activities.status.nodes
 
 import android.content.Context
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +29,10 @@ import org.pacien.tincapp.databinding.StatusNodeListItemBinding
 /**
  * @author pacien
  */
-class NodeInfoArrayAdapter(context: Context?, private val onItemClick: (NodeInfo) -> Unit) : ArrayAdapter<NodeInfo>(context, -1) {
+class NodeInfoArrayAdapter(context: Context, private val onItemClick: (NodeInfo) -> Unit) : ArrayAdapter<NodeInfo>(context, -1) {
   private val layoutInflater = LayoutInflater.from(context)!!
 
-  override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+  override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
     val binding = when (convertView) {
       null -> StatusNodeListItemBinding.inflate(layoutInflater, parent, false)
       else -> DataBindingUtil.getBinding(convertView)!!
