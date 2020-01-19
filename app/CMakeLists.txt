@@ -1,5 +1,5 @@
 # Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
-# Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+# Copyright (C) 2017-2020 Pacien TRAN-GIRARD
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@ ExternalProject_Add(lzo
 )
 
 ExternalProject_Add(libressl
-  URL               https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.9.2.tar.gz
-  URL_HASH          SHA256=c4c78167fae325b47aebd8beb54b6041d6f6a56b3743f4bd5d79b15642f9d5d4
+  URL               https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz
+  URL_HASH          SHA256=df7b172bf79b957dd27ef36dcaa1fb162562c0e8999e194aa8c1a3df2f15398e
   CONFIGURE_COMMAND <SOURCE_DIR>/configure ${xCONFIG} --disable-shared
   BUILD_COMMAND     make -j8 -C crypto
   INSTALL_COMMAND   make -C crypto install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
