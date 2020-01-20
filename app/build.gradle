@@ -37,8 +37,8 @@ android {
     minSdkVersion 21
     targetSdkVersion 28 // FIXME: API29 breaks daemon start on Android 5
     multiDexEnabled true
-    versionCode 29
-    versionName '0.29'
+    versionCode 30
+    versionName '0.30'
     ndk {
       abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
     }

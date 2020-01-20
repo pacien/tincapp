@@ -3,8 +3,12 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.30 - 2020-01-20
+- fix missing system logger dependency on Android 10
+- revert back to target API 28 to fix daemon not starting on Android 5
+
 ## v0.29 - 2020-01-20
-- fix Android 10 compatibility issue and set target SDK to 29
+- fix Android 10 compatibility issue and set target API to 29
 - update tinc to patched snapshot (1.1-f522393)
 - update LibreSSL to 3.0.2
 
