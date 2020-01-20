@@ -37,8 +37,8 @@ android {
     minSdkVersion 21
     targetSdkVersion 29
     multiDexEnabled true
-    versionCode 28
-    versionName '0.28'
+    versionCode 29
+    versionName '0.29'
     ndk {
       abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
     }
@@ -85,9 +85,9 @@ dependencies {
   implementation 'org.slf4j:slf4j-api:1.7.26'
   implementation 'com.github.tony19:logback-android:2.0.0'
   // commons-configuration2:2.4 requires support for interface default methods, not available on SDK <24
-  implementation 'org.apache.commons:commons-configuration2:2.3'
-  implementation 'commons-beanutils:commons-beanutils:1.9.3'
-  implementation 'commons-io:commons-io:2.6'
+  implementation('org.apache.commons:commons-configuration2:2.3') { exclude group: 'commons-logging', module: 'commons-logging' }
+  implementation('commons-beanutils:commons-beanutils:1.9.3') { exclude group: 'commons-logging', module: 'commons-logging' }
+  implementation('commons-io:commons-io:2.6') { exclude group: 'commons-logging', module: 'commons-logging' }
 }
 
 repositories {

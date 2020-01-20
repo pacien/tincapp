@@ -3,13 +3,14 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
-## v0.29 - (next release)
-- set target SDK to 28
+## v0.29 - 2020-01-20
+- fix Android 10 compatibility issue and set target SDK to 29
+- update tinc to patched snapshot (1.1-f522393)
+- update LibreSSL to 3.0.2
 
 ## v0.28 - 2019-09-15
 - fix daemon startup on Android 10
 - notify user of missing VPN permission
-- update Kotlin to 1.3.50
 
 ## v0.27 - 2019-06-14
 - fix R8 optimisation that made the app unable to load its libraries
@@ -17,8 +18,6 @@ Releases are tracked and referred to using git tags.
 ## v0.26 - 2019-06-13
 - make tinc automatic reconnection on network change optional with new configuration key (`ReconnectOnNetworkChange`)
 - update LibreSSL to 2.9.2
-- update Kotlin to 1.3.31
-- update Gradle to 3.4.1
 
 ## v0.25 - 2019-03-25
 - implement a workaround for broken file permissions on Android-x86

@@ -54,8 +54,8 @@ ExternalProject_Add(libressl
 
 ExternalProject_Add(tinc
   DEPENDS           lzo libressl
-  URL               https://github.com/gsliepen/tinc/archive/6682a0d29cbb70b216a3fe02f2812963dee607d0.tar.gz
-  URL_HASH          SHA256=ffb0e6c02b0112c095366b3baa89f5ed56cc5f644be40268696ce7741e76452a
+  URL               https://github.com/gsliepen/tinc/archive/f5223937e62e1cc5e9b3d322490dd3af8d666750.tar.gz
+  URL_HASH          SHA256=3fe923e8fbb1e0192986039e91d6945ffbbe326ee8c2c0a13bacf80e87dad4a9
   CONFIGURE_COMMAND autoreconf -fsi <SOURCE_DIR> &&
                     <SOURCE_DIR>/configure ${xCONFIG}
                       --with-openssl=${CMAKE_CURRENT_BINARY_DIR}/usr/local
