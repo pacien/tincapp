@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ package org.pacien.tincapp.service
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.net.LocalServerSocket
 import android.net.VpnService
 import android.os.ParcelFileDescriptor
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -43,6 +44,7 @@ import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.utils.TincKeyring
 import org.slf4j.LoggerFactory
 import java.io.FileNotFoundException
+import java.security.AccessControlException
 
 /**
  * @author pacien
@@ -100,6 +102,7 @@ class TincVpnService : VpnService() {
     log.info("Starting tinc daemon for network \"$netName\".")
     if (isConnected() || getCurrentNetName() != null) stopVpn().join()
 
+    // FIXME: pass decrypted private keys via temp file
     val privateKeys = try {
       TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let { tincCfg ->
         Pair(
@@ -125,13 +128,10 @@ class TincVpnService : VpnService() {
     }
 
     val deviceFd = try {
-      val appContextFd = Builder().setSession(netName)
+      Builder().setSession(netName)
         .applyCfg(interfaceCfg)
         .also { applyIgnoringException(it::addDisallowedApplication, BuildConfig.APPLICATION_ID) }
         .establish()!!
-      val daemonContextFd = appContextFd.dup() // necessary since Android 10
-      appContextFd.close()
-      daemonContextFd
     } catch (e: IllegalArgumentException) {
       return reportError(resources.getString(R.string.notification_error_message_network_config_invalid_format, e.defaultMessage()), e, "network-interface")
     } catch (e: NullPointerException) {
@@ -140,10 +140,15 @@ class TincVpnService : VpnService() {
       return reportError(resources.getString(R.string.notification_error_message_could_not_configure_iface, e.defaultMessage()), e)
     }
 
-    val daemon = Tincd.start(netName, deviceFd.fd, privateKeys.first?.fd, privateKeys.second?.fd)
+    val serverSocket = LocalServerSocket(DEVICE_FD_ABSTRACT_SOCKET)
+    Executor.runAsyncTask { serveDeviceFd(serverSocket, deviceFd) }
+
+    // FIXME: pass decrypted private keys via temp file
+    val daemon = Tincd.start(netName, DEVICE_FD_ABSTRACT_SOCKET, null, null)
     setState(netName, passphrase, interfaceCfg, deviceFd, daemon)
 
     waitForDaemonStartup().whenComplete { _, exception ->
+      serverSocket.close()
       deviceFd.close()
       privateKeys.first?.close()
       privateKeys.second?.close()
@@ -189,6 +194,22 @@ class TincVpnService : VpnService() {
     LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(event))
   }
 
+  private fun serveDeviceFd(serverSocket: LocalServerSocket, deviceFd: ParcelFileDescriptor) =
+    serverSocket.accept().let { socket ->
+      try {
+        if (socket.peerCredentials.uid != App.getApplicationInfo().uid)
+          throw AccessControlException("Peer UID mismatch.")
+
+        socket.setFileDescriptorsForSend(arrayOf(deviceFd.fileDescriptor))
+        socket.outputStream.write(0) // dummy write
+        socket.outputStream.flush()
+      } catch (e: Exception) {
+        log.error("Error while serving device fd", e)
+      } finally {
+        socket.close()
+      }
+    }
+
   private fun waitForDaemonStartup() =
     Executor
       .runAsyncTask { Thread.sleep(SETUP_DELAY) }
@@ -196,6 +217,7 @@ class TincVpnService : VpnService() {
 
   companion object {
     private const val SETUP_DELAY = 500L // ms
+    private const val DEVICE_FD_ABSTRACT_SOCKET = "${BuildConfig.APPLICATION_ID}.daemon.socket"
 
     private val STORE_NAME = this::class.java.`package`!!.name
     private const val STORE_KEY_NETNAME = "netname"

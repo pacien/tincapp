@@ -22,7 +22,7 @@ Please see the project's website for more information (setup guide, documentatio
 
 ---
 
-Copyright © 2017-2019 Pacien TRAN-GIRARD and contributors.
+Copyright © 2017-2020 Pacien TRAN-GIRARD and contributors.
 This program is licensed under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License or any later version.
 It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU General Public License for more details: https://www.gnu.org/licenses/

@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,23 @@
 
 package org.pacien.tincapp.commands
 
+import java8.util.concurrent.CompletableFuture
 import org.pacien.tincapp.context.AppPaths
+import java.io.File
 
 /**
  * @author pacien
  */
 object Tincd {
-  fun start(netName: String, deviceFd: Int, ed25519PrivateKeyFd: Int? = null, rsaPrivateKeyFd: Int? = null) =
-    Executor.forkExec(Command(AppPaths.tincd().absolutePath)
+  fun start(netName: String, device: String, ed25519PrivateKey: File? = null, rsaPrivateKey: File? = null): CompletableFuture<Unit> =
+    Executor.call(Command(AppPaths.tincd().absolutePath)
       .withOption("no-detach")
       .withOption("config", AppPaths.confDir(netName).absolutePath)
       .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
       .withOption("logfile", AppPaths.logFile(netName).absolutePath)
       .withOption("option", "DeviceType=fd")
-      .withOption("option", "Device=$deviceFd")
-      .apply { if (ed25519PrivateKeyFd != null) withOption("option", "Ed25519PrivateKeyFile=/proc/self/fd/$ed25519PrivateKeyFd") }
-      .apply { if (rsaPrivateKeyFd != null) withOption("option", "PrivateKeyFile=/proc/self/fd/$rsaPrivateKeyFd") })
+      .withOption("option", "Device=@$device")
+      .apply { if (ed25519PrivateKey != null) withOption("option", "Ed25519PrivateKeyFile=${ed25519PrivateKey.absolutePath}") }
+      .apply { if (rsaPrivateKey != null) withOption("option", "PrivateKeyFile=${rsaPrivateKey.absolutePath}") }
+    ).thenApply { }
 }

@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ package org.pacien.tincapp.context
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
@@ -47,7 +48,7 @@ class App : Application() {
 
   private fun setupCrashHandler() {
     val logger = LoggerFactory.getLogger(this.javaClass)
-    val systemCrashHandler = Thread.getDefaultUncaughtExceptionHandler()
+    val systemCrashHandler = Thread.getDefaultUncaughtExceptionHandler()!!
     val crashRecorder = CrashRecorder(logger, systemCrashHandler)
     Thread.setDefaultUncaughtExceptionHandler(crashRecorder)
   }
@@ -60,6 +61,11 @@ class App : Application() {
 
     fun getContext() = appContext!!
     fun getResources() = getContext().resources!!
+
+    fun getApplicationInfo(): ApplicationInfo =
+      getContext()
+        .packageManager
+        .getApplicationInfo(BuildConfig.APPLICATION_ID, 0)
 
     fun alert(@StringRes title: Int, msg: String, manualLink: String? = null) =
       notificationManager.notifyError(appContext!!.getString(title), msg, manualLink)

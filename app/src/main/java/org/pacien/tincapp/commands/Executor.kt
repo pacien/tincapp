@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,41 +30,9 @@ import java.io.InputStreamReader
  * @author pacien
  */
 internal object Executor {
-  private const val FAILED = -1
-  private const val SUCCESS = 0
-
   class CommandExecutionException(msg: String) : Exception(msg)
 
-  init {
-    System.loadLibrary("exec")
-  }
-
-  /**
-   * @return FAILED (-1) on error, forked child PID otherwise
-   */
-  private external fun forkExec(args: Array<String>): Int
-
-  /**
-   * @return FAILED (-1) on error, the exit status of the process otherwise
-   */
-  private external fun wait(pid: Int): Int
-
   private fun read(stream: InputStream) = BufferedReader(InputStreamReader(stream)).readLines()
-
-  fun forkExec(cmd: Command): CompletableFuture<Unit> {
-    val pid = forkExec(cmd.asArray()).also {
-      if (it == FAILED) throw CommandExecutionException("Could not fork child process.")
-    }
-
-    return runAsyncTask {
-      val exitCode = wait(pid)
-      when (exitCode) {
-        SUCCESS -> Unit
-        FAILED -> throw CommandExecutionException("Process terminated abnormally.")
-        else -> throw CommandExecutionException("Non-zero exit status code ($exitCode).")
-      }
-    }
-  }
 
   fun run(cmd: Command): Process = try {
     ProcessBuilder(cmd.asList()).start()

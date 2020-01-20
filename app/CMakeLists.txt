@@ -54,9 +54,8 @@ ExternalProject_Add(libressl
 
 ExternalProject_Add(tinc
   DEPENDS           lzo libressl
-  URL               https://github.com/gsliepen/tinc/archive/017a7fb57655d9b1d706ee78f7e3d0000411b883.tar.gz
-  URL_HASH          SHA256=27f361706d09f81fbbef7021f37adf5375f01857b23272a490df066ca290a530
-  PATCH_COMMAND     sed -i -e "s/test(void)/test(void *x)/" <SOURCE_DIR>/m4/attribute.m4
+  URL               https://github.com/gsliepen/tinc/archive/6682a0d29cbb70b216a3fe02f2812963dee607d0.tar.gz
+  URL_HASH          SHA256=ffb0e6c02b0112c095366b3baa89f5ed56cc5f644be40268696ce7741e76452a
   CONFIGURE_COMMAND autoreconf -fsi <SOURCE_DIR> &&
                     <SOURCE_DIR>/configure ${xCONFIG}
                       --with-openssl=${CMAKE_CURRENT_BINARY_DIR}/usr/local
@@ -72,5 +71,5 @@ ExternalProject_Add(tinc
                     rm -r <BINARY_DIR>
 )
 
-add_library(exec SHARED src/main/c/exec.c)
-add_dependencies(exec tinc)
+add_library(main SHARED src/main/c/main.c)
+add_dependencies(main tinc)
