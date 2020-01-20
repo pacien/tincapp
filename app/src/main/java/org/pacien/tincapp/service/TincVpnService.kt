@@ -102,12 +102,17 @@ class TincVpnService : VpnService() {
     log.info("Starting tinc daemon for network \"$netName\".")
     if (isConnected() || getCurrentNetName() != null) stopVpn().join()
 
-    // FIXME: pass decrypted private keys via temp file
     val privateKeys = try {
       TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let { tincCfg ->
         Pair(
-          TincKeyring.openPrivateKey(tincCfg.ed25519PrivateKeyFile ?: AppPaths.defaultEd25519PrivateKeyFile(netName), passphrase),
-          TincKeyring.openPrivateKey(tincCfg.privateKeyFile ?: AppPaths.defaultRsaPrivateKeyFile(netName), passphrase))
+          TincKeyring.unlockKey(
+            AppPaths.NET_DEFAULT_ED25519_PRIVATE_KEY_FILE,
+            tincCfg.ed25519PrivateKeyFile ?: AppPaths.defaultEd25519PrivateKeyFile(netName),
+            passphrase),
+          TincKeyring.unlockKey(
+            AppPaths.NET_DEFAULT_RSA_PRIVATE_KEY_FILE,
+            tincCfg.privateKeyFile ?: AppPaths.defaultRsaPrivateKeyFile(netName),
+            passphrase))
       }
     } catch (e: FileNotFoundException) {
       Pair(null, null)
@@ -143,15 +148,12 @@ class TincVpnService : VpnService() {
     val serverSocket = LocalServerSocket(DEVICE_FD_ABSTRACT_SOCKET)
     Executor.runAsyncTask { serveDeviceFd(serverSocket, deviceFd) }
 
-    // FIXME: pass decrypted private keys via temp file
-    val daemon = Tincd.start(netName, DEVICE_FD_ABSTRACT_SOCKET, null, null)
+    val daemon = Tincd.start(netName, DEVICE_FD_ABSTRACT_SOCKET, privateKeys.first, privateKeys.second)
     setState(netName, passphrase, interfaceCfg, deviceFd, daemon)
 
     waitForDaemonStartup().whenComplete { _, exception ->
       serverSocket.close()
       deviceFd.close()
-      privateKeys.first?.close()
-      privateKeys.second?.close()
 
       if (exception != null) {
         reportError(resources.getString(R.string.notification_error_message_daemon_exited, exception.cause!!.defaultMessage()), exception)

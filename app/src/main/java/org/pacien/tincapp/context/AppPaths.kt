@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import java.io.FileNotFoundException
 /**
  * @author pacien
  *
- * @implNote Logs and PID files are stored in the cache directory for easy clean up.
+ * @implNote Logs and PID files are stored in the cache directory for automatic collection.
  */
 object AppPaths {
   private const val TINCD_BIN = "libtincd.so"
@@ -40,15 +40,16 @@ object AppPaths {
   private const val NET_TINC_CONF_FILE = "tinc.conf"
   private const val NET_HOSTS_DIR = "hosts"
   private const val NET_INVITATION_FILE = "invitation-data"
-  private const val NET_DEFAULT_ED25519_PRIVATE_KEY_FILE = "ed25519_key.priv"
-  private const val NET_DEFAULT_RSA_PRIVATE_KEY_FILE = "rsa_key.priv"
+
+  const val NET_DEFAULT_ED25519_PRIVATE_KEY_FILE = "ed25519_key.priv"
+  const val NET_DEFAULT_RSA_PRIVATE_KEY_FILE = "rsa_key.priv"
 
   private val context by lazy { App.getContext() }
 
   fun storageAvailable() =
     Environment.getExternalStorageState().let { it == Environment.MEDIA_MOUNTED && it != Environment.MEDIA_MOUNTED_READ_ONLY }
 
-  private fun internalCacheDir() = context.cacheDir!!
+  fun internalCacheDir() = context.cacheDir!!
   fun cacheDir() = context.externalCacheDir!!
   fun confDir() = context.getExternalFilesDir(null)!!
   private fun binDir() = File(context.applicationInfo.nativeLibraryDir)

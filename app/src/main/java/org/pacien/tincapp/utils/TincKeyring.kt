@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,11 @@
 
 package org.pacien.tincapp.utils
 
-import android.os.ParcelFileDescriptor
 import org.pacien.tincapp.commands.TincApp
+import org.pacien.tincapp.context.AppPaths
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileWriter
 
 /**
  * @author pacien
@@ -33,12 +34,25 @@ object TincKeyring {
     false
   }
 
-  fun openPrivateKey(f: File?, passphrase: String?): ParcelFileDescriptor? {
-    if (f == null || !f.exists() || passphrase == null) return null
-    val pipe = ParcelFileDescriptor.createPipe()
-    val decryptedKey = PemUtils.decrypt(PemUtils.read(f), passphrase)
-    val outputStream = ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])
-    PemUtils.write(decryptedKey, outputStream.writer())
-    return pipe[0]
+  fun unlockKey(target: String, input: File?, passphrase: String?): File? {
+    if (input == null || !input.exists() || passphrase == null) return null
+    val decryptedKey = PemUtils.decrypt(PemUtils.read(input), passphrase)
+    val decryptedFile = tempKey(target)
+    PemUtils.write(decryptedKey, FileWriter(decryptedFile, false))
+    return decryptedFile
+  }
+
+  private fun tempKey(name: String): File {
+    val file = File(AppPaths.internalCacheDir(), name)
+    file.createNewFile()
+    file.deleteOnExit()
+    file.makePrivate()
+    return file
+  }
+
+  private fun File.makePrivate() {
+    this.setExecutable(false, false)
+    this.setReadable(true, true)
+    this.setWritable(true, true)
   }
 }
