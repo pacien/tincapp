@@ -86,9 +86,13 @@ class StartActivity : BaseActivity() {
     super.onPause()
   }
 
-  override fun onActivityResult(request: Int, result: Int, data: Intent?): Unit = when (request) {
-    permissionRequestCode -> continueConnectionStart(result)
-    else -> throw IllegalArgumentException("Result for unknown request received.")
+  override fun onActivityResult(request: Int, result: Int, data: Intent?) {
+    when (request) {
+      permissionRequestCode -> continueConnectionStart(result)
+      else -> throw IllegalArgumentException("Result for unknown request received.")
+    }
+
+    super.onActivityResult(request, result, data)
   }
 
   private fun continueConnectionStart(result: Int): Unit = when (result) {
