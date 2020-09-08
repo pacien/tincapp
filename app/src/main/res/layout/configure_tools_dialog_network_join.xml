@@ -2,7 +2,7 @@
 
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,59 +20,62 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<data>
+    <data>
 
-		<variable
-			name="scanAction"
-			type="kotlin.jvm.functions.Function0&lt;kotlin.Unit>"/>
+        <variable
+            name="scanAction"
+            type="kotlin.jvm.functions.Function0&lt;kotlin.Unit>" />
 
-	</data>
+    </data>
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:paddingBottom="@dimen/dialog_vertical_margin"
-		android:paddingLeft="@dimen/dialog_horizontal_margin"
-		android:paddingRight="@dimen/dialog_horizontal_margin"
-		android:paddingTop="@dimen/dialog_vertical_margin">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dialog_horizontal_margin"
+        android:paddingTop="@dimen/dialog_vertical_margin"
+        android:paddingRight="@dimen/dialog_horizontal_margin"
+        android:paddingBottom="@dimen/dialog_vertical_margin">
 
-		<EditText
-			android:id="@+id/net_name"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="@string/configure_tools_generate_config_net_name_hint"
-			android:inputType="text"/>
+        <EditText
+            android:id="@+id/net_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/configure_tools_generate_config_net_name_hint"
+            android:importantForAutofill="no"
+            android:inputType="text" />
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-			<EditText
-				android:id="@+id/invitation_url"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:hint="@string/configure_tools_join_network_field_invitation_url_hint"
-				android:inputType="textUri"/>
+            <EditText
+                android:id="@+id/invitation_url"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/configure_tools_join_network_field_invitation_url_hint"
+                android:importantForAutofill="no"
+                android:inputType="textUri" />
 
-			<ImageButton
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:contentDescription="@string/configure_tools_join_network_action_scan_qr_code_action"
-				android:onClick="@{() -> scanAction.invoke()}"
-				android:src="@drawable/ic_photo_camera_primary_24dp"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/configure_tools_join_network_action_scan_qr_code_action"
+                android:onClick="@{() -> scanAction.invoke()}"
+                android:src="@drawable/ic_photo_camera_primary_24dp" />
 
-		</LinearLayout>
+        </LinearLayout>
 
-		<EditText
-			android:id="@+id/join_passphrase"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:hint="@string/configure_tools_generate_config_optional_passphrase_hint"
-			android:inputType="textVisiblePassword"/>
+        <EditText
+            android:id="@+id/join_passphrase"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/configure_tools_generate_config_optional_passphrase_hint"
+            android:importantForAutofill="no"
+            android:inputType="textVisiblePassword" />
 
-	</LinearLayout>
+    </LinearLayout>
 
 </layout>

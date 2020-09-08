@@ -2,7 +2,7 @@
 
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,33 +19,36 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:orientation="vertical"
-							android:paddingBottom="@dimen/dialog_vertical_margin"
-							android:paddingLeft="@dimen/dialog_horizontal_margin"
-							android:paddingRight="@dimen/dialog_horizontal_margin"
-							android:paddingTop="@dimen/dialog_vertical_margin">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dialog_horizontal_margin"
+    android:paddingTop="@dimen/dialog_vertical_margin"
+    android:paddingRight="@dimen/dialog_horizontal_margin"
+    android:paddingBottom="@dimen/dialog_vertical_margin">
 
-	<EditText
-		android:id="@+id/enc_dec_net_name"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:hint="@string/configure_tools_generate_config_net_name_hint"
-		android:inputType="text"/>
+    <EditText
+        android:id="@+id/enc_dec_net_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/configure_tools_generate_config_net_name_hint"
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
-	<EditText
-		android:id="@+id/enc_dec_current_passphrase"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:hint="@string/configure_tools_private_key_encryption_current_passphrase"
-		android:inputType="textVisiblePassword"/>
+    <EditText
+        android:id="@+id/enc_dec_current_passphrase"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/configure_tools_private_key_encryption_current_passphrase"
+        android:importantForAutofill="no"
+        android:inputType="textVisiblePassword" />
 
-	<EditText
-		android:id="@+id/enc_dec_new_passphrase"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:hint="@string/configure_tools_private_key_encryption_new_passphrase"
-		android:inputType="textVisiblePassword"/>
+    <EditText
+        android:id="@+id/enc_dec_new_passphrase"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/configure_tools_private_key_encryption_new_passphrase"
+        android:importantForAutofill="no"
+        android:inputType="textVisiblePassword" />
 
 </LinearLayout>
