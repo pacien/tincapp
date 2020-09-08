@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 package org.pacien.tincapp.activities.status.subnets
 
 import androidx.lifecycle.ViewModel
-import org.pacien.tincapp.service.TincVpnService
 
 /**
  * @author pacien

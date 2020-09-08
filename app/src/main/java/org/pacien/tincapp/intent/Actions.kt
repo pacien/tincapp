@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,5 +35,5 @@ object Actions {
   const val TINC_SCHEME = "tinc"
 
   fun buildNetworkUri(netName: String, passphrase: String? = null): Uri =
-    Uri.Builder().scheme(Actions.TINC_SCHEME).opaquePart(netName).fragment(passphrase).build()
+    Uri.Builder().scheme(TINC_SCHEME).opaquePart(netName).fragment(passphrase).build()
 }

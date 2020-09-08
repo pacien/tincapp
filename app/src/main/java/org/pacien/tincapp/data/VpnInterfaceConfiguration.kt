@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,8 +77,7 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
     fun fromInvitation(f: File) = fromInvitation(Configurations().properties(f))
     private fun fromInvitation(c: Configuration) = VpnInterfaceConfiguration(
       c.getStringList(INVITATION_KEY_ADDRESSES)
-        .map { applyIgnoringException(CidrAddress.Companion::fromSlashSeparated, it) }
-        .filterNotNull(),
+        .mapNotNull { applyIgnoringException(CidrAddress.Companion::fromSlashSeparated, it) },
       c.getStringList(INVITATION_KEY_ROUTES)
         .map { it.substringBefore(' ') }
         .map { CidrAddress.fromSlashSeparated(it) })
