@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,9 @@ object TincApp {
   private val SCRIPT_SUFFIXES = listOf("-up", "-down", "-created", "-accepted")
   private val STATIC_SCRIPTS = listOf("tinc", "host", "subnet", "invitation").flatMap { s -> SCRIPT_SUFFIXES.map { s + it } }
 
-  private fun listScripts(netName: String) = AppPaths.confDir(netName).listFiles { f -> f.name in STATIC_SCRIPTS } +
-    AppPaths.hostsDir(netName).listFiles { f -> SCRIPT_SUFFIXES.any { f.name.endsWith(it) } }
+  private fun listScripts(netName: String) =
+    AppPaths.confDir(netName).listFiles { f -> f.name in STATIC_SCRIPTS }!! +
+      AppPaths.hostsDir(netName).listFiles { f -> SCRIPT_SUFFIXES.any { f.name.endsWith(it) } }!!
 
   fun listPrivateKeys(netName: String) = try {
     TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let {

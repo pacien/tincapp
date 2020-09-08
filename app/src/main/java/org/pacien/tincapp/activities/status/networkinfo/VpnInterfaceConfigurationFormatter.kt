@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ object VpnInterfaceConfigurationFormatter {
 
   fun formatList(list: List<Any>?) = when {
     list != null && list.isNotEmpty() -> list.joinToString("\n", transform = this::formatListElement)
-    else -> resources.getString(R.string.status_network_info_value_none)!!
+    else -> resources.getString(R.string.status_network_info_value_none)
   }
 
   private fun formatListElement(element: Any) = when (element) {

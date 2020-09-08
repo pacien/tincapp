@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ class FragmentListPagerAdapter(private val pages: List<Pair<Int, BaseFragment>>,
 
   private val resources by lazy { App.getResources() }
 
-  override fun getPageTitle(position: Int) = resources.getString(pages[position].first)!!
+  override fun getPageTitle(position: Int) = resources.getString(pages[position].first)
   override fun getItem(position: Int) = pages[position].second
   override fun getCount() = pages.size
 }

@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,18 +80,18 @@ data class NodeInfo(val name: String,
       id = matcher[2],
       ip = matcher[3],
       port = matcher[4],
-      cipher = matcher[5].toInt(),
-      digest = matcher[6].toInt(),
-      macLength = matcher[7].toInt(),
-      compression = matcher[8].toInt(),
-      options = matcher[9].toInt(16),
-      status = matcher[10].toInt(16),
+      cipher = matcher[5]!!.toInt(),
+      digest = matcher[6]!!.toInt(),
+      macLength = matcher[7]!!.toInt(),
+      compression = matcher[8]!!.toInt(),
+      options = matcher[9]!!.toInt(16),
+      status = matcher[10]!!.toInt(16),
       nextHop = matcher[11],
       via = matcher[12],
-      distance = matcher[13].toInt(),
-      pMtu = matcher[14].toInt(),
-      minMtu = matcher[15].toInt(),
-      maxMtu = matcher[16].toInt()
+      distance = matcher[13]!!.toInt(),
+      pMtu = matcher[14]!!.toInt(),
+      minMtu = matcher[15]!!.toInt(),
+      maxMtu = matcher[16]!!.toInt()
     )
 
     private operator fun Matcher.get(index: Int) = group(index)

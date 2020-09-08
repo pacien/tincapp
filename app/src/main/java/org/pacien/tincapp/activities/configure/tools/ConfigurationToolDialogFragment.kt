@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ import java.util.regex.Pattern
  * @author pacien
  */
 abstract class ConfigurationToolDialogFragment : BaseDialogFragment() {
-  private val networkNamePattern by lazy { Pattern.compile("^[^\\x00/]*$")!! }
+  private val networkNamePattern by lazy { Pattern.compile("^[^\\x00/]*$") }
 
   protected fun makeDialog(@LayoutRes layout: Int, @StringRes title: Int, @StringRes applyButton: Int, applyAction: (View) -> Unit) =
     makeDialog(inflate(layout), title, applyButton, applyAction)
@@ -51,7 +51,7 @@ abstract class ConfigurationToolDialogFragment : BaseDialogFragment() {
       action
         .whenComplete { _, _ -> progressDialog.dismiss() }
         .thenAccept { parentActivity.notify(R.string.configure_tools_message_network_configuration_written) }
-        .exceptionallyAccept { parentActivity.runOnUiThread { parentActivity.showErrorDialog(it.cause!!.localizedMessage) } }
+        .exceptionallyAccept { parentActivity.runOnUiThread { parentActivity.showErrorDialog(it.cause!!.localizedMessage!!) } }
     }
   }
 
