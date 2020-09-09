@@ -1,0 +1,31 @@
+From b6498e6402d9681743b697c1c9f0760448b3be54 Mon Sep 17 00:00:00 2001
+From: pacien <pacien.trangirard@pacien.net>
+Date: Wed, 9 Sep 2020 01:24:28 +0200
+Subject: [PATCH] tincctl: restrict umask argument for FORTIFY
+
+`umask(mode)` calls that do not verify `(mode & 0777) == mode` are
+rejected when the libc FORTIFY checks are enabled [1].
+
+The unrestricted `~perms` was indeed making this assertion fail.
+
+[1]: https://android.googlesource.com/platform/bionic/+/refs/tags/android-11.0.0_r3/libc/bionic/fortify.cpp#404
+---
+ src/tincctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/tincctl.c b/src/tincctl.c
+index 08f30189..11c1a96c 100644
+--- a/src/tincctl.c
++++ b/src/tincctl.c
+@@ -237,7 +237,7 @@ static bool parse_options(int argc, char **argv) {
+ FILE *fopenmask(const char *filename, const char *mode, mode_t perms) {
+ 	mode_t mask = umask(0);
+ 	perms &= ~mask;
+-	umask(~perms);
++	umask(~perms & 0777);
+ 	FILE *f = fopen(filename, mode);
+ 
+ 	if(!f) {
+-- 
+2.25.4
+
