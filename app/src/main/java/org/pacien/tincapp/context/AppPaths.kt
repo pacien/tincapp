@@ -50,7 +50,7 @@ object AppPaths {
     Environment.getExternalStorageState().let { it == Environment.MEDIA_MOUNTED && it != Environment.MEDIA_MOUNTED_READ_ONLY }
 
   fun internalCacheDir() = context.cacheDir!!
-  fun cacheDir() = context.externalCacheDir!!
+  fun cacheDir() = context.externalCacheDir ?: internalCacheDir()
   fun confDir() = context.getExternalFilesDir(null)!!
   private fun binDir() = File(context.applicationInfo.nativeLibraryDir)
 
