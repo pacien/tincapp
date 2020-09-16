@@ -29,10 +29,10 @@ The project can be built using the Gradle `build` task, on Linux.
 
 Requirements:
 
-- Android Platform Tools 29
-- Android Platform 29
-- Android SDK Tools 29
-- Android NDK 20
+- Android SDK Platform 30
+- Android NDK r21
+- Android Platform-Tools 30
+- Android SDK Tools 26
 - CMake
 - automake
 - autoconf
