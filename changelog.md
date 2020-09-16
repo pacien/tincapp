@@ -3,6 +3,11 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.31 - 2020-09-16
+- fix app crash when external cache directory isn't available (for compatibility with Android 11)
+- patch tinc for fortified libc checks (for compatibility with Android NDK r21)
+- update LibreSSL to 3.1.4
+
 ## v0.30 - 2020-01-20
 - fix missing system logger dependency on Android 10
 - revert back to target API 28 to fix daemon not starting on Android 5
