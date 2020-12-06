@@ -54,8 +54,8 @@ ExternalProject_Add(libressl
 
 ExternalProject_Add(tinc
   DEPENDS           lzo libressl
-  URL               https://github.com/gsliepen/tinc/archive/f5223937e62e1cc5e9b3d322490dd3af8d666750.tar.gz
-  URL_HASH          SHA256=3fe923e8fbb1e0192986039e91d6945ffbbe326ee8c2c0a13bacf80e87dad4a9
+  URL               https://github.com/gsliepen/tinc/archive/3ee0d5dddb56a13b8f3c50637e3cd075c701c9aa.tar.gz
+  URL_HASH          SHA256=3a901e7e59d50675b311087ea202f5e409bf69df91d09d7798a0813f3ec05e13
   # TODO: remove patch once merged in upstream (https://github.com/gsliepen/tinc/pull/251)
   PATCH_COMMAND     patch -p1 < ${PROJECT_SOURCE_DIR}/src/main/c/0001-tincctl-restrict-umask-argument-for-FORTIFY.patch
   CONFIGURE_COMMAND autoreconf -fsi <SOURCE_DIR> &&
