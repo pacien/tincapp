@@ -30,11 +30,11 @@
 
         <TextView
             style="@style/AppTheme.SectionTitle"
-            android:text="@string/configure_activity_title_configuration_server"/>
+            android:text="@string/configure_activity_title_configuration_access"/>
 
         <fragment
             android:id="@+id/configure_activity_configuration_sftp_server_fragment"
-            android:name="org.pacien.tincapp.activities.configure.ConfigurationFtpServerFragment"
+            android:name="org.pacien.tincapp.activities.configure.ConfigurationAccessServerFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

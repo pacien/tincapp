@@ -26,43 +26,43 @@ import android.view.ViewGroup
 import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
 import org.pacien.tincapp.activities.BaseFragment
-import org.pacien.tincapp.databinding.ConfigureToolsConfigurationFtpServerFragmentBinding
-import org.pacien.tincapp.service.ConfigurationFtpService
+import org.pacien.tincapp.databinding.ConfigureToolsConfigurationAccessFragmentBinding
+import org.pacien.tincapp.service.ConfigurationAccessService
 
 /**
  * @author pacien
  */
-class ConfigurationFtpServerFragment : BaseFragment() {
+class ConfigurationAccessServerFragment : BaseFragment() {
   private val ftpServerStartListener = object : Observable.OnPropertyChangedCallback() {
     override fun onPropertyChanged(sender: Observable, propertyId: Int) {
       binding.ftpEnabled = (sender as ObservableBoolean).get()
     }
   }
 
-  private lateinit var binding: ConfigureToolsConfigurationFtpServerFragmentBinding
+  private lateinit var binding: ConfigureToolsConfigurationAccessFragmentBinding
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    binding = ConfigureToolsConfigurationFtpServerFragmentBinding.inflate(inflater, container, false)
-    binding.ftpUsername = ConfigurationFtpService.FTP_USERNAME
-    binding.ftpPassword = ConfigurationFtpService.FTP_PASSWORD
-    binding.ftpPort = ConfigurationFtpService.FTP_PORT
+    binding = ConfigureToolsConfigurationAccessFragmentBinding.inflate(inflater, container, false)
+    binding.ftpUsername = ConfigurationAccessService.FTP_USERNAME
+    binding.ftpPassword = ConfigurationAccessService.FTP_PASSWORD
+    binding.ftpPort = ConfigurationAccessService.FTP_PORT
     binding.toggleFtpState = { toggleServer() }
     return binding.root
   }
 
   override fun onResume() {
     super.onResume()
-    ConfigurationFtpService.runningState.addOnPropertyChangedCallback(ftpServerStartListener)
-    binding.ftpEnabled = ConfigurationFtpService.runningState.get()
+    ConfigurationAccessService.runningState.addOnPropertyChangedCallback(ftpServerStartListener)
+    binding.ftpEnabled = ConfigurationAccessService.runningState.get()
   }
 
   override fun onPause() {
-    ConfigurationFtpService.runningState.removeOnPropertyChangedCallback(ftpServerStartListener)
+    ConfigurationAccessService.runningState.removeOnPropertyChangedCallback(ftpServerStartListener)
     super.onPause()
   }
 
   private fun toggleServer() {
-    val targetServiceIntent = Intent(requireContext(), ConfigurationFtpService::class.java)
+    val targetServiceIntent = Intent(requireContext(), ConfigurationAccessService::class.java)
 
     if (binding.ftpEnabled)
       requireContext().stopService(targetServiceIntent)

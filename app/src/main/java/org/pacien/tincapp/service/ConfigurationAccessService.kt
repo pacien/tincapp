@@ -18,6 +18,7 @@
 
 package org.pacien.tincapp.service
 
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
@@ -31,7 +32,9 @@ import org.apache.ftpserver.listener.ListenerFactory
 import org.apache.ftpserver.usermanager.UsernamePasswordAuthentication
 import org.apache.ftpserver.usermanager.impl.WritePermission
 import org.pacien.tincapp.R
+import org.pacien.tincapp.activities.configure.ConfigureActivity
 import org.pacien.tincapp.context.App
+import org.pacien.tincapp.context.AppNotificationManager
 import org.pacien.tincapp.extensions.Java.defaultMessage
 import org.slf4j.LoggerFactory
 import java.io.IOException
@@ -42,7 +45,7 @@ import java.io.IOException
  *
  * @author pacien
  */
-class ConfigurationFtpService : Service() {
+class ConfigurationAccessService : Service() {
   companion object {
     // Apache Mina FtpServer's INFO log level is actually VERBOSE.
     // The object holds static references to those loggers so that they stay around.
@@ -63,6 +66,7 @@ class ConfigurationFtpService : Service() {
   }
 
   private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
+  private val notificationManager by lazy { App.notificationManager }
   private var sftpServer: FtpServer? = null
 
   override fun onBind(intent: Intent): IBinder? = null // non-bindable service
@@ -82,6 +86,7 @@ class ConfigurationFtpService : Service() {
         it.start()
         runningState.set(true)
         log.info("Started FTP server on port {}", FTP_PORT)
+        pinInForeground()
       } catch (e: IOException) {
         log.error("Could not start FTP server", e)
         App.alert(R.string.notification_error_title_unable_to_start_ftp_server, e.defaultMessage())
@@ -89,6 +94,25 @@ class ConfigurationFtpService : Service() {
     }
 
     return START_NOT_STICKY
+  }
+
+  /**
+   * Pins the service in the foreground so that it doesn't get stopped by the system when the
+   * application's activities are put in the background, which is the case when the user sets the
+   * focus on an FTP client app for example.
+   */
+  private fun pinInForeground() {
+    startForeground(
+      AppNotificationManager.CONFIG_ACCESS_NOTIFICATION_ID,
+      notificationManager.newConfigurationAccessNotificationBuilder()
+        .setSmallIcon(R.drawable.ic_baseline_folder_open_primary_24dp)
+        .setContentTitle(resources.getString(R.string.notification_config_access_server_running_title))
+        .setContentText(resources.getString(R.string.notification_config_access_server_running_message))
+        .setContentIntent(Intent(this, ConfigureActivity::class.java).let {
+          PendingIntent.getActivity(this, 0, it, 0)
+        })
+        .build()
+    )
   }
 
   private fun setupSingleUserServer(ftpUser: User): FtpServer {

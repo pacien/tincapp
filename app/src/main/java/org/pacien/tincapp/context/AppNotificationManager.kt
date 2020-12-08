@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2019 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 package org.pacien.tincapp.context
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -35,16 +36,19 @@ import org.pacien.tincapp.R
  */
 class AppNotificationManager(private val context: Context) {
   companion object {
-    private const val CHANNEL_ID = "org.pacien.tincapp.notification.channels.error"
-    private const val ERROR_NOTIFICATION_ID = 0
+    private const val ERROR_CHANNEL_ID = "org.pacien.tincapp.notification.channels.error"
+    private const val CONFIG_ACCESS_CHANNEL_ID = "org.pacien.tincapp.notification.channels.configuration"
+
+    const val ERROR_NOTIFICATION_ID = 0
+    const val CONFIG_ACCESS_NOTIFICATION_ID = 1
   }
 
   init {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) registerChannel()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) registerChannels()
   }
 
   fun notifyError(title: String, message: String, manualLink: String? = null) {
-    val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+    val notification = NotificationCompat.Builder(context, ERROR_CHANNEL_ID)
       .setSmallIcon(R.drawable.ic_warning_primary_24dp)
       .setContentTitle(title)
       .setContentText(message)
@@ -62,13 +66,26 @@ class AppNotificationManager(private val context: Context) {
     NotificationManagerCompat.from(context).cancelAll()
   }
 
+  fun newConfigurationAccessNotificationBuilder() =
+    NotificationCompat.Builder(context, CONFIG_ACCESS_CHANNEL_ID)
+
   @RequiresApi(Build.VERSION_CODES.O)
-  private fun registerChannel() {
-    val name = context.getString(R.string.notification_error_channel_name)
-    val importance = NotificationManager.IMPORTANCE_HIGH
-    val channel = NotificationChannel(CHANNEL_ID, name, importance)
-    val notificationManager = context.getSystemService(NotificationManager::class.java)
-    notificationManager.createNotificationChannel(channel)
+  private fun registerChannels() {
+    context.getSystemService(NotificationManager::class.java)
+      .apply {
+        createNotificationChannel(NotificationChannel(
+          ERROR_CHANNEL_ID,
+          context.getString(R.string.notification_error_channel_name),
+          NotificationManager.IMPORTANCE_HIGH
+        ))
+      }
+      .apply {
+        createNotificationChannel(NotificationChannel(
+          CONFIG_ACCESS_CHANNEL_ID,
+          context.getString(R.string.notification_config_access_channel_name),
+          NotificationManager.IMPORTANCE_MIN
+        ))
+      }
   }
 
   private fun NotificationCompat.Builder.setHighPriority() = apply {

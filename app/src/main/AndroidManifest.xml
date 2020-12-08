@@ -24,6 +24,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- needed for the configuration FTP server -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <!-- workaround for broken file permissions on some Android ROMs -->
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -82,7 +85,7 @@
         </service>
 
         <service
-            android:name="org.pacien.tincapp.service.ConfigurationFtpService">
+            android:name="org.pacien.tincapp.service.ConfigurationAccessService">
         </service>
 
     </application>
