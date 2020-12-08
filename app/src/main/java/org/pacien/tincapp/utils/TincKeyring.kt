@@ -43,7 +43,7 @@ object TincKeyring {
   }
 
   private fun tempKey(name: String): File {
-    val file = File(AppPaths.internalCacheDir(), name)
+    val file = File(AppPaths.runtimeDir(), name)
     file.createNewFile()
     file.deleteOnExit()
     file.makePrivate()

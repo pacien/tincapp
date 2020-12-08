@@ -78,7 +78,6 @@
 	<string name="start_activity_menu_configure">Configure</string>
 	<string name="start_network_list_title">Connect to network</string>
 	<string name="start_network_list_empty_none_found">Could not find any network configuration.</string>
-	<string name="start_network_list_empty_storage_not_available">Could not access storage directory.</string>
 	<string name="start_starting_vpn">Starting VPN…</string>
 
 	<!-- Configure activity -->

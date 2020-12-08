@@ -74,7 +74,6 @@
 	<string name="start_activity_menu_configure">配置</string>
 	<string name="start_network_list_title">连接到网络</string>
 	<string name="start_network_list_empty_none_found">未找到网络配置。</string>
-	<string name="start_network_list_empty_storage_not_available">无法访问存储目录。</string>
 	<string name="start_starting_vpn">正在启动 VPN…</string>
 
 	<!-- Configure activity -->

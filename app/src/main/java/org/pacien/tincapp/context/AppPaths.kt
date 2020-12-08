@@ -18,7 +18,6 @@
 
 package org.pacien.tincapp.context
 
-import android.os.Environment
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -28,6 +27,10 @@ import java.io.FileNotFoundException
  * @implNote Logs and PID files are stored in the cache directory for automatic collection.
  */
 object AppPaths {
+  private const val APP_LOG_DIR = "log"
+  private const val APP_TINC_RUNTIME_DIR = "run"
+  private const val APP_TINC_NETWORKS_DIR = "networks"
+
   private const val TINCD_BIN = "libtincd.so"
   private const val TINC_BIN = "libtinc.so"
 
@@ -46,25 +49,24 @@ object AppPaths {
 
   private val context by lazy { App.getContext() }
 
-  fun storageAvailable() =
-    Environment.getExternalStorageState().let { it == Environment.MEDIA_MOUNTED && it != Environment.MEDIA_MOUNTED_READ_ONLY }
-
-  fun internalCacheDir() = context.cacheDir!!
-  fun cacheDir() = context.externalCacheDir ?: internalCacheDir()
-  fun confDir() = context.getExternalFilesDir(null)!!
+  private fun cacheDir() = context.cacheDir!!
   private fun binDir() = File(context.applicationInfo.nativeLibraryDir)
+  fun runtimeDir() = withDir(File(cacheDir(), APP_TINC_RUNTIME_DIR))
+  fun logDir() = withDir(File(cacheDir(), APP_LOG_DIR))
+  fun confDir() = withDir(File(context.filesDir!!, APP_TINC_NETWORKS_DIR))
 
   fun confDir(netName: String) = File(confDir(), netName)
   fun hostsDir(netName: String) = File(confDir(netName), NET_HOSTS_DIR)
   fun netConfFile(netName: String) = File(confDir(netName), NET_CONF_FILE)
   fun tincConfFile(netName: String) = File(confDir(netName), NET_TINC_CONF_FILE)
   fun invitationFile(netName: String) = File(confDir(netName), NET_INVITATION_FILE)
-  fun logFile(netName: String) = File(cacheDir(), String.format(LOGFILE_FORMAT, netName))
-  fun pidFile(netName: String) = File(context.cacheDir, String.format(PIDFILE_FORMAT, netName))
-  fun appLogFile() = File(cacheDir(), APPLOG_FILE)
-  fun crashFlagFile() = File(internalCacheDir(), CRASHFLAG_FILE)
+  fun logFile(netName: String) = File(logDir(), String.format(LOGFILE_FORMAT, netName))
+  fun pidFile(netName: String) = File(runtimeDir(), String.format(PIDFILE_FORMAT, netName))
+  fun appLogFile() = File(logDir(), APPLOG_FILE)
+  fun crashFlagFile() = File(cacheDir(), CRASHFLAG_FILE)
 
   fun existing(f: File) = f.apply { if (!exists()) throw FileNotFoundException(f.absolutePath) }
+  fun withDir(f: File) = f.apply { if (!exists()) mkdirs() }
 
   fun defaultEd25519PrivateKeyFile(netName: String) = File(confDir(netName), NET_DEFAULT_ED25519_PRIVATE_KEY_FILE)
   fun defaultRsaPrivateKeyFile(netName: String) = File(confDir(netName), NET_DEFAULT_RSA_PRIVATE_KEY_FILE)

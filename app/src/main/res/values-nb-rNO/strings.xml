@@ -74,7 +74,6 @@
 	<string name="start_activity_menu_configure">Sett opp</string>
 	<string name="start_network_list_title">Koble til nettverk</string>
 	<string name="start_network_list_empty_none_found">Kunne ikke finne noe nettverksoppsett.</string>
-	<string name="start_network_list_empty_storage_not_available">Fikk ikke tilgang til lagringsmappe.</string>
 	<string name="start_starting_vpn">Starter VPN…</string>
 
 	<!-- Configure activity -->

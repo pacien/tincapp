@@ -93,9 +93,6 @@ class TincVpnService : VpnService() {
     if (TincKeyring.needsPassphrase(netName) && passphrase == null)
       return reportError(resources.getString(R.string.notification_error_message_passphrase_not_provided))
 
-    if (!AppPaths.storageAvailable())
-      return reportError(resources.getString(R.string.start_network_list_empty_storage_not_available))
-
     if (!AppPaths.confDir(netName).exists())
       return reportError(resources.getString(R.string.notification_error_message_no_configuration_for_network_format, netName), docTopic = "configuration")
 

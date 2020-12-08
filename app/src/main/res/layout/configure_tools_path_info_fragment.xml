@@ -51,7 +51,7 @@
 
 			<TextView
 				style="@style/AppTheme.BlockContent"
-				android:text="@{appPaths.cacheDir().absolutePath}"
+				android:text="@{appPaths.logDir().absolutePath}"
 				android:textIsSelectable="true"/>
 
 		</LinearLayout>
