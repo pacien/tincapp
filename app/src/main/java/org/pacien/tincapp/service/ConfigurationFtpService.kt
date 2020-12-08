@@ -22,6 +22,8 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import androidx.databinding.ObservableBoolean
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
 import org.apache.ftpserver.FtpServer
 import org.apache.ftpserver.FtpServerFactory
 import org.apache.ftpserver.ftplet.*
@@ -42,6 +44,11 @@ import java.io.IOException
  */
 class ConfigurationFtpService : Service() {
   companion object {
+    // Apache Mina FtpServer's INFO log level is actually VERBOSE.
+    // The object holds static references to those loggers so that they stay around.
+    @Suppress("unused")
+    private val MINA_FTP_LOGGER_OVERRIDER = MinaLoggerOverrider(Level.WARN)
+
     const val FTP_PORT = 65521 // tinc port `concat` FTP port
     const val FTP_USERNAME = "tincapp"
     val FTP_HOME_DIR = App.getContext().applicationInfo.dataDir!!
@@ -124,5 +131,20 @@ class ConfigurationFtpService : Service() {
     override fun getHomeDirectory(): String = homeDirectory
     override fun authorize(request: AuthorizationRequest?): AuthorizationRequest? =
       authorities.filter { it.canAuthorize(request) }.fold(request) { req, auth -> auth.authorize(req) }
+  }
+
+  /**
+   * This registers package loggers filtering the output of the Mina FtpServer.
+   * The object holds static references to those loggers so that they stay around.
+   */
+  private class MinaLoggerOverrider(logLevel: Level) {
+    @Suppress("unused")
+    private val ftpServerLogger = forceLogLevel("org.apache.ftpserver", logLevel)
+
+    @Suppress("unused")
+    private val minaLogger = forceLogLevel("org.apache.mina", logLevel)
+
+    private fun forceLogLevel(pkgName: String, logLevel: Level) =
+      (LoggerFactory.getLogger(pkgName) as Logger).apply { level = logLevel }
   }
 }
