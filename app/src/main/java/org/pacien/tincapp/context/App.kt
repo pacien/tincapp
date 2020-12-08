@@ -28,6 +28,7 @@ import android.os.Handler
 import androidx.annotation.StringRes
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
@@ -39,15 +40,17 @@ class App : Application() {
     appContext = applicationContext
     handler = Handler()
     AppLogger.configure()
-    setupCrashHandler()
 
     val logger = LoggerFactory.getLogger(this.javaClass)
+    setupCrashHandler(logger)
+
     logger.info("Starting tinc app {} ({} build), running on {} ({})",
       BuildConfig.VERSION_NAME, BuildConfig.BUILD_TYPE, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
+
+    ConfigurationDirectoryMigrator().migrate()
   }
 
-  private fun setupCrashHandler() {
-    val logger = LoggerFactory.getLogger(this.javaClass)
+  private fun setupCrashHandler(logger: Logger) {
     val systemCrashHandler = Thread.getDefaultUncaughtExceptionHandler()!!
     val crashRecorder = CrashRecorder(logger, systemCrashHandler)
     Thread.setDefaultUncaughtExceptionHandler(crashRecorder)
