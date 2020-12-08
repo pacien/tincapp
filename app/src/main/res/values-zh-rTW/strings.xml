@@ -80,7 +80,6 @@
 	<string name="configure_tools_message_invalid_network_name">網路名稱無效。</string>
 	<string name="configure_tools_message_network_configuration_written">網路配置寫入成功。</string>
 
-	<string name="configure_activity_title_path_info">路徑資訊</string>
 	<string name="configure_path_info_title_configuration_directory">配置目錄</string>
 	<string name="configure_path_info_title_log_directory">日誌目錄</string>
 	<string name="configure_path_info_title_tinc_binary">Tinc 二進位制檔案</string>

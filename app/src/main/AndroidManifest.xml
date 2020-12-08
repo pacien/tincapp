@@ -81,6 +81,10 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="org.pacien.tincapp.service.ConfigurationFtpService">
+        </service>
+
     </application>
 
 </manifest>

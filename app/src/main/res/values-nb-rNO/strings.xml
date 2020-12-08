@@ -80,7 +80,6 @@
 	<string name="configure_tools_message_invalid_network_name">Ugyldig nettverksnavn.</string>
 	<string name="configure_tools_message_network_configuration_written">Nettverksoppsett skrevet.</string>
 
-	<string name="configure_activity_title_path_info">Sti-info</string>
 	<string name="configure_path_info_title_configuration_directory">Oppsettsmappe</string>
 	<string name="configure_path_info_title_log_directory">Loggingsmappe</string>
 	<string name="configure_path_info_title_tinc_binary">tinc-binærfil</string>
