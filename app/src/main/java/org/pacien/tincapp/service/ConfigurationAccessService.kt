@@ -25,6 +25,8 @@ import android.os.IBinder
 import androidx.databinding.ObservableBoolean
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
+import org.apache.ftpserver.ConnectionConfigFactory
+import org.apache.ftpserver.DataConnectionConfigurationFactory
 import org.apache.ftpserver.FtpServer
 import org.apache.ftpserver.FtpServerFactory
 import org.apache.ftpserver.ftplet.*
@@ -53,6 +55,7 @@ class ConfigurationAccessService : Service() {
     private val MINA_FTP_LOGGER_OVERRIDER = MinaLoggerOverrider(Level.WARN)
 
     const val FTP_PORT = 65521 // tinc port `concat` FTP port
+    val FTP_DATA_PORT_RANGE = FTP_PORT + 1..FTP_PORT + 11
     const val FTP_USERNAME = "tincapp"
     val FTP_HOME_DIR = App.getContext().applicationInfo.dataDir!!
     val FTP_PASSWORD = generateRandomString(8)
@@ -115,12 +118,26 @@ class ConfigurationAccessService : Service() {
     )
   }
 
-  private fun setupSingleUserServer(ftpUser: User): FtpServer {
-    return FtpServerFactory()
-      .apply { addListener("default", ListenerFactory().apply { port = FTP_PORT }.createListener()) }
+  private fun setupSingleUserServer(ftpUser: User): FtpServer =
+    FtpServerFactory()
+      .apply {
+        addListener("default", ListenerFactory()
+          .apply {
+            connectionConfig = ConnectionConfigFactory()
+              .apply { maxThreads = 1 } // library has issues with multiple threads
+              .createConnectionConfig()
+          }
+          .apply { port = FTP_PORT }
+          .apply {
+            dataConnectionConfiguration = DataConnectionConfigurationFactory()
+              .apply { passivePorts = "${FTP_DATA_PORT_RANGE.first}-${FTP_DATA_PORT_RANGE.last}" }
+              .createDataConnectionConfiguration()
+          }
+          .createListener()
+        )
+      }
       .apply { userManager = StaticFtpUserManager(listOf(ftpUser)) }
       .createServer()
-  }
 
   private class StaticFtpUserManager(users: List<User>) : UserManager {
     private val userMap: Map<String, User> = users.map { it.name to it }.toMap()
