@@ -18,9 +18,9 @@
 
 package org.pacien.tincapp.context
 
-import org.apache.commons.io.FileExistsException
-import org.apache.commons.io.FileUtils
+import org.pacien.tincapp.extensions.Java.defaultMessage
 import org.slf4j.LoggerFactory
+import java.io.IOException
 
 /**
  * Migrates the configuration from the external storage (used before version 0.32) to the internal storage.
@@ -41,14 +41,17 @@ class ConfigurationDirectoryMigrator {
     val oldConfigDir = context.getExternalFilesDir(null)
     if (oldConfigDir == null || oldConfigDir.listFiles().isNullOrEmpty()) return // nothing to do
 
-    log.info("Configuration files present in old configuration directory at {}.", oldConfigDir.absolutePath)
-    for (oldConfig in oldConfigDir.listFiles() ?: emptyArray()) {
-      try {
-        log.info("Migrating {} to {}", oldConfig.absolutePath, paths.confDir())
-        FileUtils.moveToDirectory(oldConfig, paths.confDir(), true)
-      } catch (e: FileExistsException) {
-        log.warn("Could not migrate {}: target already exists.", oldConfig.absolutePath)
-      }
+    try {
+      log.info(
+        "Migrating files present in old configuration directory at {} to {}",
+        oldConfigDir.absolutePath,
+        paths.confDir()
+      )
+
+      oldConfigDir.copyRecursively(paths.confDir(), overwrite = false)
+      oldConfigDir.deleteRecursively()
+    } catch (e: IOException) {
+      log.warn("Could not complete configuration directory migration: {}", e.defaultMessage())
     }
   }
 
@@ -56,8 +59,12 @@ class ConfigurationDirectoryMigrator {
     val oldLogDir = context.externalCacheDir
     if (oldLogDir == null || oldLogDir.listFiles().isNullOrEmpty()) return // nothing to do
 
-    // There's no point moving the log files. Let's delete those instead.
-    log.info("Clearing old cache directory at {}", oldLogDir.absolutePath)
-    FileUtils.cleanDirectory(oldLogDir)
+    try {
+      // There's no point moving the log files. Let's delete those instead.
+      log.info("Clearing old cache directory at {}", oldLogDir.absolutePath)
+      oldLogDir.deleteRecursively()
+    } catch (e: IOException) {
+      log.warn("Could not remove old cache directory: {}", e.defaultMessage())
+    }
   }
 }
