@@ -20,6 +20,7 @@ package org.pacien.tincapp.service
 
 import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import androidx.databinding.ObservableBoolean
@@ -54,13 +55,25 @@ class ConfigurationAccessService : Service() {
     @Suppress("unused")
     private val MINA_FTP_LOGGER_OVERRIDER = MinaLoggerOverrider(Level.WARN)
 
-    const val FTP_PORT = 65521 // tinc port `concat` FTP port
-    val FTP_DATA_PORT_RANGE = FTP_PORT + 1..FTP_PORT + 11
-    const val FTP_USERNAME = "tincapp"
-    val FTP_HOME_DIR = App.getContext().applicationInfo.dataDir!!
-    val FTP_PASSWORD = generateRandomString(8)
-
+    private val context by lazy { App.getContext() }
+    private val store by lazy { context.getSharedPreferences("${this::class.java.`package`!!.name}.ftp", Context.MODE_PRIVATE)!! }
     val runningState = ObservableBoolean(false)
+
+    fun getFtpHomeDir(): String = context.applicationInfo.dataDir!!
+    fun getFtpUsername() = storeGetOrInsertString("username") { "tincapp" }
+    fun getFtpPassword() = storeGetOrInsertString("password") { generateRandomString(8) }
+    fun getFtpPort() = storeGetOrInsertInt("port") { 65521 } // tinc port `concat` FTP port
+    fun getFtpPassiveDataPorts() = storeGetOrInsertString("passive-range") { "65522-65532" }
+
+    private fun storeGetOrInsertString(key: String, defaultGenerator: () -> String): String = synchronized(store) {
+      if (!store.contains(key)) store.edit().putString(key, defaultGenerator()).apply()
+      return store.getString(key, null)!!
+    }
+
+    private fun storeGetOrInsertInt(key: String, defaultGenerator: () -> Int): Int = synchronized(store) {
+      if (!store.contains(key)) store.edit().putInt(key, defaultGenerator()).apply()
+      return store.getInt(key, 0)
+    }
 
     private fun generateRandomString(length: Int): String {
       val alphabet = ('a'..'z') + ('A'..'Z') + ('0'..'9')
@@ -83,12 +96,12 @@ class ConfigurationAccessService : Service() {
   }
 
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-    val ftpUser = StaticFtpUser(FTP_USERNAME, FTP_PASSWORD, FTP_HOME_DIR, listOf(WritePermission()))
-    sftpServer = setupSingleUserServer(ftpUser).also {
+    val ftpUser = StaticFtpUser(getFtpUsername(), getFtpPassword(), getFtpHomeDir(), listOf(WritePermission()))
+    sftpServer = setupSingleUserServer(ftpUser, getFtpPort(), getFtpPassiveDataPorts()).also {
       try {
         it.start()
         runningState.set(true)
-        log.info("Started FTP server on port {}", FTP_PORT)
+        log.info("Started FTP server on port {}", getFtpPort())
         pinInForeground()
       } catch (e: IOException) {
         log.error("Could not start FTP server", e)
@@ -118,7 +131,7 @@ class ConfigurationAccessService : Service() {
     )
   }
 
-  private fun setupSingleUserServer(ftpUser: User): FtpServer =
+  private fun setupSingleUserServer(ftpUser: User, ftpPort: Int, ftpPassivePorts: String): FtpServer =
     FtpServerFactory()
       .apply {
         addListener("default", ListenerFactory()
@@ -127,10 +140,10 @@ class ConfigurationAccessService : Service() {
               .apply { maxThreads = 1 } // library has issues with multiple threads
               .createConnectionConfig()
           }
-          .apply { port = FTP_PORT }
+          .apply { port = ftpPort }
           .apply {
             dataConnectionConfiguration = DataConnectionConfigurationFactory()
-              .apply { passivePorts = "${FTP_DATA_PORT_RANGE.first}-${FTP_DATA_PORT_RANGE.last}" }
+              .apply { passivePorts = ftpPassivePorts }
               .createDataConnectionConfiguration()
           }
           .createListener()

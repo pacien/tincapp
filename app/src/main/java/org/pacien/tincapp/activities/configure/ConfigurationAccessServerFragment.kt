@@ -43,15 +43,14 @@ class ConfigurationAccessServerFragment : BaseFragment() {
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     binding = ConfigureToolsConfigurationAccessFragmentBinding.inflate(inflater, container, false)
-    binding.ftpUsername = ConfigurationAccessService.FTP_USERNAME
-    binding.ftpPassword = ConfigurationAccessService.FTP_PASSWORD
-    binding.ftpPort = ConfigurationAccessService.FTP_PORT
     binding.toggleFtpState = { toggleServer() }
+    setConnectionInfo()
     return binding.root
   }
 
   override fun onResume() {
     super.onResume()
+    setConnectionInfo()
     ConfigurationAccessService.runningState.addOnPropertyChangedCallback(ftpServerStartListener)
     binding.ftpEnabled = ConfigurationAccessService.runningState.get()
   }
@@ -59,6 +58,12 @@ class ConfigurationAccessServerFragment : BaseFragment() {
   override fun onPause() {
     ConfigurationAccessService.runningState.removeOnPropertyChangedCallback(ftpServerStartListener)
     super.onPause()
+  }
+
+  private fun setConnectionInfo() {
+    binding.ftpUsername = ConfigurationAccessService.getFtpUsername()
+    binding.ftpPassword = ConfigurationAccessService.getFtpPassword()
+    binding.ftpPort = ConfigurationAccessService.getFtpPort()
   }
 
   private fun toggleServer() {
