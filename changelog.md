@@ -3,6 +3,12 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.32 - 2020-12-17
+- Android 11 compatibility: expose configuration and log files through an embedded FTP server
+- improve security by moving the configuration, keys and logs to a private location
+- update tinc to latest snapshot (1.1-3ee0d5d)
+- update LibreSSL to 3.2.2
+
 ## v0.31 - 2020-09-16
 - fix app crash when external cache directory isn't available (for compatibility with Android 11)
 - patch tinc for fortified libc checks (for compatibility with Android NDK r21)
@@ -146,4 +152,3 @@ Releases are tracked and referred to using git tags.
 
 ## v0.1-preview - 2017-05-05
 - basic working proof-of-concept using a patched tinc 1.1pre15
-
