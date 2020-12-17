@@ -30,7 +30,7 @@ The project can be built using the Gradle `build` task, on Linux.
 Requirements:
 
 - Android SDK Platform 30
-- Android NDK r21
+- Android NDK r22
 - Android Platform-Tools 30
 - Android SDK Tools 26
 - CMake
