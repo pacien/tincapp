@@ -3,7 +3,7 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
-## v0.33 - NEXT RELEASE
+## v0.33 - 2021-07-12
 - update tinc to 1.1-pre18
 - update LibreSSL to 3.3.3
 
