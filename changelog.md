@@ -4,6 +4,7 @@ This file lists notable changes that have been made to the application on each r
 Releases are tracked and referred to using git tags.
 
 ## v0.33 - NEXT RELEASE
+- update tinc to 1.1-pre18
 - update LibreSSL to 3.3.3
 
 ## v0.32 - 2020-12-17
