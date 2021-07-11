@@ -3,6 +3,9 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.33 - NEXT RELEASE
+- update LibreSSL to 3.3.3
+
 ## v0.32 - 2020-12-17
 - Android 11 compatibility: expose configuration and log files through an embedded FTP server
 - improve security by moving the configuration, keys and logs to a private location
