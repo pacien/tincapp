@@ -46,5 +46,5 @@ class ToolsFragment : BaseFragment() {
   }
 
   private fun openDialog(tool: ConfigurationToolDialogFragment): () -> Unit =
-    { tool.show(fragmentManager, tool.javaClass.simpleName) }
+    { tool.show(fragmentManager!!, tool.javaClass.simpleName) }
 }
