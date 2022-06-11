@@ -72,11 +72,14 @@ android {
   }
 
   packagingOptions {
-    // clashing in dependencies (Apache Mina FtpServer)
-    exclude 'META-INF/DEPENDENCIES'
-    exclude 'META-INF/spring.schemas'
-    exclude 'META-INF/spring.handlers'
-    exclude 'META-INF/license.txt'
+    resources {
+      excludes += [
+        'META-INF/DEPENDENCIES',
+        'META-INF/spring.schemas',
+        'META-INF/spring.handlers',
+        'META-INF/license.txt',
+      ]
+    }
   }
 }
 
