@@ -65,9 +65,11 @@ ExternalProject_Add(tinc
   BUILD_COMMAND     make -j8 -C src
   INSTALL_COMMAND   make -C src install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
                     ${CMAKE_COMMAND} -E copy
-                      ${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tinc ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtinc.so &&
+                      ${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tinc
+                      ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtinc.so &&
                     ${CMAKE_COMMAND} -E copy
-                      ${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tincd ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtincd.so &&
+                      ${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tincd
+                      ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtincd.so &&
                     rm -r <BINARY_DIR>
 )
 
