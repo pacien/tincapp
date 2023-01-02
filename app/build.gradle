@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2021 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,12 +30,12 @@ def keystoreProperties = new Properties()
 if (keystoreAvailable) keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-  compileSdkVersion 30
+  compileSdkVersion 32
 
   defaultConfig {
     applicationId 'org.pacien.tincapp'
     minSdkVersion 21
-    targetSdkVersion 30
+    targetSdkVersion 32
     multiDexEnabled true
     versionCode 33
     versionName '0.33'

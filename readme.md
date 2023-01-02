@@ -29,9 +29,9 @@ The project can be built using the Gradle `build` task, on Linux.
 
 Requirements:
 
-- Android SDK Platform 30
+- Android SDK Platform 32
 - Android NDK r22
-- Android Platform-Tools 30
+- Android Platform-Tools 32
 - Android SDK Tools 26
 - CMake
 - automake
@@ -41,7 +41,7 @@ Requirements:
 License
 -------
 
-Copyright (C) 2017-2021 Pacien TRAN-GIRARD and contributors (listed in `contributors.md`).
+Copyright (C) 2017-2023 Pacien TRAN-GIRARD and contributors (listed in `contributors.md`).
 
 _Tinc App_ is distributed under the terms of GNU General Public License v3.0,
 as detailed in the provided `license.md` file.
