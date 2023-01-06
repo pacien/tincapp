@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="generic_title_error">Ошибка</string>
+	<string name="generic_loading">Загрузка…</string>
+	<string name="generic_yes">да</string>
+	<string name="generic_no">нет</string>
+	<string name="generic_none">нет</string>
+	<string name="generic_action_close">Закрыть</string>
+	<string name="generic_action_cancel">Отменить</string>
+	<string name="generic_action_apply">Применить</string>
+	<string name="generic_action_open_web_page">Открыть веб-страницу</string>
+<string name="about_app_menu_about">О программе</string>
+	<string name="about_app_short_desc">Привязка к Android и пользовательский интерфейс для демона tinc mesh VPN.</string>
+	<string name="about_app_copyright">Copyright © 2017-2021 Pacien TRAN-GIRARD и соавторы.</string>
+	<string name="about_app_license">Программное обеспечение распространяется на условиях GNU General Public License v3.</string>
+	
+
+	<string name="about_app_version_format">Версия приложения %1$s (сборка %2$s)</string>
+	<string name="about_app_running_on_format">Работает на Android %1$s %2$s</string>
+	<string name="about_app_supported_abis_format">Версия ABI: %1$s</string>
+	<string name="about_app_open_project_website">Веб-сайт проекта</string>
+<string name="crash_modal_title">Сбой приложения</string>
+	<string name="crash_modal_message">Приложение столкнулось с фатальной ошибкой.</string>
+	<string name="crash_modal_crash_logged">Сведения о сбое сохранены в \"%1$s\".</string>
+	<string name="crash_modal_action_send_email">Отправить электронное письмо</string>
+	<string name="crash_modal_action_send_report">Отправить отчет</string>
+<string name="decrypt_key_modal_title">Разблокировать приватные ключи tinc</string>
+	<string name="decrypt_key_modal_field_passphrase">Кодовая фраза</string>
+	<string name="decrypt_key_modal_action_unlock">Разблокировать</string>
+<string name="notification_error_channel_name">Ошибки</string>
+	<string name="notification_error_action_open_manual">Открыть руководство</string>
+	<string name="notification_error_title_unable_to_start_tinc">Не удалось запустить tinc</string>
+	<string name="notification_error_title_unable_to_start_ftp_server">Не удалось запустить FTP-сервер</string>
+	<string name="notification_error_message_could_not_read_private_key_format">Не удалось прочитать закрытые ключи tinc:\n%1$s</string>
+	<string name="notification_error_message_could_not_read_network_configuration_format">Не удалось прочитать конфигурацию сетевого интерфейса:\n%1$s</string>
+	<string name="notification_error_message_could_not_bind_iface">Не удалось привязать сетевой интерфейс. Запущен другой VPN?</string>
+	<string name="notification_error_message_could_not_configure_iface">Не удалось применить конфигурацию сетевого интерфейса:\n%1$s</string>
+	<string name="notification_error_message_daemon_exited">демон tinc завершил работу во время запуска: \n%1$s\nПроверьте журналы для получения более подробной информации.</string>
+	<string name="notification_error_message_passphrase_not_provided">Не предоставлена кодовая фраза для разблокировки хранилища ключей.</string>
+	<string name="notification_error_message_no_network_name_provided">Не указано имя сети.</string>
+	<string name="notification_error_message_no_configuration_for_network_format">Не удалось найти конфигурацию для сети \"%1$s\".</string>
+	<string name="notification_error_message_network_config_not_found_format">Не удалось найти файл конфигурации сети по адресу \"%1$s\".</string>
+	<string name="notification_error_message_network_config_invalid_format">Недопустимая конфигурация сети в network.conf:\n%1$s</string>
+	<string name="notification_error_message_could_not_decrypt_private_keys_format">Не удалось расшифровать закрытые ключи:\n%1$s</string>
+
+	<string name="notification_config_access_channel_name">Доступ к конфигурации</string>
+	<string name="notification_config_access_server_running_title">Сервер доступа к конфигурации активен</string>
+	<string name="notification_config_access_server_running_message">Каталог конфигурации доступен через FTP.</string>
+<string name="start_activity_menu_configure">Конфигурировать</string>
+	<string name="start_network_list_warning_text">Трафик с этого устройства будет частично или полностью перенаправляться в выбранную сеть и через нее в соответствии с вашей конфигурацией. Никогда не подключайтесь к сети tinc, которой вы не доверяете.</string>
+	<string name="start_network_list_title">Подключиться к сети</string>
+	<string name="start_network_list_empty_none_found">Не удалось найти никакой конфигурации сети.</string>
+	<string name="start_starting_vpn">Запуск VPN…</string>
+<string name="configure_tools_message_invalid_network_name">Недопустимое имя сети.</string>
+	<string name="configure_tools_message_network_configuration_written">Записана конфигурация сети.</string>
+
+	<string name="configure_activity_title_configuration_access">Доступ к конфигурации</string>
+	<string name="configure_configuration_server_ftp_access">Доступ по FTP</string>
+	<string name="configure_configuration_server_ftp_access_endpoint_format">Пользователь: %1$s, пароль: %2$s, порт: %3$d</string>
+	<string name="configure_configuration_server_ftp_access_not_active">Не активный</string>
+
+	<string name="configure_activity_title_internal_paths_info">Информация о внутренних путях</string>
+	<string name="configure_path_info_title_configuration_directory">Каталог конфигурации</string>
+	<string name="configure_path_info_title_log_directory">Каталог журналов</string>
+	<string name="configure_path_info_title_tinc_binary">исполняемый файл tinc</string>
+
+	<string name="configure_activity_title_tools">Инструменты</string>
+	<string name="configure_tools_action_generate_node_configuration_and_keys">Генерировать конфигурацию узла и ключи</string>
+	<string name="configure_tools_action_join_network_via_invitation_url">Присоединиться к сети через URL-адрес приглашения</string>
+	<string name="configure_tools_action_encrypt_decrypt_private_keys">Шифровать или дешифровать закрытые ключи</string>
+
+	<string name="configure_tools_generate_config_title">Новая сеть</string>
+	<string name="configure_tools_generate_config_net_name_hint">имя сети tinc</string>
+	<string name="configure_tools_generate_config_node_name_hint">Имя этого узла</string>
+	<string name="configure_tools_generate_config_optional_passphrase_hint">Кодовая фраза (необязательно)</string>
+	<string name="configure_tools_generate_config_action">Создать</string>
+	<string name="configure_tools_generate_config_generating">Генерируем конфигурацию узла…</string>
+
+	<string name="configure_tools_join_network_title">Присоединиться к сети</string>
+	<string name="configure_tools_join_network_field_invitation_url_hint">URL-адрес приглашения</string>
+	<string name="configure_tools_join_network_action_scan_qr_code_action">Сканировать QR-код</string>
+	<string name="configure_tools_join_network_action">Присоединиться</string>
+	<string name="configure_tools_join_network_joining">Присоединяемся к сети…</string>
+
+	<string name="configure_tools_private_keys_encryption_title">Шифрование закрытых ключей</string>
+	<string name="configure_tools_private_key_encryption_current_passphrase">Текущая кодовая фраза\n (оставьте пустой, если нет)</string>
+	<string name="configure_tools_private_key_encryption_new_passphrase">Новая кодовая фраза\n (оставьте пустой для расшифровки)</string>
+	
+
+	<string name="configure_tools_private_keys_encryption_encrypting">Шифрование/дешифрование закрытых ключей tinc</string>
+<string name="status_activity_state_connected_to_format">Подключен к %s</string>
+	<string name="status_activity_menu_disconnect">Разъединить</string>
+	<string name="status_activity_menu_show_log">Показать журнал</string>
+	<string name="status_activity_disconnecting_vpn">Отключение от VPN…</string>
+
+	<string name="status_activity_title_network_info">Сеть</string>
+	<string name="status_network_info_network_name_label">Имя сети</string>
+	<string name="status_network_info_ip_addresses_label">IP-адреса</string>
+	<string name="status_network_info_routes_label">Маршруты</string>
+	<string name="status_network_info_dns_servers_label">DNS-серверы</string>
+	<string name="status_network_info_search_domains_label">Поисковые домены</string>
+	<string name="status_network_info_allowed_applications_label">Разрешенные приложения</string>
+	<string name="status_network_info_disallowed_applications_label">Запрещенные приложения</string>
+	<string name="status_network_info_allow_bypass_label">Разрешить обход</string>
+	
+
+	
+
+	
+
+
+	<string name="status_activity_title_node_list">Узлы</string>
+	
+
+	<string name="status_node_reachability_unreachable">недостижимо</string>
+	<string name="status_node_reachability_this_node">этот узел</string>
+	<string name="status_node_reachability_direct_connection">прямой</string>
+	<string name="status_node_reachability_via_format">через %s</string>
+	<string name="status_node_reachability_unknown">…</string>
+	
+
+	<string name="status_node_info_dialog_title">Информация об узле</string>
+	
+
+
+	<string name="status_activity_title_subnet_list">Подсети</string>
+<string name="log_view_state_level_format">Уровень журнала: %s</string>
+	<string name="log_view_state_paused">Ведение журнала приостановилось</string>
+	<string name="log_view_menu_toggle_logging">Переключить ведение журнала</string>
+	<string name="log_view_menu_share_log">Поделиться журналом</string>
+</resources>
