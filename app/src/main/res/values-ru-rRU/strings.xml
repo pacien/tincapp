@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
 <resources>
-<string name="generic_title_error">Ошибка</string>
+
+	<!-- generic strings -->
+	<string name="generic_title_error">Ошибка</string>
 	<string name="generic_loading">Загрузка…</string>
 	<string name="generic_yes">да</string>
 	<string name="generic_no">нет</string>
@@ -9,25 +30,31 @@
 	<string name="generic_action_cancel">Отменить</string>
 	<string name="generic_action_apply">Применить</string>
 	<string name="generic_action_open_web_page">Открыть веб-страницу</string>
-<string name="about_app_menu_about">О программе</string>
+
+	<!-- about modal -->
+	<string name="about_app_menu_about">О программе</string>
 	<string name="about_app_short_desc">Привязка к Android и пользовательский интерфейс для демона tinc mesh VPN.</string>
 	<string name="about_app_copyright">Copyright © 2017-2021 Pacien TRAN-GIRARD и соавторы.</string>
 	<string name="about_app_license">Программное обеспечение распространяется на условиях GNU General Public License v3.</string>
-	
-
 	<string name="about_app_version_format">Версия приложения %1$s (сборка %2$s)</string>
 	<string name="about_app_running_on_format">Работает на Android %1$s %2$s</string>
 	<string name="about_app_supported_abis_format">Версия ABI: %1$s</string>
 	<string name="about_app_open_project_website">Веб-сайт проекта</string>
-<string name="crash_modal_title">Сбой приложения</string>
+
+	<!-- crash modal -->
+	<string name="crash_modal_title">Сбой приложения</string>
 	<string name="crash_modal_message">Приложение столкнулось с фатальной ошибкой.</string>
 	<string name="crash_modal_crash_logged">Сведения о сбое сохранены в \"%1$s\".</string>
 	<string name="crash_modal_action_send_email">Отправить электронное письмо</string>
 	<string name="crash_modal_action_send_report">Отправить отчет</string>
-<string name="decrypt_key_modal_title">Разблокировать приватные ключи tinc</string>
+
+	<!-- key decryption modal -->
+	<string name="decrypt_key_modal_title">Разблокировать приватные ключи tinc</string>
 	<string name="decrypt_key_modal_field_passphrase">Кодовая фраза</string>
 	<string name="decrypt_key_modal_action_unlock">Разблокировать</string>
-<string name="notification_error_channel_name">Ошибки</string>
+
+	<!-- error notifications -->
+	<string name="notification_error_channel_name">Ошибки</string>
 	<string name="notification_error_action_open_manual">Открыть руководство</string>
 	<string name="notification_error_title_unable_to_start_tinc">Не удалось запустить tinc</string>
 	<string name="notification_error_title_unable_to_start_ftp_server">Не удалось запустить FTP-сервер</string>
@@ -46,12 +73,16 @@
 	<string name="notification_config_access_channel_name">Доступ к конфигурации</string>
 	<string name="notification_config_access_server_running_title">Сервер доступа к конфигурации активен</string>
 	<string name="notification_config_access_server_running_message">Каталог конфигурации доступен через FTP.</string>
-<string name="start_activity_menu_configure">Конфигурировать</string>
+
+	<!-- Start activity -->
+	<string name="start_activity_menu_configure">Конфигурировать</string>
 	<string name="start_network_list_warning_text">Трафик с этого устройства будет частично или полностью перенаправляться в выбранную сеть и через нее в соответствии с вашей конфигурацией. Никогда не подключайтесь к сети tinc, которой вы не доверяете.</string>
 	<string name="start_network_list_title">Подключиться к сети</string>
 	<string name="start_network_list_empty_none_found">Не удалось найти никакой конфигурации сети.</string>
 	<string name="start_starting_vpn">Запуск VPN…</string>
-<string name="configure_tools_message_invalid_network_name">Недопустимое имя сети.</string>
+
+	<!-- Configure activity -->
+	<string name="configure_tools_message_invalid_network_name">Недопустимое имя сети.</string>
 	<string name="configure_tools_message_network_configuration_written">Записана конфигурация сети.</string>
 
 	<string name="configure_activity_title_configuration_access">Доступ к конфигурации</string>
@@ -85,10 +116,10 @@
 	<string name="configure_tools_private_keys_encryption_title">Шифрование закрытых ключей</string>
 	<string name="configure_tools_private_key_encryption_current_passphrase">Текущая кодовая фраза\n (оставьте пустой, если нет)</string>
 	<string name="configure_tools_private_key_encryption_new_passphrase">Новая кодовая фраза\n (оставьте пустой для расшифровки)</string>
-	
-
 	<string name="configure_tools_private_keys_encryption_encrypting">Шифрование/дешифрование закрытых ключей tinc</string>
-<string name="status_activity_state_connected_to_format">Подключен к %s</string>
+
+	<!-- Status activity -->
+	<string name="status_activity_state_connected_to_format">Подключен к %s</string>
 	<string name="status_activity_menu_disconnect">Разъединить</string>
 	<string name="status_activity_menu_show_log">Показать журнал</string>
 	<string name="status_activity_disconnecting_vpn">Отключение от VPN…</string>
@@ -103,29 +134,19 @@
 	<string name="status_network_info_disallowed_applications_label">Запрещенные приложения</string>
 	<string name="status_network_info_allow_bypass_label">Разрешить обход</string>
 	
-
-	
-
-	
-
-
 	<string name="status_activity_title_node_list">Узлы</string>
-	
-
 	<string name="status_node_reachability_unreachable">недостижимо</string>
 	<string name="status_node_reachability_this_node">этот узел</string>
-	<string name="status_node_reachability_direct_connection">прямой</string>
+	<string name="status_node_reachability_direct_connection">прямое соединение</string>
 	<string name="status_node_reachability_via_format">через %s</string>
 	<string name="status_node_reachability_unknown">…</string>
-	
-
 	<string name="status_node_info_dialog_title">Информация об узле</string>
 	
-
-
 	<string name="status_activity_title_subnet_list">Подсети</string>
-<string name="log_view_state_level_format">Уровень журнала: %s</string>
-	<string name="log_view_state_paused">Ведение журнала приостановилось</string>
+
+	<!-- Log viewer activity -->
+	<string name="log_view_state_level_format">Уровень журнала: %s</string>
+	<string name="log_view_state_paused">Ведение журнала приостановлено</string>
 	<string name="log_view_menu_toggle_logging">Переключить ведение журнала</string>
 	<string name="log_view_menu_share_log">Поделиться журналом</string>
 </resources>
