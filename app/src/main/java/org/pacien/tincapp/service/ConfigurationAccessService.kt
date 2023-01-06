@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 package org.pacien.tincapp.service
 
-import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -39,6 +38,7 @@ import org.pacien.tincapp.activities.configure.ConfigureActivity
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppNotificationManager
 import org.pacien.tincapp.extensions.Java.defaultMessage
+import org.pacien.tincapp.utils.PendingIntentUtils
 import org.slf4j.LoggerFactory
 import java.io.IOException
 
@@ -125,7 +125,7 @@ class ConfigurationAccessService : Service() {
         .setContentTitle(resources.getString(R.string.notification_config_access_server_running_title))
         .setContentText(resources.getString(R.string.notification_config_access_server_running_message))
         .setContentIntent(Intent(this, ConfigureActivity::class.java).let {
-          PendingIntent.getActivity(this, 0, it, 0)
+          PendingIntentUtils.getActivity(this, 0, it, 0)
         })
         .build()
     )

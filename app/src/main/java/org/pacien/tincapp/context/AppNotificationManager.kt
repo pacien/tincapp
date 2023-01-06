@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,8 @@
 
 package org.pacien.tincapp.context
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -30,6 +28,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import org.pacien.tincapp.R
+import org.pacien.tincapp.utils.PendingIntentUtils
 
 /**
  * @author pacien
@@ -95,7 +94,7 @@ class AppNotificationManager(private val context: Context) {
 
   private fun NotificationCompat.Builder.setManualLink(manualLink: String) = apply {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(manualLink))
-    val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+    val pendingIntent = PendingIntentUtils.getActivity(context, 0, intent, 0)
     addAction(R.drawable.ic_help_primary_24dp, context.getString(R.string.notification_error_action_open_manual), pendingIntent)
   }
 }
