@@ -81,6 +81,8 @@ android {
       ]
     }
   }
+
+  namespace 'org.pacien.tincapp'
 }
 
 dependencies {
