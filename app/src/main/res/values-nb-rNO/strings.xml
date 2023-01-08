@@ -2,7 +2,7 @@
 
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2021 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *               2017-2018 Allan Nordhøy (comradekingu)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@
 	<!-- about modal -->
 	<string name="about_app_menu_about">Om</string>
 	<string name="about_app_short_desc">Android-binding og brukergrensesnitt tiltenkt maskenett-VPN-nissen for Tinc.</string>
-	<string name="about_app_copyright">Copyright © 2017–2021 Pacien TRAN-GIRARD og bidragsytere.</string>
+	<string name="about_app_copyright">Copyright © 2017–2023 Pacien TRAN-GIRARD og bidragsytere.</string>
 	<string name="about_app_license">Programvare distribuert i henhold til vilkårene i GNU General Public Lisens v3.</string>
 	<string name="about_app_version_format">Programversion %1$s (%2$s-bygg)</string>
 	<string name="about_app_running_on_format">Kjører på Android %1$s %2$s</string>
