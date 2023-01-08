@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.LocalServerSocket
 import android.net.VpnService
+import android.os.Build
 import android.os.ParcelFileDescriptor
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import java8.util.concurrent.CompletableFuture
@@ -133,6 +134,8 @@ class TincVpnService : VpnService() {
       Builder().setSession(netName)
         .applyCfg(interfaceCfg)
         .also { applyIgnoringException(it::addDisallowedApplication, BuildConfig.APPLICATION_ID) }
+        // inherit metered property from underlying network
+        .also { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) it.setMetered(false) }
         .establish()!!
     } catch (e: IllegalArgumentException) {
       return reportError(resources.getString(R.string.notification_error_message_network_config_invalid_format, e.defaultMessage()), e, "network-interface")

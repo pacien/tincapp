@@ -3,6 +3,9 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.36 -- 2023-01-09
+- inherit metered network restriction from underlying link (android 10+)
+
 ## v0.35 -- 2023-01-06
 - fix app crash when connecting or enabling FTP server (android 12+)
 
