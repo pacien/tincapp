@@ -37,8 +37,8 @@ android {
     minSdkVersion 21
     targetSdkVersion 32
     multiDexEnabled true
-    versionCode 34
-    versionName '0.34'
+    versionCode 35
+    versionName '0.35'
     ndk {
       abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
     }
@@ -81,6 +81,8 @@ android {
       ]
     }
   }
+
+  namespace 'org.pacien.tincapp'
 }
 
 dependencies {

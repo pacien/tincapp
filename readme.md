@@ -31,7 +31,7 @@ Requirements:
 
 - Android SDK Platform 32
 - Android NDK r22
-- Android Platform-Tools 32
+- Android Platform-Tools 33
 - Android SDK Tools 26
 - CMake
 - automake

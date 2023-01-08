@@ -16,25 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package org.pacien.tincapp.utils
 
-buildscript {
-  ext.kotlin_version = '1.7.20'
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 
-  repositories {
-    mavenCentral()
-    google()
+/**
+ * @author pacien
+ */
+object PendingIntentUtils {
+  fun getActivity(context: Context, requestCode: Int, intent: Intent, flags: Int): PendingIntent {
+    val extraFlags =
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+    return PendingIntent.getActivity(context, requestCode, intent, flags or extraFlags)
   }
-
-  dependencies {
-    classpath 'com.android.tools.build:gradle:7.3.1'
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-    // NOTE: Do not place your application dependencies here; they belong
-    // in the individual module build.gradle files
-  }
-}
-
-task clean(type: Delete) {
-  delete rootProject.buildDir
 }
