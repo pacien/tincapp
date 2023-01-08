@@ -4,7 +4,7 @@ This file lists notable changes that have been made to the application on each r
 Releases are tracked and referred to using git tags.
 
 ## v0.35 -- 2023-01-06
-- fix app crash when connecting or enabling FTP server (android 31+)
+- fix app crash when connecting or enabling FTP server (android 12+)
 
 ## v0.34 - 2023-01-02
 - add prominent warning at the top of the network list (Google Play requirement)
