@@ -36,7 +36,7 @@
 	<!-- about modal -->
 	<string name="about_app_menu_about">About</string>
 	<string name="about_app_short_desc">Android binding and user interface for the tinc mesh VPN daemon.</string>
-	<string name="about_app_copyright">Copyright © 2017–2021 Pacien TRAN-GIRARD and contributors.</string>
+	<string name="about_app_copyright">Copyright © 2017–2023 Pacien TRAN-GIRARD and contributors.</string>
 	<string name="about_app_license">Software distributed under the terms of the GNU General Public License v3.</string>
 	<string name="about_app_website_url" translatable="false">https://tincapp.pacien.org</string>
 	<string name="about_app_version_format">App version %1$s (%2$s build)</string>
