@@ -17,3 +17,4 @@ Other contributors
 * mahatma1: old Android backport
 * naofum: Japanese translation
 * yangfl: Chinese translation
+* exclued: Russian translation
