@@ -32,9 +32,9 @@ The project can be built using the Gradle `build` task, on Linux.
 
 Requirements:
 
-- Android SDK Platform 32
+- Android SDK Platform 33
 - Android NDK r22
-- Android Platform-Tools 33
+- Android Platform-Tools 34
 - Android SDK Tools 26
 - CMake
 - automake
