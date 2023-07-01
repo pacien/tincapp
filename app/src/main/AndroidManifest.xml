@@ -23,6 +23,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- required for VPN service error reporting, since API 33 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <!-- needed for the configuration FTP server -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
