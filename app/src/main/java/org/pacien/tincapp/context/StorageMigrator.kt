@@ -27,7 +27,7 @@ import java.io.IOException
  *
  * @author pacien
  */
-class ConfigurationDirectoryMigrator {
+class StorageMigrator {
   private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
   private val context by lazy { App.getContext() }
   private val paths = AppPaths

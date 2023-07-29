@@ -47,7 +47,7 @@ class App : Application() {
     logger.info("Starting tinc app {} ({} build), running on {} ({})",
       BuildConfig.VERSION_NAME, BuildConfig.BUILD_TYPE, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
 
-    ConfigurationDirectoryMigrator().migrate()
+    StorageMigrator().migrate()
   }
 
   private fun setupCrashHandler(logger: Logger) {
