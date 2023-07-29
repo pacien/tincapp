@@ -51,10 +51,12 @@ object AppPaths {
 
   private fun privateCacheDir() = context.cacheDir!!
   private fun publicCacheDir() = context.externalCacheDir!!
+  private fun publicFilesDir() = context.getExternalFilesDir(null)
   private fun binDir() = File(context.applicationInfo.nativeLibraryDir)
+
   fun runtimeDir() = withDir(File(privateCacheDir(), APP_TINC_RUNTIME_DIR))
   fun logDir() = withDir(File(publicCacheDir(), APP_LOG_DIR))
-  fun confDir() = withDir(File(context.filesDir!!, APP_TINC_NETWORKS_DIR))
+  fun confDir() = withDir(File(publicFilesDir(), APP_TINC_NETWORKS_DIR))
 
   fun confDir(netName: String) = File(confDir(), netName)
   fun hostsDir(netName: String) = File(confDir(netName), NET_HOSTS_DIR)

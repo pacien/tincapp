@@ -23,14 +23,14 @@ import org.slf4j.LoggerFactory
 import java.io.IOException
 
 /**
- * Migrates the configuration from the external storage (used before version 0.32) to the internal storage.
+ * Migrates the configuration from the private storage (used before version 0.38) to the
+ * user-accessible storage (through the USB storage mode).
  *
  * @author pacien
  */
 class StorageMigrator {
   private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
   private val context by lazy { App.getContext() }
-  private val paths = AppPaths
 
   fun migrate() {
     migrateConfigurationDirectory()
@@ -38,17 +38,18 @@ class StorageMigrator {
   }
 
   private fun migrateConfigurationDirectory() {
-    val oldConfigDir = context.getExternalFilesDir(null)
+    val oldConfigDir = context.filesDir
     if (oldConfigDir == null || oldConfigDir.listFiles().isNullOrEmpty()) return // nothing to do
 
     try {
+      val newConfigDir = context.getExternalFilesDir(null)!!
       log.info(
         "Migrating files present in old configuration directory at {} to {}",
         oldConfigDir.absolutePath,
-        paths.confDir()
+        newConfigDir.absolutePath
       )
 
-      oldConfigDir.copyRecursively(paths.confDir(), overwrite = false)
+      oldConfigDir.copyRecursively(newConfigDir, overwrite = false)
       oldConfigDir.deleteRecursively()
     } catch (e: IOException) {
       log.warn("Could not complete configuration directory migration: {}", e.defaultMessage())
