@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,10 +49,11 @@ object AppPaths {
 
   private val context by lazy { App.getContext() }
 
-  private fun cacheDir() = context.cacheDir!!
+  private fun privateCacheDir() = context.cacheDir!!
+  private fun publicCacheDir() = context.externalCacheDir!!
   private fun binDir() = File(context.applicationInfo.nativeLibraryDir)
-  fun runtimeDir() = withDir(File(cacheDir(), APP_TINC_RUNTIME_DIR))
-  fun logDir() = withDir(File(cacheDir(), APP_LOG_DIR))
+  fun runtimeDir() = withDir(File(privateCacheDir(), APP_TINC_RUNTIME_DIR))
+  fun logDir() = withDir(File(publicCacheDir(), APP_LOG_DIR))
   fun confDir() = withDir(File(context.filesDir!!, APP_TINC_NETWORKS_DIR))
 
   fun confDir(netName: String) = File(confDir(), netName)
@@ -63,7 +64,7 @@ object AppPaths {
   fun logFile(netName: String) = File(logDir(), String.format(LOGFILE_FORMAT, netName))
   fun pidFile(netName: String) = File(runtimeDir(), String.format(PIDFILE_FORMAT, netName))
   fun appLogFile() = File(logDir(), APPLOG_FILE)
-  fun crashFlagFile() = File(cacheDir(), CRASHFLAG_FILE)
+  fun crashFlagFile() = File(privateCacheDir(), CRASHFLAG_FILE)
 
   fun existing(f: File) = f.apply { if (!exists()) throw FileNotFoundException(f.absolutePath) }
   fun withDir(f: File) = f.apply { if (!exists()) mkdirs() }
