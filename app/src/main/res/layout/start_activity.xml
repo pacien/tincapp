@@ -2,7 +2,7 @@
 
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-<fragment
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/start_activity_network_list_fragment"
-	android:name="org.pacien.tincapp.activities.start.NetworkListFragment"
+	android:id="@+id/start_network_list_wrapper"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"/>
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<TextView
+		android:id="@+id/start_network_list_warning_text"
+		style="@style/AppTheme.ListBlock.Placeholder"
+		android:text="@string/start_network_list_warning_text"/>
+
+	<fragment
+		android:id="@+id/start_activity_network_list_fragment"
+		android:name="org.pacien.tincapp.activities.start.NetworkListFragment"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+
+</LinearLayout>
