@@ -36,10 +36,7 @@ import org.pacien.tincapp.utils.PendingIntentUtils
 class AppNotificationManager(private val context: Context) {
   companion object {
     private const val ERROR_CHANNEL_ID = "org.pacien.tincapp.notification.channels.error"
-    private const val CONFIG_ACCESS_CHANNEL_ID = "org.pacien.tincapp.notification.channels.configuration"
-
     const val ERROR_NOTIFICATION_ID = 0
-    const val CONFIG_ACCESS_NOTIFICATION_ID = 1
   }
 
   init {
@@ -65,9 +62,6 @@ class AppNotificationManager(private val context: Context) {
     NotificationManagerCompat.from(context).cancelAll()
   }
 
-  fun newConfigurationAccessNotificationBuilder() =
-    NotificationCompat.Builder(context, CONFIG_ACCESS_CHANNEL_ID)
-
   @RequiresApi(Build.VERSION_CODES.O)
   private fun registerChannels() {
     context.getSystemService(NotificationManager::class.java)
@@ -76,13 +70,6 @@ class AppNotificationManager(private val context: Context) {
           ERROR_CHANNEL_ID,
           context.getString(R.string.notification_error_channel_name),
           NotificationManager.IMPORTANCE_HIGH
-        ))
-      }
-      .apply {
-        createNotificationChannel(NotificationChannel(
-          CONFIG_ACCESS_CHANNEL_ID,
-          context.getString(R.string.notification_config_access_channel_name),
-          NotificationManager.IMPORTANCE_MIN
         ))
       }
   }

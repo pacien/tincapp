@@ -26,9 +26,6 @@
     <!-- required for VPN service error reporting, since API 33 -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-    <!-- needed for the configuration FTP server -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <!-- workaround for broken file permissions on some Android ROMs -->
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -89,10 +86,6 @@
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
-        </service>
-
-        <service
-            android:name="org.pacien.tincapp.service.ConfigurationAccessService">
         </service>
 
     </application>

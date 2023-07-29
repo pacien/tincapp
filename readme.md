@@ -61,7 +61,6 @@ Builds of this software embed and make use of the following libraries:
 * logback-android, licensed under the GNU Lesser General Public License v2.1
 * Apache Commons Configuration, licensed under the Apache v2.0 License
 * Apache Commons BeanUtils, licensed under the Apache v2.0 License
-* Apache Mina FtpServer, licensed under the Apache v2.0 License
 * LZO, licensed under the GNU General Public License v2.0
 * LibreSSL libcrypto, licensed under the OpenSSL License, ISC License, public
   domain

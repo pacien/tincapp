@@ -57,7 +57,6 @@
 	<string name="notification_error_channel_name">Ошибки</string>
 	<string name="notification_error_action_open_manual">Открыть руководство</string>
 	<string name="notification_error_title_unable_to_start_tinc">Не удалось запустить tinc</string>
-	<string name="notification_error_title_unable_to_start_ftp_server">Не удалось запустить FTP-сервер</string>
 	<string name="notification_error_message_could_not_read_private_key_format">Не удалось прочитать закрытые ключи tinc:\n%1$s</string>
 	<string name="notification_error_message_could_not_read_network_configuration_format">Не удалось прочитать конфигурацию сетевого интерфейса:\n%1$s</string>
 	<string name="notification_error_message_could_not_bind_iface">Не удалось привязать сетевой интерфейс. Запущен другой VPN?</string>
@@ -70,10 +69,6 @@
 	<string name="notification_error_message_network_config_invalid_format">Недопустимая конфигурация сети в network.conf:\n%1$s</string>
 	<string name="notification_error_message_could_not_decrypt_private_keys_format">Не удалось расшифровать закрытые ключи:\n%1$s</string>
 
-	<string name="notification_config_access_channel_name">Доступ к конфигурации</string>
-	<string name="notification_config_access_server_running_title">Сервер доступа к конфигурации активен</string>
-	<string name="notification_config_access_server_running_message">Каталог конфигурации доступен через FTP.</string>
-
 	<!-- Start activity -->
 	<string name="start_activity_menu_configure">Конфигурировать</string>
 	<string name="start_network_list_warning_text">Трафик с этого устройства будет частично или полностью перенаправляться в выбранную сеть и через нее в соответствии с вашей конфигурацией. Никогда не подключайтесь к сети tinc, которой вы не доверяете.</string>
@@ -84,11 +79,6 @@
 	<!-- Configure activity -->
 	<string name="configure_tools_message_invalid_network_name">Недопустимое имя сети.</string>
 	<string name="configure_tools_message_network_configuration_written">Записана конфигурация сети.</string>
-
-	<string name="configure_activity_title_configuration_access">Доступ к конфигурации</string>
-	<string name="configure_configuration_server_ftp_access">Доступ по FTP</string>
-	<string name="configure_configuration_server_ftp_access_endpoint_format">Пользователь: %1$s, пароль: %2$s, порт: %3$d</string>
-	<string name="configure_configuration_server_ftp_access_not_active">Не активный</string>
 
 	<string name="configure_activity_title_internal_paths_info">Информация о внутренних путях</string>
 	<string name="configure_path_info_title_configuration_directory">Каталог конфигурации</string>

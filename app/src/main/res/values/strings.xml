@@ -62,7 +62,6 @@
 	<string name="notification_error_channel_name">Errors</string>
 	<string name="notification_error_action_open_manual">Open manual</string>
 	<string name="notification_error_title_unable_to_start_tinc">Could not start tinc</string>
-	<string name="notification_error_title_unable_to_start_ftp_server">Could not start FTP server</string>
 	<string name="notification_error_message_could_not_read_private_key_format">Could not read private tinc keys:\n%1$s</string>
 	<string name="notification_error_message_could_not_read_network_configuration_format">Could not read network interface configuration:\n%1$s</string>
 	<string name="notification_error_message_could_not_bind_iface">Could not bind network interface. Is another VPN running?</string>
@@ -75,10 +74,6 @@
 	<string name="notification_error_message_network_config_invalid_format">Invalid network configuration in network.conf:\n%1$s</string>
 	<string name="notification_error_message_could_not_decrypt_private_keys_format">Could not decrypt private keys:\n%1$s</string>
 
-	<string name="notification_config_access_channel_name">Configuration access</string>
-	<string name="notification_config_access_server_running_title">Configuration access server active</string>
-	<string name="notification_config_access_server_running_message">The configuration directory is accessible through FTP.</string>
-
 	<!-- Start activity -->
 	<string name="start_activity_menu_configure">Configure</string>
 	<string name="start_network_list_warning_text">Traffic from this device will be partially or fully routed to and through the selected network in accordance with your configuration. Never connect to a tinc network which you do not trust.</string>
@@ -89,11 +84,6 @@
 	<!-- Configure activity -->
 	<string name="configure_tools_message_invalid_network_name">Invalid network name.</string>
 	<string name="configure_tools_message_network_configuration_written">Network configuration written.</string>
-
-	<string name="configure_activity_title_configuration_access">Configuration access</string>
-	<string name="configure_configuration_server_ftp_access">FTP access</string>
-	<string name="configure_configuration_server_ftp_access_endpoint_format">User: %1$s, password: %2$s, port: %3$d</string>
-	<string name="configure_configuration_server_ftp_access_not_active">Not active</string>
 
 	<string name="configure_activity_title_internal_paths_info">Internal paths info</string>
 	<string name="configure_path_info_title_configuration_directory">Configuration directory</string>
