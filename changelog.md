@@ -9,6 +9,8 @@ Releases are tracked and referred to using git tags.
 - display errors on the home screen instead of through the system notifications
   (as recommended-required for Android 13, API 33)
 - fix app crash on fast tap in network selection and configuration screens
+- include the configuration with its private keys in encrypted device backups
+- update LibreSSL to 3.7.3
 
 ## v0.37 -- 2023-01-30
 - add russian translation (contributed by exclued)
