@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2020 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ class StartActivity : BaseActivity() {
 
   private fun initNetworkListFragment() {
     val fragment = start_activity_network_list_fragment as NetworkListFragment
-    fragment.connectToNetworkAction = { netName -> connectionStarter.tryStart(netName, displayStatus = true) }
+    fragment.connectToNetworkAction = { netName -> connectToNetworkAction(netName) }
   }
 
   override fun onCreateOptionsMenu(m: Menu): Boolean {
@@ -93,6 +93,11 @@ class StartActivity : BaseActivity() {
     }
 
     super.onActivityResult(request, result, data)
+  }
+
+  private fun connectToNetworkAction(netName: String) {
+    if (connectDialog?.isShowing == true) return
+    connectionStarter.tryStart(netName, displayStatus = true)
   }
 
   private fun continueConnectionStart(result: Int): Unit = when (result) {

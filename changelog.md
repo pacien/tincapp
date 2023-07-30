@@ -8,7 +8,7 @@ Releases are tracked and referred to using git tags.
   (in USB storage mode). The embedded FTP server has been removed
 - display errors on the home screen instead of through the system notifications
   (as recommended-required for Android 13, API 33)
-- fix app crash on fast tap in configuration screen
+- fix app crash on fast tap in network selection and configuration screens
 
 ## v0.37 -- 2023-01-30
 - add russian translation (contributed by exclued)
