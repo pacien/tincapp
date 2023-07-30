@@ -18,70 +18,59 @@
 
 package org.pacien.tincapp.context
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import org.pacien.tincapp.R
-import org.pacien.tincapp.utils.PendingIntentUtils
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 
 /**
  * @author pacien
  */
 class AppNotificationManager(private val context: Context) {
+  data class ErrorNotification(
+    val title: String,
+    val message: String,
+    val manualLink: String?
+  )
+
   companion object {
-    private const val ERROR_CHANNEL_ID = "org.pacien.tincapp.notification.channels.error"
-    const val ERROR_NOTIFICATION_ID = 0
+    private val STORE_NAME = this::class.java.`package`!!.name
+    private const val STORE_KEY_TITLE = "title"
+    private const val STORE_KEY_MESSAGE = "message"
+    private const val STORE_KEY_MANUAL_LINK = "manual_link"
   }
 
-  init {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) registerChannels()
+  private val store by lazy { context.getSharedPreferences(STORE_NAME, Context.MODE_PRIVATE)!! }
+
+  fun getError(): ErrorNotification? {
+    if (!store.contains(STORE_KEY_TITLE)) return null;
+
+    return ErrorNotification(
+      store.getString(STORE_KEY_TITLE, null)!!,
+      store.getString(STORE_KEY_MESSAGE, null)!!,
+      store.getString(STORE_KEY_MANUAL_LINK, null)
+    )
   }
 
   fun notifyError(title: String, message: String, manualLink: String? = null) {
-    val notification = NotificationCompat.Builder(context, ERROR_CHANNEL_ID)
-      .setSmallIcon(R.drawable.ic_warning_primary_24dp)
-      .setContentTitle(title)
-      .setContentText(message)
-      .setStyle(NotificationCompat.BigTextStyle().bigText(message))
-      .setHighPriority()
-      .setAutoCancel(true)
-      .apply { if (manualLink != null) setManualLink(manualLink) }
-      .build()
-
-    NotificationManagerCompat.from(context)
-      .notify(ERROR_NOTIFICATION_ID, notification)
+    store
+      .edit()
+      .putString(STORE_KEY_TITLE, title)
+      .putString(STORE_KEY_MESSAGE, message)
+      .putString(STORE_KEY_MANUAL_LINK, manualLink)
+      .apply()
   }
 
   fun dismissAll() {
-    NotificationManagerCompat.from(context).cancelAll()
+    store
+      .edit()
+      .clear()
+      .apply()
   }
 
-  @RequiresApi(Build.VERSION_CODES.O)
-  private fun registerChannels() {
-    context.getSystemService(NotificationManager::class.java)
-      .apply {
-        createNotificationChannel(NotificationChannel(
-          ERROR_CHANNEL_ID,
-          context.getString(R.string.notification_error_channel_name),
-          NotificationManager.IMPORTANCE_HIGH
-        ))
-      }
+  fun registerListener(listener: OnSharedPreferenceChangeListener) {
+    store.registerOnSharedPreferenceChangeListener(listener)
   }
 
-  private fun NotificationCompat.Builder.setHighPriority() = apply {
-    priority = NotificationCompat.PRIORITY_MAX
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) setDefaults(NotificationCompat.DEFAULT_SOUND) // force heads-up notification
-  }
-
-  private fun NotificationCompat.Builder.setManualLink(manualLink: String) = apply {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(manualLink))
-    val pendingIntent = PendingIntentUtils.getActivity(context, 0, intent, 0)
-    addAction(R.drawable.ic_help_primary_24dp, context.getString(R.string.notification_error_action_open_manual), pendingIntent)
+  fun unregisterListener(listener: OnSharedPreferenceChangeListener) {
+    store.unregisterOnSharedPreferenceChangeListener(listener)
   }
 }

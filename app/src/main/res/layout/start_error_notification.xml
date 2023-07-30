@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<data>
+
+		<import type="android.view.View"/>
+
+		<variable
+			name="errorNotification"
+			type="org.pacien.tincapp.context.AppNotificationManager.ErrorNotification"/>
+
+		<!-- '<' escaping: https://stackoverflow.com/q/40970686 -->
+		<variable
+			name="openManualAction"
+			type="kotlin.jvm.functions.Function0&lt;kotlin.Unit>"/>
+
+	</data>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:visibility="@{errorNotification == null ? View.GONE : View.VISIBLE}">
+
+		<TextView
+			android:text="@{errorNotification.title}"
+			style="@style/AppTheme.SectionTitle.Error" />
+
+		<LinearLayout style="@style/AppTheme.ListBlock">
+
+			<TextView
+				style="@style/AppTheme.BlockTitle"
+				android:text="@{errorNotification.message}" />
+
+			<LinearLayout
+				style="@style/AppTheme.ListBlock.Clickable"
+				android:visibility="@{errorNotification.manualLink == null ? View.GONE : View.VISIBLE}"
+				android:onClick="@{() -> openManualAction.invoke()}">
+
+				<TextView
+					style="@style/AppTheme.BlockTitle"
+					android:text="@string/notification_error_action_open_manual" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</layout>

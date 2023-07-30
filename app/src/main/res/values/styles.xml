@@ -2,7 +2,7 @@
 
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,10 @@
 		<item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
 		<item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
 		<item name="android:paddingTop">@dimen/activity_vertical_margin</item>
+	</style>
+
+	<style name="AppTheme.SectionTitle.Error">
+		<item name="android:textColor">@color/textError</item>
 	</style>
 
 	<style name="AppTheme.List">

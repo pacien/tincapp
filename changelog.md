@@ -6,6 +6,8 @@ Releases are tracked and referred to using git tags.
 ## v0.38 -- (upcoming release)
 - make configuration files and logs accessible in the user-accessible storage
   (in USB storage mode). The embedded FTP server has been removed
+- display errors on the home screen instead of through the system notifications
+  (as recommended-required for Android 13, API 33)
 
 ## v0.37 -- 2023-01-30
 - add russian translation (contributed by exclued)
