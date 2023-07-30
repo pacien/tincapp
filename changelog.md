@@ -3,7 +3,7 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
-## v0.38 -- (upcoming release)
+## v0.38 -- 2023-07-30
 - make configuration files and logs accessible in the user-accessible storage
   (in USB storage mode). The embedded FTP server has been removed
 - display errors on the home screen instead of through the system notifications
