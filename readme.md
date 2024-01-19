@@ -44,7 +44,7 @@ Requirements:
 License
 -------
 
-Copyright (C) 2017-2023 Pacien TRAN-GIRARD and contributors (listed in
+Copyright (C) 2017-2024 Pacien TRAN-GIRARD and contributors (listed in
 `contributors.md`).
 
 _Tinc App_ is distributed under the terms of GNU General Public License v3.0,
