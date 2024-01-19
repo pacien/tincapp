@@ -3,6 +3,9 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.39 -- (next release)
+- fix permissions for newly created or joined network host and key files
+
 ## v0.38 -- 2023-07-30
 - make configuration files and logs accessible in the user-accessible storage
   (in USB storage mode). The embedded FTP server has been removed

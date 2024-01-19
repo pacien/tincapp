@@ -1,6 +1,6 @@
 /*
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2018 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2024 Pacien TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,9 @@ import kotlinx.android.synthetic.main.configure_tools_dialog_network_join.view.*
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
+import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.databinding.ConfigureToolsDialogNetworkJoinBinding
+import org.pacien.tincapp.utils.makePublic
 
 /**
  * @author pacien
@@ -78,5 +80,6 @@ class JoinNetworkToolDialogFragment : ConfigurationToolDialogFragment() {
         .thenCompose { TincApp.removeScripts(netName) }
         .thenCompose { TincApp.generateIfaceCfg(netName) }
         .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) }
+        .thenApply { AppPaths.confDir(netName).makePublic() }
     )
 }
