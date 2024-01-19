@@ -3,7 +3,7 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
-## v0.39 -- (next release)
+## v0.39 -- 2024-01-20
 - fix permissions for newly created or joined network host and key files
 
 ## v0.38 -- 2023-07-30
