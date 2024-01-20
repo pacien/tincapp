@@ -25,3 +25,4 @@
 /app/release
 /app/.cxx
 keystore.properties
+*.local
