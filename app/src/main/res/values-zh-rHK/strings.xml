@@ -2,7 +2,7 @@
 
 <!--
  * Tinc App, an Android binding and user interface for the tinc mesh VPN daemon
- * Copyright (C) 2017-2023 Pacien TRAN-GIRARD
+ * Copyright (C) 2017-2024 Pacien TRAN-GIRARD
  *               2017-2018 yangfl
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@
 	<!-- about modal -->
 	<string name="about_app_menu_about">關於</string>
 	<string name="about_app_short_desc">tinc mesh VPN 守護進程的 Android 綁定和用户界面。</string>
-	<string name="about_app_copyright">版權所有 © 2017–2023 Pacien TRAN-GIRARD 及其貢獻者。</string>
+	<string name="about_app_copyright">版權所有 © 2017–2024 Pacien TRAN-GIRARD 及其貢獻者。</string>
 	<string name="about_app_license">軟件根據 GNU 通用公共許可證第3版的條款進行分發。</string>
 	<string name="about_app_version_format">應用程序版本 %1$s（%2$s build）</string>
 	<string name="about_app_running_on_format">於 Android %1$s %2$s 上運行</string>
