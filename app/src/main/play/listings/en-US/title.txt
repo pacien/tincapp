@@ -1,1 +1,1 @@
-Tinc App
+Tinc Mesh VPN
