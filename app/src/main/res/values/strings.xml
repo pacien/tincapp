@@ -20,6 +20,7 @@
 
 <resources>
 	<string name="app_name" translatable="false">Tinc Mesh VPN</string>
+	<string name="app_launcher_name" translatable="false">Tinc</string>
 	<string name="app_doc_url_format" translatable="false">https://tincapp.euxane.net/%1$s</string>
 
 	<!-- generic strings -->

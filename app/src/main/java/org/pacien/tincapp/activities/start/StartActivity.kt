@@ -54,6 +54,7 @@ class StartActivity : BaseActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setTitle(R.string.app_name)
     setContentView(startActivityBinding.root)
     initNetworkListFragment()
 
