@@ -32,10 +32,10 @@ The project can be built using the Gradle `build` task, on Linux.
 
 Requirements:
 
-- Android SDK Platform 33
-- Android NDK r22
-- Android Platform-Tools 34
-- Android SDK Tools 26
+- Android SDK Platform 36.1
+- Android NDK r29
+- Android Platform-Tools 36.1
+- Android SDK Build tools 36.1
 - CMake
 - automake
 - autoconf
@@ -44,7 +44,7 @@ Requirements:
 License
 -------
 
-Copyright (C) 2017-2024 Euxane P. TRAN-GIRARD and contributors (listed in
+Copyright (C) 2017-2025 Euxane P. TRAN-GIRARD and contributors (listed in
 `contributors.md`).
 
 _Tinc Mesh VPN_ is distributed under the terms of GNU General Public License v3.0,
