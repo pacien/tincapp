@@ -21,7 +21,7 @@
 <resources>
 	<string name="app_name" translatable="false">Tinc Mesh VPN</string>
 	<string name="app_launcher_name" translatable="false">Tinc</string>
-	<string name="app_doc_url_format" translatable="false">https://tincapp.euxane.net/%1$s</string>
+	<string name="app_doc_url_format" translatable="false">https://tincapp.euxane.eu/%1$s</string>
 
 	<!-- generic strings -->
 	<string name="generic_title_error">Error</string>
@@ -39,7 +39,7 @@
 	<string name="about_app_short_desc">Android binding and user interface for the tinc mesh VPN daemon.</string>
 	<string name="about_app_copyright">Copyright © 2017–2025 Euxane P. TRAN-GIRARD and contributors.</string>
 	<string name="about_app_license">Software distributed under the terms of the GNU General Public License v3.</string>
-	<string name="about_app_website_url" translatable="false">https://tincapp.euxane.net</string>
+	<string name="about_app_website_url" translatable="false">https://tincapp.euxane.eu</string>
 	<string name="about_app_version_format">App version %1$s (%2$s build)</string>
 	<string name="about_app_running_on_format">Running on Android %1$s %2$s</string>
 	<string name="about_app_supported_abis_format">Device ABIs: %1$s</string>
