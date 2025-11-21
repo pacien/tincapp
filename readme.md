@@ -9,7 +9,7 @@ Help and documentation
 ----------------------
 
 The complete list of features, the quickstart guides and the user manual can be
-found on the project's website: https://tincapp.euxane.net.
+found on the project's website: https://tincapp.euxane.eu.
 
 Community support is mainly provided through the dedicated Matrix Room and
 IRC channel: `#tincapp:matrix.org` and `#tincapp` on `irc.libera.chat`.
@@ -22,7 +22,7 @@ Compiled Android packages are available from:
 
 * [F-Droid](https://f-droid.org/packages/org.pacien.tincapp/)
 * [Google Play Store](https://play.google.com/store/apps/details?id=org.pacien.tincapp)
-* [The project's website](https://tincapp.euxane.net)
+* [The project's website](https://tincapp.euxane.eu)
 
 
 Build
