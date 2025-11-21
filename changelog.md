@@ -3,6 +3,11 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.43 -- 2025-11-21
+- update Android SDK target to 35 (Android 15)
+- build with 16KB page size
+- use shorter launcher name
+
 ## v0.42 -- 2024-10-04
 - fix automatic config dir migration issue
 
