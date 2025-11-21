@@ -82,6 +82,7 @@ android {
   }
 
   namespace 'org.pacien.tincapp'
+  ndkVersion '29.0.14206865'
 }
 
 dependencies {
