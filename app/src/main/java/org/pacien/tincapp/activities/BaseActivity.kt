@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2019 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2025 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.view.*
+import androidx.core.view.WindowInsetsControllerCompat
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppInfo
@@ -40,6 +41,14 @@ abstract class BaseActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     super.setContentView(rootView)
+    setStatusBarTheme()
+  }
+
+  // Ensure contrast of system status bar text and icons on light background,
+  // due to edge-to-edge rendering starting with API 35.
+  private fun setStatusBarTheme() {
+    val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+    insetsController.isAppearanceLightStatusBars = true
   }
 
   override fun onCreateOptionsMenu(m: Menu): Boolean {

@@ -2,7 +2,7 @@
 
 <!--
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2018 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2025 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,8 @@
 	android:id="@+id/log_view_frame"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:fadeScrollbars="false">
+	android:fadeScrollbars="false"
+	android:fitsSystemWindows="true">
 
 	<TextView
 		android:id="@+id/log_view_text"
