@@ -3,6 +3,9 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.44 -- (next release)
+- update LibreSSL to 4.3.2
+
 ## v0.43 -- 2025-11-21
 - update Android SDK target to 35 (Android 15)
 - build with 16KB page size
