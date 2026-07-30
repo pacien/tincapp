@@ -29,7 +29,7 @@ def keystoreProperties = new Properties()
 if (keystoreAvailable) keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-  compileSdkVersion 36
+  compileSdkVersion 37
 
   defaultConfig {
     applicationId 'org.pacien.tincapp'
