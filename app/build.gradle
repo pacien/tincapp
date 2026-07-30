@@ -34,7 +34,7 @@ android {
   defaultConfig {
     applicationId 'org.pacien.tincapp'
     minSdkVersion 21
-    targetSdkVersion 35
+    targetSdkVersion 36
     multiDexEnabled true
     versionCode 43
     versionName '0.43'

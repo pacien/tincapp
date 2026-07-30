@@ -4,6 +4,7 @@ This file lists notable changes that have been made to the application on each r
 Releases are tracked and referred to using git tags.
 
 ## v0.44 -- (next release)
+- update Android SDK target to 36 (Android 16)
 - update LibreSSL to 4.3.2
 
 ## v0.43 -- 2025-11-21
