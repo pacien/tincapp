@@ -44,7 +44,7 @@ Requirements:
 License
 -------
 
-Copyright (C) 2017-2025 Euxane P. TRAN-GIRARD and contributors (listed in
+Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD and contributors (listed in
 `contributors.md`).
 
 _Tinc Mesh VPN_ is distributed under the terms of GNU General Public License v3.0,

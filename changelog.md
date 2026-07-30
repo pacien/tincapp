@@ -3,7 +3,7 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
-## v0.44 -- (next release)
+## v0.44 -- 2026-07-30
 - update Android SDK target to 36 (Android 16)
 - update LibreSSL to 4.3.2
 
