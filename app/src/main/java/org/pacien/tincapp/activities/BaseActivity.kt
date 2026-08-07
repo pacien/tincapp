@@ -87,8 +87,6 @@ abstract class BaseActivity : AppCompatActivity() {
     layoutInflater.inflate(layoutResID, rootView)
   }
 
-  override fun getSupportActionBar() = super.getSupportActionBar()!!
-
   fun startActivityChooser(target: Intent, title: String) {
     val intentChooser = Intent.createChooser(target, title)
     startActivity(intentChooser)

@@ -62,7 +62,7 @@ class StatusActivity : BaseActivity() {
     super.onCreate(savedInstanceState)
     setContentView(statusActivityBinding.root)
     statusActivityBinding.root.adapter = pagerAdapter
-    supportActionBar.subtitle = getString(R.string.status_activity_state_connected_to_format, netName)
+    supportActionBar?.subtitle = getString(R.string.status_activity_state_connected_to_format, netName)
     handleStartIntentAction(savedInstanceState)
   }
 

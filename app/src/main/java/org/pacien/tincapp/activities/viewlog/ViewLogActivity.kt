@@ -41,7 +41,7 @@ class ViewLogActivity : BaseActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    supportActionBar.setDisplayHomeAsUpEnabled(true)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
     setContentView(viewLogActivityBinding.root)
     enableLogging(viewModel.logging)
   }
@@ -93,7 +93,7 @@ class ViewLogActivity : BaseActivity() {
   }
 
   private fun setLoggingStateSubtitle(enabled: Boolean) {
-    supportActionBar.subtitle = when (enabled) {
+    supportActionBar?.subtitle = when (enabled) {
       true -> getString(R.string.log_view_state_level_format, viewModel.logLevelText)
       false -> getString(R.string.log_view_state_paused)
     }
