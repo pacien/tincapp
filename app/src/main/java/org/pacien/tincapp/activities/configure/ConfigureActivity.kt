@@ -18,17 +18,56 @@
 
 package org.pacien.tincapp.activities.configure
 
+import android.content.ActivityNotFoundException
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
+import org.pacien.tincapp.activities.configure.tools.ConfigurationToolDialogFragment
+import org.pacien.tincapp.activities.configure.tools.EncryptDecryptPrivateKeysToolDialogFragment
+import org.pacien.tincapp.activities.configure.tools.GenerateConfigToolDialogFragment
+import org.pacien.tincapp.activities.configure.tools.JoinNetworkToolDialogFragment
+import org.pacien.tincapp.storageprovider.BrowseFilesIntents
+import org.pacien.tincapp.ui.theme.TincTheme
 
 /**
  * @author euxane
  */
 class ConfigureActivity : BaseActivity() {
+
+  private val generateConfigTool by lazy { GenerateConfigToolDialogFragment() }
+  private val joinNetworkTool by lazy { JoinNetworkToolDialogFragment() }
+  private val encryptDecryptPrivateKeysTool by lazy { EncryptDecryptPrivateKeysToolDialogFragment() }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    supportActionBar.setDisplayHomeAsUpEnabled(true)
-    setContentView(R.layout.configure_activity)
+    setContent {
+      TincTheme {
+        ConfigureScreen(
+          onOpenDirectory = { openDocumentTree(it) },
+          onGenerateConfig = { openDialog(generateConfigTool) },
+          onJoinNetwork = { openDialog(joinNetworkTool) },
+          onEncryptDecryptKeys = { openDialog(encryptDecryptPrivateKeysTool) },
+          onNavigateUp = { finish() }
+        )
+      }
+    }
+  }
+
+  private fun openDialog(tool: ConfigurationToolDialogFragment) {
+    if (!tool.isAdded) tool.show(supportFragmentManager, tool.javaClass.simpleName)
+  }
+
+  private fun openDocumentTree(documentId: String) {
+    try {
+      BrowseFilesIntents.openDocumentTree(this, documentId)
+    } catch (e: ActivityNotFoundException) {
+      runOnUiThread {
+        showErrorDialog(
+          R.string.configure_browse_directories_error_no_file_manager,
+          docTopic = "troubleshooting.html#no-file-manager-found",
+        )
+      }
+    }
   }
 }
