@@ -46,6 +46,7 @@
         <activity
             android:name=".activities.start.StartActivity"
             android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="org.pacien.tincapp.intent.action.CONNECT" />

@@ -95,7 +95,9 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   @Suppress("UNUSED_PARAMETER")
-  fun aboutDialog(m: MenuItem) {
+  fun aboutDialog(m: MenuItem) = showAboutDialog()
+
+  fun showAboutDialog() {
     AlertDialog.Builder(this)
       .setTitle(resources.getString(R.string.app_name))
       .setMessage(resources.getString(R.string.about_app_short_desc) + "\n\n" +

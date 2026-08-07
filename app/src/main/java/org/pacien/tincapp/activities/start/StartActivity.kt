@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2023 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,11 @@
 package org.pacien.tincapp.activities.start
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
-import android.view.Menu
-import android.view.MenuItem
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.activities.common.ProgressModal
@@ -31,10 +31,12 @@ import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.configure.ConfigureActivity
 import org.pacien.tincapp.activities.status.StatusActivity
 import org.pacien.tincapp.context.App
-import org.pacien.tincapp.databinding.StartActivityBinding
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.storageprovider.BrowseFilesIntents
+import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
+import org.pacien.tincapp.ui.theme.TincTheme
 
 /**
  * @author euxane
@@ -48,33 +50,27 @@ class StartActivity : BaseActivity() {
     Actions.EVENT_ABORTED to this::onVpnStartError
   ))
 
-  private val startActivityBinding by lazy { StartActivityBinding.inflate(layoutInflater) }
-
-  private var connectDialog: AlertDialog? = null
+  private val viewModel: StartViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setTitle(R.string.app_name)
-    setContentView(startActivityBinding.root)
-    initNetworkListFragment()
+    
+    setContent {
+      TincTheme {
+        StartScreen(
+          viewModel = viewModel,
+          onConfigureClick = { openConfigureActivity() },
+          onAboutClick = { showAboutDialog() },
+          onNetworkClick = { connectToNetworkAction(it) },
+          onManualClick = { App.openURL(it) },
+          onConfigDirClick = { openDocumentTree(BrowseFilesIntents.networkConfigDirDocId(it)) },
+          onLogDirClick = { openDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) }
+        )
+      }
+    }
 
     if (isFirstIntentDelivery(savedInstanceState) && intent.action == Actions.ACTION_CONNECT && intent.data?.schemeSpecificPart != null)
       connectionStarter.tryStart(intent.data!!.schemeSpecificPart, intent.data!!.fragment, false)
-  }
-
-  private fun initNetworkListFragment() {
-    val fragment = supportFragmentManager.findFragmentById(R.id.start_activity_network_list_fragment) as NetworkListFragment
-    fragment.connectToNetworkAction = { netName -> connectToNetworkAction(netName) }
-  }
-
-  override fun onCreateOptionsMenu(m: Menu): Boolean {
-    menuInflater.inflate(R.menu.menu_start, m)
-    return super.onCreateOptionsMenu(m)
-  }
-
-  override fun onDestroy() {
-    connectDialog?.dismiss()
-    super.onDestroy()
   }
 
   override fun onResume() {
@@ -82,6 +78,7 @@ class StartActivity : BaseActivity() {
     if (TincVpnService.isConnected()) openStatusActivity(false)
     broadcastMapper.register()
     recentCrashHandler.handleRecentCrash()
+    viewModel.refresh()
   }
 
   override fun onPause() {
@@ -99,7 +96,6 @@ class StartActivity : BaseActivity() {
   }
 
   private fun connectToNetworkAction(netName: String) {
-    if (connectDialog?.isShowing == true) return
     connectionStarter.tryStart(netName, displayStatus = true)
   }
 
@@ -109,21 +105,19 @@ class StartActivity : BaseActivity() {
   }
 
   private fun onVpnStart() {
-    connectDialog?.dismiss()
     if (connectionStarter.displayStatus()) openStatusActivity()
     finish()
   }
 
   private fun onVpnStartError() {
-    connectDialog?.dismiss()
+    // Error is handled via notification manager and displayed in StartScreen
   }
 
   fun showConnectProgressDialog() {
-    connectDialog = ProgressModal.show(this, resources.getString(R.string.start_starting_vpn))
+    ProgressModal.show(this, resources.getString(R.string.start_starting_vpn))
   }
 
-  @Suppress("UNUSED_PARAMETER")
-  fun openConfigureActivity(m: MenuItem) =
+  private fun openConfigureActivity() =
     startActivity(Intent(this, ConfigureActivity::class.java))
 
   private fun openStatusActivity(transition: Boolean = true) {
@@ -133,5 +127,18 @@ class StartActivity : BaseActivity() {
       .apply { if (!transition) addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION) }
 
     startActivity(intent)
+  }
+
+  private fun openDocumentTree(documentId: String) {
+    try {
+      BrowseFilesIntents.openDocumentTree(this, documentId)
+    } catch (e: ActivityNotFoundException) {
+      runOnUiThread {
+        showErrorDialog(
+          R.string.configure_browse_directories_error_no_file_manager,
+          docTopic = "troubleshooting.html#no-file-manager-found",
+        )
+      }
+    }
   }
 }
