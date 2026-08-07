@@ -28,12 +28,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.zxing.integration.android.IntentIntegrator
@@ -122,7 +122,7 @@ fun JoinNetworkScreen(
                     }
                 }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_photo_camera_primary_24dp),
+                        imageVector = Icons.Default.QrCodeScanner,
                         contentDescription = stringResource(R.string.configure_tools_join_network_action_scan_qr_code_action),
                         tint = MaterialTheme.colorScheme.primary
                     )
