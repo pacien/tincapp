@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2018 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,12 @@ package org.pacien.tincapp.activities.configure
 import android.content.ActivityNotFoundException
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
-import org.pacien.tincapp.activities.configure.tools.ConfigurationToolDialogFragment
-import org.pacien.tincapp.activities.configure.tools.EncryptDecryptPrivateKeysToolDialogFragment
-import org.pacien.tincapp.activities.configure.tools.GenerateConfigToolDialogFragment
-import org.pacien.tincapp.activities.configure.tools.JoinNetworkToolDialogFragment
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.ui.theme.TincTheme
 
@@ -35,39 +35,56 @@ import org.pacien.tincapp.ui.theme.TincTheme
  */
 class ConfigureActivity : BaseActivity() {
 
-  private val generateConfigTool by lazy { GenerateConfigToolDialogFragment() }
-  private val joinNetworkTool by lazy { JoinNetworkToolDialogFragment() }
-  private val encryptDecryptPrivateKeysTool by lazy { EncryptDecryptPrivateKeysToolDialogFragment() }
+    private val viewModel: ConfigureViewModel by viewModels()
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContent {
-      TincTheme {
-        ConfigureScreen(
-          onOpenDirectory = { openDocumentTree(it) },
-          onGenerateConfig = { openDialog(generateConfigTool) },
-          onJoinNetwork = { openDialog(joinNetworkTool) },
-          onEncryptDecryptKeys = { openDialog(encryptDecryptPrivateKeysTool) },
-          onNavigateUp = { finish() }
-        )
-      }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            TincTheme {
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = "main") {
+                    composable("main") {
+                        ConfigureScreen(
+                            onOpenDirectory = { openDocumentTree(it) },
+                            onGenerateConfig = { navController.navigate("generate_config") },
+                            onJoinNetwork = { navController.navigate("join_network") },
+                            onEncryptDecryptKeys = { navController.navigate("encrypt_decrypt_keys") },
+                            onNavigateUp = { finish() }
+                        )
+                    }
+                    composable("generate_config") {
+                        GenerateConfigScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
+                    composable("join_network") {
+                        JoinNetworkScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
+                    composable("encrypt_decrypt_keys") {
+                        EncryptDecryptKeysScreen(
+                            viewModel = viewModel,
+                            onNavigateBack = { navController.popBackStack() }
+                        )
+                    }
+                }
+            }
+        }
     }
-  }
 
-  private fun openDialog(tool: ConfigurationToolDialogFragment) {
-    if (!tool.isAdded) tool.show(supportFragmentManager, tool.javaClass.simpleName)
-  }
-
-  private fun openDocumentTree(documentId: String) {
-    try {
-      BrowseFilesIntents.openDocumentTree(this, documentId)
-    } catch (e: ActivityNotFoundException) {
-      runOnUiThread {
-        showErrorDialog(
-          R.string.configure_browse_directories_error_no_file_manager,
-          docTopic = "troubleshooting.html#no-file-manager-found",
-        )
-      }
+    private fun openDocumentTree(documentId: String) {
+        try {
+            BrowseFilesIntents.openDocumentTree(this, documentId)
+        } catch (e: ActivityNotFoundException) {
+            runOnUiThread {
+                showErrorDialog(
+                    R.string.configure_browse_directories_error_no_file_manager,
+                    docTopic = "troubleshooting.html#no-file-manager-found",
+                )
+            }
+        }
     }
-  }
 }
