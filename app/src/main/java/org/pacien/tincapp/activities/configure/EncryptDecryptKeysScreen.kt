@@ -98,7 +98,7 @@ fun EncryptDecryptKeysScreen(
             Button(
                 onClick = { viewModel.encryptDecryptPrivateKeys(netName, currentPassphrase, newPassphrase) },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = netName.isNotBlank() && currentPassphrase.isNotBlank() && newPassphrase.isNotBlank()
+                enabled = netName.isNotBlank() && (currentPassphrase.isNotEmpty() || newPassphrase.isNotEmpty())
             ) {
                 Text(stringResource(R.string.configure_tools_private_keys_encryption_action))
             }
