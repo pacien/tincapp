@@ -52,6 +52,8 @@ class StartActivity : BaseActivity() {
 
   private val viewModel: StartViewModel by viewModels()
 
+  private var connectDialog: androidx.appcompat.app.AlertDialog? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     
@@ -86,6 +88,11 @@ class StartActivity : BaseActivity() {
     super.onPause()
   }
 
+  override fun onDestroy() {
+    connectDialog?.dismiss()
+    super.onDestroy()
+  }
+
   override fun onActivityResult(request: Int, result: Int, data: Intent?) {
     when (request) {
       permissionRequestCode -> continueConnectionStart(result)
@@ -105,16 +112,18 @@ class StartActivity : BaseActivity() {
   }
 
   private fun onVpnStart() {
+    connectDialog?.dismiss()
     if (connectionStarter.displayStatus()) openStatusActivity()
     finish()
   }
 
   private fun onVpnStartError() {
+    connectDialog?.dismiss()
     // Error is handled via notification manager and displayed in StartScreen
   }
 
   fun showConnectProgressDialog() {
-    ProgressModal.show(this, resources.getString(R.string.start_starting_vpn))
+    connectDialog = ProgressModal.show(this, resources.getString(R.string.start_starting_vpn))
   }
 
   private fun openConfigureActivity() =
