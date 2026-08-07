@@ -71,7 +71,8 @@
         <activity
             android:name=".activities.configure.ConfigureActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".activities.start.StartActivity" />
+            android:parentActivityName=".activities.start.StartActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.status.StatusActivity"
