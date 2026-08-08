@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2024 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -159,17 +159,25 @@ class FilesDocumentsProvider : DocumentsProvider() {
     parentDocumentId: String?,
     mimeType: String?,
     displayName: String?
-  ): String =
-    File(fileForDocumentId(parentDocumentId!!), displayName!!).apply {
-      val success = when (mimeType) {
-        Document.MIME_TYPE_DIR -> mkdir()
-        else -> createNewFile()
-      }
-      if (!success) throw FileSystemException(this)
-      notifyChange(childDocumentsUri(parentDocumentId))
-    }.let {
-      documentIdForFile(it)
+  ): String {
+    val parent = fileForDocumentId(parentDocumentId!!)
+    var targetName = displayName!!.removeSuffix(".txt")
+    var targetFile = File(parent, targetName)
+    while (targetFile.exists()) {
+      targetName += "_"
+      targetFile = File(parent, targetName)
     }
+
+    val success = when (mimeType) {
+      Document.MIME_TYPE_DIR -> targetFile.mkdir()
+      else -> targetFile.createNewFile()
+    }
+
+    if (!success) throw FileSystemException(targetFile)
+
+    notifyChange(childDocumentsUri(parentDocumentId))
+    return documentIdForFile(targetFile)
+  }
 
   private fun fileForDocumentId(documentId: String): File =
     documentId.split(File.separatorChar, limit = 2).let {
