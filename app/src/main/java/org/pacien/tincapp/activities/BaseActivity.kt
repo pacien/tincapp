@@ -41,7 +41,6 @@ abstract class BaseActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     super.setContentView(rootView)
-    setStatusBarTheme()
   }
 
   protected fun isLaunchedFromHistory() =
