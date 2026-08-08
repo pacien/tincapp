@@ -18,47 +18,47 @@
 
 package org.pacien.tincapp.activities.viewlog
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.ScrollView
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModelProviders
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
-import org.pacien.tincapp.databinding.ViewLogActivityBinding
+import org.pacien.tincapp.ui.theme.TincTheme
 
 /**
  * @author euxane
  */
 class ViewLogActivity : BaseActivity() {
-  private val viewLogActivityBinding by lazy { ViewLogActivityBinding.inflate(layoutInflater) }
   private val viewModel by lazy { ViewModelProviders.of(this)[LogViewModel::class.java] }
-  private val logObserver: Observer<List<String>> = Observer { showLog(it) }
-  private var toggleButton: MenuItem? = null
+  private var isLoggingEnabled by mutableStateOf(true)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    setContentView(viewLogActivityBinding.root)
-    enableLogging(viewModel.logging)
+    isLoggingEnabled = viewModel.logging
+
+    setContent {
+      TincTheme {
+        val logLines by viewModel.log.observeAsState(emptyList())
+        val logText = logLines.joinToString("\n\n")
+
+        ViewLogScreen(
+          logText = logText,
+          logLevelText = viewModel.logLevelText,
+          isLoggingEnabled = isLoggingEnabled,
+          onBackClick = { finish() },
+          onToggleLogging = { toggleLogging() },
+          onShareClick = { shareLog() }
+        )
+      }
+    }
   }
 
-  override fun onCreateOptionsMenu(m: Menu): Boolean {
-    menuInflater.inflate(R.menu.menu_viewlog, m)
-    toggleButton = m.findItem(R.id.log_viewer_action_toggle)
-    return super.onCreateOptionsMenu(m)
-  }
-
-  override fun onSupportNavigateUp(): Boolean {
-    finish()
-    return true
-  }
-
-  @Suppress("UNUSED_PARAMETER")
-  fun shareLog(m: MenuItem) {
+  private fun shareLog() {
     val logSnippet = viewModel.log.value?.joinToString("\n")
     val shareIntent = Intent(Intent.ACTION_SEND)
       .setType("text/plain")
@@ -67,59 +67,8 @@ class ViewLogActivity : BaseActivity() {
     startActivityChooser(shareIntent, resources.getString(R.string.log_view_menu_share_log))
   }
 
-  @Suppress("UNUSED_PARAMETER")
-  fun toggleLogging(m: MenuItem) =
-    enableLogging(!viewModel.logging)
-
-  private fun enableLogging(enable: Boolean) {
-    setLoggingStateSubtitle(enable)
-    setPauseButtonState(!enable)
-    enableScrolling(!enable)
-    viewModel.logging = enable
-
-    if (enable)
-      viewModel.log.observe(this, logObserver)
-    else
-      viewModel.log.removeObservers(this)
-  }
-
-  private fun showLog(logLines: List<String>?) {
-    val logSnippet = logLines?.joinToString("\n\n") ?: ""
-
-    viewLogActivityBinding.logViewText.post {
-      viewLogActivityBinding.logViewText.text = logSnippet
-      viewLogActivityBinding.logViewFrame.scrollToBottom()
-    }
-  }
-
-  private fun setLoggingStateSubtitle(enabled: Boolean) {
-    supportActionBar?.subtitle = when (enabled) {
-      true -> getString(R.string.log_view_state_level_format, viewModel.logLevelText)
-      false -> getString(R.string.log_view_state_paused)
-    }
-  }
-
-  private fun setPauseButtonState(paused: Boolean) {
-    val iconRes = when (paused) {
-      true -> R.drawable.ic_pause_circle_filled_primary_24dp
-      false -> R.drawable.ic_pause_circle_outline_primary_24dp
-    }
-
-    toggleButton?.setIcon(iconRes)
-  }
-
-  private fun enableScrolling(enabled: Boolean) {
-    if (enabled)
-      viewLogActivityBinding.logViewFrame.setOnTouchListener(null)
-    else
-      viewLogActivityBinding.logViewFrame.setOnTouchListener { _, _ -> true }
-
-    viewLogActivityBinding.logViewFrame.isSmoothScrollingEnabled = enabled
-    viewLogActivityBinding.logViewText.setTextIsSelectable(enabled)
-    viewLogActivityBinding.logViewFrame.scrollToBottom()
-  }
-
-  private fun ScrollView.scrollToBottom() {
-    postDelayed({ fullScroll(View.FOCUS_DOWN) }, 50)
+  private fun toggleLogging() {
+    isLoggingEnabled = !isLoggingEnabled
+    viewModel.logging = isLoggingEnabled
   }
 }
