@@ -25,18 +25,27 @@ import android.view.Menu
 import android.view.MenuItem
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
-import org.pacien.tincapp.activities.common.FragmentListPagerAdapter
 import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.start.StartActivity
-import org.pacien.tincapp.activities.status.networkinfo.NetworkInfoFragment
-import org.pacien.tincapp.activities.status.nodes.NodeListFragment
-import org.pacien.tincapp.activities.status.subnets.SubnetListFragment
 import org.pacien.tincapp.activities.viewlog.ViewLogActivity
-import org.pacien.tincapp.databinding.StatusActivityBinding
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModelProvider
+import org.pacien.tincapp.activities.status.nodes.NodeInfo
+import org.pacien.tincapp.activities.status.nodes.NodeListViewModel
+import org.pacien.tincapp.activities.status.subnets.SubnetListViewModel
+import org.pacien.tincapp.activities.status.ui.NodeInfoDialog
+import org.pacien.tincapp.activities.status.ui.StatusScreen
+import org.pacien.tincapp.commands.Tinc
+import org.pacien.tincapp.ui.theme.TincTheme
 
 /**
  * @author euxane
@@ -45,24 +54,45 @@ class StatusActivity : BaseActivity() {
   private val recentCrashHandler by lazy { RecentCrashHandler(this) }
   private val vpnService by lazy { TincVpnService }
   private val netName by lazy { vpnService.getCurrentNetName() }
-  private val pagerAdapter by lazy { FragmentListPagerAdapter(pages, supportFragmentManager) }
   private val broadcastMapper = BroadcastMapper(mapOf(Actions.EVENT_DISCONNECTED to this::onVpnShutdown))
-  private val pages = listOf(
-    R.string.status_activity_title_network_info to NetworkInfoFragment(),
-    R.string.status_activity_title_node_list to NodeListFragment(),
-    R.string.status_activity_title_subnet_list to SubnetListFragment()
-  )
-
-  private val statusActivityBinding by lazy { StatusActivityBinding.inflate(layoutInflater) }
+  private val nodeListViewModel by lazy { ViewModelProvider(this)[NodeListViewModel::class.java] }
+  private val subnetListViewModel by lazy { ViewModelProvider(this)[SubnetListViewModel::class.java] }
 
   private var shutdownDialog: AlertDialog? = null
   private var listNetworksAfterExit = true
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(statusActivityBinding.root)
-    statusActivityBinding.root.adapter = pagerAdapter
     supportActionBar?.subtitle = getString(R.string.status_activity_state_connected_to_format, netName)
+
+    setContent {
+      TincTheme {
+        val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: org.pacien.tincapp.data.VpnInterfaceConfiguration()
+        val nodes by nodeListViewModel.nodeList.observeAsState(emptyList())
+        val subnets by subnetListViewModel.nodeList.observeAsState(emptyList())
+
+        var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
+
+        StatusScreen(
+          vpnInterfaceConfiguration = vpnCfg,
+          nodes = nodes,
+          subnets = subnets,
+          onNodeClick = { node ->
+            Tinc.info(netName!!, node.name).thenAccept { info ->
+              runOnUiThread { selectedNodeInfo = info }
+            }
+          }
+        )
+
+        selectedNodeInfo?.let { info ->
+          NodeInfoDialog(
+            nodeInfoText = info,
+            onDismiss = { selectedNodeInfo = null }
+          )
+        }
+      }
+    }
+
     handleStartIntentAction(savedInstanceState)
   }
 

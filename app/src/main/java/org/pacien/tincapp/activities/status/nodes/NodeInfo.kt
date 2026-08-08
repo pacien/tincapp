@@ -18,6 +18,7 @@
 
 package org.pacien.tincapp.activities.status.nodes
 
+import android.content.res.Resources
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
 import java.util.regex.Matcher
@@ -44,12 +45,12 @@ data class NodeInfo(val name: String,
                     val maxMtu: Int) {
 
   // https://github.com/gsliepen/tinc/blob/950bbc8f2f9c580ac85bef7bab9a3ae36ea99c4b/src/info.c#L174
-  fun reachabilityText(): String = when {
-    ip == "MYSELF" -> RESOURCES.getString(R.string.status_node_reachability_this_node)
-    distance == -1 -> RESOURCES.getString(R.string.status_node_reachability_unreachable)
-    minMtu > 0 || nextHop == name -> RESOURCES.getString(R.string.status_node_reachability_direct_connection)
-    distance > 1 -> RESOURCES.getString(R.string.status_node_reachability_via_format, nextHop)
-    else -> RESOURCES.getString(R.string.status_node_reachability_unknown)
+  fun reachabilityText(resources: Resources = App.getResources()): String = when {
+    ip == "MYSELF" -> resources.getString(R.string.status_node_reachability_this_node)
+    distance == -1 -> resources.getString(R.string.status_node_reachability_unreachable)
+    minMtu > 0 || nextHop == name -> resources.getString(R.string.status_node_reachability_direct_connection)
+    distance > 1 -> resources.getString(R.string.status_node_reachability_via_format, nextHop)
+    else -> resources.getString(R.string.status_node_reachability_unknown)
   }
 
   companion object {
@@ -70,7 +71,6 @@ data class NodeInfo(val name: String,
         "pmtu (\\S+) \\(min (\\S+) max (\\S+)\\)"
 
     private val NODE_DUMP_PATTERN by lazy { Pattern.compile(NODE_DUMP_PATTERN_STRING) }
-    private val RESOURCES by lazy { App.getResources() }
 
     fun ofNodeDump(line: String) =
       ofNodeDump(NODE_DUMP_PATTERN.matcher(line).apply { find() })

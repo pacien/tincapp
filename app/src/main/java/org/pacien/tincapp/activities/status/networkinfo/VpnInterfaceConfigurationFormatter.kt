@@ -18,6 +18,7 @@
 
 package org.pacien.tincapp.activities.status.networkinfo
 
+import android.content.res.Resources
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.data.CidrAddress
@@ -26,9 +27,7 @@ import org.pacien.tincapp.data.CidrAddress
  * @author euxane
  */
 object VpnInterfaceConfigurationFormatter {
-  private val resources by lazy { App.getResources() }
-
-  fun formatList(list: List<Any>?) = when {
+  fun formatList(list: List<Any>?, resources: Resources = App.getResources()) = when {
     !list.isNullOrEmpty() -> list.joinToString("\n", transform = this::formatListElement)
     else -> resources.getString(R.string.status_network_info_value_none)
   }
