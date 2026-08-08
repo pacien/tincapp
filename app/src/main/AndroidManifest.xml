@@ -77,7 +77,8 @@
         <activity
             android:name=".activities.status.StatusActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="org.pacien.tincapp.intent.action.DISCONNECT" />
                 <category android:name="android.intent.category.DEFAULT" />
