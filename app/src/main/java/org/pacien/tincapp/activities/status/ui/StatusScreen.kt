@@ -90,7 +90,7 @@ fun StatusScreen(
                             netName?.let {
                                 Text(
                                     text = stringResource(R.string.status_activity_state_connected_to_format, it),
-                                    style = MaterialTheme.typography.bodySmall
+                                    style = MaterialTheme.typography.bodyMedium
                                 )
                             }
                         }

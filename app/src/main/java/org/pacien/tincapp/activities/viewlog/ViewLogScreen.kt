@@ -81,7 +81,7 @@ fun ViewLogScreen(
                             } else {
                                 stringResource(R.string.log_view_state_paused)
                             },
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 },
