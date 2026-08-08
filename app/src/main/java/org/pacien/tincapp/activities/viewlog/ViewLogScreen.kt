@@ -46,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.pacien.tincapp.R
+import org.pacien.tincapp.ui.theme.HeaderPrimary
+import org.pacien.tincapp.ui.theme.TextTitle
 import org.pacien.tincapp.ui.theme.TincTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,7 +82,6 @@ fun ViewLogScreen(
                                 stringResource(R.string.log_view_state_paused)
                             },
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 },
@@ -100,19 +101,22 @@ fun ViewLogScreen(
                             } else {
                                 Icons.Default.PauseCircleFilled
                             },
-                            contentDescription = stringResource(R.string.log_view_menu_toggle_logging)
+                            contentDescription = stringResource(R.string.log_view_menu_toggle_logging),
+                            tint = TextTitle,
                         )
                     }
                     IconButton(onClick = onShareClick) {
                         Icon(
                             imageVector = Icons.Default.Share,
-                            contentDescription = stringResource(R.string.log_view_menu_share_log)
+                            contentDescription = stringResource(R.string.log_view_menu_share_log),
+                            tint = TextTitle,
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = HeaderPrimary,
+                    titleContentColor = TextTitle,
+                    navigationIconContentColor = TextTitle
                 )
             )
         }
