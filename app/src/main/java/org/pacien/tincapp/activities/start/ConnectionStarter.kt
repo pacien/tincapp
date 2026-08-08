@@ -21,6 +21,7 @@ package org.pacien.tincapp.activities.start
 import android.net.VpnService
 import androidx.appcompat.app.AlertDialog
 import android.view.inputmethod.EditorInfo
+import org.pacien.tincapp.MainActivity
 import org.pacien.tincapp.R
 import org.pacien.tincapp.databinding.DialogDecryptKeysBinding
 import org.pacien.tincapp.service.TincVpnService
@@ -30,7 +31,7 @@ import org.pacien.tincapp.extensions.View.on
 /**
  * @author euxane
  */
-class ConnectionStarter(private val parentActivity: StartActivity) {
+class ConnectionStarter(private val parentActivity: MainActivity) {
   private var netName: String? = null
   private var passphrase: String? = null
   private var displayStatus = false
@@ -44,7 +45,7 @@ class ConnectionStarter(private val parentActivity: StartActivity) {
 
     val permissionRequestIntent = VpnService.prepare(parentActivity)
     if (permissionRequestIntent != null)
-      return parentActivity.startActivityForResult(permissionRequestIntent, parentActivity.permissionRequestCode)
+      return parentActivity.requestVpnPermission(permissionRequestIntent)
 
     if (TincKeyring.needsPassphrase(this.netName!!) && this.passphrase == null)
       return askForPassphrase()
@@ -53,7 +54,7 @@ class ConnectionStarter(private val parentActivity: StartActivity) {
   }
 
   private fun askForPassphrase() {
-    val dialogViewBinding = DialogDecryptKeysBinding.inflate(parentActivity.layoutInflater, parentActivity.rootView, false)
+    val dialogViewBinding = DialogDecryptKeysBinding.inflate(parentActivity.layoutInflater)
 
     val dialog = AlertDialog.Builder(parentActivity)
       .setTitle(R.string.decrypt_key_modal_title)

@@ -44,20 +44,25 @@
             android:required="false" />
 
         <activity
-            android:name=".activities.start.StartActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="org.pacien.tincapp.intent.action.CONNECT" />
                 <data android:scheme="tinc" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.pacien.tincapp.intent.action.DISCONNECT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity-alias
             android:name=".activities.start.StartActivityAlias"
-            android:targetActivity=".activities.start.StartActivity"
+            android:targetActivity=".MainActivity"
             android:label="@string/app_launcher_name"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -67,28 +72,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
-
-        <activity
-            android:name=".activities.configure.ConfigureActivity"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName=".activities.start.StartActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".activities.status.StatusActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="org.pacien.tincapp.intent.action.DISCONNECT" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".activities.viewlog.ViewLogActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name="org.pacien.tincapp.service.TincVpnService"
