@@ -21,8 +21,6 @@ package org.pacien.tincapp.activities.status
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import android.view.Menu
-import android.view.MenuItem
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseActivity
 import org.pacien.tincapp.activities.common.ProgressModal
@@ -39,7 +37,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
-import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.activities.status.nodes.NodeListViewModel
 import org.pacien.tincapp.activities.status.subnets.SubnetListViewModel
 import org.pacien.tincapp.activities.status.ui.NodeInfoDialog
@@ -63,7 +60,6 @@ class StatusActivity : BaseActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    supportActionBar?.subtitle = getString(R.string.status_activity_state_connected_to_format, netName)
 
     setContent {
       TincTheme {
@@ -81,7 +77,11 @@ class StatusActivity : BaseActivity() {
             Tinc.info(netName!!, node.name).thenAccept { info ->
               runOnUiThread { selectedNodeInfo = info }
             }
-          }
+          },
+          netName = netName,
+          onDisconnectClick = { stopVpn() },
+          onShowLogClick = { openLogViewer() },
+          onAboutClick = { showAboutDialog() }
         )
 
         selectedNodeInfo?.let { info ->
@@ -94,11 +94,6 @@ class StatusActivity : BaseActivity() {
     }
 
     handleStartIntentAction(savedInstanceState)
-  }
-
-  override fun onCreateOptionsMenu(m: Menu): Boolean {
-    menuInflater.inflate(R.menu.menu_status, m)
-    return super.onCreateOptionsMenu(m)
   }
 
   override fun onResume() {
@@ -120,12 +115,7 @@ class StatusActivity : BaseActivity() {
     finish()
   }
 
-  @Suppress("UNUSED_PARAMETER")
-  fun stopVpn(m: MenuItem) =
-    stopVpn()
-
-  @Suppress("UNUSED_PARAMETER")
-  fun openLogViewer(m: MenuItem) =
+  private fun openLogViewer() =
     startActivity(Intent(this, ViewLogActivity::class.java))
 
   private fun handleStartIntentAction(savedInstanceState: Bundle?) {
