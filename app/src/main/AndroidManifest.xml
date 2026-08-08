@@ -86,7 +86,8 @@
 
         <activity
             android:name=".activities.viewlog.ViewLogActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name="org.pacien.tincapp.service.TincVpnService"
