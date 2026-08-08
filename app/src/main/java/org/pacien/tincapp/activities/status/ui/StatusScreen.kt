@@ -24,8 +24,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Help
-import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.automirrored.filled.ReceiptLong
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -105,14 +105,14 @@ fun StatusScreen(
                         }
                         IconButton(onClick = onShowLogClick) {
                             Icon(
-                                imageVector = Icons.Default.Receipt,
+                                imageVector = Icons.AutoMirrored.Default.ReceiptLong,
                                 contentDescription = stringResource(R.string.status_activity_menu_show_log),
                                 tint = TextTitle
                             )
                         }
                         IconButton(onClick = onAboutClick) {
                             Icon(
-                                imageVector = Icons.Default.Help,
+                                imageVector = Icons.AutoMirrored.Default.Help,
                                 contentDescription = stringResource(R.string.about_app_menu_about),
                                 tint = TextTitle
                             )
