@@ -23,7 +23,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
+import androidx.compose.material.icons.automirrored.filled.ReceiptLong
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddLink
+import androidx.compose.material.icons.filled.CreateNewFolder
+import androidx.compose.material.icons.filled.EnhancedEncryption
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -106,6 +113,7 @@ fun StartScreenContent(
     onJoinNetworkClick: () -> Unit,
     onEncryptDecryptKeysClick: () -> Unit
 ) {
+    var showCreateMenu by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -113,63 +121,73 @@ fun StartScreenContent(
             TopAppBar(
                 title = { Text(stringResource(R.string.app_name)) },
                 actions = {
-                    Box {
-                        IconButton(onClick = { showMenu = !showMenu }) {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.generic_action_menu),
-                                tint = Color.White
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = { showMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.configure_browse_directories_action_open_networks_config)) },
-                                onClick = {
-                                    showMenu = false
-                                    onOpenNetworksDirClick()
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.configure_browse_directories_action_open_logs)) },
-                                onClick = {
-                                    showMenu = false
-                                    onLogDirClick()
-                                }
-                            )
-                            HorizontalDivider()
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.configure_tools_action_generate_node_configuration_and_keys)) },
-                                onClick = {
-                                    showMenu = false
-                                    onGenerateConfigClick()
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.configure_tools_action_join_network_via_invitation_url_qr_code)) },
-                                onClick = {
-                                    showMenu = false
-                                    onJoinNetworkClick()
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.configure_tools_action_encrypt_decrypt_private_keys)) },
-                                onClick = {
-                                    showMenu = false
-                                    onEncryptDecryptKeysClick()
-                                }
-                            )
-                            HorizontalDivider()
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.about_app_menu_about)) },
-                                onClick = {
-                                    showMenu = false
-                                    onAboutClick()
-                                }
-                            )
-                        }
+                    IconButton(onClick = { showCreateMenu = !showCreateMenu }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.configure_tools_generate_config_title),
+                            tint = Color.White
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = showCreateMenu,
+                        onDismissRequest = { showCreateMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.configure_tools_action_generate_node_configuration_and_keys)) },
+                            onClick = {
+                                showCreateMenu = false
+                                onGenerateConfigClick()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.configure_tools_action_join_network_via_invitation_url_qr_code)) },
+                            onClick = {
+                                showCreateMenu = false
+                                onJoinNetworkClick()
+                            }
+                        )
+                    }
+                    IconButton(onClick = { showMenu = !showMenu }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.generic_action_menu),
+                            tint = Color.White
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.configure_browse_directories_action_open_networks_config)) },
+                            onClick = {
+                                showMenu = false
+                                onOpenNetworksDirClick()
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.configure_browse_directories_action_open_logs)) },
+                            onClick = {
+                                showMenu = false
+                                onLogDirClick()
+                            }
+                        )
+                        HorizontalDivider()
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.configure_tools_action_encrypt_decrypt_private_keys)) },
+                            onClick = {
+                                showMenu = false
+                                onEncryptDecryptKeysClick()
+                            }
+                        )
+                        HorizontalDivider()
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.about_app_menu_about)) },
+                            onClick = {
+                                showMenu = false
+                                onAboutClick()
+                            }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
