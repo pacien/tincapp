@@ -28,11 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import org.pacien.tincapp.activities.configure.ConfigureScreen
 import org.pacien.tincapp.activities.configure.ConfigureViewModel
-import org.pacien.tincapp.activities.configure.EncryptDecryptKeysScreen
-import org.pacien.tincapp.activities.configure.GenerateConfigScreen
-import org.pacien.tincapp.activities.configure.JoinNetworkScreen
 import org.pacien.tincapp.activities.start.StartScreen
 import org.pacien.tincapp.activities.start.StartViewModel
 import org.pacien.tincapp.activities.status.nodes.NodeListViewModel
@@ -63,48 +59,16 @@ fun NavGraph(
     ) {
         composable("start") {
             val viewModel: StartViewModel = viewModel()
+            val configureViewModel: ConfigureViewModel = viewModel()
             StartScreen(
                 viewModel = viewModel,
-                onConfigureClick = { navController.navigate("configure") },
+                configureViewModel = configureViewModel,
                 onAboutClick = onAboutClick,
                 onNetworkClick = onNetworkClick,
                 onManualClick = { App.openURL(it) },
                 onConfigDirClick = { onOpenDocumentTree(BrowseFilesIntents.networkConfigDirDocId(it)) },
-                onLogDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) }
-            )
-        }
-
-        composable("configure") {
-            ConfigureScreen(
-                onOpenDirectory = onOpenDocumentTree,
-                onGenerateConfig = { navController.navigate("configure_generate") },
-                onJoinNetwork = { navController.navigate("configure_join") },
-                onEncryptDecryptKeys = { navController.navigate("configure_keys") },
-                onNavigateUp = { navController.popBackStack() }
-            )
-        }
-
-        composable("configure_generate") {
-            val viewModel: ConfigureViewModel = viewModel()
-            GenerateConfigScreen(
-                viewModel = viewModel,
-                onNavigateBack = { navController.popBackStack() }
-            )
-        }
-
-        composable("configure_join") {
-            val viewModel: ConfigureViewModel = viewModel()
-            JoinNetworkScreen(
-                viewModel = viewModel,
-                onNavigateBack = { navController.popBackStack() }
-            )
-        }
-
-        composable("configure_keys") {
-            val viewModel: ConfigureViewModel = viewModel()
-            EncryptDecryptKeysScreen(
-                viewModel = viewModel,
-                onNavigateBack = { navController.popBackStack() }
+                onLogDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) },
+                onOpenNetworksDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) }
             )
         }
 

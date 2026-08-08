@@ -23,11 +23,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +35,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.pacien.tincapp.R
+import org.pacien.tincapp.activities.configure.ConfigureViewModel
+import org.pacien.tincapp.activities.configure.EncryptDecryptKeysDialog
+import org.pacien.tincapp.activities.configure.GenerateConfigDialog
+import org.pacien.tincapp.activities.configure.JoinNetworkDialog
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.components.SectionTitle
 import org.pacien.tincapp.ui.theme.TincTheme
@@ -45,34 +47,82 @@ import org.pacien.tincapp.ui.theme.TincTheme
 @Composable
 fun StartScreen(
     viewModel: StartViewModel,
-    onConfigureClick: () -> Unit,
+    configureViewModel: ConfigureViewModel,
     onAboutClick: () -> Unit,
     onNetworkClick: (String) -> Unit,
     onManualClick: (String) -> Unit,
     onConfigDirClick: (String) -> Unit,
-    onLogDirClick: () -> Unit
+    onLogDirClick: () -> Unit,
+    onOpenNetworksDirClick: () -> Unit
 ) {
     val networkList by viewModel.networkList.observeAsState(emptyList())
     val errorNotification by viewModel.errorNotification.observeAsState()
+
+    var showMenu by remember { mutableStateOf(false) }
+    var activeDialog by remember { mutableStateOf<ConfigureDialogType?>(null) }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.app_name)) },
                 actions = {
-                    IconButton(onClick = onConfigureClick) {
-                        Icon(
-                            imageVector = Icons.Default.Build,
-                            contentDescription = stringResource(R.string.start_activity_menu_configure),
-                            tint = Color.White
-                        )
-                    }
-                    IconButton(onClick = onAboutClick) {
-                        Icon(
-                            imageVector = Icons.Default.Help,
-                            contentDescription = stringResource(R.string.about_app_menu_about),
-                            tint = Color.White
-                        )
+                    Box {
+                        IconButton(onClick = { showMenu = !showMenu }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = stringResource(R.string.generic_action_menu),
+                                tint = Color.White
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.configure_browse_directories_action_open_networks_config)) },
+                                onClick = {
+                                    showMenu = false
+                                    onOpenNetworksDirClick()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.configure_browse_directories_action_open_logs)) },
+                                onClick = {
+                                    showMenu = false
+                                    onLogDirClick()
+                                }
+                            )
+                            HorizontalDivider()
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.configure_tools_action_generate_node_configuration_and_keys)) },
+                                onClick = {
+                                    showMenu = false
+                                    activeDialog = ConfigureDialogType.GENERATE
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.configure_tools_action_join_network_via_invitation_url_qr_code)) },
+                                onClick = {
+                                    showMenu = false
+                                    activeDialog = ConfigureDialogType.JOIN
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.configure_tools_action_encrypt_decrypt_private_keys)) },
+                                onClick = {
+                                    showMenu = false
+                                    activeDialog = ConfigureDialogType.ENCRYPT_DECRYPT
+                                }
+                            )
+                            HorizontalDivider()
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.about_app_menu_about)) },
+                                onClick = {
+                                    showMenu = false
+                                    onAboutClick()
+                                }
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -132,6 +182,26 @@ fun StartScreen(
             }
         }
     }
+
+    when (activeDialog) {
+        ConfigureDialogType.GENERATE -> GenerateConfigDialog(
+            viewModel = configureViewModel,
+            onDismiss = { activeDialog = null }
+        )
+        ConfigureDialogType.JOIN -> JoinNetworkDialog(
+            viewModel = configureViewModel,
+            onDismiss = { activeDialog = null }
+        )
+        ConfigureDialogType.ENCRYPT_DECRYPT -> EncryptDecryptKeysDialog(
+            viewModel = configureViewModel,
+            onDismiss = { activeDialog = null }
+        )
+        null -> {}
+    }
+}
+
+enum class ConfigureDialogType {
+    GENERATE, JOIN, ENCRYPT_DECRYPT
 }
 
 @Composable
