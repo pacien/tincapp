@@ -58,8 +58,55 @@ fun StartScreen(
     val networkList by viewModel.networkList.observeAsState(emptyList())
     val errorNotification by viewModel.errorNotification.observeAsState()
 
-    var showMenu by remember { mutableStateOf(false) }
     var activeDialog by remember { mutableStateOf<ConfigureDialogType?>(null) }
+
+    StartScreenContent(
+        networkList = networkList,
+        errorNotification = errorNotification,
+        onAboutClick = onAboutClick,
+        onNetworkClick = onNetworkClick,
+        onManualClick = onManualClick,
+        onConfigDirClick = onConfigDirClick,
+        onLogDirClick = onLogDirClick,
+        onOpenNetworksDirClick = onOpenNetworksDirClick,
+        onGenerateConfigClick = { activeDialog = ConfigureDialogType.GENERATE },
+        onJoinNetworkClick = { activeDialog = ConfigureDialogType.JOIN },
+        onEncryptDecryptKeysClick = { activeDialog = ConfigureDialogType.ENCRYPT_DECRYPT }
+    )
+
+    when (activeDialog) {
+        ConfigureDialogType.GENERATE -> GenerateConfigDialog(
+            viewModel = configureViewModel,
+            onDismiss = { activeDialog = null }
+        )
+        ConfigureDialogType.JOIN -> JoinNetworkDialog(
+            viewModel = configureViewModel,
+            onDismiss = { activeDialog = null }
+        )
+        ConfigureDialogType.ENCRYPT_DECRYPT -> EncryptDecryptKeysDialog(
+            viewModel = configureViewModel,
+            onDismiss = { activeDialog = null }
+        )
+        null -> {}
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun StartScreenContent(
+    networkList: List<String>,
+    errorNotification: ErrorNotification?,
+    onAboutClick: () -> Unit,
+    onNetworkClick: (String) -> Unit,
+    onManualClick: (String) -> Unit,
+    onConfigDirClick: (String) -> Unit,
+    onLogDirClick: () -> Unit,
+    onOpenNetworksDirClick: () -> Unit,
+    onGenerateConfigClick: () -> Unit,
+    onJoinNetworkClick: () -> Unit,
+    onEncryptDecryptKeysClick: () -> Unit
+) {
+    var showMenu by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -97,21 +144,21 @@ fun StartScreen(
                                 text = { Text(stringResource(R.string.configure_tools_action_generate_node_configuration_and_keys)) },
                                 onClick = {
                                     showMenu = false
-                                    activeDialog = ConfigureDialogType.GENERATE
+                                    onGenerateConfigClick()
                                 }
                             )
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.configure_tools_action_join_network_via_invitation_url_qr_code)) },
                                 onClick = {
                                     showMenu = false
-                                    activeDialog = ConfigureDialogType.JOIN
+                                    onJoinNetworkClick()
                                 }
                             )
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.configure_tools_action_encrypt_decrypt_private_keys)) },
                                 onClick = {
                                     showMenu = false
-                                    activeDialog = ConfigureDialogType.ENCRYPT_DECRYPT
+                                    onEncryptDecryptKeysClick()
                                 }
                             )
                             HorizontalDivider()
@@ -182,23 +229,8 @@ fun StartScreen(
             }
         }
     }
-
-    when (activeDialog) {
-        ConfigureDialogType.GENERATE -> GenerateConfigDialog(
-            viewModel = configureViewModel,
-            onDismiss = { activeDialog = null }
-        )
-        ConfigureDialogType.JOIN -> JoinNetworkDialog(
-            viewModel = configureViewModel,
-            onDismiss = { activeDialog = null }
-        )
-        ConfigureDialogType.ENCRYPT_DECRYPT -> EncryptDecryptKeysDialog(
-            viewModel = configureViewModel,
-            onDismiss = { activeDialog = null }
-        )
-        null -> {}
-    }
 }
+
 
 enum class ConfigureDialogType {
     GENERATE, JOIN, ENCRYPT_DECRYPT
@@ -296,6 +328,44 @@ fun NetworkListItem(name: String, onClick: () -> Unit) {
 @Composable
 fun StartScreenPreview() {
     TincTheme {
-        // Mock ViewModel or use a dummy state
+        StartScreenContent(
+            networkList = listOf("Aperture Laboratories", "Black Mesa"),
+            errorNotification = null,
+            onAboutClick = {},
+            onNetworkClick = {},
+            onManualClick = {},
+            onConfigDirClick = {},
+            onLogDirClick = {},
+            onOpenNetworksDirClick = {},
+            onGenerateConfigClick = {},
+            onJoinNetworkClick = {},
+            onEncryptDecryptKeysClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun StartScreenErrorPreview() {
+    TincTheme {
+        StartScreenContent(
+            networkList = emptyList(),
+            errorNotification = ErrorNotification(
+                title = "Configuration Error",
+                message = "The configuration file 'tinc.conf' is missing. Please check the configuration directory.",
+                manualLink = "",
+                configDir = "",
+                proposeLogs = true
+            ),
+            onAboutClick = {},
+            onNetworkClick = {},
+            onManualClick = {},
+            onConfigDirClick = {},
+            onLogDirClick = {},
+            onOpenNetworksDirClick = {},
+            onGenerateConfigClick = {},
+            onJoinNetworkClick = {},
+            onEncryptDecryptKeysClick = {}
+        )
     }
 }
