@@ -26,6 +26,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.automirrored.filled.ReceiptLong
+import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,9 +40,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
 import androidx.compose.ui.tooling.preview.Preview
@@ -98,7 +97,7 @@ fun StatusScreen(
                     actions = {
                         IconButton(onClick = onDisconnectClick) {
                             Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.ic_link_off_primary_24dp),
+                                imageVector = Icons.Default.LinkOff,
                                 contentDescription = stringResource(R.string.status_activity_menu_disconnect),
                                 tint = TextTitle
                             )
