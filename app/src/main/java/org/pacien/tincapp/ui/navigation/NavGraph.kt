@@ -20,7 +20,6 @@ package org.pacien.tincapp.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -77,17 +76,14 @@ fun NavGraph(
             val vpnService = TincVpnService
             val netName = vpnService.getCurrentNetName()
             val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: org.pacien.tincapp.data.VpnInterfaceConfiguration()
-            val nodes by nodeListViewModel.nodeList.observeAsState(emptyList())
-            val subnets by subnetListViewModel.nodeList.observeAsState(emptyList())
-            val logLines by logViewModel.log.observeAsState(emptyList())
 
             var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
 
             StatusScreen(
                 vpnInterfaceConfiguration = vpnCfg,
-                nodes = nodes,
-                subnets = subnets,
-                logText = logLines.joinToString("\n"),
+                nodeListLiveData = nodeListViewModel.nodeList,
+                subnetListLiveData = subnetListViewModel.nodeList,
+                logLiveData = logViewModel.log,
                 onNodeClick = { node ->
                     Tinc.info(netName!!, node.name).thenAccept { info ->
                         selectedNodeInfo = info

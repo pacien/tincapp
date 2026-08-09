@@ -18,6 +18,15 @@
 
 package org.pacien.tincapp.activities.status.ui
 
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.MutableLiveData
+import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -67,9 +76,9 @@ enum class StatusTab(val titleRes: Int) {
 @Composable
 fun StatusScreen(
     vpnInterfaceConfiguration: VpnInterfaceConfiguration,
-    nodes: List<NodeInfo>,
-    subnets: List<SubnetInfo>,
-    logText: String,
+    nodeListLiveData: LiveData<List<NodeInfo>>,
+    subnetListLiveData: LiveData<List<SubnetInfo>>,
+    logLiveData: LiveData<List<String>>,
     onNodeClick: (NodeInfo) -> Unit,
     netName: String?,
     onDisconnectClick: () -> Unit,
@@ -148,23 +157,56 @@ fun StatusScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) { pageIndex ->
+            val isCurrentPage = pagerState.currentPage == pageIndex
             when (tabs[pageIndex]) {
                 StatusTab.NETWORK_INFO -> NetworkInfoScreen(
                     vpnInterfaceConfiguration = vpnInterfaceConfiguration
                 )
-                StatusTab.NODES -> NodeListScreen(
-                    nodes = nodes,
-                    onNodeClick = onNodeClick
-                )
-                StatusTab.SUBNETS -> SubnetListScreen(
-                    subnets = subnets
-                )
-                StatusTab.LOGS -> LogView(
-                    logText = logText
-                )
+                StatusTab.NODES -> {
+                    val nodes by nodeListLiveData.observeAsStateActive(isCurrentPage, emptyList())
+                    NodeListScreen(
+                        nodes = nodes,
+                        onNodeClick = onNodeClick
+                    )
+                }
+                StatusTab.SUBNETS -> {
+                    val subnets by subnetListLiveData.observeAsStateActive(isCurrentPage, emptyList())
+                    SubnetListScreen(
+                        subnets = subnets
+                    )
+                }
+                StatusTab.LOGS -> {
+                    val logLines by logLiveData.observeAsStateActive(isCurrentPage, emptyList())
+                    LogView(
+                        logText = logLines.joinToString("\n")
+                    )
+                }
             }
         }
     }
+}
+
+/**
+ * Observe a LiveData as state only when [active] is true.
+ *
+ * When [active] becomes false, the state will keep its last value.
+ * This is useful for stopping refreshes of [SelfRefreshingLiveData] when not in focus.
+ */
+@Composable
+fun <T> LiveData<T>.observeAsStateActive(active: Boolean, initial: T): State<T> {
+    val state = remember { mutableStateOf(initial) }
+    DisposableEffect(this, active) {
+        if (active) {
+            val observer = Observer<T> { state.value = it }
+            observeForever(observer)
+            onDispose {
+                removeObserver(observer)
+            }
+        } else {
+            onDispose {}
+        }
+    }
+    return state
 }
 
 @Composable
@@ -200,15 +242,15 @@ fun StatusScreenPreview() {
     TincTheme {
         StatusScreen(
             vpnInterfaceConfiguration = VpnInterfaceConfiguration(),
-            nodes = listOf(
+            nodeListLiveData = MutableLiveData(listOf(
                 NodeInfo("node1", "id1", "1.2.3.4", "1234", 0, 0, 0, 0, 0, 0, "node1", "node1", 1, 1500, 1500, 1500),
                 NodeInfo("node2", "id2", "5.6.7.8", "5678", 0, 0, 0, 0, 0, 0, "node1", "node1", 2, 1500, 1500, 1500)
-            ),
-            subnets = listOf(
+            )),
+            subnetListLiveData = MutableLiveData(listOf(
                 SubnetInfo("10.0.0.0/24", "node1"),
                 SubnetInfo("10.0.1.0/24", "node2")
-            ),
-            logText = "Log line 1\nLog line 2",
+            )),
+            logLiveData = MutableLiveData(listOf("Log line 1", "Log line 2")),
             onNodeClick = {},
             netName = "test-net",
             onDisconnectClick = {},
