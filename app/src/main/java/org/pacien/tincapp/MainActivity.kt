@@ -27,6 +27,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import org.pacien.tincapp.activities.common.ProgressModal
@@ -107,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        broadcastMapper.register()
+        broadcastMapper.register(lifecycleScope)
         RecentCrashHandler(this).handleRecentCrash()
 
         if (::navController.isInitialized && TincVpnService.isConnected() && navController.currentDestination?.route == "start") {

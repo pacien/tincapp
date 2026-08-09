@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2019 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,28 @@
 
 package org.pacien.tincapp.intent
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import org.pacien.tincapp.context.App
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
- * @author euxane
+ * Maps VPN events to action handlers using SharedFlow.
  */
-class BroadcastMapper(private val actionHandlers: Map<String, () -> Unit>) : BroadcastReceiver() {
-  private val broadcastManager = LocalBroadcastManager.getInstance(App.getContext())
-  private val intentFilter = actionHandlers.keys.fold(IntentFilter()) { filter, action -> filter.apply { addAction(action) } }
+class BroadcastMapper(private val actionHandlers: Map<String, () -> Unit>) {
+    private var job: Job? = null
 
-  fun register() = broadcastManager.registerReceiver(this, intentFilter)
-  fun unregister() = broadcastManager.unregisterReceiver(this)
-  override fun onReceive(context: Context?, intent: Intent?) = actionHandlers[intent?.action]?.invoke() ?: Unit
+    fun register(scope: CoroutineScope) {
+        job?.cancel()
+        job = scope.launch {
+            VpnEvents.events.collect { action ->
+                actionHandlers[action]?.invoke()
+            }
+        }
+    }
+
+    fun unregister() {
+        job?.cancel()
+        job = null
+    }
 }

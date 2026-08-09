@@ -25,7 +25,6 @@ import android.net.LocalServerSocket
 import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import java8.util.concurrent.CompletableFuture
 import org.apache.commons.configuration2.ex.ConversionException
 import org.bouncycastle.openssl.PEMException
@@ -42,6 +41,7 @@ import org.pacien.tincapp.extensions.Java.applyIgnoringException
 import org.pacien.tincapp.extensions.Java.defaultMessage
 import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg
 import org.pacien.tincapp.intent.Actions
+import org.pacien.tincapp.intent.VpnEvents
 import org.pacien.tincapp.utils.TincKeyring
 import org.slf4j.LoggerFactory
 import java.io.FileNotFoundException
@@ -233,7 +233,7 @@ class TincVpnService : VpnService() {
   }
 
   private fun broadcastEvent(event: String) {
-    LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(event))
+    VpnEvents.emit(event)
   }
 
   private fun serveDeviceFd(serverSocket: LocalServerSocket, deviceFd: ParcelFileDescriptor) =

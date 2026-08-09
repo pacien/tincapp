@@ -125,7 +125,8 @@ dependencies {
   implementation 'androidx.activity:activity-compose:1.13.0'
   implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0'
   implementation 'androidx.navigation:navigation-compose:2.9.8'
-  implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0'
+  implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.11.0'
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
