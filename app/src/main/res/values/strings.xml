@@ -152,6 +152,7 @@
 	<string name="status_subnet_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 
 	<!-- Log viewer activity -->
+	<string name="log_view_title_daemon_log">Daemon log</string>
 	<string name="log_view_state_level_format">Log level: %s</string>
 	<string name="log_view_state_paused">Logging paused</string>
 	<string name="log_view_menu_toggle_logging">Toggle logging</string>

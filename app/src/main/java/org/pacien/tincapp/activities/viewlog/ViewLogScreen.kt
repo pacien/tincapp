@@ -74,7 +74,7 @@ fun ViewLogScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text(stringResource(R.string.status_activity_menu_show_log))
+                        Text(stringResource(R.string.log_view_title_daemon_log))
                         Text(
                             text = if (isLoggingEnabled) {
                                 stringResource(R.string.log_view_state_level_format, logLevelText)
