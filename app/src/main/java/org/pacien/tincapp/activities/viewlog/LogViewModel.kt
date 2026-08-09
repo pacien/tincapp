@@ -26,8 +26,6 @@ import org.pacien.tincapp.service.TincVpnService
  */
 class LogViewModel : ViewModel() {
   private val logLevelNumeric = 5
-  val logLevelText = "DEBUG"
   val netName by lazy { TincVpnService.getCurrentNetName()!! }
   val log by lazy { LogLiveData(netName, logLevelNumeric, 250) }
-  var logging = true
 }

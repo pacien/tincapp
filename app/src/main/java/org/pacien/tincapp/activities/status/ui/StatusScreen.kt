@@ -23,9 +23,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Help
-import androidx.compose.material.icons.automirrored.filled.ReceiptLong
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,9 +39,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,7 +59,8 @@ import org.pacien.tincapp.ui.theme.TextTitle
 enum class StatusTab(val titleRes: Int) {
     NETWORK_INFO(R.string.status_activity_title_network_info),
     NODES(R.string.status_activity_title_node_list),
-    SUBNETS(R.string.status_activity_title_subnet_list)
+    SUBNETS(R.string.status_activity_title_subnet_list),
+    LOGS(R.string.log_view_title_daemon_log)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,10 +69,10 @@ fun StatusScreen(
     vpnInterfaceConfiguration: VpnInterfaceConfiguration,
     nodes: List<NodeInfo>,
     subnets: List<SubnetInfo>,
+    logText: String,
     onNodeClick: (NodeInfo) -> Unit,
     netName: String?,
     onDisconnectClick: () -> Unit,
-    onShowLogClick: () -> Unit,
     onAboutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -99,13 +104,6 @@ fun StatusScreen(
                             Icon(
                                 imageVector = Icons.Default.LinkOff,
                                 contentDescription = stringResource(R.string.status_activity_menu_disconnect),
-                                tint = TextTitle
-                            )
-                        }
-                        IconButton(onClick = onShowLogClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Default.ReceiptLong,
-                                contentDescription = stringResource(R.string.status_activity_menu_show_log),
                                 tint = TextTitle
                             )
                         }
@@ -161,8 +159,38 @@ fun StatusScreen(
                 StatusTab.SUBNETS -> SubnetListScreen(
                     subnets = subnets
                 )
+                StatusTab.LOGS -> LogView(
+                    logText = logText
+                )
             }
         }
+    }
+}
+
+@Composable
+fun LogView(
+    logText: String,
+    modifier: Modifier = Modifier
+) {
+    val scrollState = rememberScrollState()
+
+    // Auto-scroll to bottom when log text changes
+    LaunchedEffect(logText) {
+        scrollState.animateScrollTo(scrollState.maxValue)
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .padding(16.dp)
+    ) {
+        Text(
+            text = logText,
+            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onBackground
+        )
     }
 }
 
@@ -180,10 +208,10 @@ fun StatusScreenPreview() {
                 SubnetInfo("10.0.0.0/24", "node1"),
                 SubnetInfo("10.0.1.0/24", "node2")
             ),
+            logText = "Log line 1\nLog line 2",
             onNodeClick = {},
             netName = "test-net",
             onDisconnectClick = {},
-            onShowLogClick = {},
             onAboutClick = {}
         )
     }

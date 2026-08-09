@@ -36,7 +36,6 @@ import org.pacien.tincapp.activities.status.subnets.SubnetListViewModel
 import org.pacien.tincapp.activities.status.ui.NodeInfoDialog
 import org.pacien.tincapp.activities.status.ui.StatusScreen
 import org.pacien.tincapp.activities.viewlog.LogViewModel
-import org.pacien.tincapp.activities.viewlog.ViewLogScreen
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.service.TincVpnService
@@ -50,8 +49,7 @@ fun NavGraph(
     onShowError: (String, String?) -> Unit,
     onOpenDocumentTree: (String) -> Unit,
     onNetworkClick: (String) -> Unit,
-    onDisconnectClick: () -> Unit,
-    onShareLogClick: (String?) -> Unit
+    onDisconnectClick: () -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -75,11 +73,13 @@ fun NavGraph(
         composable("status") {
             val nodeListViewModel: NodeListViewModel = viewModel()
             val subnetListViewModel: SubnetListViewModel = viewModel()
+            val logViewModel: LogViewModel = viewModel()
             val vpnService = TincVpnService
             val netName = vpnService.getCurrentNetName()
             val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: org.pacien.tincapp.data.VpnInterfaceConfiguration()
             val nodes by nodeListViewModel.nodeList.observeAsState(emptyList())
             val subnets by subnetListViewModel.nodeList.observeAsState(emptyList())
+            val logLines by logViewModel.log.observeAsState(emptyList())
 
             var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
 
@@ -87,6 +87,7 @@ fun NavGraph(
                 vpnInterfaceConfiguration = vpnCfg,
                 nodes = nodes,
                 subnets = subnets,
+                logText = logLines.joinToString("\n"),
                 onNodeClick = { node ->
                     Tinc.info(netName!!, node.name).thenAccept { info ->
                         selectedNodeInfo = info
@@ -94,7 +95,6 @@ fun NavGraph(
                 },
                 netName = netName,
                 onDisconnectClick = onDisconnectClick,
-                onShowLogClick = { navController.navigate("viewlog") },
                 onAboutClick = onAboutClick
             )
 
@@ -104,25 +104,6 @@ fun NavGraph(
                     onDismiss = { selectedNodeInfo = null }
                 )
             }
-        }
-
-        composable("viewlog") {
-            val viewModel: LogViewModel = viewModel()
-            val logLines by viewModel.log.observeAsState(emptyList())
-            val logText = logLines.joinToString("\n")
-            var isLoggingEnabled by remember { mutableStateOf(viewModel.logging) }
-
-            ViewLogScreen(
-                logText = logText,
-                logLevelText = viewModel.logLevelText,
-                isLoggingEnabled = isLoggingEnabled,
-                onBackClick = { navController.popBackStack() },
-                onToggleLogging = {
-                    isLoggingEnabled = !isLoggingEnabled
-                    viewModel.logging = isLoggingEnabled
-                },
-                onShareClick = { onShareLogClick(viewModel.log.value?.joinToString("\n")) }
-            )
         }
     }
 }

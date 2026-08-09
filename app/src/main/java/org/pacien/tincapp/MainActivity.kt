@@ -89,8 +89,7 @@ class MainActivity : AppCompatActivity() {
                     onShowError = { msg, topic -> showErrorDialog(msg, topic) },
                     onOpenDocumentTree = { openDocumentTree(it) },
                     onNetworkClick = { connectionStarter.tryStart(it, displayStatus = true) },
-                    onDisconnectClick = { stopVpn() },
-                    onShareLogClick = { shareLog(it) }
+                    onDisconnectClick = { stopVpn() }
                 )
 
                 when (val dialog = activeDialog) {
@@ -218,19 +217,6 @@ class MainActivity : AppCompatActivity() {
                 docTopic = "troubleshooting.html#no-file-manager-found",
             )
         }
-    }
-
-    private fun shareLog(logSnippet: String?) {
-        val shareIntent = Intent(Intent.ACTION_SEND)
-            .setType("text/plain")
-            .putExtra(Intent.EXTRA_TEXT, logSnippet)
-
-        startActivityChooser(shareIntent, getString(R.string.log_view_menu_share_log))
-    }
-
-    private fun startActivityChooser(target: Intent, title: String) {
-        val intentChooser = Intent.createChooser(target, title)
-        startActivity(intentChooser)
     }
 
     // Helper for ConnectionStarter to request VPN permission
