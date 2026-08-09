@@ -85,9 +85,16 @@
 	<string name="start_network_list_empty_none_found">Could not find any network configuration.</string>
 	<string name="start_starting_vpn">Starting VPN…</string>
 
+	<string name="start_network_action_connect">Connect</string>
+	<string name="start_network_action_config_dir">Configuration directory</string>
+	<string name="start_network_action_lock">Lock with passphrase</string>
+	<string name="start_network_action_unlock">Remove passphrase protection</string>
+	<string name="start_network_action_delete">Delete</string>
+
 	<!-- Configure activity -->
 	<string name="configure_tools_message_invalid_network_name">Invalid network name.</string>
 	<string name="configure_tools_message_network_configuration_written">Network configuration written.</string>
+	<string name="configure_tools_message_network_deleted">Network configuration deleted.</string>
 
 	<string name="configure_activity_title_directories">Directories</string>
 	<string name="configure_browse_directories_action_open_networks_config">Open networks configuration directory</string>
@@ -110,6 +117,16 @@
 	<string name="configure_tools_join_network_action_scan_qr_code_action">Scan QR code</string>
 	<string name="configure_tools_join_network_action">Join</string>
 	<string name="configure_tools_join_network_joining">Joining network…</string>
+
+	<string name="configure_tools_lock_network_title">Lock network</string>
+	<string name="configure_tools_lock_network_action">Lock</string>
+	<string name="configure_tools_unlock_network_title">Unlock network</string>
+	<string name="configure_tools_unlock_network_action">Unlock</string>
+
+	<string name="configure_tools_delete_network_title">Delete network</string>
+	<string name="configure_tools_delete_network_message_format">Are you sure you want to delete the network configuration for \"%1$s\"? This action cannot be undone.</string>
+	<string name="configure_tools_delete_network_action">Delete</string>
+	<string name="configure_tools_delete_network_deleting">Deleting network configuration…</string>
 
 	<string name="configure_tools_private_keys_encryption_title">Private keys encryption</string>
 	<string name="configure_tools_private_key_encryption_current_passphrase">Current passphrase\n(leave empty if none)</string>

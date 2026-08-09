@@ -53,7 +53,7 @@ class ConfigureViewModel : ViewModel() {
         else
             CompletableFuture.failedFuture(NetworkNameInvalidException())
 
-    private fun execAction(labelResId: Int, action: CompletableFuture<Unit>) {
+    private fun execAction(labelResId: Int, action: CompletableFuture<Unit>, successResId: Int = R.string.configure_tools_message_network_configuration_written) {
         _uiState.value = ConfigureUiState.Loading(labelResId)
         action.whenComplete { _, throwable ->
             if (throwable != null) {
@@ -64,7 +64,7 @@ class ConfigureViewModel : ViewModel() {
                     _uiState.value = ConfigureUiState.Error(message = cause.localizedMessage ?: "Unknown error")
                 }
             } else {
-                _uiState.value = ConfigureUiState.Success(R.string.configure_tools_message_network_configuration_written)
+                _uiState.value = ConfigureUiState.Success(successResId)
             }
         }
     }
@@ -93,11 +93,30 @@ class ConfigureViewModel : ViewModel() {
         )
     }
 
-    fun encryptDecryptPrivateKeys(netName: String, currentPassphrase: String, newPassphrase: String) {
+    fun lockNetwork(netName: String, passphrase: String) {
         execAction(
-            R.string.configure_tools_private_keys_encryption_encrypting,
-            validateNetName(netName)
-                .thenCompose { TincApp.setPassphrase(netName, currentPassphrase, newPassphrase) }
+            labelResId = R.string.configure_tools_private_keys_encryption_encrypting,
+            action = validateNetName(netName)
+                .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) }
+                .thenApply { Unit }
+        )
+    }
+
+    fun unlockNetwork(netName: String, passphrase: String) {
+        execAction(
+            labelResId = R.string.configure_tools_private_keys_encryption_encrypting,
+            action = validateNetName(netName)
+                .thenCompose { TincApp.setPassphrase(netName, currentPassphrase = passphrase, newPassphrase = "") }
+                .thenApply { Unit }
+        )
+    }
+
+    fun deleteNetwork(netName: String) {
+        execAction(
+            labelResId = R.string.configure_tools_delete_network_deleting,
+            successResId = R.string.configure_tools_message_network_deleted,
+            action = validateNetName(netName)
+                .thenCompose { TincApp.deleteNetwork(netName) }
                 .thenApply { Unit }
         )
     }

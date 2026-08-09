@@ -52,6 +52,10 @@ object TincApp {
     listScripts(netName).forEach { it.delete() }
   }
 
+  fun deleteNetwork(netName: String) = runAsyncTask {
+    AppPaths.confDir(netName).deleteRecursively()
+  }
+
   fun generateIfaceCfg(netName: String) = runAsyncTask {
     VpnInterfaceConfiguration
       .fromInvitation(AppPaths.invitationFile(netName))

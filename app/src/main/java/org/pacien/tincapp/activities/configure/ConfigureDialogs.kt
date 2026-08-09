@@ -176,45 +176,29 @@ fun JoinNetworkDialog(
 }
 
 @Composable
-fun EncryptDecryptKeysDialog(
+fun LockNetworkDialog(
+    netName: String,
     viewModel: ConfigureViewModel,
     onDismiss: () -> Unit
 ) {
-    var netName by remember { mutableStateOf("") }
-    var currentPassphrase by remember { mutableStateOf("") }
-    var newPassphrase by remember { mutableStateOf("") }
+    var passphrase by remember { mutableStateOf("") }
 
     ConfigureToolsState(viewModel, onSuccess = onDismiss)
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.configure_tools_private_keys_encryption_title)) },
+        title = { Text(stringResource(R.string.configure_tools_lock_network_title)) },
         text = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-            ) {
-                OutlinedTextField(
-                    value = netName,
-                    onValueChange = { netName = it },
-                    label = { Text(stringResource(R.string.configure_tools_generate_config_net_name_hint)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = netName,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
-                    value = currentPassphrase,
-                    onValueChange = { currentPassphrase = it },
-                    label = { Text(stringResource(R.string.configure_tools_private_key_encryption_current_passphrase)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = newPassphrase,
-                    onValueChange = { newPassphrase = it },
-                    label = { Text(stringResource(R.string.configure_tools_private_key_encryption_new_passphrase)) },
+                    value = passphrase,
+                    onValueChange = { passphrase = it },
+                    label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -222,15 +206,90 @@ fun EncryptDecryptKeysDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.encryptDecryptPrivateKeys(netName, currentPassphrase, newPassphrase) },
-                enabled = netName.isNotBlank() && (currentPassphrase.isNotEmpty() || newPassphrase.isNotEmpty())
+                onClick = { viewModel.lockNetwork(netName, passphrase) },
+                enabled = passphrase.isNotEmpty()
             ) {
-                Text(stringResource(R.string.configure_tools_private_keys_encryption_action))
+                Text(stringResource(R.string.configure_tools_lock_network_action))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.generic_action_close))
+                Text(stringResource(R.string.generic_action_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+fun UnlockNetworkDialog(
+    netName: String,
+    viewModel: ConfigureViewModel,
+    onDismiss: () -> Unit
+) {
+    var passphrase by remember { mutableStateOf("") }
+
+    ConfigureToolsState(viewModel, onSuccess = onDismiss)
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.configure_tools_unlock_network_title)) },
+        text = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = netName,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                OutlinedTextField(
+                    value = passphrase,
+                    onValueChange = { passphrase = it },
+                    label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { viewModel.unlockNetwork(netName, passphrase) },
+                enabled = passphrase.isNotEmpty()
+            ) {
+                Text(stringResource(R.string.configure_tools_unlock_network_action))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.generic_action_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+fun DeleteNetworkDialog(
+    netName: String,
+    viewModel: ConfigureViewModel,
+    onDismiss: () -> Unit
+) {
+    ConfigureToolsState(viewModel, onSuccess = onDismiss)
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.configure_tools_delete_network_title)) },
+        text = {
+            Text(stringResource(R.string.configure_tools_delete_network_message_format, netName))
+        },
+        confirmButton = {
+            TextButton(onClick = { viewModel.deleteNetwork(netName) }) {
+                Text(
+                    text = stringResource(R.string.configure_tools_delete_network_action),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.generic_action_cancel))
             }
         }
     )

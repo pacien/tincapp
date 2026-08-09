@@ -21,7 +21,6 @@ package org.pacien.tincapp.utils
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.context.AppPaths
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.FileWriter
 
 /**
@@ -30,7 +29,7 @@ import java.io.FileWriter
 object TincKeyring {
   fun needsPassphrase(netName: String) = try {
     TincApp.listPrivateKeys(netName).filter { it.exists() }.any { PemUtils.isEncrypted(PemUtils.read(it)) }
-  } catch (e: FileNotFoundException) {
+  } catch (e: Exception) {
     false
   }
 

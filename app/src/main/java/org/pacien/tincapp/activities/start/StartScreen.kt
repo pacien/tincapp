@@ -36,19 +36,18 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.pacien.tincapp.R
-import org.pacien.tincapp.activities.configure.ConfigureViewModel
-import org.pacien.tincapp.activities.configure.EncryptDecryptKeysDialog
-import org.pacien.tincapp.activities.configure.GenerateConfigDialog
-import org.pacien.tincapp.activities.configure.JoinNetworkDialog
+import org.pacien.tincapp.activities.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.components.SectionTitle
 import org.pacien.tincapp.ui.theme.TincTheme
+import org.pacien.tincapp.utils.TincKeyring
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,6 +65,7 @@ fun StartScreen(
     val errorNotification by viewModel.errorNotification.observeAsState()
 
     var activeDialog by remember { mutableStateOf<ConfigureDialogType?>(null) }
+    var selectedNetwork by remember { mutableStateOf("") }
 
     StartScreenContent(
         networkList = networkList,
@@ -78,7 +78,18 @@ fun StartScreen(
         onOpenNetworksDirClick = onOpenNetworksDirClick,
         onGenerateConfigClick = { activeDialog = ConfigureDialogType.GENERATE },
         onJoinNetworkClick = { activeDialog = ConfigureDialogType.JOIN },
-        onEncryptDecryptKeysClick = { activeDialog = ConfigureDialogType.ENCRYPT_DECRYPT }
+        onLockClick = {
+            selectedNetwork = it
+            activeDialog = ConfigureDialogType.LOCK
+        },
+        onUnlockClick = {
+            selectedNetwork = it
+            activeDialog = ConfigureDialogType.UNLOCK
+        },
+        onDeleteClick = {
+            selectedNetwork = it
+            activeDialog = ConfigureDialogType.DELETE
+        }
     )
 
     when (activeDialog) {
@@ -90,7 +101,18 @@ fun StartScreen(
             viewModel = configureViewModel,
             onDismiss = { activeDialog = null }
         )
-        ConfigureDialogType.ENCRYPT_DECRYPT -> EncryptDecryptKeysDialog(
+        ConfigureDialogType.LOCK -> LockNetworkDialog(
+            netName = selectedNetwork,
+            viewModel = configureViewModel,
+            onDismiss = { activeDialog = null }
+        )
+        ConfigureDialogType.UNLOCK -> UnlockNetworkDialog(
+            netName = selectedNetwork,
+            viewModel = configureViewModel,
+            onDismiss = { activeDialog = null }
+        )
+        ConfigureDialogType.DELETE -> DeleteNetworkDialog(
+            netName = selectedNetwork,
             viewModel = configureViewModel,
             onDismiss = { activeDialog = null }
         )
@@ -111,7 +133,9 @@ fun StartScreenContent(
     onOpenNetworksDirClick: () -> Unit,
     onGenerateConfigClick: () -> Unit,
     onJoinNetworkClick: () -> Unit,
-    onEncryptDecryptKeysClick: () -> Unit
+    onLockClick: (String) -> Unit,
+    onUnlockClick: (String) -> Unit,
+    onDeleteClick: (String) -> Unit
 ) {
     var showCreateMenu by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
@@ -170,14 +194,6 @@ fun StartScreenContent(
                             onClick = {
                                 showMenu = false
                                 onLogDirClick()
-                            }
-                        )
-                        HorizontalDivider()
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.configure_tools_action_encrypt_decrypt_private_keys)) },
-                            onClick = {
-                                showMenu = false
-                                onEncryptDecryptKeysClick()
                             }
                         )
                         HorizontalDivider()
@@ -241,7 +257,11 @@ fun StartScreenContent(
                 items(networkList) { network ->
                     NetworkListItem(
                         name = network,
-                        onClick = { onNetworkClick(network) }
+                        onClick = { onNetworkClick(network) },
+                        onConfigDirClick = { onConfigDirClick(network) },
+                        onLockClick = { onLockClick(network) },
+                        onUnlockClick = { onUnlockClick(network) },
+                        onDeleteClick = { onDeleteClick(network) }
                     )
                 }
             }
@@ -251,7 +271,7 @@ fun StartScreenContent(
 
 
 enum class ConfigureDialogType {
-    GENERATE, JOIN, ENCRYPT_DECRYPT
+    GENERATE, JOIN, LOCK, UNLOCK, DELETE
 }
 
 @Composable
@@ -328,17 +348,76 @@ fun ClickableBlock(text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun NetworkListItem(name: String, onClick: () -> Unit) {
-    Text(
-        text = name,
-        style = MaterialTheme.typography.bodyLarge,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(
-                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
-                vertical = 16.dp
-            )
+fun NetworkListItem(
+    name: String,
+    onClick: () -> Unit,
+    onConfigDirClick: () -> Unit,
+    onLockClick: () -> Unit,
+    onUnlockClick: () -> Unit,
+    onDeleteClick: () -> Unit
+) {
+    var showMenu by remember { mutableStateOf(false) }
+    val isPreview = LocalInspectionMode.current
+    val needsPassphrase = if (isPreview) false else TincKeyring.needsPassphrase(name)
+
+    ListItem(
+        headlineContent = { Text(name) },
+        modifier = Modifier.clickable(onClick = onClick),
+        trailingContent = {
+            Box {
+                IconButton(onClick = { showMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = stringResource(R.string.generic_action_menu)
+                    )
+                }
+                DropdownMenu(
+                    expanded = showMenu,
+                    onDismissRequest = { showMenu = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.start_network_action_connect)) },
+                        onClick = {
+                            showMenu = false
+                            onClick()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.start_network_action_config_dir)) },
+                        onClick = {
+                            showMenu = false
+                            onConfigDirClick()
+                        }
+                    )
+                    HorizontalDivider()
+                    if (needsPassphrase) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.start_network_action_unlock)) },
+                            onClick = {
+                                showMenu = false
+                                onUnlockClick()
+                            }
+                        )
+                    } else {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.start_network_action_lock)) },
+                            onClick = {
+                                showMenu = false
+                                onLockClick()
+                            }
+                        )
+                    }
+                    HorizontalDivider()
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.start_network_action_delete)) },
+                        onClick = {
+                            showMenu = false
+                            onDeleteClick()
+                        }
+                    )
+                }
+            }
+        }
     )
 }
 
@@ -357,7 +436,9 @@ fun StartScreenPreview() {
             onOpenNetworksDirClick = {},
             onGenerateConfigClick = {},
             onJoinNetworkClick = {},
-            onEncryptDecryptKeysClick = {}
+            onLockClick = {},
+            onUnlockClick = {},
+            onDeleteClick = {}
         )
     }
 }
@@ -383,7 +464,9 @@ fun StartScreenErrorPreview() {
             onOpenNetworksDirClick = {},
             onGenerateConfigClick = {},
             onJoinNetworkClick = {},
-            onEncryptDecryptKeysClick = {}
+            onLockClick = {},
+            onUnlockClick = {},
+            onDeleteClick = {}
         )
     }
 }
