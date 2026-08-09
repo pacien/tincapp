@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities.viewlog
+package org.pacien.tincapp.activities.status.viewlog
 
 import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import org.pacien.tincapp.commands.Executor

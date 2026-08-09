@@ -35,7 +35,7 @@ import org.pacien.tincapp.activities.status.nodes.NodeListViewModel
 import org.pacien.tincapp.activities.status.subnets.SubnetListViewModel
 import org.pacien.tincapp.activities.status.ui.NodeInfoDialog
 import org.pacien.tincapp.activities.status.ui.StatusScreen
-import org.pacien.tincapp.activities.viewlog.LogViewModel
+import org.pacien.tincapp.activities.status.viewlog.LogViewModel
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.service.TincVpnService
