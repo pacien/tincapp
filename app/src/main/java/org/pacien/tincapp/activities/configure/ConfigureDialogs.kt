@@ -18,11 +18,7 @@
 
 package org.pacien.tincapp.activities.configure
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -32,10 +28,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.zxing.integration.android.IntentIntegrator
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import org.pacien.tincapp.R
 
 @Composable
@@ -98,13 +94,11 @@ fun JoinNetworkDialog(
     var netName by remember { mutableStateOf("") }
     var invitationUrl by remember { mutableStateOf("") }
 
-    val context = LocalContext.current
     val scanLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
+        contract = ScanContract(),
         onResult = { result ->
-            val intentResult = IntentIntegrator.parseActivityResult(result.resultCode, result.data)
-            if (intentResult != null && intentResult.contents != null) {
-                invitationUrl = intentResult.contents.trim()
+            if (result.contents != null) {
+                invitationUrl = result.contents.trim()
             }
         }
     )
@@ -142,13 +136,10 @@ fun JoinNetworkDialog(
                         singleLine = true
                     )
                     IconButton(onClick = {
-                        context.findActivity()?.let { activity ->
-                            val intent = IntentIntegrator(activity)
-                                .setOrientationLocked(false)
-                                .setPrompt(scanPrompt)
-                                .createScanIntent()
-                            scanLauncher.launch(intent)
-                        }
+                        val options = ScanOptions()
+                            .setOrientationLocked(false)
+                            .setPrompt(scanPrompt)
+                        scanLauncher.launch(options)
                     }) {
                         Icon(
                             imageVector = Icons.Default.QrCodeScanner,
@@ -293,10 +284,4 @@ fun DeleteNetworkDialog(
             }
         }
     )
-}
-
-private fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
 }
