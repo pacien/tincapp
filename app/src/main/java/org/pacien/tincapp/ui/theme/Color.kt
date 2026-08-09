@@ -8,7 +8,7 @@ val HeaderPrimaryDark = Color(0xFF007F68)
 val TextTitle = Color(0xFFFFFFFF)
 val TextAccent = Color(0xFF007F68)
 val TextSecondary = Color(0xFF212121)
-val TextError = Color(0xFFF44336)
+val TextError = Color(0xFFE91E63)
 
 val Separator = Color(0xFFD9D9D9)
 
