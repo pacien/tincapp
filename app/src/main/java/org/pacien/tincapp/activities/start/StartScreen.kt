@@ -19,6 +19,7 @@
 package org.pacien.tincapp.activities.start
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -374,7 +375,10 @@ fun NetworkListItem(
 
     ListItem(
         headlineContent = { Text(name) },
-        modifier = Modifier.clickable(onClick = onClick),
+        modifier = Modifier.combinedClickable(
+            onClick = onClick,
+            onLongClick = { showMenu = true }
+        ),
         trailingContent = {
             Box {
                 IconButton(onClick = { showMenu = true }) {
