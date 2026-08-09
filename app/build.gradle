@@ -139,7 +139,7 @@ dependencies {
   implementation 'com.github.tony19:logback-android:3.0.0'
   // commons-configuration2:2.4 requires support for interface default methods, not available on SDK <24
   implementation('org.apache.commons:commons-configuration2:2.15.1') { exclude group: 'commons-logging', module: 'commons-logging' }
-  implementation('commons-beanutils:commons-beanutils:1.9.3') { exclude group: 'commons-logging', module: 'commons-logging' }
+  implementation('commons-beanutils:commons-beanutils:1.11.0') { exclude group: 'commons-logging', module: 'commons-logging' }
   implementation('commons-io:commons-io:2.16.1') { exclude group: 'commons-logging', module: 'commons-logging' }
 
   androidTestImplementation 'androidx.test:runner:1.7.0'
