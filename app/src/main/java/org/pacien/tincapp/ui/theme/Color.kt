@@ -13,4 +13,4 @@ val TextError = Color(0xFFF44336)
 val Separator = Color(0xFFD9D9D9)
 
 val BackgroundPrimary = Color(0xFFFFFFFF)
-val BackgroundSecondary = Color(0xFFDDDDDD)
+val BackgroundSecondary = Color(0xFFF5F5F5)

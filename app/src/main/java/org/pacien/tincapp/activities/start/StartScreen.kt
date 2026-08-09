@@ -18,6 +18,7 @@
 
 package org.pacien.tincapp.activities.start
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
@@ -45,6 +46,7 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.components.*
+import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.TincTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -196,59 +198,65 @@ fun StartScreenContent(
             )
         }
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            item {
-                Text(
-                    text = stringResource(R.string.start_network_list_warning_text),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(
+            LazyColumn(
+                modifier = Modifier.weight(1f)
+            ) {
+                errorNotification?.let { error ->
+                    item {
+                        ErrorNotificationBlock(
+                            error = error,
+                            onManualClick = { error.manualLink?.let { onManualClick(it) } },
+                            onConfigDirClick = { error.configDir?.let { onConfigDirClick(it) } },
+                            onLogDirClick = onLogDirClick
+                        )
+                    }
+                }
+
+                item {
+                    SectionTitle(text = stringResource(R.string.start_network_list_title))
+                }
+
+                if (networkList.isEmpty()) {
+                    item {
+                        Text(
+                            text = stringResource(R.string.start_network_list_empty_none_found),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(
+                                horizontal = dimensionResource(R.dimen.activity_horizontal_margin)
+                            )
+                        )
+                    }
+                } else {
+                    items(networkList, key = { it.name }) { network ->
+                        NetworkListItem(
+                            name = network.name,
+                            needsPassphrase = network.needsPassphrase,
+                            onClick = { onNetworkClick(network.name) },
+                            onConfigDirClick = { onConfigDirClick(network.name) },
+                            onLockClick = { onLockClick(network.name) },
+                            onUnlockClick = { onUnlockClick(network.name) },
+                            onDeleteClick = { onDeleteClick(network.name) }
+                        )
+                    }
+                }
+            }
+
+            Text(
+                text = stringResource(R.string.start_network_list_warning_text),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .background(BackgroundSecondary)
+                    .padding(
                         horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
                         vertical = dimensionResource(R.dimen.activity_vertical_margin)
                     )
-                )
-            }
-
-            errorNotification?.let { error ->
-                item {
-                    ErrorNotificationBlock(
-                        error = error,
-                        onManualClick = { error.manualLink?.let { onManualClick(it) } },
-                        onConfigDirClick = { error.configDir?.let { onConfigDirClick(it) } },
-                        onLogDirClick = onLogDirClick
-                    )
-                }
-            }
-
-            item {
-                SectionTitle(text = stringResource(R.string.start_network_list_title))
-            }
-
-            if (networkList.isEmpty()) {
-                item {
-                    Text(
-                        text = stringResource(R.string.start_network_list_empty_none_found),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(dimensionResource(R.dimen.activity_horizontal_margin))
-                    )
-                }
-            } else {
-                items(networkList, key = { it.name }) { network ->
-                    NetworkListItem(
-                        name = network.name,
-                        needsPassphrase = network.needsPassphrase,
-                        onClick = { onNetworkClick(network.name) },
-                        onConfigDirClick = { onConfigDirClick(network.name) },
-                        onLockClick = { onLockClick(network.name) },
-                        onUnlockClick = { onUnlockClick(network.name) },
-                        onDeleteClick = { onDeleteClick(network.name) }
-                    )
-                }
-            }
+            )
         }
     }
 }
@@ -275,7 +283,10 @@ fun ErrorNotificationBlock(
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.activity_horizontal_margin))
+            modifier = Modifier.padding(
+                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
+                vertical = dimensionResource(R.dimen.activity_vertical_margin)
+            )
         )
 
         Column(
