@@ -60,6 +60,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.activities.status.subnets.SubnetInfo
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import org.pacien.tincapp.ui.components.GenericActionsMenu
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.HeaderPrimary
 import org.pacien.tincapp.ui.theme.TincTheme
@@ -83,6 +84,8 @@ fun StatusScreen(
     netName: String?,
     onDisconnectClick: () -> Unit,
     onAboutClick: () -> Unit,
+    onOpenNetworksDirClick: () -> Unit,
+    onLogDirClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val tabs = StatusTab.entries
@@ -116,13 +119,12 @@ fun StatusScreen(
                                 tint = TextTitle
                             )
                         }
-                        IconButton(onClick = onAboutClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Default.Help,
-                                contentDescription = stringResource(R.string.about_app_menu_about),
-                                tint = TextTitle
-                            )
-                        }
+                        GenericActionsMenu(
+                            onOpenNetworksDirClick = onOpenNetworksDirClick,
+                            onLogDirClick = onLogDirClick,
+                            onAboutClick = onAboutClick,
+                            tint = TextTitle
+                        )
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = HeaderPrimary,
@@ -254,7 +256,9 @@ fun StatusScreenPreview() {
             onNodeClick = {},
             netName = "test-net",
             onDisconnectClick = {},
-            onAboutClick = {}
+            onAboutClick = {},
+            onOpenNetworksDirClick = {},
+            onLogDirClick = {}
         )
     }
 }

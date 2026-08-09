@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.dp
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
-import org.pacien.tincapp.ui.components.SectionTitle
+import org.pacien.tincapp.ui.components.*
 import org.pacien.tincapp.ui.theme.TincTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -151,7 +151,6 @@ fun StartScreenContent(
     onDeleteClick: (String) -> Unit
 ) {
     var showCreateMenu by remember { mutableStateOf(false) }
-    var showMenu by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -184,40 +183,11 @@ fun StartScreenContent(
                             }
                         )
                     }
-                    IconButton(onClick = { showMenu = !showMenu }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.generic_action_menu),
-                            tint = Color.White
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.configure_browse_directories_action_open_networks_config)) },
-                            onClick = {
-                                showMenu = false
-                                onOpenNetworksDirClick()
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.configure_browse_directories_action_open_logs)) },
-                            onClick = {
-                                showMenu = false
-                                onLogDirClick()
-                            }
-                        )
-                        HorizontalDivider()
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.about_app_menu_about)) },
-                            onClick = {
-                                showMenu = false
-                                onAboutClick()
-                            }
-                        )
-                    }
+                    GenericActionsMenu(
+                        onOpenNetworksDirClick = onOpenNetworksDirClick,
+                        onLogDirClick = onLogDirClick,
+                        onAboutClick = onAboutClick
+                    )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,

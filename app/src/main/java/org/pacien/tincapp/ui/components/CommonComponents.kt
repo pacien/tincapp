@@ -2,10 +2,13 @@ package org.pacien.tincapp.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -201,4 +204,51 @@ fun CrashDialog(
             }
         }
     )
+}
+
+@Composable
+fun GenericActionsMenu(
+    onOpenNetworksDirClick: () -> Unit,
+    onLogDirClick: () -> Unit,
+    onAboutClick: () -> Unit,
+    tint: Color = Color.White
+) {
+    var showMenu by remember { mutableStateOf(false) }
+
+    Box {
+        IconButton(onClick = { showMenu = !showMenu }) {
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = stringResource(R.string.generic_action_menu),
+                tint = tint
+            )
+        }
+        DropdownMenu(
+            expanded = showMenu,
+            onDismissRequest = { showMenu = false }
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.configure_browse_directories_action_open_networks_config)) },
+                onClick = {
+                    showMenu = false
+                    onOpenNetworksDirClick()
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.configure_browse_directories_action_open_logs)) },
+                onClick = {
+                    showMenu = false
+                    onLogDirClick()
+                }
+            )
+            TincDivider()
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.about_app_menu_about)) },
+                onClick = {
+                    showMenu = false
+                    onAboutClick()
+                }
+            )
+        }
+    }
 }

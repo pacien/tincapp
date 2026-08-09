@@ -91,7 +91,9 @@ fun NavGraph(
                 },
                 netName = netName,
                 onDisconnectClick = onDisconnectClick,
-                onAboutClick = onAboutClick
+                onAboutClick = onAboutClick,
+                onOpenNetworksDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) },
+                onLogDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) }
             )
 
             selectedNodeInfo?.let { info ->
