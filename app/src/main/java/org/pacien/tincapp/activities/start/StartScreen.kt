@@ -32,9 +32,11 @@ import androidx.compose.material.icons.filled.EnhancedEncryption
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -259,16 +261,22 @@ fun StartScreenContent(
                 }
             }
 
-            Text(
-                text = stringResource(R.string.start_network_list_warning_text),
-                style = MaterialTheme.typography.bodyMedium,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .background(BackgroundSecondary)
                     .padding(
                         horizontal = ActivityHorizontalMargin,
                         vertical = ActivityVerticalMargin
                     )
-            )
+            ) {
+                Icon(Icons.Outlined.Info, null)
+                Spacer(modifier = Modifier.width(ActivityHorizontalMargin))
+                Text(
+                    text = stringResource(R.string.start_network_list_warning_text),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
     }
 }
