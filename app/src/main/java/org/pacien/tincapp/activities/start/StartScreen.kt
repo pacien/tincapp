@@ -171,14 +171,14 @@ fun StartScreenContent(
                         onDismissRequest = { showCreateMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.configure_tools_action_generate_node_configuration_and_keys)) },
+                            text = { Text(stringResource(R.string.configure_tools_action_create_node_configuration_and_keys)) },
                             onClick = {
                                 showCreateMenu = false
                                 onGenerateConfigClick()
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.configure_tools_action_join_network_via_invitation_url_qr_code)) },
+                            text = { Text(stringResource(R.string.configure_tools_action_join_network_via_invitation_url)) },
                             onClick = {
                                 showCreateMenu = false
                                 onJoinNetworkClick()

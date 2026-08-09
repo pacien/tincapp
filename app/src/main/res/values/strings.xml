@@ -102,8 +102,8 @@
 	<string name="configure_browse_directories_error_no_file_manager">No file manager found to open target.</string>
 
 	<string name="configure_activity_title_tools">Tools</string>
-	<string name="configure_tools_action_generate_node_configuration_and_keys">Generate node configuration and keys</string>
-	<string name="configure_tools_action_join_network_via_invitation_url_qr_code">Join network via invitation URL or QR code</string>
+	<string name="configure_tools_action_create_node_configuration_and_keys">Create node configuration and keys</string>
+	<string name="configure_tools_action_join_network_via_invitation_url">Join network via invitation URL</string>
 	<string name="configure_tools_action_encrypt_decrypt_private_keys">Encrypt or decrypt private keys</string>
 
 	<string name="configure_tools_generate_config_title">New network</string>
