@@ -42,6 +42,9 @@ class ConnectionStarter(private val parentActivity: MainActivity) {
     if (permissionRequestIntent != null)
       return parentActivity.requestVpnPermission(permissionRequestIntent)
 
+    if (!parentActivity.hasLocalNetworkPermission())
+      return parentActivity.requestLocalNetworkPermission()
+
     if (TincKeyring.needsPassphrase(this.netName!!) && this.passphrase == null)
       return askForPassphrase()
 

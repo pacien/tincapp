@@ -20,6 +20,8 @@ package org.pacien.tincapp
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -58,6 +60,16 @@ class MainActivity : ComponentActivity() {
             connectionStarter.tryStart()
         } else {
             App.alert(R.string.notification_error_title_unable_to_start_tinc, getString(R.string.notification_error_message_could_not_bind_iface))
+        }
+    }
+
+    private val localNetworkPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            connectionStarter.tryStart()
+        } else {
+            App.alert(R.string.notification_error_title_unable_to_start_tinc, "Local network permission is required for mesh communication.")
         }
     }
 
@@ -206,5 +218,19 @@ class MainActivity : ComponentActivity() {
     // Helper for ConnectionStarter to request VPN permission
     fun requestVpnPermission(intent: Intent) {
         vpnPermissionLauncher.launch(intent)
+    }
+
+    fun requestLocalNetworkPermission() {
+        if (Build.VERSION.SDK_INT >= 37) { // Android 17
+            localNetworkPermissionLauncher.launch("android.permission.ACCESS_LOCAL_NETWORK")
+        }
+    }
+
+    fun hasLocalNetworkPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= 37) {
+            checkSelfPermission("android.permission.ACCESS_LOCAL_NETWORK") == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
     }
 }
