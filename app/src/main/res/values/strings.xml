@@ -37,6 +37,7 @@
 	<string name="generic_action_apply">Apply</string>
 	<string name="generic_action_menu">Menu</string>
 	<string name="generic_action_open_web_page">Open web page</string>
+	<string name="generic_error_unknown">Unknown error</string>
 	<string name="generic_error_no_web_browser">No web browser found.</string>
 	<string name="generic_error_no_email_client">No e-mail client found.</string>
 
@@ -86,6 +87,7 @@
 	<string name="notification_error_message_network_config_not_found_format">Could not find network configuration file at \"%1$s\".</string>
 	<string name="notification_error_message_network_config_invalid_format">Invalid network configuration in network.conf:\n%1$s</string>
 	<string name="notification_error_message_could_not_decrypt_private_keys_format">Could not decrypt private keys:\n%1$s</string>
+	<string name="notification_error_message_local_network_permission_required">Local network permission is required for mesh communication.</string>
 
 	<!-- Start activity -->
 	<string name="start_activity_menu_configure">Configure</string>

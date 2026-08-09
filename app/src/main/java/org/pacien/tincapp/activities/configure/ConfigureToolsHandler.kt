@@ -44,7 +44,7 @@ fun ConfigureToolsState(
             ProgressDialog(text = stringResource(state.messageResId))
         }
         is ConfigureUiState.Error -> {
-            val message = state.message ?: state.messageResId?.let { stringResource(it) } ?: "Unknown error"
+            val message = state.message ?: state.messageResId?.let { stringResource(it) } ?: stringResource(R.string.generic_error_unknown)
             AlertDialog(
                 onDismissRequest = { viewModel.resetState() },
                 title = { Text(stringResource(R.string.generic_title_error)) },

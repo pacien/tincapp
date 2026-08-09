@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
         if (isGranted) {
             connectionStarter.tryStart()
         } else {
-            App.alert(R.string.notification_error_title_unable_to_start_tinc, "Local network permission is required for mesh communication.")
+            App.alert(R.string.notification_error_title_unable_to_start_tinc, getString(R.string.notification_error_message_local_network_permission_required))
         }
     }
 

@@ -66,7 +66,10 @@ class ConfigureViewModel : ViewModel() {
                 } else if (cause is NetworkInUseException) {
                     _uiState.value = ConfigureUiState.Error(messageResId = R.string.configure_tools_message_network_in_use)
                 } else {
-                    _uiState.value = ConfigureUiState.Error(message = cause.localizedMessage ?: "Unknown error")
+                    _uiState.value = if (cause.localizedMessage != null)
+                        ConfigureUiState.Error(message = cause.localizedMessage)
+                    else
+                        ConfigureUiState.Error(messageResId = R.string.generic_error_unknown)
                 }
             } else {
                 _uiState.value = ConfigureUiState.Success(successResId)
