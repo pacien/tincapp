@@ -52,10 +52,6 @@ fun NodeInfoDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(scrollState)
-                    .padding(
-                        horizontal = dimensionResource(R.dimen.dialog_horizontal_margin),
-                        vertical = dimensionResource(R.dimen.dialog_vertical_margin)
-                    )
             )
         },
         confirmButton = {
