@@ -136,6 +136,7 @@
 
 	<!-- Status activity -->
 	<string name="status_activity_state_connected_to_format">Connected to %s</string>
+	<string name="status_activity_state_disconnected">Disconnected</string>
 	<string name="status_activity_menu_disconnect">Disconnect</string>
 	<string name="status_activity_disconnecting_vpn">Disconnecting VPN…</string>
 

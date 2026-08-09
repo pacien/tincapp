@@ -158,7 +158,18 @@ fun StartScreenContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.app_name)) },
+                title = {
+                    Column {
+                        Text(
+                            text = stringResource(R.string.app_name),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Text(
+                                text = stringResource(R.string.status_activity_state_disconnected),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    },
                 actions = {
                     IconButton(onClick = { showCreateMenu = !showCreateMenu }) {
                         Icon(

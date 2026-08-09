@@ -103,12 +103,14 @@ fun StatusScreen(
                                 text = stringResource(R.string.app_name),
                                 style = MaterialTheme.typography.titleLarge
                             )
-                            netName?.let {
-                                Text(
-                                    text = stringResource(R.string.status_activity_state_connected_to_format, it),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
+                            Text(
+                                text =
+                                    if (netName != null)
+                                        stringResource(R.string.status_activity_state_connected_to_format, netName)
+                                    else
+                                        stringResource(R.string.status_activity_state_disconnected),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
                     },
                     actions = {
