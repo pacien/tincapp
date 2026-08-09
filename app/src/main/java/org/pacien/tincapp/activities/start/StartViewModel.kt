@@ -36,7 +36,7 @@ class StartViewModel(application: Application) : AndroidViewModel(application) {
     private val _errorNotification = MutableLiveData<ErrorNotification?>(notificationManager.getError())
     val errorNotification: LiveData<ErrorNotification?> = _errorNotification
 
-    val networkList: LiveData<List<String>> = networkListLiveData
+    val networkList: LiveData<List<NetworkInfo>> = networkListLiveData
 
     private val notificationListener = OnSharedPreferenceChangeListener { _, _ ->
         _errorNotification.postValue(notificationManager.getError())

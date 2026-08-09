@@ -47,7 +47,6 @@ import org.pacien.tincapp.activities.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.components.SectionTitle
 import org.pacien.tincapp.ui.theme.TincTheme
-import org.pacien.tincapp.utils.TincKeyring
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,26 +94,41 @@ fun StartScreen(
     when (activeDialog) {
         ConfigureDialogType.GENERATE -> GenerateConfigDialog(
             viewModel = configureViewModel,
-            onDismiss = { activeDialog = null }
+            onDismiss = {
+                activeDialog = null
+                viewModel.refresh()
+            }
         )
         ConfigureDialogType.JOIN -> JoinNetworkDialog(
             viewModel = configureViewModel,
-            onDismiss = { activeDialog = null }
+            onDismiss = {
+                activeDialog = null
+                viewModel.refresh()
+            }
         )
         ConfigureDialogType.LOCK -> LockNetworkDialog(
             netName = selectedNetwork,
             viewModel = configureViewModel,
-            onDismiss = { activeDialog = null }
+            onDismiss = {
+                activeDialog = null
+                viewModel.refresh()
+            }
         )
         ConfigureDialogType.UNLOCK -> UnlockNetworkDialog(
             netName = selectedNetwork,
             viewModel = configureViewModel,
-            onDismiss = { activeDialog = null }
+            onDismiss = {
+                activeDialog = null
+                viewModel.refresh()
+            }
         )
         ConfigureDialogType.DELETE -> DeleteNetworkDialog(
             netName = selectedNetwork,
             viewModel = configureViewModel,
-            onDismiss = { activeDialog = null }
+            onDismiss = {
+                activeDialog = null
+                viewModel.refresh()
+            }
         )
         null -> {}
     }
@@ -123,7 +137,7 @@ fun StartScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartScreenContent(
-    networkList: List<String>,
+    networkList: List<NetworkInfo>,
     errorNotification: ErrorNotification?,
     onAboutClick: () -> Unit,
     onNetworkClick: (String) -> Unit,
@@ -254,14 +268,15 @@ fun StartScreenContent(
                     )
                 }
             } else {
-                items(networkList) { network ->
+                items(networkList, key = { it.name }) { network ->
                     NetworkListItem(
-                        name = network,
-                        onClick = { onNetworkClick(network) },
-                        onConfigDirClick = { onConfigDirClick(network) },
-                        onLockClick = { onLockClick(network) },
-                        onUnlockClick = { onUnlockClick(network) },
-                        onDeleteClick = { onDeleteClick(network) }
+                        name = network.name,
+                        needsPassphrase = network.needsPassphrase,
+                        onClick = { onNetworkClick(network.name) },
+                        onConfigDirClick = { onConfigDirClick(network.name) },
+                        onLockClick = { onLockClick(network.name) },
+                        onUnlockClick = { onUnlockClick(network.name) },
+                        onDeleteClick = { onDeleteClick(network.name) }
                     )
                 }
             }
@@ -350,6 +365,7 @@ fun ClickableBlock(text: String, onClick: () -> Unit) {
 @Composable
 fun NetworkListItem(
     name: String,
+    needsPassphrase: Boolean,
     onClick: () -> Unit,
     onConfigDirClick: () -> Unit,
     onLockClick: () -> Unit,
@@ -357,8 +373,6 @@ fun NetworkListItem(
     onDeleteClick: () -> Unit
 ) {
     var showMenu by remember { mutableStateOf(false) }
-    val isPreview = LocalInspectionMode.current
-    val needsPassphrase = if (isPreview) false else TincKeyring.needsPassphrase(name)
 
     ListItem(
         headlineContent = { Text(name) },
@@ -426,7 +440,10 @@ fun NetworkListItem(
 fun StartScreenPreview() {
     TincTheme {
         StartScreenContent(
-            networkList = listOf("Aperture Laboratories", "Black Mesa"),
+            networkList = listOf(
+                NetworkInfo("Aperture Laboratories", false),
+                NetworkInfo("Black Mesa", true)
+            ),
             errorNotification = null,
             onAboutClick = {},
             onNetworkClick = {},

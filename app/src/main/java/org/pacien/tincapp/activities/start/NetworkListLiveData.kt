@@ -20,16 +20,19 @@ package org.pacien.tincapp.activities.start
 
 import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.utils.TincKeyring
 import java.util.concurrent.TimeUnit
 
 /**
  * @author euxane
  */
-class NetworkListLiveData : SelfRefreshingLiveData<List<String>>(1, TimeUnit.SECONDS) {
+class NetworkListLiveData : SelfRefreshingLiveData<List<NetworkInfo>>(1, TimeUnit.SECONDS) {
   private val appPaths = AppPaths
 
   override fun onRefresh() {
-    val networkList = appPaths.confDir().list()?.sorted() ?: emptyList()
+    val networkList = appPaths.confDir().list()?.sorted()?.map {
+      NetworkInfo(it, TincKeyring.needsPassphrase(it))
+    } ?: emptyList()
     postValue(networkList)
   }
 }
