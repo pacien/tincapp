@@ -25,11 +25,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.pacien.tincapp.R
+import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
+import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.TextAccent
 import org.pacien.tincapp.ui.theme.TextSecondary
 
@@ -46,8 +46,8 @@ fun SectionTitle(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
-                vertical = dimensionResource(R.dimen.activity_vertical_margin)
+                horizontal = ActivityHorizontalMargin,
+                vertical = ActivityVerticalMargin
             )
     )
 }
@@ -62,8 +62,8 @@ fun ListBlock(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
-                vertical = dimensionResource(R.dimen.activity_vertical_margin)
+                horizontal = ActivityHorizontalMargin,
+                vertical = ActivityVerticalMargin
             )
     ) {
         Text(
@@ -93,8 +93,8 @@ fun EmptyPlaceholder(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
-                vertical = dimensionResource(R.dimen.activity_vertical_margin)
+                horizontal = ActivityHorizontalMargin,
+                vertical = ActivityVerticalMargin
             )
     )
 }

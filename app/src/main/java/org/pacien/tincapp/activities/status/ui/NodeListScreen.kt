@@ -31,11 +31,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalContext
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
+import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
+import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.Separator
 import org.pacien.tincapp.ui.theme.TextSecondary
 
@@ -73,8 +74,8 @@ private fun NodeListItem(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(
-                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
-                vertical = dimensionResource(R.dimen.activity_vertical_margin)
+                horizontal = ActivityHorizontalMargin,
+                vertical = ActivityVerticalMargin
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {

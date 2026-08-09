@@ -37,7 +37,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +45,8 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.components.*
+import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
+import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.TincTheme
 
@@ -228,7 +229,7 @@ fun StartScreenContent(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(
-                                horizontal = dimensionResource(R.dimen.activity_horizontal_margin)
+                                horizontal = ActivityHorizontalMargin
                             )
                         )
                     }
@@ -253,8 +254,8 @@ fun StartScreenContent(
                 modifier = Modifier
                     .background(BackgroundSecondary)
                     .padding(
-                        horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
-                        vertical = dimensionResource(R.dimen.activity_vertical_margin)
+                        horizontal = ActivityHorizontalMargin,
+                        vertical = ActivityVerticalMargin
                     )
             )
         }
@@ -284,8 +285,8 @@ fun ErrorNotificationBlock(
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(
-                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
-                vertical = dimensionResource(R.dimen.activity_vertical_margin)
+                horizontal = ActivityHorizontalMargin,
+                vertical = ActivityVerticalMargin
             )
         )
 
@@ -298,7 +299,7 @@ fun ErrorNotificationBlock(
                 text = error.message,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(
-                    horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
+                    horizontal = ActivityHorizontalMargin,
                     vertical = 8.dp
                 )
             )
@@ -336,7 +337,7 @@ fun ClickableBlock(text: String, onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(
-                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
+                horizontal = ActivityHorizontalMargin,
                 vertical = 12.dp
             )
     )

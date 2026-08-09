@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -17,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppInfo
+import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
+import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.Separator
 import org.pacien.tincapp.ui.theme.TextAccent
 import org.pacien.tincapp.ui.theme.TextSecondary
@@ -31,9 +32,9 @@ fun SectionTitle(text: String, modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                start = dimensionResource(R.dimen.activity_horizontal_margin),
-                end = dimensionResource(R.dimen.activity_horizontal_margin),
-                top = dimensionResource(R.dimen.activity_vertical_margin),
+                start = ActivityHorizontalMargin,
+                end = ActivityHorizontalMargin,
+                top = ActivityVerticalMargin,
                 bottom = 8.dp
             )
     )
@@ -50,8 +51,8 @@ fun ListBlock(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(
-                horizontal = dimensionResource(R.dimen.activity_horizontal_margin),
-                vertical = dimensionResource(R.dimen.activity_vertical_margin)
+                horizontal = ActivityHorizontalMargin,
+                vertical = ActivityVerticalMargin
             )
     ) {
         Text(
