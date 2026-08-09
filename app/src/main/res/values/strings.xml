@@ -102,7 +102,6 @@
 	<string name="configure_tools_generate_config_title">New network</string>
 	<string name="configure_tools_generate_config_net_name_hint">tinc network name</string>
 	<string name="configure_tools_generate_config_node_name_hint">Name of this node</string>
-	<string name="configure_tools_generate_config_optional_passphrase_hint">Passphrase (optional)</string>
 	<string name="configure_tools_generate_config_action">Create</string>
 	<string name="configure_tools_generate_config_generating">Generating node configuration…</string>
 

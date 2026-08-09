@@ -45,7 +45,6 @@ fun GenerateConfigDialog(
 ) {
     var netName by remember { mutableStateOf("") }
     var nodeName by remember { mutableStateOf("") }
-    var passphrase by remember { mutableStateOf("") }
 
     ConfigureToolsState(viewModel, onSuccess = onDismiss)
 
@@ -73,19 +72,11 @@ fun GenerateConfigDialog(
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = passphrase,
-                    onValueChange = { passphrase = it },
-                    label = { Text(stringResource(R.string.configure_tools_generate_config_optional_passphrase_hint)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
             }
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.generateConf(netName, nodeName, passphrase) },
+                onClick = { viewModel.generateConf(netName, nodeName) },
                 enabled = netName.isNotBlank() && nodeName.isNotBlank()
             ) {
                 Text(stringResource(R.string.configure_tools_generate_config_action))
@@ -106,7 +97,6 @@ fun JoinNetworkDialog(
 ) {
     var netName by remember { mutableStateOf("") }
     var invitationUrl by remember { mutableStateOf("") }
-    var passphrase by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val scanLauncher = rememberLauncherForActivityResult(
@@ -167,19 +157,11 @@ fun JoinNetworkDialog(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = passphrase,
-                    onValueChange = { passphrase = it },
-                    label = { Text(stringResource(R.string.configure_tools_generate_config_optional_passphrase_hint)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
             }
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.joinNetwork(netName, invitationUrl, passphrase) },
+                onClick = { viewModel.joinNetwork(netName, invitationUrl) },
                 enabled = netName.isNotBlank() && invitationUrl.isNotBlank()
             ) {
                 Text(stringResource(R.string.configure_tools_join_network_action))

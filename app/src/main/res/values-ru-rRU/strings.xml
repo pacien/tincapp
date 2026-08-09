@@ -75,7 +75,6 @@
     <string name="configure_tools_generate_config_title">Новая сеть</string>
     <string name="configure_tools_generate_config_net_name_hint">имя сети tinc</string>
     <string name="configure_tools_generate_config_node_name_hint">Имя этого узла</string>
-    <string name="configure_tools_generate_config_optional_passphrase_hint">Кодовая фраза (необязательно)</string>
     <string name="configure_tools_generate_config_action">Создать</string>
     <string name="configure_tools_generate_config_generating">Генерируем конфигурацию узла…</string>
     <string name="configure_tools_join_network_title">Присоединиться к сети</string>

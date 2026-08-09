@@ -69,27 +69,25 @@ class ConfigureViewModel : ViewModel() {
         }
     }
 
-    fun generateConf(netName: String, nodeName: String, passphrase: String?) {
+    fun generateConf(netName: String, nodeName: String) {
         execAction(
             R.string.configure_tools_generate_config_generating,
             validateNetName(netName)
                 .thenCompose { Tinc.init(netName, nodeName) }
                 .thenCompose { TincApp.removeScripts(netName) }
                 .thenCompose { TincApp.generateIfaceCfgTemplate(netName) }
-                .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) }
                 .thenApply { AppPaths.confDir(netName).makePublic() }
                 .thenApply { Unit }
         )
     }
 
-    fun joinNetwork(netName: String, url: String, passphrase: String?) {
+    fun joinNetwork(netName: String, url: String) {
         execAction(
             R.string.configure_tools_join_network_joining,
             validateNetName(netName)
                 .thenCompose { Tinc.join(netName, url) }
                 .thenCompose { TincApp.removeScripts(netName) }
                 .thenCompose { TincApp.generateIfaceCfg(netName) }
-                .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) }
                 .thenApply { AppPaths.confDir(netName).makePublic() }
                 .thenApply { Unit }
         )

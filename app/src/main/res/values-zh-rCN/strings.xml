@@ -75,7 +75,6 @@
     <string name="configure_tools_generate_config_title">新建网络</string>
     <string name="configure_tools_generate_config_net_name_hint">Tinc 网络名称</string>
     <string name="configure_tools_generate_config_node_name_hint">此节点名称</string>
-    <string name="configure_tools_generate_config_optional_passphrase_hint">密码（可选）</string>
     <string name="configure_tools_generate_config_action">创建</string>
     <string name="configure_tools_generate_config_generating">生成节点配置…</string>
     <string name="configure_tools_join_network_title">加入网络</string>

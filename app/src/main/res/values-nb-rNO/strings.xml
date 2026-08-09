@@ -87,7 +87,6 @@
 	<string name="configure_tools_generate_config_title">Nytt nettverk</string>
 	<string name="configure_tools_generate_config_net_name_hint">tinc-nettverksnavn</string>
 	<string name="configure_tools_generate_config_node_name_hint">Navn på denne noden</string>
-	<string name="configure_tools_generate_config_optional_passphrase_hint">Passord (valgfritt)</string>
 	<string name="configure_tools_generate_config_action">Opprett</string>
 	<string name="configure_tools_generate_config_generating">Genererer nodeoppsett…</string>
 

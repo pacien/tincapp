@@ -87,7 +87,6 @@
 	<string name="configure_tools_generate_config_title">新建網絡</string>
 	<string name="configure_tools_generate_config_net_name_hint">Tinc 網絡名稱</string>
 	<string name="configure_tools_generate_config_node_name_hint">此節點名稱</string>
-	<string name="configure_tools_generate_config_optional_passphrase_hint">密碼（可選）</string>
 	<string name="configure_tools_generate_config_action">創建</string>
 	<string name="configure_tools_generate_config_generating">生成節點配置…</string>
 
