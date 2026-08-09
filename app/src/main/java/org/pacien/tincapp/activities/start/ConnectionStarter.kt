@@ -19,14 +19,9 @@
 package org.pacien.tincapp.activities.start
 
 import android.net.VpnService
-import androidx.appcompat.app.AlertDialog
-import android.view.inputmethod.EditorInfo
 import org.pacien.tincapp.MainActivity
-import org.pacien.tincapp.R
-import org.pacien.tincapp.databinding.DialogDecryptKeysBinding
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.utils.TincKeyring
-import org.pacien.tincapp.extensions.View.on
 
 /**
  * @author euxane
@@ -54,21 +49,7 @@ class ConnectionStarter(private val parentActivity: MainActivity) {
   }
 
   private fun askForPassphrase() {
-    val dialogViewBinding = DialogDecryptKeysBinding.inflate(parentActivity.layoutInflater)
-
-    val dialog = AlertDialog.Builder(parentActivity)
-      .setTitle(R.string.decrypt_key_modal_title)
-      .setView(dialogViewBinding.root)
-      .setPositiveButton(R.string.decrypt_key_modal_action_unlock) { _, _ -> tryStart(passphrase = dialogViewBinding.passphrase.text.toString()) }
-      .setNegativeButton(R.string.decrypt_key_modal_action_cancel) { _, _ -> }
-      .create()
-
-    dialogViewBinding.passphrase.on(EditorInfo.IME_ACTION_DONE) {
-      dialog.dismiss()
-      tryStart(passphrase = dialogViewBinding.passphrase.text.toString())
-    }
-
-    dialog.show()
+    parentActivity.showDecryptKeysDialog()
   }
 
   private fun startVpn(netName: String, passphrase: String? = null) {

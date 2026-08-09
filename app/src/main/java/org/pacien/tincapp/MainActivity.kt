@@ -27,10 +27,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import org.pacien.tincapp.activities.common.ProgressModal
 import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.start.ConnectionStarter
 import org.pacien.tincapp.context.App
@@ -39,6 +41,8 @@ import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
+import org.pacien.tincapp.ui.components.DecryptKeysDialog
+import org.pacien.tincapp.ui.components.ProgressDialog
 import org.pacien.tincapp.ui.navigation.NavGraph
 import org.pacien.tincapp.ui.theme.TincTheme
 
@@ -64,8 +68,12 @@ class MainActivity : AppCompatActivity() {
         Actions.EVENT_DISCONNECTED to ::onVpnShutdown
     ))
 
-    private var connectDialog: android.app.Dialog? = null
-    private var shutdownDialog: android.app.Dialog? = null
+    private var activeDialog by mutableStateOf<ActiveDialog?>(null)
+
+    sealed class ActiveDialog {
+        data class Progress(val text: String) : ActiveDialog()
+        object DecryptKeys : ActiveDialog()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +90,18 @@ class MainActivity : AppCompatActivity() {
                     onDisconnectClick = { stopVpn() },
                     onShareLogClick = { shareLog(it) }
                 )
+
+                when (val dialog = activeDialog) {
+                    is ActiveDialog.Progress -> ProgressDialog(dialog.text)
+                    is ActiveDialog.DecryptKeys -> DecryptKeysDialog(
+                        onDismiss = { activeDialog = null },
+                        onConfirm = {
+                            activeDialog = null
+                            connectionStarter.tryStart(passphrase = it)
+                        }
+                    )
+                    null -> {}
+                }
             }
         }
 
@@ -124,7 +144,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onVpnStart() {
-        connectDialog?.dismiss()
+        activeDialog = null
         if (::navController.isInitialized) {
             navController.navigate("status") {
                 popUpTo("start") { inclusive = true }
@@ -133,11 +153,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onVpnStartError() {
-        connectDialog?.dismiss()
+        activeDialog = null
     }
 
     private fun onVpnShutdown() {
-        shutdownDialog?.dismiss()
+        activeDialog = null
         if (::navController.isInitialized) {
             navController.navigate("start") {
                 popUpTo(0) { inclusive = true }
@@ -146,11 +166,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showConnectProgressDialog() {
-        connectDialog = ProgressModal.show(this, getString(R.string.start_starting_vpn))
+        activeDialog = ActiveDialog.Progress(getString(R.string.start_starting_vpn))
+    }
+
+    fun showDecryptKeysDialog() {
+        activeDialog = ActiveDialog.DecryptKeys
     }
 
     private fun stopVpn() {
-        shutdownDialog = ProgressModal.show(this, getString(R.string.status_activity_disconnecting_vpn))
+        activeDialog = ActiveDialog.Progress(getString(R.string.status_activity_disconnecting_vpn))
         TincVpnService.disconnect()
     }
 
