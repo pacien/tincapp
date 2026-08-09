@@ -3,6 +3,11 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.46 -- (next release)
+- GUI update: network creation and config now done on the main screen
+- bugfix: new files with conflicting names now handled in config dir
+- config dir: ".txt" extension now automatically stripped for config files
+
 ## v0.45 -- 2026-10-06
 - fix app crash when displaying the network list on some devices
 - fix app crash when a configuration tool completes after leaving its screen
