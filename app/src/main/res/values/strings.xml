@@ -86,7 +86,7 @@
 	<string name="start_starting_vpn">Starting VPN…</string>
 
 	<string name="start_network_action_connect">Connect</string>
-	<string name="start_network_action_config_dir">Configuration directory</string>
+	<string name="start_network_action_edit_config">Edit configuration</string>
 	<string name="start_network_action_lock">Lock with passphrase</string>
 	<string name="start_network_action_unlock">Remove passphrase protection</string>
 	<string name="start_network_action_delete">Delete</string>

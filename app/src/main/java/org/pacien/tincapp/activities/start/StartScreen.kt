@@ -23,20 +23,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Help
-import androidx.compose.material.icons.automirrored.filled.ReceiptLong
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddLink
-import androidx.compose.material.icons.filled.CreateNewFolder
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.EnhancedEncryption
+import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -390,6 +388,7 @@ fun NetworkListItem(
                     onDismissRequest = { showMenu = false }
                 ) {
                     DropdownMenuItem(
+                        leadingIcon = { Icon(Icons.Default.Link, null) },
                         text = { Text(stringResource(R.string.start_network_action_connect)) },
                         onClick = {
                             showMenu = false
@@ -397,15 +396,16 @@ fun NetworkListItem(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.start_network_action_config_dir)) },
+                        leadingIcon = { Icon(Icons.Default.Edit, null) },
+                        text = { Text(stringResource(R.string.start_network_action_edit_config)) },
                         onClick = {
                             showMenu = false
                             onConfigDirClick()
                         }
                     )
-                    HorizontalDivider()
                     if (needsPassphrase) {
                         DropdownMenuItem(
+                            leadingIcon = { Icon(Icons.Default.LockOpen, null) },
                             text = { Text(stringResource(R.string.start_network_action_unlock)) },
                             onClick = {
                                 showMenu = false
@@ -414,6 +414,7 @@ fun NetworkListItem(
                         )
                     } else {
                         DropdownMenuItem(
+                            leadingIcon = { Icon(Icons.Default.EnhancedEncryption, null) },
                             text = { Text(stringResource(R.string.start_network_action_lock)) },
                             onClick = {
                                 showMenu = false
@@ -421,9 +422,16 @@ fun NetworkListItem(
                             }
                         )
                     }
-                    HorizontalDivider()
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.start_network_action_delete)) },
+                        leadingIcon = { Icon(
+                            Icons.Default.Delete,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error
+                        ) },
+                        text = { Text(
+                            stringResource(R.string.start_network_action_delete),
+                            color = MaterialTheme.colorScheme.error
+                        ) },
                         onClick = {
                             showMenu = false
                             onDeleteClick()
