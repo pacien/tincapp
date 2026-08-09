@@ -166,6 +166,5 @@
 	<string name="status_activity_title_subnet_list">Subnets</string>
 	<string name="status_subnet_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 
-	<!-- Log viewer activity -->
-	<string name="log_view_title_daemon_log">Daemon log</string>
+	<string name="status_activity_title_log_view">Log</string>
 </resources>

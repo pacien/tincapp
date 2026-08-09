@@ -60,7 +60,7 @@ enum class StatusTab(val titleRes: Int) {
     NETWORK_INFO(R.string.status_activity_title_network_info),
     NODES(R.string.status_activity_title_node_list),
     SUBNETS(R.string.status_activity_title_subnet_list),
-    LOGS(R.string.log_view_title_daemon_log)
+    LOGS(R.string.status_activity_title_log_view)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
