@@ -13,6 +13,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.pacien.tincapp.R
+import org.pacien.tincapp.context.AppInfo
 import org.pacien.tincapp.ui.theme.Separator
 import org.pacien.tincapp.ui.theme.TextAccent
 import org.pacien.tincapp.ui.theme.TextSecondary
@@ -119,6 +120,84 @@ fun DecryptKeysDialog(
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.decrypt_key_modal_action_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+fun AboutDialog(
+    onDismiss: () -> Unit,
+    onOpenWebsite: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.app_name)) },
+        text = {
+            Text(
+                text = stringResource(R.string.about_app_short_desc) + "\n\n" +
+                        stringResource(R.string.about_app_copyright) + " " +
+                        stringResource(R.string.about_app_license) + "\n\n" +
+                        AppInfo.all()
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.generic_action_close))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onOpenWebsite) {
+                Text(stringResource(R.string.about_app_open_project_website))
+            }
+        }
+    )
+}
+
+@Composable
+fun ErrorDialog(
+    message: String,
+    docTopic: String? = null,
+    onDismiss: () -> Unit,
+    onOpenManual: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.generic_title_error)) },
+        text = { Text(message) },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.generic_action_close))
+            }
+        },
+        dismissButton = {
+            if (docTopic != null) {
+                TextButton(onClick = { onOpenManual(docTopic) }) {
+                    Text(stringResource(R.string.notification_error_action_open_manual))
+                }
+            }
+        }
+    )
+}
+
+@Composable
+fun CrashDialog(
+    message: String,
+    onDismiss: () -> Unit,
+    onSendReport: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.crash_modal_title)) },
+        text = { Text(message) },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.generic_action_close))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onSendReport) {
+                Text(stringResource(R.string.crash_modal_action_send_report))
             }
         }
     )

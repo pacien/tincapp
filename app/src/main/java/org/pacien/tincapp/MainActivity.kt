@@ -24,7 +24,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -73,6 +72,9 @@ class MainActivity : AppCompatActivity() {
     sealed class ActiveDialog {
         data class Progress(val text: String) : ActiveDialog()
         object DecryptKeys : ActiveDialog()
+        object About : ActiveDialog()
+        data class Error(val msg: String, val docTopic: String? = null) : ActiveDialog()
+        data class Crash(val message: String, val onSendReport: () -> Unit) : ActiveDialog()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,6 +100,24 @@ class MainActivity : AppCompatActivity() {
                         onConfirm = {
                             activeDialog = null
                             connectionStarter.tryStart(passphrase = it)
+                        }
+                    )
+                    is ActiveDialog.About -> org.pacien.tincapp.ui.components.AboutDialog(
+                        onDismiss = { activeDialog = null },
+                        onOpenWebsite = { App.openURL(getString(R.string.about_app_website_url)) }
+                    )
+                    is ActiveDialog.Error -> org.pacien.tincapp.ui.components.ErrorDialog(
+                        message = dialog.msg,
+                        docTopic = dialog.docTopic,
+                        onDismiss = { activeDialog = null },
+                        onOpenManual = { App.openURL(getString(R.string.app_doc_url_format, it)) }
+                    )
+                    is ActiveDialog.Crash -> org.pacien.tincapp.ui.components.CrashDialog(
+                        message = dialog.message,
+                        onDismiss = { activeDialog = null },
+                        onSendReport = {
+                            activeDialog = null
+                            dialog.onSendReport()
                         }
                     )
                     null -> {}
@@ -129,7 +149,10 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         broadcastMapper.register(lifecycleScope)
-        RecentCrashHandler(this).handleRecentCrash()
+        
+        RecentCrashHandler(this).handleRecentCrash()?.let {
+            activeDialog = ActiveDialog.Crash(it.message, it.onSendReport)
+        }
 
         if (::navController.isInitialized && TincVpnService.isConnected() && navController.currentDestination?.route == "start") {
             navController.navigate("status") {
@@ -179,30 +202,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showAboutDialog() {
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.app_name))
-            .setMessage(getString(R.string.about_app_short_desc) + "\n\n" +
-                    getString(R.string.about_app_copyright) + " " +
-                    getString(R.string.about_app_license) + "\n\n" +
-                    AppInfo.all())
-            .setNeutralButton(R.string.about_app_open_project_website) { _, _ -> App.openURL(getString(R.string.about_app_website_url)) }
-            .setPositiveButton(R.string.generic_action_close) { _, _ -> }
-            .show()
+        activeDialog = ActiveDialog.About
     }
 
     fun showErrorDialog(msg: String, docTopic: String? = null) {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.generic_title_error)
-            .setMessage(msg)
-            .setPositiveButton(R.string.generic_action_close) { _, _ -> }
-            .apply {
-                if (docTopic != null) {
-                    setNeutralButton(R.string.notification_error_action_open_manual) { _, _ ->
-                        App.openURL(getString(R.string.app_doc_url_format, docTopic))
-                    }
-                }
-            }
-            .show()
+        activeDialog = ActiveDialog.Error(msg, docTopic)
     }
 
     private fun openDocumentTree(documentId: String) {

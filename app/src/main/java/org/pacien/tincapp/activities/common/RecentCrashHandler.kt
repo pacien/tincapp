@@ -18,7 +18,6 @@
 
 package org.pacien.tincapp.activities.common
 
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import org.apache.commons.io.input.ReversedLinesFileReader
 import org.pacien.tincapp.R
@@ -34,16 +33,21 @@ class RecentCrashHandler(private val parentActivity: AppCompatActivity) {
   private val resources by lazy { parentActivity.resources!! }
   private val maxLines = 1000
 
-  fun handleRecentCrash() {
-    if (!CrashRecorder.hasPreviouslyCrashed()) return
+  data class CrashInfo(
+    val title: String,
+    val message: String,
+    val onSendReport: () -> Unit
+  )
+
+  fun handleRecentCrash(): CrashInfo? {
+    if (!CrashRecorder.hasPreviouslyCrashed()) return null
     CrashRecorder.dismissPreviousCrash()
 
-    AlertDialog.Builder(parentActivity)
-      .setTitle(R.string.crash_modal_title)
-      .setMessage(makeMessage())
-      .setNeutralButton(R.string.crash_modal_action_send_report) { _, _ -> sendReportMail() }
-      .setPositiveButton(R.string.generic_action_close) { _, _ -> }
-      .show()
+    return CrashInfo(
+      title = resources.getString(R.string.crash_modal_title),
+      message = makeMessage(),
+      onSendReport = ::sendReportMail
+    )
   }
 
   private fun makeMessage() =
