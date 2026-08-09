@@ -109,7 +109,7 @@ fun NavGraph(
         composable("viewlog") {
             val viewModel: LogViewModel = viewModel()
             val logLines by viewModel.log.observeAsState(emptyList())
-            val logText = logLines.joinToString("\n\n")
+            val logText = logLines.joinToString("\n")
             var isLoggingEnabled by remember { mutableStateOf(viewModel.logging) }
 
             ViewLogScreen(

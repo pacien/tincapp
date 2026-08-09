@@ -18,7 +18,6 @@
 
 package org.pacien.tincapp.activities.viewlog
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -143,7 +142,7 @@ fun ViewLogScreen(
 fun ViewLogScreenPreview() {
     TincTheme {
         ViewLogScreen(
-            logText = "Log line 1\n\nLog line 2\n\nLog line 3",
+            logText = "Log line 1\nLog line 2\nLog line 3",
             logLevelText = "DEBUG",
             isLoggingEnabled = true,
             onBackClick = {},
