@@ -19,7 +19,6 @@
 package org.pacien.tincapp.activities.start
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -40,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.pacien.tincapp.R
@@ -72,10 +70,8 @@ fun StartScreen(
 
     StartScreenContent(
         networkList = networkList,
-        errorNotification = errorNotification,
         onAboutClick = onAboutClick,
         onNetworkClick = onNetworkClick,
-        onManualClick = onManualClick,
         onConfigDirClick = onConfigDirClick,
         onLogDirClick = onLogDirClick,
         onOpenNetworksDirClick = onOpenNetworksDirClick,
@@ -94,6 +90,16 @@ fun StartScreen(
             activeDialog = ConfigureDialogType.DELETE
         }
     )
+
+    errorNotification?.let { error ->
+        ErrorDialog(
+            error = error,
+            onDismiss = { viewModel.dismissError() },
+            onManualClick = { error.manualLink?.let { onManualClick(it) } },
+            onConfigDirClick = { error.configDir?.let { onConfigDirClick(it) } },
+            onLogDirClick = onLogDirClick
+        )
+    }
 
     when (activeDialog) {
         ConfigureDialogType.GENERATE -> GenerateConfigDialog(
@@ -142,10 +148,8 @@ fun StartScreen(
 @Composable
 fun StartScreenContent(
     networkList: List<NetworkInfo>,
-    errorNotification: ErrorNotification?,
     onAboutClick: () -> Unit,
     onNetworkClick: (String) -> Unit,
-    onManualClick: (String) -> Unit,
     onConfigDirClick: (String) -> Unit,
     onLogDirClick: () -> Unit,
     onOpenNetworksDirClick: () -> Unit,
@@ -220,17 +224,6 @@ fun StartScreenContent(
             LazyColumn(
                 modifier = Modifier.weight(1f)
             ) {
-                errorNotification?.let { error ->
-                    item {
-                        ErrorNotificationBlock(
-                            error = error,
-                            onManualClick = { error.manualLink?.let { onManualClick(it) } },
-                            onConfigDirClick = { error.configDir?.let { onConfigDirClick(it) } },
-                            onLogDirClick = onLogDirClick
-                        )
-                    }
-                }
-
                 item {
                     SectionTitle(text = stringResource(R.string.start_network_list_title))
                 }
@@ -287,78 +280,47 @@ enum class ConfigureDialogType {
 }
 
 @Composable
-fun ErrorNotificationBlock(
+fun ErrorDialog(
     error: ErrorNotification,
+    onDismiss: () -> Unit,
     onManualClick: () -> Unit,
     onConfigDirClick: () -> Unit,
     onLogDirClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Text(
-            text = error.title,
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(
-                horizontal = ActivityHorizontalMargin,
-                vertical = ActivityVerticalMargin
-            )
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        ) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
             Text(
-                text = error.message,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(
-                    horizontal = ActivityHorizontalMargin,
-                    vertical = 8.dp
-                )
+                text = error.title,
+                color = MaterialTheme.colorScheme.error
             )
-
-            error.manualLink?.let {
-                ClickableBlock(
-                    text = stringResource(R.string.notification_error_action_open_manual),
-                    onClick = onManualClick
-                )
+        },
+        text = {
+            Column {
+                Text(text = error.message)
+                Spacer(modifier = Modifier.height(16.dp))
+                error.manualLink?.let {
+                    TextButton(onClick = onManualClick) {
+                        Text(stringResource(R.string.notification_error_action_open_manual))
+                    }
+                }
+                error.configDir?.let {
+                    TextButton(onClick = onConfigDirClick) {
+                        Text(stringResource(R.string.notification_error_action_open_config_dir))
+                    }
+                }
+                if (error.proposeLogs) {
+                    TextButton(onClick = onLogDirClick) {
+                        Text(stringResource(R.string.notification_error_action_open_logs_dir))
+                    }
+                }
             }
-
-            error.configDir?.let {
-                ClickableBlock(
-                    text = stringResource(R.string.notification_error_action_open_config_dir),
-                    onClick = onConfigDirClick
-                )
-            }
-
-            if (error.proposeLogs) {
-                ClickableBlock(
-                    text = stringResource(R.string.notification_error_action_open_logs_dir),
-                    onClick = onLogDirClick
-                )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.ok))
             }
         }
-    }
-}
-
-@Composable
-fun ClickableBlock(text: String, onClick: () -> Unit) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyLarge,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(
-                horizontal = ActivityHorizontalMargin,
-                vertical = 12.dp
-            )
     )
 }
 
@@ -457,10 +419,8 @@ fun StartScreenPreview() {
                 NetworkInfo("Aperture Laboratories", false),
                 NetworkInfo("Black Mesa", true)
             ),
-            errorNotification = null,
             onAboutClick = {},
             onNetworkClick = {},
-            onManualClick = {},
             onConfigDirClick = {},
             onLogDirClick = {},
             onOpenNetworksDirClick = {},
@@ -477,26 +437,33 @@ fun StartScreenPreview() {
 @Composable
 fun StartScreenErrorPreview() {
     TincTheme {
-        StartScreenContent(
-            networkList = emptyList(),
-            errorNotification = ErrorNotification(
-                title = "Configuration Error",
-                message = "The configuration file 'tinc.conf' is missing. Please check the configuration directory.",
-                manualLink = "",
-                configDir = "",
-                proposeLogs = true
-            ),
-            onAboutClick = {},
-            onNetworkClick = {},
-            onManualClick = {},
-            onConfigDirClick = {},
-            onLogDirClick = {},
-            onOpenNetworksDirClick = {},
-            onGenerateConfigClick = {},
-            onJoinNetworkClick = {},
-            onLockClick = {},
-            onUnlockClick = {},
-            onDeleteClick = {}
-        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            StartScreenContent(
+                networkList = emptyList(),
+                onAboutClick = {},
+                onNetworkClick = {},
+                onConfigDirClick = {},
+                onLogDirClick = {},
+                onOpenNetworksDirClick = {},
+                onGenerateConfigClick = {},
+                onJoinNetworkClick = {},
+                onLockClick = {},
+                onUnlockClick = {},
+                onDeleteClick = {}
+            )
+            ErrorDialog(
+                error = ErrorNotification(
+                    title = "Configuration Error",
+                    message = "The configuration file 'tinc.conf' is missing. Please check the configuration directory.",
+                    manualLink = "",
+                    configDir = "",
+                    proposeLogs = true
+                ),
+                onDismiss = {},
+                onManualClick = {},
+                onConfigDirClick = {},
+                onLogDirClick = {}
+            )
+        }
     }
 }

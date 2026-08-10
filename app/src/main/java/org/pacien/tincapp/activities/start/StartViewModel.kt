@@ -54,4 +54,8 @@ class StartViewModel(application: Application) : AndroidViewModel(application) {
         networkListLiveData.onRefresh()
         _errorNotification.value = notificationManager.getError()
     }
+
+    fun dismissError() {
+        notificationManager.dismissAll()
+    }
 }
