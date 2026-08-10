@@ -22,6 +22,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
@@ -67,9 +68,15 @@ class App : Application() {
     fun getResources() = getContext().resources!!
 
     fun getApplicationInfo(): ApplicationInfo =
-      getContext()
-        .packageManager
-        .getApplicationInfo(BuildConfig.APPLICATION_ID, 0)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getContext()
+          .packageManager
+          .getApplicationInfo(BuildConfig.APPLICATION_ID, PackageManager.ApplicationInfoFlags.of(0))
+      } else {
+        getContext()
+          .packageManager
+          .getApplicationInfo(BuildConfig.APPLICATION_ID, 0)
+      }
 
     fun alert(
       @StringRes title: Int,
