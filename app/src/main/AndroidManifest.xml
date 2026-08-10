@@ -77,7 +77,8 @@
         <service
             android:name="org.pacien.tincapp.service.TincVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="VpnServicePolicy">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>

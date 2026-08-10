@@ -18,6 +18,7 @@
 
 package org.pacien.tincapp.service
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -50,6 +51,7 @@ import java.security.AccessControlException
 /**
  * @author euxane
  */
+@SuppressLint("VpnServicePolicy")
 class TincVpnService : VpnService() {
   private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
   private val connectivityChangeReceiver = ConnectivityChangeReceiver
