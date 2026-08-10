@@ -47,7 +47,6 @@ class StartViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     override fun onCleared() {
-        super.onCleared()
         notificationManager.unregisterListener(notificationListener)
     }
 
