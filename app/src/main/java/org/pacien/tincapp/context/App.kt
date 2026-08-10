@@ -25,6 +25,7 @@ import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import androidx.annotation.StringRes
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
@@ -38,7 +39,7 @@ class App : Application() {
   override fun onCreate() {
     super.onCreate()
     appContext = applicationContext
-    handler = Handler()
+    handler = Handler(Looper.getMainLooper())
     AppLogger.configure()
 
     val logger = LoggerFactory.getLogger(this.javaClass)
