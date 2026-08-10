@@ -20,6 +20,7 @@ package org.pacien.tincapp.context
 
 import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import androidx.core.content.edit
 
 /**
  * @author euxane
@@ -64,20 +65,20 @@ class AppNotificationManager(private val context: Context) {
     proposeLogs: Boolean = false,
   ) {
     store
-      .edit()
-      .putString(STORE_KEY_TITLE, title)
-      .putString(STORE_KEY_MESSAGE, message)
-      .putString(STORE_KEY_MANUAL_LINK, manualLink)
-      .putString(STORE_CONFIG_DIR, configDir)
-      .putBoolean(STORE_PROPOSE_LOGS, proposeLogs)
-      .apply()
+      .edit {
+        putString(STORE_KEY_TITLE, title)
+          .putString(STORE_KEY_MESSAGE, message)
+          .putString(STORE_KEY_MANUAL_LINK, manualLink)
+          .putString(STORE_CONFIG_DIR, configDir)
+          .putBoolean(STORE_PROPOSE_LOGS, proposeLogs)
+      }
   }
 
   fun dismissAll() {
     store
-      .edit()
-      .clear()
-      .apply()
+      .edit {
+          clear()
+      }
   }
 
   fun registerListener(listener: OnSharedPreferenceChangeListener) {

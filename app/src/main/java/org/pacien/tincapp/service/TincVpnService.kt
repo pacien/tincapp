@@ -47,6 +47,7 @@ import org.pacien.tincapp.utils.TincKeyring
 import org.slf4j.LoggerFactory
 import java.io.FileNotFoundException
 import java.security.AccessControlException
+import androidx.core.content.edit
 
 /**
  * @author euxane
@@ -275,10 +276,10 @@ class TincVpnService : VpnService() {
     private var daemon: CompletableFuture<Unit>? = null
 
     private fun saveConnection(netName: String?, passphrase: String?) =
-      store.edit()
-        .putString(STORE_KEY_NETNAME, netName)
-        .putString(STORE_KEY_PASSPHRASE, passphrase)
-        .apply()
+      store.edit {
+        putString(STORE_KEY_NETNAME, netName)
+            .putString(STORE_KEY_PASSPHRASE, passphrase)
+        }
 
     private fun setState(netName: String?, passphrase: String?, interfaceCfg: VpnInterfaceConfiguration?,
                          fd: ParcelFileDescriptor?, daemon: CompletableFuture<Unit>?) {
