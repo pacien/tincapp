@@ -1,67 +1,35 @@
-Tinc Mesh VPN
-=============
+Tinc Mesh VPN for Android
+=========================
 
-Android binding and user interface for the tinc mesh VPN daemon which does not
-require root privilege.
+An Android client for tinc (<https://tinc-vpn.org/>).
 
+* Project's homepage and documentation: <https://tincapp.euxane.eu>
+* Copyright: 2017-2026 Euxane TRAN-GIRARD (+ `./contributors.md`)
+* License: GPL-3.0-or-later (see `./license.md`)
 
-Help and documentation
-----------------------
+* Downloads:
+  * as APK on <https://tincapp.euxane.eu>
+  * <https://f-droid.org/packages/org.pacien.tincapp/>
+  * <https://play.google.com/store/apps/details?id=org.pacien.tincapp>
 
-The complete list of features, the quickstart guides and the user manual can be
-found on the project's website: https://tincapp.euxane.eu.
+* Chat rooms:
+  * Matrix: [#tincapp:matrix.org](https://matrix.to/#/#tincapp:matrix.org)
+  * IRC: [#tincapp on libera.chat](https://web.libera.chat/#tincapp)
 
-Community support is mainly provided through the dedicated Matrix Room and
-IRC channel: `#tincapp:matrix.org` and `#tincapp` on `irc.libera.chat`.
+* Community translations:
+  * Weblate: <https://translate.codeberg.org/projects/tincapp/>
 
+* Code repositories:
+  * <https://src.euxane.eu/tincapp/> (main, read-only)
+  * <https://codeberg.org/pacien/tincapp> (mirror, merge requests accepted)
+  * <https://github.com/pacien/tincapp> (mirror, merge requests accepted)
 
-Download
---------
-
-Compiled Android packages are available from:
-
-* [F-Droid](https://f-droid.org/packages/org.pacien.tincapp/)
-* [Google Play Store](https://play.google.com/store/apps/details?id=org.pacien.tincapp)
-* [The project's website](https://tincapp.euxane.eu)
-
-
-Build
------
-
-The project can be built using the Gradle `build` task, on Linux.
-
-Requirements:
-
-- Android SDK Platform 37.0
-- Android NDK r29
-- Android Platform-Tools 36.1
-- Android SDK Build tools 36.1
-- CMake
-- automake
-- autoconf
-
-
-License
--------
-
-Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD and contributors (listed in
-`contributors.md`).
-
-_Tinc Mesh VPN_ is distributed under the terms of GNU General Public License v3.0,
-as detailed in the provided `license.md` file.
-
-Builds of this software embed and make use of the following libraries:
-
-* Kotlin Standard Library, licensed under the Apache v2.0 License
-* streamsupport-cfuture, licensed under the GNU General Public License v2.0
-* Material Components for Android, licensed under the Apache v2.0 License
-* ZXing Android Embedded, licensed under the Apache v2.0 License
-* Bouncy Castle PKIX, licensed under the Bouncy Castle License
-* SLF4J, licensed under the MIT License
-* logback-android, licensed under the GNU Lesser General Public License v2.1
-* Apache Commons Configuration, licensed under the Apache v2.0 License
-* Apache Commons BeanUtils, licensed under the Apache v2.0 License
-* LZO, licensed under the GNU General Public License v2.0
-* LibreSSL libcrypto, licensed under the OpenSSL License, ISC License, public
-  domain
-* tinc, licensed under the GNU General Public License v2.0
+* Build requirements (for Gradle `build` task):
+  * Android SDK Platform 37.0
+  * Android NDK r29
+  * Android Platform-Tools 36.1
+  * Android SDK Build tools 36.1
+  * CMake
+  * automake
+  * autoconf
+  * Host system: Linux
