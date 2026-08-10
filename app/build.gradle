@@ -128,7 +128,6 @@ dependencies {
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0'
   implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.11.0'
 
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation 'androidx.core:core-ktx:1.19.0'
   implementation 'com.google.android.material:material:1.14.0'
   implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
