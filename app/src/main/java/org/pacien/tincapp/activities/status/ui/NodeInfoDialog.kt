@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2025 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,41 +18,74 @@
 
 package org.pacien.tincapp.activities.status.ui
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import org.pacien.tincapp.R
-import org.pacien.tincapp.ui.theme.TextSecondary
+
+data class KeyValuePair(val key: String, val value: String)
+
+fun parseKeyValueString(input: String): List<KeyValuePair> {
+    return input.lines()
+        .map { it.trim() }
+        .filter { it.isNotEmpty() && it.contains(":") }
+        .map { line ->
+            val parts = line.split(":", limit = 2)
+            KeyValuePair(
+                key = parts[0].trim(),
+                value = parts.getOrNull(1)?.trim().orEmpty()
+            )
+        }
+}
 
 @Composable
 fun NodeInfoDialog(
     nodeInfoText: String,
     onDismiss: () -> Unit
 ) {
+    val items = remember(nodeInfoText) { parseKeyValueString(nodeInfoText) }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(text = stringResource(R.string.status_node_info_dialog_title))
         },
         text = {
-            val scrollState = rememberScrollState()
-            Text(
-                text = nodeInfoText,
-                fontFamily = FontFamily.Monospace,
-                color = TextSecondary,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(scrollState)
-            )
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(items) { item ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = item.key,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = item.value,
+                            modifier = Modifier.weight(2f)
+                        )
+                    }
+                }
+            }
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
