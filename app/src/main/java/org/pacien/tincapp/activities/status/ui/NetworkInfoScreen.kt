@@ -25,10 +25,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.platform.LocalContext
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.status.networkinfo.VpnInterfaceConfigurationFormatter
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import androidx.compose.ui.platform.LocalResources
 
 @Composable
 fun NetworkInfoScreen(
@@ -36,7 +36,7 @@ fun NetworkInfoScreen(
     modifier: Modifier = Modifier
 ) {
     val formatter = VpnInterfaceConfigurationFormatter
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
     val scrollState = rememberScrollState()
 
     Column(

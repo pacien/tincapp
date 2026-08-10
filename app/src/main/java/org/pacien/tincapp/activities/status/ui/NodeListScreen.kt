@@ -32,13 +32,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.platform.LocalContext
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
 import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.Separator
 import org.pacien.tincapp.ui.theme.TextSecondary
+import androidx.compose.ui.platform.LocalResources
 
 @Composable
 fun NodeListScreen(
@@ -46,7 +46,7 @@ fun NodeListScreen(
     onNodeClick: (NodeInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
     if (nodes.isEmpty()) {
         EmptyPlaceholder(text = stringResource(R.string.status_node_list_empty_placeholder_text))
     } else {
