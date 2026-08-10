@@ -24,7 +24,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +44,7 @@ import org.pacien.tincapp.ui.components.ProgressDialog
 import org.pacien.tincapp.ui.navigation.NavGraph
 import org.pacien.tincapp.ui.theme.TincTheme
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 

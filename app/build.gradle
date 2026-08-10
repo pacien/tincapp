@@ -129,7 +129,6 @@ dependencies {
   implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.11.0'
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-  implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
   implementation 'androidx.core:core-ktx:1.19.0'
   implementation 'com.google.android.material:material:1.14.0'
   implementation 'com.journeyapps:zxing-android-embedded:4.3.0'

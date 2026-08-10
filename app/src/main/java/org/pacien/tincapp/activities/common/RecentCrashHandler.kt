@@ -18,7 +18,7 @@
 
 package org.pacien.tincapp.activities.common
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import org.apache.commons.io.input.ReversedLinesFileReader
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
@@ -29,7 +29,7 @@ import java.io.File
 /**
  * @author euxane
  */
-class RecentCrashHandler(private val parentActivity: AppCompatActivity) {
+class RecentCrashHandler(private val parentActivity: ComponentActivity) {
   private val resources by lazy { parentActivity.resources!! }
   private val maxLines = 1000
 
