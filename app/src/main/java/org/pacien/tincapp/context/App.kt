@@ -32,6 +32,7 @@ import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import androidx.core.net.toUri
 
 /**
  * @author euxane
@@ -94,14 +95,14 @@ class App : Application() {
       )
 
     fun openURL(url: String) {
-      val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+      val intent = Intent(Intent.ACTION_VIEW, url.toUri())
       val chooser = Intent.createChooser(intent, getResources().getString(R.string.generic_action_open_web_page))
       appContext?.startActivity(chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     // https://developer.android.com/guide/components/intents-common#Email
     fun sendMail(recipient: String, subject: String, body: String) {
-      val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
+      val intent = Intent(Intent.ACTION_SENDTO, "mailto:".toUri())
         .putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
         .putExtra(Intent.EXTRA_SUBJECT, subject)
         .putExtra(Intent.EXTRA_TEXT, body)
