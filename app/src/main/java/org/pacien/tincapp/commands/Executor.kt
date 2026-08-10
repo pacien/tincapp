@@ -18,8 +18,8 @@
 
 package org.pacien.tincapp.commands
 
-import android.os.AsyncTask
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executors
 import java.util.function.Supplier
 import java.io.BufferedReader
 import java.io.IOException
@@ -31,6 +31,8 @@ import java.io.InputStreamReader
  */
 internal object Executor {
   class CommandExecutionException(msg: String) : Exception(msg)
+
+  private val threadPool = Executors.newCachedThreadPool()
 
   private fun read(stream: InputStream) = BufferedReader(InputStreamReader(stream)).readLines()
 
@@ -48,6 +50,6 @@ internal object Executor {
     }
   }
 
-  fun runAsyncTask(r: () -> Unit) = CompletableFuture.supplyAsync(Supplier(r), AsyncTask.THREAD_POOL_EXECUTOR)!!
-  fun <U> supplyAsyncTask(s: () -> U) = CompletableFuture.supplyAsync(Supplier(s), AsyncTask.THREAD_POOL_EXECUTOR)!!
+  fun runAsyncTask(r: () -> Unit) = CompletableFuture.supplyAsync(Supplier(r), threadPool)!!
+  fun <U> supplyAsyncTask(s: () -> U) = CompletableFuture.supplyAsync(Supplier(s), threadPool)!!
 }
