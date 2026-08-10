@@ -25,7 +25,7 @@ import android.net.LocalServerSocket
 import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
-import java8.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletableFuture
 import org.apache.commons.configuration2.ex.ConversionException
 import org.bouncycastle.openssl.PEMException
 import org.pacien.tincapp.BuildConfig

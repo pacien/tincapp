@@ -19,8 +19,8 @@
 package org.pacien.tincapp.commands
 
 import android.os.AsyncTask
-import java8.util.concurrent.CompletableFuture
-import java8.util.function.Supplier
+import java.util.concurrent.CompletableFuture
+import java.util.function.Supplier
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream

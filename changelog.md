@@ -4,6 +4,7 @@ This file lists notable changes that have been made to the application on each r
 Releases are tracked and referred to using git tags.
 
 ## v0.46 -- (next release)
+- minimum system supported: Android 7 (API 24)
 - GUI update: network creation and config now done on the main screen
 - bugfix: new files with conflicting names now handled in config dir
 - config dir: ".txt" extension now automatically stripped for config files

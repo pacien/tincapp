@@ -18,8 +18,9 @@
 
 package org.pacien.tincapp.commands
 
-import java8.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletableFuture
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.extensions.Java.failedFuture
 
 /**
  * @author euxane
@@ -57,7 +58,7 @@ object Tinc {
 
   fun init(netName: String, nodeName: String): CompletableFuture<String> =
     if (netName.isBlank())
-      CompletableFuture.failedFuture(IllegalArgumentException("Network name cannot be blank."))
+      failedFuture(IllegalArgumentException("Network name cannot be blank."))
     else
       Executor.call(Command(AppPaths.tinc().absolutePath)
         .withOption("config", AppPaths.confDir(netName).absolutePath)
@@ -66,7 +67,7 @@ object Tinc {
 
   fun join(netName: String, invitationUrl: String): CompletableFuture<String> =
     if (netName.isBlank())
-      CompletableFuture.failedFuture(IllegalArgumentException("Network name cannot be blank."))
+      failedFuture(IllegalArgumentException("Network name cannot be blank."))
     else
       Executor.call(Command(AppPaths.tinc().absolutePath)
         .withOption("config", AppPaths.confDir(netName).absolutePath)

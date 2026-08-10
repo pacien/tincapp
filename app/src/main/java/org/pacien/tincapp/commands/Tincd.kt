@@ -18,7 +18,7 @@
 
 package org.pacien.tincapp.commands
 
-import java8.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletableFuture
 import org.pacien.tincapp.context.AppPaths
 import java.io.File
 

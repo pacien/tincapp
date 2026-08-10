@@ -28,7 +28,8 @@ import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.utils.makePublic
 import java.util.regex.Pattern
-import java8.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletableFuture
+import org.pacien.tincapp.extensions.Java.failedFuture
 
 sealed class ConfigureUiState {
     object Idle : ConfigureUiState()
@@ -51,7 +52,7 @@ class ConfigureViewModel : ViewModel() {
         if (networkNamePattern.matcher(netName).matches())
             CompletableFuture.completedFuture(Unit)
         else
-            CompletableFuture.failedFuture(NetworkNameInvalidException())
+            failedFuture(NetworkNameInvalidException())
 
     private fun execAction(labelResId: Int, action: CompletableFuture<Unit>, successResId: Int = R.string.configure_tools_message_network_configuration_written) {
         _uiState.value = ConfigureUiState.Loading(labelResId)
