@@ -64,7 +64,10 @@ class RecentCrashHandler(private val parentActivity: ComponentActivity) {
     )
 
   private fun File.readLastLines(n: Int): String {
-    val reader = ReversedLinesFileReader(this, Charsets.UTF_8)
+    val reader = ReversedLinesFileReader.builder()
+      .setFile(this)
+      .setCharset(Charsets.UTF_8)
+      .get()
     val lastLines = generateSequence(reader::readLine)
       .takeWhile { line: String? -> line != null }
       .take(n)
