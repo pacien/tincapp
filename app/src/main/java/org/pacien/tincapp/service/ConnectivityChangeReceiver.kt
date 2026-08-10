@@ -61,28 +61,15 @@ object ConnectivityChangeReceiver : BroadcastReceiver() {
 
   fun registerWatcher(context: Context) {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      connectivityManager.registerDefaultNetworkCallback(networkCallback)
-    } else {
-      val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-      context.registerReceiver(this, filter)
-    }
+    connectivityManager.registerDefaultNetworkCallback(networkCallback)
   }
 
   fun unregisterWatcher(context: Context) {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      try {
-        connectivityManager.unregisterNetworkCallback(networkCallback)
-      } catch (e: Exception) {
-        // already unregistered
-      }
-    } else {
-      try {
-        context.unregisterReceiver(this)
-      } catch (e: IllegalArgumentException) {
-        // already unregistered
-      }
+    try {
+      connectivityManager.unregisterNetworkCallback(networkCallback)
+    } catch (e: Exception) {
+      // already unregistered
     }
   }
 }
