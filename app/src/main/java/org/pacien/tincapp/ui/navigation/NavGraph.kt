@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import kotlinx.serialization.Serializable
 import org.pacien.tincapp.activities.configure.ConfigureViewModel
 import org.pacien.tincapp.activities.start.StartScreen
 import org.pacien.tincapp.activities.start.StartViewModel
@@ -41,6 +42,9 @@ import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
 
+@Serializable object Start
+@Serializable object Status
+
 @Composable
 fun NavGraph(
     navController: NavHostController,
@@ -52,9 +56,9 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = if (TincVpnService.isConnected()) "status" else "start"
+        startDestination = if (TincVpnService.isConnected()) Status else Start
     ) {
-        composable("start") {
+        composable<Start> {
             val viewModel: StartViewModel = viewModel()
             val configureViewModel: ConfigureViewModel = viewModel()
             StartScreen(
@@ -69,7 +73,7 @@ fun NavGraph(
             )
         }
 
-        composable("status") {
+        composable<Status> {
             val nodeListViewModel: NodeListViewModel = viewModel()
             val subnetListViewModel: SubnetListViewModel = viewModel()
             val logViewModel: LogViewModel = viewModel()

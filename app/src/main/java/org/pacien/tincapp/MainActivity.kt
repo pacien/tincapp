@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavDestination.Companion.hasRoute
 import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.start.ConnectionStarter
 import org.pacien.tincapp.context.App
@@ -42,6 +43,8 @@ import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.ui.components.DecryptKeysDialog
 import org.pacien.tincapp.ui.components.ProgressDialog
 import org.pacien.tincapp.ui.navigation.NavGraph
+import org.pacien.tincapp.ui.navigation.Start
+import org.pacien.tincapp.ui.navigation.Status
 import org.pacien.tincapp.ui.theme.TincTheme
 
 class MainActivity : ComponentActivity() {
@@ -152,9 +155,9 @@ class MainActivity : ComponentActivity() {
             activeDialog = ActiveDialog.Crash(it.message, it.onSendReport)
         }
 
-        if (::navController.isInitialized && TincVpnService.isConnected() && navController.currentDestination?.route == "start") {
-            navController.navigate("status") {
-                popUpTo("start") { inclusive = true }
+        if (::navController.isInitialized && TincVpnService.isConnected() && navController.currentDestination?.hasRoute<Start>() == true) {
+            navController.navigate(Status) {
+                popUpTo<Start> { inclusive = true }
             }
         }
     }
@@ -167,8 +170,8 @@ class MainActivity : ComponentActivity() {
     private fun onVpnStart() {
         activeDialog = null
         if (::navController.isInitialized) {
-            navController.navigate("status") {
-                popUpTo("start") { inclusive = true }
+            navController.navigate(Status) {
+                popUpTo<Start> { inclusive = true }
             }
         }
     }
@@ -180,8 +183,8 @@ class MainActivity : ComponentActivity() {
     private fun onVpnShutdown() {
         activeDialog = null
         if (::navController.isInitialized) {
-            navController.navigate("start") {
-                popUpTo(0) { inclusive = true }
+            navController.navigate(Start) {
+                popUpTo(navController.graph.startDestinationId) { inclusive = true }
             }
         }
     }
