@@ -29,7 +29,7 @@ import android.os.Build
 object PendingIntentUtils {
   fun getActivity(context: Context, requestCode: Int, intent: Intent, flags: Int): PendingIntent {
     val extraFlags =
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+      PendingIntent.FLAG_IMMUTABLE
     return PendingIntent.getActivity(context, requestCode, intent, flags or extraFlags)
   }
 }
