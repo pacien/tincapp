@@ -328,6 +328,7 @@ fun NetworkListItem(
     var showMenu by remember { mutableStateOf(false) }
 
     ListItem(
+        leadingContent = { Icon(Icons.Default.Link, null) },
         headlineContent = { Text(name) },
         modifier = Modifier.combinedClickable(
             onClick = onClick,
