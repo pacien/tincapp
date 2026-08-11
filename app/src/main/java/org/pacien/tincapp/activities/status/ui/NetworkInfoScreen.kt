@@ -21,7 +21,6 @@ package org.pacien.tincapp.activities.status.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
@@ -31,7 +30,7 @@ import org.pacien.tincapp.activities.status.networkinfo.VpnInterfaceConfiguratio
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.activities.status.subnets.SubnetInfo
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
-import org.pacien.tincapp.ui.theme.Separator
+import org.pacien.tincapp.ui.components.SectionTitle
 
 @Composable
 fun NetworkInfoScreen(
@@ -122,7 +121,6 @@ fun NetworkInfoScreen(
                     reachabilityText = node.reachabilityText(resources),
                     onClick = { onNodeClick(node) }
                 )
-                HorizontalDivider(color = Separator)
             }
         }
 
@@ -137,7 +135,6 @@ fun NetworkInfoScreen(
         } else {
             items(subnets) { subnet ->
                 SubnetListItem(subnet = subnet)
-                HorizontalDivider(color = Separator)
             }
         }
     }

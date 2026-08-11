@@ -10,32 +10,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppInfo
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
+import org.pacien.tincapp.ui.theme.ActivitySectionTitleBottomMargin
+import org.pacien.tincapp.ui.theme.ActivitySectionTitleTopMargin
 import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.Separator
 import org.pacien.tincapp.ui.theme.TextAccent
 import org.pacien.tincapp.ui.theme.TextSecondary
 
 @Composable
-fun SectionTitle(text: String, modifier: Modifier = Modifier) {
+fun SectionTitle(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = text,
+        style = MaterialTheme.typography.titleMedium,
         color = TextAccent,
-        style = MaterialTheme.typography.titleSmall,
-        fontWeight = FontWeight.Bold,
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                start = ActivityHorizontalMargin,
-                end = ActivityHorizontalMargin,
-                top = ActivityVerticalMargin,
-                bottom = 8.dp
+                top = ActivitySectionTitleTopMargin,
+                bottom = ActivitySectionTitleBottomMargin,
+                start = ActivityVerticalMargin,
+                end = ActivityVerticalMargin
             )
     )
 }
