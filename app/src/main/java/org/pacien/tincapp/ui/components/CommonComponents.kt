@@ -281,6 +281,13 @@ fun GenericActionsMenu(
                 }
             )
             DropdownMenuItem(
+                text = { Text(stringResource(R.string.about_app_menu_donate)) },
+                onClick = {
+                    showMenu = false
+                    actions.onManual("#donations")
+                }
+            )
+            DropdownMenuItem(
                 text = { Text(stringResource(R.string.about_app_menu_about)) },
                 onClick = {
                     showMenu = false
