@@ -40,7 +40,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
@@ -296,27 +295,24 @@ fun ErrorDialog(
             )
         },
         text = {
-            Column {
-                Text(text = error.message)
-                Spacer(modifier = Modifier.height(16.dp))
-                error.manualLink?.let {
-                    TextButton(onClick = onManualClick) {
-                        Text(stringResource(R.string.notification_error_action_open_manual))
-                    }
-                }
-                error.configDir?.let {
-                    TextButton(onClick = onConfigDirClick) {
-                        Text(stringResource(R.string.notification_error_action_open_config_dir))
-                    }
-                }
-                if (error.proposeLogs) {
-                    TextButton(onClick = onLogDirClick) {
-                        Text(stringResource(R.string.notification_error_action_open_logs_dir))
-                    }
-                }
-            }
+            Text(text = error.message)
         },
         confirmButton = {
+            error.manualLink?.let {
+                TextButton(onClick = onManualClick) {
+                    Text(stringResource(R.string.notification_error_action_open_manual))
+                }
+            }
+            error.configDir?.let {
+                TextButton(onClick = onConfigDirClick) {
+                    Text(stringResource(R.string.notification_error_action_edit_config))
+                }
+            }
+            if (error.proposeLogs) {
+                TextButton(onClick = onLogDirClick) {
+                    Text(stringResource(R.string.notification_error_action_view_logs))
+                }
+            }
             TextButton(onClick = onDismiss) {
                 Text(stringResource(android.R.string.ok))
             }

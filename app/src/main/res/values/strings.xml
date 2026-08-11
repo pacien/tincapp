@@ -64,7 +64,9 @@
 	<string name="notification_error_channel_name">Errors</string>
 	<string name="notification_error_action_open_manual">Open manual</string>
 	<string name="notification_error_action_open_config_dir">Open configuration directory</string>
+	<string name="notification_error_action_edit_config">Edit config</string>
 	<string name="notification_error_action_open_logs_dir">Open logs directory</string>
+	<string name="notification_error_action_view_logs">View logs</string>
 	<string name="notification_error_title_unable_to_start_tinc">Could not start tinc</string>
 	<string name="notification_error_message_could_not_read_private_key_format">Could not read private tinc keys:\n%1$s</string>
 	<string name="notification_error_message_could_not_read_network_configuration_format">Could not read network interface configuration:\n%1$s</string>
