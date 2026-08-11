@@ -18,16 +18,21 @@
 
 package org.pacien.tincapp.activities.status.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.pacien.tincapp.activities.status.nodes.NodeInfo
+import org.pacien.tincapp.activities.status.subnets.SubnetInfo
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
 import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.TextAccent
@@ -97,4 +102,61 @@ fun EmptyPlaceholder(
                 vertical = ActivityVerticalMargin
             )
     )
+}
+
+@Composable
+fun NodeListItem(
+    node: NodeInfo,
+    reachabilityText: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(
+                horizontal = ActivityHorizontalMargin,
+                vertical = ActivityVerticalMargin
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = node.name,
+            style = MaterialTheme.typography.labelLarge,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = reachabilityText,
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextSecondary
+        )
+    }
+}
+
+@Composable
+fun SubnetListItem(
+    subnet: SubnetInfo,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = ActivityHorizontalMargin,
+                vertical = ActivityVerticalMargin
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = subnet.ipRange,
+            style = MaterialTheme.typography.labelLarge,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = subnet.owner,
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextSecondary
+        )
+    }
 }

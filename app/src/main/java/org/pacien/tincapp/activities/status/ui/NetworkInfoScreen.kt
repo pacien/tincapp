@@ -18,72 +18,127 @@
 
 package org.pacien.tincapp.activities.status.ui
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.status.networkinfo.VpnInterfaceConfigurationFormatter
+import org.pacien.tincapp.activities.status.nodes.NodeInfo
+import org.pacien.tincapp.activities.status.subnets.SubnetInfo
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
-import androidx.compose.ui.platform.LocalResources
+import org.pacien.tincapp.ui.theme.Separator
 
 @Composable
 fun NetworkInfoScreen(
     vpnInterfaceConfiguration: VpnInterfaceConfiguration,
+    nodes: List<NodeInfo>,
+    onNodeClick: (NodeInfo) -> Unit,
+    subnets: List<SubnetInfo>,
     modifier: Modifier = Modifier
 ) {
     val formatter = VpnInterfaceConfigurationFormatter
     val resources = LocalResources.current
-    val scrollState = rememberScrollState()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
     ) {
-        ListBlock(
-            title = stringResource(R.string.status_network_info_ip_addresses_label),
-            content = formatter.formatList(vpnInterfaceConfiguration.addresses, resources)
-        )
+        item {
+            SectionTitle(text = stringResource(R.string.status_activity_title_network_info))
+        }
 
-        ListBlock(
-            title = stringResource(R.string.status_network_info_routes_label),
-            content = formatter.formatList(vpnInterfaceConfiguration.routes, resources)
-        )
+        item {
+            ListBlock(
+                title = stringResource(R.string.status_network_info_ip_addresses_label),
+                content = formatter.formatList(vpnInterfaceConfiguration.addresses, resources)
+            )
+        }
 
-        ListBlock(
-            title = stringResource(R.string.status_network_info_dns_servers_label),
-            content = formatter.formatList(vpnInterfaceConfiguration.dnsServers, resources)
-        )
+        item {
+            ListBlock(
+                title = stringResource(R.string.status_network_info_routes_label),
+                content = formatter.formatList(vpnInterfaceConfiguration.routes, resources)
+            )
+        }
 
-        ListBlock(
-            title = stringResource(R.string.status_network_info_search_domains_label),
-            content = formatter.formatList(vpnInterfaceConfiguration.searchDomains, resources)
-        )
+        item {
+            ListBlock(
+                title = stringResource(R.string.status_network_info_dns_servers_label),
+                content = formatter.formatList(vpnInterfaceConfiguration.dnsServers, resources)
+            )
+        }
+
+        item {
+            ListBlock(
+                title = stringResource(R.string.status_network_info_search_domains_label),
+                content = formatter.formatList(vpnInterfaceConfiguration.searchDomains, resources)
+            )
+        }
 
         if (vpnInterfaceConfiguration.allowedApplications.isNotEmpty()) {
-            ListBlock(
-                title = stringResource(R.string.status_network_info_allowed_applications_label),
-                content = formatter.formatList(vpnInterfaceConfiguration.allowedApplications, resources)
-            )
+            item {
+                ListBlock(
+                    title = stringResource(R.string.status_network_info_allowed_applications_label),
+                    content = formatter.formatList(vpnInterfaceConfiguration.allowedApplications, resources)
+                )
+            }
         }
 
         if (vpnInterfaceConfiguration.disallowedApplications.isNotEmpty()) {
+            item {
+                ListBlock(
+                    title = stringResource(R.string.status_network_info_disallowed_applications_label),
+                    content = formatter.formatList(vpnInterfaceConfiguration.disallowedApplications, resources)
+                )
+            }
+        }
+
+        item {
             ListBlock(
-                title = stringResource(R.string.status_network_info_disallowed_applications_label),
-                content = formatter.formatList(vpnInterfaceConfiguration.disallowedApplications, resources)
+                title = stringResource(R.string.status_network_info_allow_bypass_label),
+                content = stringResource(
+                    if (vpnInterfaceConfiguration.allowBypass) R.string.status_network_info_value_yes
+                    else R.string.status_network_info_value_no
+                )
             )
         }
 
-        ListBlock(
-            title = stringResource(R.string.status_network_info_allow_bypass_label),
-            content = stringResource(
-                if (vpnInterfaceConfiguration.allowBypass) R.string.status_network_info_value_yes
-                else R.string.status_network_info_value_no
-            )
-        )
+        item {
+            SectionTitle(text = stringResource(R.string.status_activity_title_node_list))
+        }
+
+        if (nodes.isEmpty()) {
+            item {
+                EmptyPlaceholder(text = stringResource(R.string.status_node_list_empty_placeholder_text))
+            }
+        } else {
+            items(nodes) { node ->
+                NodeListItem(
+                    node = node,
+                    reachabilityText = node.reachabilityText(resources),
+                    onClick = { onNodeClick(node) }
+                )
+                HorizontalDivider(color = Separator)
+            }
+        }
+
+        item {
+            SectionTitle(text = stringResource(R.string.status_activity_title_subnet_list))
+        }
+
+        if (subnets.isEmpty()) {
+            item {
+                EmptyPlaceholder(text = stringResource(R.string.status_subnet_list_empty_placeholder_text))
+            }
+        } else {
+            items(subnets) { subnet ->
+                SubnetListItem(subnet = subnet)
+                HorizontalDivider(color = Separator)
+            }
+        }
     }
 }

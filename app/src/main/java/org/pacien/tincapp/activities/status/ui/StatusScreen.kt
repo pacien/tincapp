@@ -18,15 +18,6 @@
 
 package org.pacien.tincapp.activities.status.ui
 
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.MutableLiveData
-import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -47,16 +38,23 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
-import org.pacien.tincapp.context.App
-import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.activities.status.subnets.SubnetInfo
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
@@ -64,14 +62,12 @@ import org.pacien.tincapp.ui.components.GenericActions
 import org.pacien.tincapp.ui.components.GenericActionsMenu
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.HeaderPrimary
-import org.pacien.tincapp.ui.theme.TincTheme
 import org.pacien.tincapp.ui.theme.TextTitle
+import org.pacien.tincapp.ui.theme.TincTheme
 
 enum class StatusTab(val titleRes: Int) {
     NETWORK_INFO(R.string.status_activity_title_network_info),
-    NODES(R.string.status_activity_title_node_list),
     GRAPH(R.string.status_activity_title_graph),
-    SUBNETS(R.string.status_activity_title_subnet_list),
     LOGS(R.string.status_activity_title_log_view)
 }
 
@@ -163,14 +159,14 @@ fun StatusScreen(
         ) { pageIndex ->
             val isCurrentPage = pagerState.currentPage == pageIndex
             when (tabs[pageIndex]) {
-                StatusTab.NETWORK_INFO -> NetworkInfoScreen(
-                    vpnInterfaceConfiguration = vpnInterfaceConfiguration
-                )
-                StatusTab.NODES -> {
+                StatusTab.NETWORK_INFO -> {
                     val nodes by nodeListLiveData.observeAsStateActive(isCurrentPage, emptyList())
-                    NodeListScreen(
+                    val subnets by subnetListLiveData.observeAsStateActive(isCurrentPage, emptyList())
+                    NetworkInfoScreen(
+                        vpnInterfaceConfiguration = vpnInterfaceConfiguration,
                         nodes = nodes,
-                        onNodeClick = onNodeClick
+                        onNodeClick = onNodeClick,
+                        subnets = subnets
                     )
                 }
                 StatusTab.GRAPH -> {
@@ -178,12 +174,6 @@ fun StatusScreen(
                     GraphView(
                         dotString = dotString,
                         onNodeClick = onNodeNameClick
-                    )
-                }
-                StatusTab.SUBNETS -> {
-                    val subnets by subnetListLiveData.observeAsStateActive(isCurrentPage, emptyList())
-                    SubnetListScreen(
-                        subnets = subnets
                     )
                 }
                 StatusTab.LOGS -> {
