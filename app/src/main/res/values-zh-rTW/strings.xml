@@ -33,6 +33,7 @@
 	<string name="generic_action_open_web_page">開啟網頁</string>
 
 	<!-- about modal -->
+	<string name="about_app_menu_manual">手冊</string>
 	<string name="about_app_menu_about">關於</string>
 	<string name="about_app_short_desc">tinc mesh VPN 守護程序的 Android 繫結和使用者介面。</string>
 	<string name="about_app_copyright">版權所有 © 2017–2026 Euxane P. TRAN-GIRARD 及其貢獻者。</string>

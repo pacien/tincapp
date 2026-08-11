@@ -42,6 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.configure.*
+import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.components.*
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
@@ -71,6 +72,7 @@ fun StartScreen(
         networkList = networkList,
         onAboutClick = onAboutClick,
         onNetworkClick = onNetworkClick,
+        onManualClick = { onManualClick(App.getContext().getString(R.string.app_doc_url_format, "doc.html")) },
         onConfigDirClick = onConfigDirClick,
         onLogDirClick = onLogDirClick,
         onOpenNetworksDirClick = onOpenNetworksDirClick,
@@ -149,6 +151,7 @@ fun StartScreenContent(
     networkList: List<NetworkInfo>,
     onAboutClick: () -> Unit,
     onNetworkClick: (String) -> Unit,
+    onManualClick: () -> Unit,
     onConfigDirClick: (String) -> Unit,
     onLogDirClick: () -> Unit,
     onOpenNetworksDirClick: () -> Unit,
@@ -205,6 +208,7 @@ fun StartScreenContent(
                     GenericActionsMenu(
                         onOpenNetworksDirClick = onOpenNetworksDirClick,
                         onLogDirClick = onLogDirClick,
+                        onManualClick = onManualClick,
                         onAboutClick = onAboutClick
                     )
                 },
@@ -417,6 +421,7 @@ fun StartScreenPreview() {
             ),
             onAboutClick = {},
             onNetworkClick = {},
+            onManualClick = {},
             onConfigDirClick = {},
             onLogDirClick = {},
             onOpenNetworksDirClick = {},
@@ -438,6 +443,7 @@ fun StartScreenErrorPreview() {
                 networkList = emptyList(),
                 onAboutClick = {},
                 onNetworkClick = {},
+                onManualClick = {},
                 onConfigDirClick = {},
                 onLogDirClick = {},
                 onOpenNetworksDirClick = {},

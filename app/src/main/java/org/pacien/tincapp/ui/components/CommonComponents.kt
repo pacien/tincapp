@@ -211,6 +211,7 @@ fun CrashDialog(
 fun GenericActionsMenu(
     onOpenNetworksDirClick: () -> Unit,
     onLogDirClick: () -> Unit,
+    onManualClick: () -> Unit,
     onAboutClick: () -> Unit,
     tint: Color = Color.White
 ) {
@@ -243,6 +244,13 @@ fun GenericActionsMenu(
                 }
             )
             TincDivider()
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.about_app_menu_manual)) },
+                onClick = {
+                    showMenu = false
+                    onManualClick()
+                }
+            )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.about_app_menu_about)) },
                 onClick = {

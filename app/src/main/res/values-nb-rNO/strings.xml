@@ -33,6 +33,7 @@
 	<string name="generic_action_open_web_page">Åpne nettside</string>
 
 	<!-- about modal -->
+	<string name="about_app_menu_manual">Manual</string>
 	<string name="about_app_menu_about">Om</string>
 	<string name="about_app_short_desc">Android-binding og brukergrensesnitt tiltenkt maskenett-VPN-nissen for Tinc.</string>
 	<string name="about_app_copyright">Copyright © 2017–2026 Euxane P. TRAN-GIRARD og bidragsytere.</string>

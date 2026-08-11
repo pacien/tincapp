@@ -37,6 +37,7 @@ import org.pacien.tincapp.activities.status.ui.NodeInfoDialog
 import org.pacien.tincapp.activities.status.ui.StatusScreen
 import org.pacien.tincapp.activities.status.viewlog.LogViewModel
 import org.pacien.tincapp.commands.Tinc
+import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
@@ -95,6 +96,7 @@ fun NavGraph(
                 },
                 netName = netName,
                 onDisconnectClick = onDisconnectClick,
+                onManualClick = { App.openURL(App.getContext().getString(R.string.app_doc_url_format, "doc.html")) },
                 onAboutClick = onAboutClick,
                 onOpenNetworksDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) },
                 onLogDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) }

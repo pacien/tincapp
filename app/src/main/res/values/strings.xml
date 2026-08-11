@@ -36,6 +36,7 @@
 	<string name="generic_action_open_web_page">Open web page</string>
 
 	<!-- about modal -->
+	<string name="about_app_menu_manual">Manual</string>
 	<string name="about_app_menu_about">About</string>
 	<string name="about_app_short_desc">Android binding and user interface for the tinc mesh VPN daemon.</string>
 	<string name="about_app_copyright">Copyright © 2017–2026 Euxane P. TRAN-GIRARD and contributors.</string>

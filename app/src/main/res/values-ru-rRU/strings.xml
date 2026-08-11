@@ -27,6 +27,7 @@
     <string name="generic_action_apply">Применить</string>
     <string name="generic_action_open_web_page">Открыть веб-страницу</string>
     <!-- about modal -->
+	<string name="about_app_menu_manual">Руководство</string>
 	<string name="about_app_menu_about">О программе</string>
     <string name="about_app_short_desc">Привязка к Android и пользовательский интерфейс для демона tinc mesh VPN.</string>
     <string name="about_app_copyright">Copyright © 2017-2026 Euxane P. TRAN-GIRARD и соавторы.</string>

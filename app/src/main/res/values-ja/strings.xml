@@ -25,6 +25,7 @@
 	<string name="about_app_version_format">アプリバージョン %1$s (%2$s ビルド)</string>
 	<string name="about_app_running_on_format">Android %1$s %2$s で実行中</string>
 	<string name="about_app_supported_abis_format">デバイス ABI: %1$s</string>
+	<string name="about_app_menu_manual">マニュアル</string>
 	<string name="about_app_menu_about">このアプリについて</string>
 	<string name="configure_tools_generate_config_net_name_hint">Tinc ネットワーク名</string>
 	<string name="start_network_list_title">ネットワークに接続</string>

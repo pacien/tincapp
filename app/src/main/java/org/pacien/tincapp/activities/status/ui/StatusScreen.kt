@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
+import org.pacien.tincapp.context.App
 import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.activities.status.subnets.SubnetInfo
@@ -82,6 +83,7 @@ fun StatusScreen(
     onNodeClick: (NodeInfo) -> Unit,
     netName: String?,
     onDisconnectClick: () -> Unit,
+    onManualClick: () -> Unit,
     onAboutClick: () -> Unit,
     onOpenNetworksDirClick: () -> Unit,
     onLogDirClick: () -> Unit,
@@ -123,6 +125,7 @@ fun StatusScreen(
                         GenericActionsMenu(
                             onOpenNetworksDirClick = onOpenNetworksDirClick,
                             onLogDirClick = onLogDirClick,
+                            onManualClick = onManualClick,
                             onAboutClick = onAboutClick,
                             tint = TextTitle
                         )
@@ -257,6 +260,7 @@ fun StatusScreenPreview() {
             onNodeClick = {},
             netName = "test-net",
             onDisconnectClick = {},
+            onManualClick = {},
             onAboutClick = {},
             onOpenNetworksDirClick = {},
             onLogDirClick = {}
