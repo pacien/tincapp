@@ -80,7 +80,7 @@ fun GenerateConfigDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.generic_action_close))
+                Text(stringResource(R.string.generic_action_cancel))
             }
         }
     )
@@ -160,7 +160,7 @@ fun JoinNetworkDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.generic_action_close))
+                Text(stringResource(R.string.generic_action_cancel))
             }
         }
     )
