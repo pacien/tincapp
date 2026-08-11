@@ -229,12 +229,16 @@ fun LogView(
             .verticalScroll(scrollState)
             .padding(16.dp)
     ) {
-        Text(
-            text = logText,
-            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+        if (logText.isEmpty()) {
+            EmptyPlaceholder(text = stringResource(R.string.status_log_empty_placeholder))
+        } else {
+            Text(
+                text = logText,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
     }
 }
 
