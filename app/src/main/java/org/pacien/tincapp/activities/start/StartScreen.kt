@@ -222,7 +222,9 @@ fun StartScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(
+                    top = paddingValues.calculateTopPadding()
+                )
         ) {
             LazyColumn(
                 modifier = Modifier.weight(1f)
@@ -261,9 +263,11 @@ fun StartScreenContent(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .background(BackgroundSecondary)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
                     .padding(
-                        horizontal = ActivityHorizontalMargin,
-                        vertical = ActivityVerticalMargin
+                        start = ActivityHorizontalMargin,
+                        end = ActivityHorizontalMargin,
+                        top = ActivityVerticalMargin
                     )
             ) {
                 Icon(Icons.Outlined.Info, null)
