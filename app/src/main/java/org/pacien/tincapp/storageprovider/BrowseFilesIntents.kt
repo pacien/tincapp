@@ -20,10 +20,15 @@ package org.pacien.tincapp.storageprovider
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.DocumentsContract.Document
+import org.slf4j.LoggerFactory
 
 object BrowseFilesIntents {
+  private val logger = LoggerFactory.getLogger(BrowseFilesIntents::class.java)
+
   fun networkConfigDirDocId(networkName: String?): String =
     when (networkName) {
       null -> FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS
@@ -40,4 +45,27 @@ object BrowseFilesIntents {
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
       }
     )
+
+  fun hasTextEditor(context: Context): Boolean {
+    val uri = FilesDocumentsProvider.documentUri(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS)
+    val intent = Intent(Intent.ACTION_EDIT).apply {
+      setDataAndType(uri, "text/plain")
+      addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+
+    val activities = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      context.packageManager.queryIntentActivities(
+        intent,
+        PackageManager.ResolveInfoFlags.of(0)
+      )
+    } else {
+      @Suppress("DEPRECATION")
+      context.packageManager.queryIntentActivities(intent, 0)
+    }
+
+    logger.debug("Checking for text editor with intent: {}", intent)
+    logger.debug("Found {} activities: {}", activities.size, activities.map { it.activityInfo.packageName })
+
+    return activities.isNotEmpty()
+  }
 }

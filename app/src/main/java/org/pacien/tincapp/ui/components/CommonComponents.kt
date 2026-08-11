@@ -185,6 +185,38 @@ fun ErrorDialog(
 }
 
 @Composable
+fun WarningDialog(
+    message: String,
+    docTopic: String? = null,
+    onDismiss: () -> Unit,
+    onContinue: () -> Unit,
+    onOpenManual: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.generic_title_warning)) },
+        text = { Text(message) },
+        confirmButton = {
+            TextButton(onClick = onContinue) {
+                Text(stringResource(R.string.generic_action_continue))
+            }
+        },
+        dismissButton = {
+            Row {
+                if (docTopic != null) {
+                    TextButton(onClick = { onOpenManual(docTopic) }) {
+                        Text(stringResource(R.string.notification_error_action_open_manual))
+                    }
+                }
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(R.string.generic_action_cancel))
+                }
+            }
+        }
+    )
+}
+
+@Composable
 fun CrashDialog(
     message: String,
     onDismiss: () -> Unit,

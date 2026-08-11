@@ -109,6 +109,10 @@
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="content" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.EDIT" />
+            <data android:scheme="content" android:mimeType="text/plain" />
+        </intent>
     </queries>
 
 </manifest>

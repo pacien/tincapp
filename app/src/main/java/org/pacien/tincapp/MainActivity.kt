@@ -39,6 +39,7 @@ import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
+import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
 import org.pacien.tincapp.ui.components.DecryptKeysDialog
 import org.pacien.tincapp.ui.components.ProgressDialog
 import org.pacien.tincapp.ui.navigation.NavGraph
@@ -75,6 +76,11 @@ class MainActivity : ComponentActivity() {
         object DecryptKeys : ActiveDialog()
         object About : ActiveDialog()
         data class Error(val msg: String, val docTopic: String? = null) : ActiveDialog()
+        data class Warning(
+            val msg: String,
+            val docTopic: String? = null,
+            val onContinue: () -> Unit
+        ) : ActiveDialog()
         data class Crash(val message: String, val onSendReport: () -> Unit) : ActiveDialog()
     }
 
@@ -110,6 +116,16 @@ class MainActivity : ComponentActivity() {
                         message = dialog.msg,
                         docTopic = dialog.docTopic,
                         onDismiss = { activeDialog = null },
+                        onOpenManual = { openURL(getString(R.string.app_doc_url_format, it), onError = { showErrorDialog(it) }) }
+                    )
+                    is ActiveDialog.Warning -> org.pacien.tincapp.ui.components.WarningDialog(
+                        message = dialog.msg,
+                        docTopic = dialog.docTopic,
+                        onDismiss = { activeDialog = null },
+                        onContinue = {
+                            activeDialog = null
+                            dialog.onContinue()
+                        },
                         onOpenManual = { openURL(getString(R.string.app_doc_url_format, it), onError = { showErrorDialog(it) }) }
                     )
                     is ActiveDialog.Crash -> org.pacien.tincapp.ui.components.CrashDialog(
@@ -210,6 +226,18 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openDocumentTree(documentId: String) {
+        if (documentId.startsWith(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) && !BrowseFilesIntents.hasTextEditor(this)) {
+            activeDialog = ActiveDialog.Warning(
+                getString(R.string.configure_browse_directories_warning_no_text_editor),
+                docTopic = "troubleshooting.html#no-text-editor-found",
+                onContinue = { doOpenDocumentTree(documentId) }
+            )
+        } else {
+            doOpenDocumentTree(documentId)
+        }
+    }
+
+    private fun doOpenDocumentTree(documentId: String) {
         try {
             BrowseFilesIntents.openDocumentTree(this, documentId)
         } catch (e: ActivityNotFoundException) {
