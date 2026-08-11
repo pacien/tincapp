@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LinkOff
@@ -232,12 +233,14 @@ fun LogView(
         if (logText.isEmpty()) {
             EmptyPlaceholder(text = stringResource(R.string.status_log_empty_placeholder))
         } else {
-            Text(
-                text = logText,
-                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            SelectionContainer {
+                Text(
+                    text = logText,
+                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
     }
 }
