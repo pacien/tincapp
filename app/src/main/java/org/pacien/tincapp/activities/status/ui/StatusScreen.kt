@@ -70,6 +70,7 @@ import org.pacien.tincapp.ui.theme.TextTitle
 enum class StatusTab(val titleRes: Int) {
     NETWORK_INFO(R.string.status_activity_title_network_info),
     NODES(R.string.status_activity_title_node_list),
+    GRAPH(R.string.status_activity_title_graph),
     SUBNETS(R.string.status_activity_title_subnet_list),
     LOGS(R.string.status_activity_title_log_view)
 }
@@ -80,8 +81,10 @@ fun StatusScreen(
     vpnInterfaceConfiguration: VpnInterfaceConfiguration,
     nodeListLiveData: LiveData<List<NodeInfo>>,
     subnetListLiveData: LiveData<List<SubnetInfo>>,
+    graphLiveData: LiveData<String>,
     logLiveData: LiveData<List<String>>,
     onNodeClick: (NodeInfo) -> Unit,
+    onNodeNameClick: (String) -> Unit,
     netName: String?,
     onDisconnectClick: () -> Unit,
     genericActions: GenericActions,
@@ -170,6 +173,13 @@ fun StatusScreen(
                         onNodeClick = onNodeClick
                     )
                 }
+                StatusTab.GRAPH -> {
+                    val dotString by graphLiveData.observeAsStateActive(isCurrentPage, "")
+                    GraphView(
+                        dotString = dotString,
+                        onNodeClick = onNodeNameClick
+                    )
+                }
                 StatusTab.SUBNETS -> {
                     val subnets by subnetListLiveData.observeAsStateActive(isCurrentPage, emptyList())
                     SubnetListScreen(
@@ -252,7 +262,9 @@ fun StatusScreenPreview() {
                 SubnetInfo("10.0.1.0/24", "node2")
             )),
             logLiveData = MutableLiveData(listOf("Log line 1", "Log line 2")),
+            graphLiveData = MutableLiveData(""),
             onNodeClick = {},
+            onNodeNameClick = {},
             netName = "test-net",
             onDisconnectClick = {},
             genericActions = GenericActions({}, {}, {}, {})

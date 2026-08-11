@@ -52,6 +52,10 @@ object Tinc {
     Executor.call(
       newCommand(netName).withArguments("dump", "subnets"))
 
+  fun dumpGraph(netName: String): CompletableFuture<String> =
+    Executor.call(newCommand(netName).withArguments("dump", "graph"))
+      .thenApply { it.joinToString("\n") }
+
   fun info(netName: String, node: String): CompletableFuture<String> =
     Executor.call(newCommand(netName).withArguments("info", node))
       .thenApply { it.joinToString("\n") }

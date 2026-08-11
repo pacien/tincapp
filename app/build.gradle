@@ -134,6 +134,9 @@ dependencies {
   implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.11.0'
   implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0'
 
+  implementation 'org.graphper:graph-support-core:1.5.3'
+  implementation 'org.graphper:graph-support-dot:1.5.3'
+
   implementation 'androidx.core:core-ktx:1.19.0'
   implementation 'com.google.android.material:material:1.14.0'
   implementation 'com.journeyapps:zxing-android-embedded:4.3.0'

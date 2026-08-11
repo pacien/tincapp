@@ -38,6 +38,7 @@ import org.pacien.tincapp.activities.start.StartScreen
 import org.pacien.tincapp.activities.start.StartViewModel
 import org.pacien.tincapp.activities.status.nodes.NodeListViewModel
 import org.pacien.tincapp.activities.status.subnets.SubnetListViewModel
+import org.pacien.tincapp.activities.status.graph.GraphViewModel
 import org.pacien.tincapp.activities.status.ui.NodeInfoDialog
 import org.pacien.tincapp.activities.status.ui.StatusScreen
 import org.pacien.tincapp.activities.status.viewlog.LogViewModel
@@ -116,6 +117,7 @@ fun NavGraph(
             val nodeListViewModel: NodeListViewModel = viewModel()
             val subnetListViewModel: SubnetListViewModel = viewModel()
             val logViewModel: LogViewModel = viewModel()
+            val graphViewModel: GraphViewModel = viewModel()
             val vpnService = TincVpnService
             val netName = vpnService.getCurrentNetName()
             val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: org.pacien.tincapp.data.VpnInterfaceConfiguration()
@@ -126,9 +128,15 @@ fun NavGraph(
                 vpnInterfaceConfiguration = vpnCfg,
                 nodeListLiveData = nodeListViewModel.nodeList,
                 subnetListLiveData = subnetListViewModel.nodeList,
+                graphLiveData = graphViewModel.graphData,
                 logLiveData = logViewModel.log,
                 onNodeClick = { node ->
                     Tinc.info(netName!!, node.name).thenAccept { info ->
+                        selectedNodeInfo = info
+                    }
+                },
+                onNodeNameClick = { nodeName ->
+                    Tinc.info(netName!!, nodeName).thenAccept { info ->
                         selectedNodeInfo = info
                     }
                 },
