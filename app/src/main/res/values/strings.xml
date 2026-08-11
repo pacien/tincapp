@@ -67,6 +67,7 @@
 
 	<!-- error notifications -->
 	<string name="notification_error_channel_name">Errors</string>
+	<string name="notification_error_action_help">Help</string>
 	<string name="notification_error_action_open_manual">Open manual</string>
 	<string name="notification_error_action_open_config_dir">Open configuration directory</string>
 	<string name="notification_error_action_edit_config">Edit config</string>

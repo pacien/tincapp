@@ -177,7 +177,7 @@ fun ErrorDialog(
         dismissButton = {
             if (docTopic != null) {
                 TextButton(onClick = { onOpenManual(docTopic) }) {
-                    Text(stringResource(R.string.notification_error_action_open_manual))
+                    Text(stringResource(R.string.notification_error_action_help))
                 }
             }
         }
@@ -205,7 +205,7 @@ fun WarningDialog(
             Row {
                 if (docTopic != null) {
                     TextButton(onClick = { onOpenManual(docTopic) }) {
-                        Text(stringResource(R.string.notification_error_action_open_manual))
+                        Text(stringResource(R.string.notification_error_action_help))
                     }
                 }
                 TextButton(onClick = onDismiss) {

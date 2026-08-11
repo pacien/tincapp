@@ -308,7 +308,7 @@ fun ErrorDialog(
         confirmButton = {
             error.manualLink?.let {
                 TextButton(onClick = onManualClick) {
-                    Text(stringResource(R.string.notification_error_action_open_manual))
+                    Text(stringResource(R.string.notification_error_action_help))
                 }
             }
             error.configDir?.let {
