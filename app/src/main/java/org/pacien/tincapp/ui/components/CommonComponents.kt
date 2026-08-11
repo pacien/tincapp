@@ -171,7 +171,7 @@ fun ErrorDialog(
         text = { Text(message) },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.generic_action_close))
+                Text(stringResource(R.string.generic_action_dismiss))
             }
         },
         dismissButton = {
@@ -228,7 +228,7 @@ fun CrashDialog(
         text = { Text(message) },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.generic_action_close))
+                Text(stringResource(R.string.generic_action_dismiss))
             }
         },
         dismissButton = {

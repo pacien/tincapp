@@ -313,7 +313,7 @@ fun ErrorDialog(
             }
             error.configDir?.let {
                 TextButton(onClick = onConfigDirClick) {
-                    Text(stringResource(R.string.notification_error_action_edit_config))
+                    Text(stringResource(R.string.start_network_action_edit_config))
                 }
             }
             if (error.proposeLogs) {

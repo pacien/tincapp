@@ -31,6 +31,7 @@
 	<string name="generic_no">no</string>
 	<string name="generic_none">none</string>
 	<string name="generic_action_close">Close</string>
+	<string name="generic_action_dismiss">Dismiss</string>
 	<string name="generic_action_cancel">Cancel</string>
 	<string name="generic_action_continue">Continue</string>
 	<string name="generic_action_apply">Apply</string>
@@ -70,7 +71,6 @@
 	<string name="notification_error_action_help">Help</string>
 	<string name="notification_error_action_open_manual">Open manual</string>
 	<string name="notification_error_action_open_config_dir">Open configuration directory</string>
-	<string name="notification_error_action_edit_config">Edit config</string>
 	<string name="notification_error_action_open_logs_dir">Open logs directory</string>
 	<string name="notification_error_action_view_logs">View logs</string>
 	<string name="notification_error_title_unable_to_start_tinc">Could not start tinc</string>
