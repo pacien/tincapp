@@ -199,7 +199,7 @@ class MainActivity : ComponentActivity() {
         activeDialog = null
         if (::navController.isInitialized) {
             navController.navigate(Start) {
-                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                popUpTo<Status> { inclusive = true }
             }
         }
     }
