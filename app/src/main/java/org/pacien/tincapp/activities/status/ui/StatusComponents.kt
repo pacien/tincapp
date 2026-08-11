@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,12 +62,15 @@ fun ListBlock(
             modifier = Modifier.weight(1f)
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = content,
-            style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary,
-            textAlign = TextAlign.End
-        )
+        SelectionContainer {
+            Text(
+                text = content,
+                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                color = TextSecondary,
+                textAlign = TextAlign.End
+            )
+        }
     }
 }
 
@@ -132,11 +136,15 @@ fun SubnetListItem(
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = subnet.ipRange,
-            style = MaterialTheme.typography.labelLarge,
+        SelectionContainer(
             modifier = Modifier.weight(1f)
-        )
+        ) {
+            Text(
+                text = subnet.ipRange,
+                style = MaterialTheme.typography.labelLarge,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace
+            )
+        }
         Text(
             text = subnet.owner,
             style = MaterialTheme.typography.bodyMedium,
