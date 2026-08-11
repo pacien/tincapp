@@ -26,4 +26,5 @@
 /app/.cxx
 keystore.properties
 *.local
+*.local.*
 /result
