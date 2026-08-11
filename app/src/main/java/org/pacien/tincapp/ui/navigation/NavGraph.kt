@@ -23,6 +23,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -38,7 +40,7 @@ import org.pacien.tincapp.activities.status.ui.StatusScreen
 import org.pacien.tincapp.activities.status.viewlog.LogViewModel
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.R
-import org.pacien.tincapp.context.App
+import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
@@ -55,6 +57,7 @@ fun NavGraph(
     onNetworkClick: (String) -> Unit,
     onDisconnectClick: () -> Unit
 ) {
+    val context = LocalContext.current
     NavHost(
         navController = navController,
         startDestination = if (TincVpnService.isConnected()) Status else Start
@@ -67,7 +70,7 @@ fun NavGraph(
                 configureViewModel = configureViewModel,
                 onAboutClick = onAboutClick,
                 onNetworkClick = onNetworkClick,
-                onManualClick = { App.openURL(it) },
+                onManualClick = { context.openURL(it, onError = { msg -> onShowError(msg, null) }) },
                 onConfigDirClick = { onOpenDocumentTree(BrowseFilesIntents.networkConfigDirDocId(it)) },
                 onLogDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) },
                 onOpenNetworksDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) }
@@ -81,6 +84,7 @@ fun NavGraph(
             val vpnService = TincVpnService
             val netName = vpnService.getCurrentNetName()
             val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: org.pacien.tincapp.data.VpnInterfaceConfiguration()
+            val docUrl = stringResource(R.string.app_doc_url_format, "doc.html")
 
             var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
 
@@ -96,7 +100,12 @@ fun NavGraph(
                 },
                 netName = netName,
                 onDisconnectClick = onDisconnectClick,
-                onManualClick = { App.openURL(App.getContext().getString(R.string.app_doc_url_format, "doc.html")) },
+                onManualClick = {
+                    context.openURL(
+                        docUrl,
+                        onError = { msg -> onShowError(msg, null) }
+                    )
+                },
                 onAboutClick = onAboutClick,
                 onOpenNetworksDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) },
                 onLogDirClick = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) }

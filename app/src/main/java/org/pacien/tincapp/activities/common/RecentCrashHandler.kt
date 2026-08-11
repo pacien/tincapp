@@ -21,9 +21,9 @@ package org.pacien.tincapp.activities.common
 import androidx.activity.ComponentActivity
 import org.apache.commons.io.input.ReversedLinesFileReader
 import org.pacien.tincapp.R
-import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.context.CrashRecorder
+import org.pacien.tincapp.intent.sendMail
 import java.io.File
 
 /**
@@ -57,7 +57,7 @@ class RecentCrashHandler(private val parentActivity: ComponentActivity) {
     ).joinToString("\n\n")
 
   private fun sendReportMail() =
-    App.sendMail(
+    parentActivity.sendMail(
       resources.getString(R.string.crash_modal_dev_email),
       listOf(R.string.app_name, R.string.crash_modal_title).joinToString(" / ", transform = resources::getString),
       AppPaths.appLogFile().let { if (it.exists()) it.readLastLines(maxLines) else "" }

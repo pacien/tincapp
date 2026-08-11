@@ -34,6 +34,8 @@
 	<string name="generic_action_apply">Apply</string>
 	<string name="generic_action_menu">Menu</string>
 	<string name="generic_action_open_web_page">Open web page</string>
+	<string name="generic_error_no_web_browser">No web browser found.</string>
+	<string name="generic_error_no_email_client">No e-mail client found.</string>
 
 	<!-- about modal -->
 	<string name="about_app_menu_manual">Manual</string>

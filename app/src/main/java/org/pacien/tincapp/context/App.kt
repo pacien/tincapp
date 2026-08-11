@@ -20,10 +20,8 @@ package org.pacien.tincapp.context
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -32,7 +30,6 @@ import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import androidx.core.net.toUri
 
 /**
  * @author euxane
@@ -93,22 +90,5 @@ class App : Application() {
         configDir,
         proposeLogs,
       )
-
-    fun openURL(url: String) {
-      val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-      val chooser = Intent.createChooser(intent, getResources().getString(R.string.generic_action_open_web_page))
-      appContext?.startActivity(chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-    }
-
-    // https://developer.android.com/guide/components/intents-common#Email
-    fun sendMail(recipient: String, subject: String, body: String) {
-      val intent = Intent(Intent.ACTION_SENDTO, "mailto:".toUri())
-        .putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
-        .putExtra(Intent.EXTRA_SUBJECT, subject)
-        .putExtra(Intent.EXTRA_TEXT, body)
-
-      val chooser = Intent.createChooser(intent, getResources().getString(R.string.crash_modal_action_send_email))
-      appContext?.startActivity(chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-    }
   }
 }

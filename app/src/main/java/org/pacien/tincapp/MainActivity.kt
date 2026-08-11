@@ -36,6 +36,7 @@ import org.pacien.tincapp.activities.start.ConnectionStarter
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.BroadcastMapper
+import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.ui.components.DecryptKeysDialog
@@ -103,13 +104,13 @@ class MainActivity : ComponentActivity() {
                     )
                     is ActiveDialog.About -> org.pacien.tincapp.ui.components.AboutDialog(
                         onDismiss = { activeDialog = null },
-                        onOpenWebsite = { App.openURL(getString(R.string.about_app_website_url)) }
+                        onOpenWebsite = { openURL(getString(R.string.about_app_website_url), onError = { showErrorDialog(it) }) }
                     )
                     is ActiveDialog.Error -> org.pacien.tincapp.ui.components.ErrorDialog(
                         message = dialog.msg,
                         docTopic = dialog.docTopic,
                         onDismiss = { activeDialog = null },
-                        onOpenManual = { App.openURL(getString(R.string.app_doc_url_format, it)) }
+                        onOpenManual = { openURL(getString(R.string.app_doc_url_format, it), onError = { showErrorDialog(it) }) }
                     )
                     is ActiveDialog.Crash -> org.pacien.tincapp.ui.components.CrashDialog(
                         message = dialog.message,
