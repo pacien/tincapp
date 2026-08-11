@@ -67,7 +67,7 @@ import org.pacien.tincapp.ui.theme.TincTheme
 
 enum class StatusTab(val titleRes: Int) {
     NETWORK_INFO(R.string.status_activity_title_network_info),
-    GRAPH(R.string.status_activity_title_graph),
+    TOPOLOGY(R.string.status_activity_title_topology),
     LOGS(R.string.status_activity_title_log_view)
 }
 
@@ -169,7 +169,7 @@ fun StatusScreen(
                         subnets = subnets
                     )
                 }
-                StatusTab.GRAPH -> {
+                StatusTab.TOPOLOGY -> {
                     val dotString by graphLiveData.observeAsStateActive(isCurrentPage, "")
                     GraphView(
                         dotString = dotString,

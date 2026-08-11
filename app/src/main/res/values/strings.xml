@@ -164,7 +164,7 @@
 	<string name="status_network_info_value_none" translatable="false">@string/generic_none</string>
 
 	<string name="status_activity_title_node_list">Nodes</string>
-	<string name="status_activity_title_graph">Graph</string>
+	<string name="status_activity_title_topology">Topology</string>
 	<string name="status_node_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 	<string name="status_node_reachability_unreachable">unreachable</string>
 	<string name="status_node_reachability_this_node">this node</string>
