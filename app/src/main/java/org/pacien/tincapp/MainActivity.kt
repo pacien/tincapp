@@ -116,7 +116,10 @@ class MainActivity : ComponentActivity() {
                         message = dialog.msg,
                         docTopic = dialog.docTopic,
                         onDismiss = { activeDialog = null },
-                        onOpenManual = { openURL(getString(R.string.app_doc_url_format, it), onError = { showErrorDialog(it) }) }
+                        onOpenManual = {
+                            val url = getString(R.string.app_doc_url_format, it)
+                            openURL(url, onError = { showErrorDialog(it) })
+                        }
                     )
                     is ActiveDialog.Warning -> org.pacien.tincapp.ui.components.WarningDialog(
                         message = dialog.msg,
@@ -126,7 +129,10 @@ class MainActivity : ComponentActivity() {
                             activeDialog = null
                             dialog.onContinue()
                         },
-                        onOpenManual = { openURL(getString(R.string.app_doc_url_format, it), onError = { showErrorDialog(it) }) }
+                        onOpenManual = {
+                            val url = getString(R.string.app_doc_url_format, it)
+                            openURL(url, onError = { showErrorDialog(it) })
+                        }
                     )
                     is ActiveDialog.Crash -> org.pacien.tincapp.ui.components.CrashDialog(
                         message = dialog.message,

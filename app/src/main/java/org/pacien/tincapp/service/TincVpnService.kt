@@ -229,7 +229,7 @@ class TincVpnService : VpnService() {
     App.alert(
       R.string.notification_error_title_unable_to_start_tinc,
       msg,
-      if (docTopic != null) resources.getString(R.string.app_doc_url_format, docTopic) else null,
+      docTopic,
       configDir,
       proposeLogs,
     )

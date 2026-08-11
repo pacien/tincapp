@@ -60,6 +60,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.activities.status.subnets.SubnetInfo
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import org.pacien.tincapp.ui.components.GenericActions
 import org.pacien.tincapp.ui.components.GenericActionsMenu
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.HeaderPrimary
@@ -83,10 +84,7 @@ fun StatusScreen(
     onNodeClick: (NodeInfo) -> Unit,
     netName: String?,
     onDisconnectClick: () -> Unit,
-    onManualClick: () -> Unit,
-    onAboutClick: () -> Unit,
-    onOpenNetworksDirClick: () -> Unit,
-    onLogDirClick: () -> Unit,
+    genericActions: GenericActions,
     modifier: Modifier = Modifier
 ) {
     val tabs = StatusTab.entries
@@ -123,10 +121,7 @@ fun StatusScreen(
                             )
                         }
                         GenericActionsMenu(
-                            onOpenNetworksDirClick = onOpenNetworksDirClick,
-                            onLogDirClick = onLogDirClick,
-                            onManualClick = onManualClick,
-                            onAboutClick = onAboutClick,
+                            actions = genericActions,
                             tint = TextTitle
                         )
                     },
@@ -260,10 +255,7 @@ fun StatusScreenPreview() {
             onNodeClick = {},
             netName = "test-net",
             onDisconnectClick = {},
-            onManualClick = {},
-            onAboutClick = {},
-            onOpenNetworksDirClick = {},
-            onLogDirClick = {}
+            genericActions = GenericActions({}, {}, {}, {})
         )
     }
 }

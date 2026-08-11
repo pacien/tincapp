@@ -241,10 +241,7 @@ fun CrashDialog(
 
 @Composable
 fun GenericActionsMenu(
-    onOpenNetworksDirClick: () -> Unit,
-    onLogDirClick: () -> Unit,
-    onManualClick: () -> Unit,
-    onAboutClick: () -> Unit,
+    actions: GenericActions,
     tint: Color = Color.White
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -265,14 +262,14 @@ fun GenericActionsMenu(
                 text = { Text(stringResource(R.string.configure_browse_directories_action_open_networks_config)) },
                 onClick = {
                     showMenu = false
-                    onOpenNetworksDirClick()
+                    actions.onOpenNetworksDir()
                 }
             )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.configure_browse_directories_action_open_logs)) },
                 onClick = {
                     showMenu = false
-                    onLogDirClick()
+                    actions.onLogDir()
                 }
             )
             TincDivider()
@@ -280,16 +277,23 @@ fun GenericActionsMenu(
                 text = { Text(stringResource(R.string.about_app_menu_manual)) },
                 onClick = {
                     showMenu = false
-                    onManualClick()
+                    actions.onManual(null)
                 }
             )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.about_app_menu_about)) },
                 onClick = {
                     showMenu = false
-                    onAboutClick()
+                    actions.onAbout()
                 }
             )
         }
     }
 }
+
+data class GenericActions(
+    val onOpenNetworksDir: () -> Unit,
+    val onLogDir: () -> Unit,
+    val onManual: (String?) -> Unit,
+    val onAbout: () -> Unit
+)

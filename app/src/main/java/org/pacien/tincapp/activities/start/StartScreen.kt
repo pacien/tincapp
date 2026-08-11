@@ -42,7 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.configure.*
-import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.components.*
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
@@ -55,12 +54,9 @@ import org.pacien.tincapp.ui.theme.TincTheme
 fun StartScreen(
     viewModel: StartViewModel,
     configureViewModel: ConfigureViewModel,
-    onAboutClick: () -> Unit,
     onNetworkClick: (String) -> Unit,
-    onManualClick: (String) -> Unit,
     onConfigDirClick: (String) -> Unit,
-    onLogDirClick: () -> Unit,
-    onOpenNetworksDirClick: () -> Unit
+    genericActions: GenericActions
 ) {
     val networkList by viewModel.networkList.observeAsState(emptyList())
     val errorNotification by viewModel.errorNotification.observeAsState()
@@ -70,12 +66,9 @@ fun StartScreen(
 
     StartScreenContent(
         networkList = networkList,
-        onAboutClick = onAboutClick,
         onNetworkClick = onNetworkClick,
-        onManualClick = { onManualClick(App.getContext().getString(R.string.app_doc_url_format, "doc.html")) },
         onConfigDirClick = onConfigDirClick,
-        onLogDirClick = onLogDirClick,
-        onOpenNetworksDirClick = onOpenNetworksDirClick,
+        genericActions = genericActions,
         onGenerateConfigClick = { activeDialog = ConfigureDialogType.GENERATE },
         onJoinNetworkClick = { activeDialog = ConfigureDialogType.JOIN },
         onLockClick = {
@@ -96,9 +89,9 @@ fun StartScreen(
         ErrorDialog(
             error = error,
             onDismiss = { viewModel.dismissError() },
-            onManualClick = { error.manualLink?.let { onManualClick(it) } },
+            onManualClick = { error.manualLink?.let { genericActions.onManual(it) } },
             onConfigDirClick = { error.configDir?.let { onConfigDirClick(it) } },
-            onLogDirClick = onLogDirClick
+            onLogDirClick = { genericActions.onLogDir() }
         )
     }
 
@@ -149,12 +142,9 @@ fun StartScreen(
 @Composable
 fun StartScreenContent(
     networkList: List<NetworkInfo>,
-    onAboutClick: () -> Unit,
     onNetworkClick: (String) -> Unit,
-    onManualClick: () -> Unit,
     onConfigDirClick: (String) -> Unit,
-    onLogDirClick: () -> Unit,
-    onOpenNetworksDirClick: () -> Unit,
+    genericActions: GenericActions,
     onGenerateConfigClick: () -> Unit,
     onJoinNetworkClick: () -> Unit,
     onLockClick: (String) -> Unit,
@@ -206,10 +196,7 @@ fun StartScreenContent(
                         )
                     }
                     GenericActionsMenu(
-                        onOpenNetworksDirClick = onOpenNetworksDirClick,
-                        onLogDirClick = onLogDirClick,
-                        onManualClick = onManualClick,
-                        onAboutClick = onAboutClick
+                        actions = genericActions
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -423,12 +410,9 @@ fun StartScreenPreview() {
                 NetworkInfo("Aperture Laboratories", false),
                 NetworkInfo("Black Mesa", true)
             ),
-            onAboutClick = {},
             onNetworkClick = {},
-            onManualClick = {},
             onConfigDirClick = {},
-            onLogDirClick = {},
-            onOpenNetworksDirClick = {},
+            genericActions = GenericActions({}, {}, {}, {}),
             onGenerateConfigClick = {},
             onJoinNetworkClick = {},
             onLockClick = {},
@@ -445,12 +429,9 @@ fun StartScreenErrorPreview() {
         Box(modifier = Modifier.fillMaxSize()) {
             StartScreenContent(
                 networkList = emptyList(),
-                onAboutClick = {},
                 onNetworkClick = {},
-                onManualClick = {},
                 onConfigDirClick = {},
-                onLogDirClick = {},
-                onOpenNetworksDirClick = {},
+                genericActions = GenericActions({}, {}, {}, {}),
                 onGenerateConfigClick = {},
                 onJoinNetworkClick = {},
                 onLockClick = {},
