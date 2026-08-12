@@ -27,7 +27,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.StringRes
 import org.pacien.tincapp.BuildConfig
-import org.pacien.tincapp.R
+import org.pacien.tincapp.storageprovider.StorageMigrator
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
