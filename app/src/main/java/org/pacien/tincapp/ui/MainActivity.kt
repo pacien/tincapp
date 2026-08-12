@@ -32,8 +32,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import org.pacien.tincapp.R
-import org.pacien.tincapp.activities.common.RecentCrashHandler
-import org.pacien.tincapp.activities.netlist.ConnectionStarter
+import org.pacien.tincapp.ui.common.RecentCrashHandler
+import org.pacien.tincapp.ui.netlist.ConnectionStarter
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.openURL
