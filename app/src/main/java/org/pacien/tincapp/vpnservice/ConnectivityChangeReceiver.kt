@@ -16,18 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.service
+package org.pacien.tincapp.vpnservice
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.Network
-import android.os.Build
 import org.pacien.tincapp.commands.Tinc
 import org.slf4j.LoggerFactory
-import java.lang.IllegalArgumentException
 
 /**
  * @author euxane

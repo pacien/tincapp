@@ -21,7 +21,7 @@ package org.pacien.tincapp.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavDestination.Companion.hasRoute
-import org.pacien.tincapp.intent.VpnState
+import org.pacien.tincapp.vpnservice.VpnState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,7 +46,7 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.ui.common.GenericActions
 import org.pacien.tincapp.intent.openURL
-import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.vpnservice.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
 

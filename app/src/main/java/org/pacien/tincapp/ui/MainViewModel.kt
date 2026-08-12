@@ -25,8 +25,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.pacien.tincapp.intent.VpnEvents
-import org.pacien.tincapp.intent.VpnState
+import org.pacien.tincapp.vpnservice.VpnEvents
+import org.pacien.tincapp.vpnservice.VpnState
 
 class MainViewModel : ViewModel() {
 

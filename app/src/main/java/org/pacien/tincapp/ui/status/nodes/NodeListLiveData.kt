@@ -20,7 +20,7 @@ package org.pacien.tincapp.ui.status.nodes
 
 import org.pacien.tincapp.ui.common.SelfRefreshingLiveData
 import org.pacien.tincapp.commands.Tinc
-import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.vpnservice.TincVpnService
 import java.util.concurrent.TimeUnit
 
 /**

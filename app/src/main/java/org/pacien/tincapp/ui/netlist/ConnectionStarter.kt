@@ -20,7 +20,7 @@ package org.pacien.tincapp.ui.netlist
 
 import android.net.VpnService
 import org.pacien.tincapp.ui.MainActivity
-import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.vpnservice.TincVpnService
 import org.pacien.tincapp.keyring.TincKeyring
 
 /**

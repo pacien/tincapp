@@ -19,7 +19,7 @@
 package org.pacien.tincapp.ui.status.logviewer
 
 import androidx.lifecycle.ViewModel
-import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.vpnservice.TincVpnService
 
 /**
  * @author euxane

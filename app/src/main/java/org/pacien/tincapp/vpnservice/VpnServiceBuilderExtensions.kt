@@ -1,32 +1,14 @@
-/*
- * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-package org.pacien.tincapp.extensions
+package org.pacien.tincapp.vpnservice
 
 import android.net.VpnService
 import org.pacien.tincapp.config.CidrAddress
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
-import org.pacien.tincapp.extensions.Java.applyIgnoringException
+import org.pacien.tincapp.extensions.Java
 
 /**
  * @author euxane
  */
-object VpnServiceBuilder {
+object VpnServiceBuilderExtensions {
   private fun <T> exceptWithCidr(cidr: CidrAddress, func: () -> T) = try {
     func()
   } catch (e: IllegalArgumentException) {
@@ -61,10 +43,18 @@ object VpnServiceBuilder {
     familyList.fold(this) { net, family -> net.allowFamily(family) }
 
   private fun VpnService.Builder.addAllowedApplications(apps: List<String>): VpnService.Builder =
-    apps.fold(this) { net, app -> applyIgnoringException(net::addAllowedApplication, app, net)!! }
+    apps.fold(this) { net, app -> Java.applyIgnoringException(
+      net::addAllowedApplication,
+      app,
+      net
+    )!! }
 
   private fun VpnService.Builder.addDisallowedApplications(apps: List<String>): VpnService.Builder =
-    apps.fold(this) { net, app -> applyIgnoringException(net::addDisallowedApplication, app, net)!! }
+    apps.fold(this) { net, app -> Java.applyIgnoringException(
+      net::addDisallowedApplication,
+      app,
+      net
+    )!! }
 
   fun VpnService.Builder.applyCfg(cfg: VpnInterfaceConfiguration): VpnService.Builder = this
     .addAddresses(cfg.addresses)

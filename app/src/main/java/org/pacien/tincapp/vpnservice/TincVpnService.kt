@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.service
+package org.pacien.tincapp.vpnservice
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -40,10 +40,8 @@ import org.pacien.tincapp.config.TincConfiguration
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.extensions.Java.applyIgnoringException
 import org.pacien.tincapp.extensions.Java.defaultMessage
-import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg
+import org.pacien.tincapp.vpnservice.VpnServiceBuilderExtensions.applyCfg
 import org.pacien.tincapp.intent.Actions
-import org.pacien.tincapp.intent.VpnEvents
-import org.pacien.tincapp.intent.VpnState
 import org.pacien.tincapp.keyring.TincKeyring
 import org.slf4j.LoggerFactory
 import java.io.FileNotFoundException

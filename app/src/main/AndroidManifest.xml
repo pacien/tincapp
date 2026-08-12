@@ -77,7 +77,7 @@
         </activity-alias>
 
         <service
-            android:name="org.pacien.tincapp.service.TincVpnService"
+            android:name="org.pacien.tincapp.vpnservice.TincVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:exported="true"
             tools:ignore="VpnServicePolicy">

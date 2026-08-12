@@ -37,7 +37,7 @@ import org.pacien.tincapp.ui.netlist.ConnectionStarter
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.openURL
-import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.vpnservice.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
 import org.pacien.tincapp.ui.common.AboutDialog
