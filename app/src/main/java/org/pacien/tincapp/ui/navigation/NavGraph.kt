@@ -19,6 +19,9 @@
 package org.pacien.tincapp.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavDestination.Companion.hasRoute
+import org.pacien.tincapp.intent.VpnState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +55,7 @@ import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
 @Composable
 fun NavGraph(
     navController: NavHostController,
+    vpnState: VpnState,
     onAboutClick: () -> Unit,
     onShowError: (String, String?) -> Unit,
     onOpenDocumentTree: (String) -> Unit,
@@ -70,6 +74,26 @@ fun NavGraph(
             },
             onAbout = onAboutClick
         )
+    }
+
+    LaunchedEffect(vpnState) {
+        when (vpnState) {
+            is VpnState.Connected -> {
+                if (navController.currentDestination?.hasRoute<Start>() == true) {
+                    navController.navigate(Status) {
+                        popUpTo<Start> { inclusive = true }
+                    }
+                }
+            }
+            is VpnState.Disconnected -> {
+                if (navController.currentDestination?.hasRoute<Status>() == true) {
+                    navController.navigate(Start) {
+                        popUpTo<Status> { inclusive = true }
+                    }
+                }
+            }
+            else -> {}
+        }
     }
 
     NavHost(

@@ -24,10 +24,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.pacien.tincapp.intent.VpnState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -35,7 +35,6 @@ import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.start.ConnectionStarter
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.intent.Actions
-import org.pacien.tincapp.intent.BroadcastMapper
 import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
@@ -49,6 +48,7 @@ import org.pacien.tincapp.ui.theme.TincTheme
 
 class MainActivity : ComponentActivity() {
 
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavHostController
 
     private val vpnPermissionLauncher = registerForActivityResult(
@@ -63,70 +63,52 @@ class MainActivity : ComponentActivity() {
 
     private val connectionStarter by lazy { ConnectionStarter(this) }
 
-    private val broadcastMapper = BroadcastMapper(mapOf(
-        Actions.EVENT_CONNECTED to ::onVpnStart,
-        Actions.EVENT_ABORTED to ::onVpnStartError,
-        Actions.EVENT_DISCONNECTED to ::onVpnShutdown
-    ))
-
-    private var activeDialog by mutableStateOf<ActiveDialog?>(null)
-
-    sealed class ActiveDialog {
-        data class Progress(val text: String) : ActiveDialog()
-        object DecryptKeys : ActiveDialog()
-        object About : ActiveDialog()
-        data class Error(val msg: String, val docTopic: String? = null) : ActiveDialog()
-        data class Warning(
-            val msg: String,
-            val docTopic: String? = null,
-            val onContinue: () -> Unit
-        ) : ActiveDialog()
-        data class Crash(val message: String, val onSendReport: () -> Unit) : ActiveDialog()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
         setContent {
             TincTheme {
                 navController = rememberNavController()
+                val vpnState by viewModel.vpnState.collectAsStateWithLifecycle()
+
                 NavGraph(
                     navController = navController,
-                    onAboutClick = { showAboutDialog() },
-                    onShowError = { msg, topic -> showErrorDialog(msg, topic) },
+                    vpnState = vpnState,
+                    onAboutClick = { viewModel.showAbout() },
+                    onShowError = { msg, topic -> viewModel.showError(msg, topic) },
                     onOpenDocumentTree = { openDocumentTree(it) },
                     onNetworkClick = { connectionStarter.tryStart(it, displayStatus = true) },
                     onDisconnectClick = { stopVpn() }
                 )
 
-                when (val dialog = activeDialog) {
-                    is ActiveDialog.Progress -> ProgressDialog(dialog.text)
-                    is ActiveDialog.DecryptKeys -> DecryptKeysDialog(
-                        onDismiss = { activeDialog = null },
+                when (val dialog = viewModel.activeDialog) {
+                    is MainViewModel.ActiveDialog.Progress -> ProgressDialog(dialog.text)
+                    is MainViewModel.ActiveDialog.DecryptKeys -> DecryptKeysDialog(
+                        onDismiss = { viewModel.dismissDialog() },
                         onConfirm = {
-                            activeDialog = null
+                            viewModel.dismissDialog()
                             connectionStarter.tryStart(passphrase = it)
                         }
                     )
-                    is ActiveDialog.About -> org.pacien.tincapp.ui.components.AboutDialog(
-                        onDismiss = { activeDialog = null },
+                    is MainViewModel.ActiveDialog.About -> org.pacien.tincapp.ui.components.AboutDialog(
+                        onDismiss = { viewModel.dismissDialog() },
                         onOpenWebsite = { openURL(getString(R.string.about_app_website_url), onError = { showErrorDialog(it) }) }
                     )
-                    is ActiveDialog.Error -> org.pacien.tincapp.ui.components.ErrorDialog(
+                    is MainViewModel.ActiveDialog.Error -> org.pacien.tincapp.ui.components.ErrorDialog(
                         message = dialog.msg,
                         docTopic = dialog.docTopic,
-                        onDismiss = { activeDialog = null },
+                        onDismiss = { viewModel.dismissDialog() },
                         onOpenManual = {
                             val url = getString(R.string.app_doc_url_format, it)
                             openURL(url, onError = { showErrorDialog(it) })
                         }
                     )
-                    is ActiveDialog.Warning -> org.pacien.tincapp.ui.components.WarningDialog(
+                    is MainViewModel.ActiveDialog.Warning -> org.pacien.tincapp.ui.components.WarningDialog(
                         message = dialog.msg,
                         docTopic = dialog.docTopic,
-                        onDismiss = { activeDialog = null },
+                        onDismiss = { viewModel.dismissDialog() },
                         onContinue = {
-                            activeDialog = null
+                            viewModel.dismissDialog()
                             dialog.onContinue()
                         },
                         onOpenManual = {
@@ -134,11 +116,11 @@ class MainActivity : ComponentActivity() {
                             openURL(url, onError = { showErrorDialog(it) })
                         }
                     )
-                    is ActiveDialog.Crash -> org.pacien.tincapp.ui.components.CrashDialog(
+                    is MainViewModel.ActiveDialog.Crash -> org.pacien.tincapp.ui.components.CrashDialog(
                         message = dialog.message,
-                        onDismiss = { activeDialog = null },
+                        onDismiss = { viewModel.dismissDialog() },
                         onSendReport = {
-                            activeDialog = null
+                            viewModel.dismissDialog()
                             dialog.onSendReport()
                         }
                     )
@@ -170,70 +152,36 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        broadcastMapper.register(lifecycleScope)
         
         RecentCrashHandler(this).handleRecentCrash()?.let {
-            activeDialog = ActiveDialog.Crash(it.message, it.onSendReport)
-        }
-
-        if (::navController.isInitialized && TincVpnService.isConnected() && navController.currentDestination?.hasRoute<Start>() == true) {
-            navController.navigate(Status) {
-                popUpTo<Start> { inclusive = true }
-            }
+            viewModel.showCrash(it.message, it.onSendReport)
         }
     }
 
     override fun onPause() {
-        broadcastMapper.unregister()
         super.onPause()
     }
 
-    private fun onVpnStart() {
-        activeDialog = null
-        if (::navController.isInitialized) {
-            navController.navigate(Status) {
-                popUpTo<Start> { inclusive = true }
-            }
-        }
-    }
-
-    private fun onVpnStartError() {
-        activeDialog = null
-    }
-
-    private fun onVpnShutdown() {
-        activeDialog = null
-        if (::navController.isInitialized) {
-            navController.navigate(Start) {
-                popUpTo<Status> { inclusive = true }
-            }
-        }
-    }
-
     fun showConnectProgressDialog() {
-        activeDialog = ActiveDialog.Progress(getString(R.string.start_starting_vpn))
+        viewModel.showProgress(getString(R.string.start_starting_vpn))
     }
 
     fun showDecryptKeysDialog() {
-        activeDialog = ActiveDialog.DecryptKeys
+        viewModel.showDecryptKeys()
     }
 
     private fun stopVpn() {
-        activeDialog = ActiveDialog.Progress(getString(R.string.status_activity_disconnecting_vpn))
+        viewModel.showProgress(getString(R.string.status_activity_disconnecting_vpn))
         TincVpnService.disconnect()
     }
 
-    fun showAboutDialog() {
-        activeDialog = ActiveDialog.About
-    }
-
     fun showErrorDialog(msg: String, docTopic: String? = null) {
-        activeDialog = ActiveDialog.Error(msg, docTopic)
+        viewModel.showError(msg, docTopic)
     }
 
     private fun openDocumentTree(documentId: String) {
         if (documentId.startsWith(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) && !BrowseFilesIntents.hasTextEditor(this)) {
-            activeDialog = ActiveDialog.Warning(
+            viewModel.showWarning(
                 getString(R.string.configure_browse_directories_warning_no_text_editor),
                 docTopic = "troubleshooting.html#no-text-editor-found",
                 onContinue = { doOpenDocumentTree(documentId) }

@@ -18,17 +18,26 @@
 
 package org.pacien.tincapp.intent
 
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * Singleton for signaling VPN events using SharedFlow.
+ * Represents the current state of the VPN service.
+ */
+sealed class VpnState {
+    object Disconnected : VpnState()
+    object Connecting : VpnState()
+    data class Connected(val netName: String) : VpnState()
+}
+
+/**
+ * Singleton for signaling VPN events using StateFlow.
  */
 object VpnEvents {
-    private val _events = MutableSharedFlow<String>(extraBufferCapacity = 1)
-    val events = _events.asSharedFlow()
+    private val _state = MutableStateFlow<VpnState>(VpnState.Disconnected)
+    val state = _state.asStateFlow()
 
-    fun emit(event: String) {
-        _events.tryEmit(event)
+    fun update(newState: VpnState) {
+        _state.value = newState
     }
 }

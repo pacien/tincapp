@@ -43,6 +43,7 @@ import org.pacien.tincapp.extensions.Java.defaultMessage
 import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.VpnEvents
+import org.pacien.tincapp.intent.VpnState
 import org.pacien.tincapp.utils.TincKeyring
 import org.slf4j.LoggerFactory
 import java.io.FileNotFoundException
@@ -101,6 +102,7 @@ class TincVpnService : VpnService() {
       return reportError(resources.getString(R.string.notification_error_message_no_configuration_for_network_format, netName), docTopic = "doc.html#configuration-files")
 
     log.info("Starting tinc daemon for network \"$netName\".")
+    VpnEvents.update(VpnState.Connecting)
     if (isConnected() || getCurrentNetName() != null) stopVpn().join()
 
     val privateKeys = try {
@@ -191,7 +193,7 @@ class TincVpnService : VpnService() {
         )
       } else {
         log.info("tinc daemon started.")
-        broadcastEvent(Actions.EVENT_CONNECTED)
+        VpnEvents.update(VpnState.Connected(netName))
       }
 
       if (interfaceCfg.reconnectOnNetworkChange)
@@ -207,7 +209,7 @@ class TincVpnService : VpnService() {
     getCurrentNetName()?.let {
       Tinc.stop(it).handle { _, _ ->
         log.info("All tinc daemons stopped.")
-        broadcastEvent(Actions.EVENT_DISCONNECTED)
+        VpnEvents.update(VpnState.Disconnected)
         setState(null, null, null, null, null)
       }
     } ?: CompletableFuture.completedFuture(Unit)
@@ -225,7 +227,7 @@ class TincVpnService : VpnService() {
     else
       log.error(msg)
 
-    broadcastEvent(Actions.EVENT_ABORTED)
+    VpnEvents.update(VpnState.Disconnected)
     App.alert(
       R.string.notification_error_title_unable_to_start_tinc,
       msg,
@@ -233,10 +235,6 @@ class TincVpnService : VpnService() {
       configDir,
       proposeLogs,
     )
-  }
-
-  private fun broadcastEvent(event: String) {
-    VpnEvents.emit(event)
   }
 
   private fun serveDeviceFd(serverSocket: LocalServerSocket, deviceFd: ParcelFileDescriptor) =
