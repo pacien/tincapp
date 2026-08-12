@@ -43,7 +43,8 @@ fun GraphView(
     val svgString = remember(dotString) {
         if (dotString.isBlank()) return@remember null
         try {
-            DotParser.parse(dotString).toSvgStr()
+            val patched = dotString.replace("style = \"filled\"", "style = \"bold\"")
+            DotParser.parse(patched).toSvgStr()
         } catch (e: Exception) {
             null
         }
@@ -65,23 +66,38 @@ fun GraphView(
         <!DOCTYPE html>
         <html>
         <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=10.0, user-scalable=yes">
+            <meta name="viewport" content="
+                width=device-width,
+                initial-scale=1.0,
+                maximum-scale=5.0,
+                user-scalable=yes
+            ">
             <style>
-                html, body { margin: 0; padding: 0; width: 100%; height: 100%; user-select: none; }
-                svg { display: block; min-width: 100vw; }
-                svg * { font-family: system-ui, sans-serif; }
-                .node { cursor: pointer; -webkit-tap-highlight-color: rgba(0,0,0,0.1); }
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    user-select: none;
+                }
+                svg * {
+                    font-family: system-ui, sans-serif;
+                }
+                .node {
+                    cursor: pointer;
+                    -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+                }
             </style>
         </head>
         <body>
             $svgString
             <script>
+                const svg = document.querySelector('svg');
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+
                 document.querySelectorAll('.node').forEach(node => {
                     node.onclick = function() {
                         var nodeName = this.id;
-                        if (nodeName) {
-                            Android.onNodeClick(nodeName);
-                        }
+                        if (nodeName) Android.onNodeClick(nodeName);
                     };
                 });
             </script>
@@ -94,9 +110,10 @@ fun GraphView(
         factory = { context ->
             WebView(context).apply {
                 settings.javaScriptEnabled = true
+                settings.setSupportZoom(true)
                 settings.builtInZoomControls = true
                 settings.displayZoomControls = false
-                settings.useWideViewPort = true
+                settings.useWideViewPort = false
                 settings.loadWithOverviewMode = true
                 
                 webViewClient = WebViewClient()
