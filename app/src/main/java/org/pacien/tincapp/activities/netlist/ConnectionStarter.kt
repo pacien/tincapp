@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities.start
+package org.pacien.tincapp.activities.netlist
 
 import android.net.VpnService
 import org.pacien.tincapp.ui.MainActivity

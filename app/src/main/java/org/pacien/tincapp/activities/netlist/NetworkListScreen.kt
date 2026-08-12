@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities.start
+package org.pacien.tincapp.activities.netlist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -51,7 +51,7 @@ import org.pacien.tincapp.ui.theme.TincTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(
+fun NetworkListScreen(
     viewModel: StartViewModel,
     configureViewModel: ConfigureViewModel,
     onNetworkClick: (String) -> Unit,
@@ -64,7 +64,7 @@ fun StartScreen(
     var activeDialog by remember { mutableStateOf<ConfigureDialogType?>(null) }
     var selectedNetwork by remember { mutableStateOf("") }
 
-    StartScreenContent(
+    NetworkListScreenContent(
         networkList = networkList,
         onNetworkClick = onNetworkClick,
         onConfigDirClick = onConfigDirClick,
@@ -140,7 +140,7 @@ fun StartScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreenContent(
+fun NetworkListScreenContent(
     networkList: List<NetworkInfo>,
     onNetworkClick: (String) -> Unit,
     onConfigDirClick: (String) -> Unit,
@@ -404,9 +404,9 @@ fun NetworkListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun StartScreenPreview() {
+fun NetworkListScreenPreview() {
     TincTheme {
-        StartScreenContent(
+        NetworkListScreenContent(
             networkList = listOf(
                 NetworkInfo("Aperture Laboratories", false),
                 NetworkInfo("Black Mesa", true)
@@ -425,10 +425,10 @@ fun StartScreenPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun StartScreenErrorPreview() {
+fun NetworkListScreenErrorPreview() {
     TincTheme {
         Box(modifier = Modifier.fillMaxSize()) {
-            StartScreenContent(
+            NetworkListScreenContent(
                 networkList = emptyList(),
                 onNetworkClick = {},
                 onConfigDirClick = {},

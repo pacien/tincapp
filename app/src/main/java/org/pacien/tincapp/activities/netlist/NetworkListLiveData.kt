@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2026 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2018 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.activities.start
+package org.pacien.tincapp.activities.netlist
+
+import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
+import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.keyring.TincKeyring
+import java.util.concurrent.TimeUnit
 
 /**
- * Information about a tinc network.
+ * @author euxane
  */
-data class NetworkInfo(
-    val name: String,
-    val needsPassphrase: Boolean
-)
+class NetworkListLiveData : SelfRefreshingLiveData<List<NetworkInfo>>(1, TimeUnit.SECONDS) {
+  private val appPaths = AppPaths
+
+  override fun onRefresh() {
+    val networkList = appPaths.confDir().list()?.sorted()?.map {
+      NetworkInfo(it, TincKeyring.needsPassphrase(it))
+    } ?: emptyList()
+    postValue(networkList)
+  }
+}

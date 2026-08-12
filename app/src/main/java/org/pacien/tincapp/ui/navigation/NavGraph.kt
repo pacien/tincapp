@@ -33,8 +33,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.pacien.tincapp.activities.configure.ConfigureViewModel
-import org.pacien.tincapp.activities.start.StartScreen
-import org.pacien.tincapp.activities.start.StartViewModel
+import org.pacien.tincapp.activities.netlist.NetworkListScreen
+import org.pacien.tincapp.activities.netlist.StartViewModel
 import org.pacien.tincapp.activities.status.nodes.NodeListViewModel
 import org.pacien.tincapp.activities.status.subnets.SubnetListViewModel
 import org.pacien.tincapp.activities.status.graph.GraphViewModel
@@ -49,7 +49,7 @@ import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
 
-@Serializable object Start
+@Serializable object NetworkList
 @Serializable object Status
 
 @Composable
@@ -79,15 +79,15 @@ fun NavGraph(
     LaunchedEffect(vpnState) {
         when (vpnState) {
             is VpnState.Connected -> {
-                if (navController.currentDestination?.hasRoute<Start>() == true) {
+                if (navController.currentDestination?.hasRoute<NetworkList>() == true) {
                     navController.navigate(Status) {
-                        popUpTo<Start> { inclusive = true }
+                        popUpTo<NetworkList> { inclusive = true }
                     }
                 }
             }
             is VpnState.Disconnected -> {
                 if (navController.currentDestination?.hasRoute<Status>() == true) {
-                    navController.navigate(Start) {
+                    navController.navigate(NetworkList) {
                         popUpTo<Status> { inclusive = true }
                     }
                 }
@@ -98,12 +98,12 @@ fun NavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = if (TincVpnService.isConnected()) Status else Start
+        startDestination = if (TincVpnService.isConnected()) Status else NetworkList
     ) {
-        composable<Start> {
+        composable<NetworkList> {
             val viewModel: StartViewModel = viewModel()
             val configureViewModel: ConfigureViewModel = viewModel()
-            StartScreen(
+            NetworkListScreen(
                 viewModel = viewModel,
                 configureViewModel = configureViewModel,
                 onNetworkClick = onNetworkClick,
