@@ -43,7 +43,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.R
 import org.pacien.tincapp.ui.netlist.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
-import org.pacien.tincapp.ui.components.*
+import org.pacien.tincapp.ui.common.GenericActions
+import org.pacien.tincapp.ui.common.GenericActionsMenu
+import org.pacien.tincapp.ui.common.SectionTitle
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
 import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.BackgroundSecondary

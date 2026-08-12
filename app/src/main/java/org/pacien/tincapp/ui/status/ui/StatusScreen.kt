@@ -59,8 +59,8 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.ui.status.nodes.NodeInfo
 import org.pacien.tincapp.ui.status.subnets.SubnetInfo
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
-import org.pacien.tincapp.ui.components.GenericActions
-import org.pacien.tincapp.ui.components.GenericActionsMenu
+import org.pacien.tincapp.ui.common.GenericActions
+import org.pacien.tincapp.ui.common.GenericActionsMenu
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.HeaderPrimary
 import org.pacien.tincapp.ui.theme.TextTitle

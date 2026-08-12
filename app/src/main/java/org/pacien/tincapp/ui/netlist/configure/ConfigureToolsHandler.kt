@@ -29,7 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import org.pacien.tincapp.R
-import org.pacien.tincapp.ui.components.ProgressDialog
+import org.pacien.tincapp.ui.common.ProgressDialog
 
 @Composable
 fun ConfigureToolsState(

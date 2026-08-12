@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.ui.navigation
+package org.pacien.tincapp.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,7 +43,8 @@ import org.pacien.tincapp.ui.status.ui.StatusScreen
 import org.pacien.tincapp.ui.status.viewlog.LogViewModel
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.R
-import org.pacien.tincapp.ui.components.GenericActions
+import org.pacien.tincapp.config.VpnInterfaceConfiguration
+import org.pacien.tincapp.ui.common.GenericActions
 import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
@@ -119,7 +120,7 @@ fun NavGraph(
             val graphViewModel: GraphViewModel = viewModel()
             val vpnService = TincVpnService
             val netName = vpnService.getCurrentNetName()
-            val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: org.pacien.tincapp.config.VpnInterfaceConfiguration()
+            val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: VpnInterfaceConfiguration()
 
             var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
 

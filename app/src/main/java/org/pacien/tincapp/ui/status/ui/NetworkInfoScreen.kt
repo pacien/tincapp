@@ -30,7 +30,7 @@ import org.pacien.tincapp.ui.status.networkinfo.VpnInterfaceConfigurationFormatt
 import org.pacien.tincapp.ui.status.nodes.NodeInfo
 import org.pacien.tincapp.ui.status.subnets.SubnetInfo
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
-import org.pacien.tincapp.ui.components.SectionTitle
+import org.pacien.tincapp.ui.common.SectionTitle
 
 @Composable
 fun NetworkInfoScreen(

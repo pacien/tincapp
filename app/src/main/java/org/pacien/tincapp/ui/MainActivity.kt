@@ -40,13 +40,12 @@ import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
-import org.pacien.tincapp.ui.components.AboutDialog
-import org.pacien.tincapp.ui.components.CrashDialog
-import org.pacien.tincapp.ui.components.DecryptKeysDialog
-import org.pacien.tincapp.ui.components.ErrorDialog
-import org.pacien.tincapp.ui.components.ProgressDialog
-import org.pacien.tincapp.ui.components.WarningDialog
-import org.pacien.tincapp.ui.navigation.NavGraph
+import org.pacien.tincapp.ui.common.AboutDialog
+import org.pacien.tincapp.ui.common.CrashDialog
+import org.pacien.tincapp.ui.common.DecryptKeysDialog
+import org.pacien.tincapp.ui.common.ErrorDialog
+import org.pacien.tincapp.ui.common.ProgressDialog
+import org.pacien.tincapp.ui.common.WarningDialog
 import org.pacien.tincapp.ui.theme.TincTheme
 
 class MainActivity : ComponentActivity() {

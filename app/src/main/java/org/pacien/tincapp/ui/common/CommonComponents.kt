@@ -1,4 +1,4 @@
-package org.pacien.tincapp.ui.components
+package org.pacien.tincapp.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
