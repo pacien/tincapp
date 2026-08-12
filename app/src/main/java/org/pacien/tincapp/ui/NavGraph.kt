@@ -44,7 +44,7 @@ import org.pacien.tincapp.ui.status.logviewer.LogViewModel
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.R
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
-import org.pacien.tincapp.ui.common.GenericActions
+import org.pacien.tincapp.ui.common.AppActions
 import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.vpnservice.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
@@ -65,8 +65,8 @@ fun NavGraph(
 ) {
     val context = LocalContext.current
 
-    val genericActions = remember(onAboutClick, onShowError, onOpenDocumentTree) {
-        GenericActions(
+    val appActions = remember(onAboutClick, onShowError, onOpenDocumentTree) {
+        AppActions(
             onOpenNetworksDir = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) },
             onLogDir = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) },
             onManual = { topic ->
@@ -109,7 +109,8 @@ fun NavGraph(
                 configureViewModel = configureViewModel,
                 onNetworkClick = onNetworkClick,
                 onConfigDirClick = { onOpenDocumentTree(BrowseFilesIntents.networkConfigDirDocId(it)) },
-                genericActions = genericActions
+                appActions = appActions,
+                vpnState = vpnState
             )
         }
 
@@ -140,9 +141,9 @@ fun NavGraph(
                         selectedNodeInfo = info
                     }
                 },
-                netName = netName,
+                vpnState = vpnState,
                 onDisconnectClick = onDisconnectClick,
-                genericActions = genericActions
+                appActions = appActions
             )
 
             selectedNodeInfo?.let { info ->

@@ -60,14 +60,16 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.ui.status.nodes.NodeInfo
 import org.pacien.tincapp.ui.status.subnets.SubnetInfo
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
-import org.pacien.tincapp.ui.common.GenericActions
-import org.pacien.tincapp.ui.common.GenericActionsMenu
+import org.pacien.tincapp.ui.common.AppStatusHeader
+import org.pacien.tincapp.ui.common.AppActions
+import org.pacien.tincapp.ui.common.AppActionsMenu
 import org.pacien.tincapp.ui.status.topograph.GraphView
 import org.pacien.tincapp.ui.status.networkinfo.NetworkInfoScreen
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.HeaderPrimary
 import org.pacien.tincapp.ui.theme.TextTitle
 import org.pacien.tincapp.ui.theme.TincTheme
+import org.pacien.tincapp.vpnservice.VpnState
 
 enum class StatusTab(val titleRes: Int) {
     NETWORK_INFO(R.string.status_activity_title_network_info),
@@ -85,9 +87,9 @@ fun StatusScreen(
     logLiveData: LiveData<List<String>>,
     onNodeClick: (NodeInfo) -> Unit,
     onNodeNameClick: (String) -> Unit,
-    netName: String?,
+    vpnState: VpnState,
     onDisconnectClick: () -> Unit,
-    genericActions: GenericActions,
+    appActions: AppActions,
     modifier: Modifier = Modifier
 ) {
     val tabs = StatusTab.entries
@@ -100,20 +102,7 @@ fun StatusScreen(
             Column {
                 TopAppBar(
                     title = {
-                        Column {
-                            Text(
-                                text = stringResource(R.string.app_name),
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                            Text(
-                                text =
-                                    if (netName != null)
-                                        stringResource(R.string.status_activity_state_connected_to_format, netName)
-                                    else
-                                        stringResource(R.string.status_activity_state_disconnected),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
+                        AppStatusHeader(vpnState)
                     },
                     actions = {
                         IconButton(onClick = onDisconnectClick) {
@@ -123,8 +112,8 @@ fun StatusScreen(
                                 tint = TextTitle
                             )
                         }
-                        GenericActionsMenu(
-                            actions = genericActions,
+                        AppActionsMenu(
+                            actions = appActions,
                             tint = TextTitle
                         )
                     },
@@ -266,9 +255,9 @@ fun StatusScreenPreview() {
             graphLiveData = MutableLiveData(""),
             onNodeClick = {},
             onNodeNameClick = {},
-            netName = "test-net",
+            vpnState = VpnState.Connected("test-net"),
             onDisconnectClick = {},
-            genericActions = GenericActions({}, {}, {}, {})
+            appActions = AppActions({}, {}, {}, {})
         )
     }
 }

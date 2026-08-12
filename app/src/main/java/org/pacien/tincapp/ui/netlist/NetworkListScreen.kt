@@ -43,22 +43,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.R
 import org.pacien.tincapp.ui.netlist.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
-import org.pacien.tincapp.ui.common.GenericActions
-import org.pacien.tincapp.ui.common.GenericActionsMenu
+import org.pacien.tincapp.ui.common.AppStatusHeader
+import org.pacien.tincapp.ui.common.AppActions
+import org.pacien.tincapp.ui.common.AppActionsMenu
 import org.pacien.tincapp.ui.common.SectionTitle
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
 import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.TincTheme
+import org.pacien.tincapp.vpnservice.VpnState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NetworkListScreen(
     viewModel: StartViewModel,
     configureViewModel: ConfigureViewModel,
+    vpnState: VpnState,
     onNetworkClick: (String) -> Unit,
     onConfigDirClick: (String) -> Unit,
-    genericActions: GenericActions
+    appActions: AppActions
 ) {
     val networkList by viewModel.networkList.observeAsState(emptyList())
     val errorNotification by viewModel.errorNotification.observeAsState()
@@ -67,10 +70,11 @@ fun NetworkListScreen(
     var selectedNetwork by remember { mutableStateOf("") }
 
     NetworkListScreenContent(
+        vpnState = vpnState,
         networkList = networkList,
         onNetworkClick = onNetworkClick,
         onConfigDirClick = onConfigDirClick,
-        genericActions = genericActions,
+        appActions = appActions,
         onGenerateConfigClick = { activeDialog = ConfigureDialogType.GENERATE },
         onJoinNetworkClick = { activeDialog = ConfigureDialogType.JOIN },
         onLockClick = {
@@ -91,9 +95,9 @@ fun NetworkListScreen(
         ErrorDialog(
             error = error,
             onDismiss = { viewModel.dismissError() },
-            onManualClick = { error.manualLink?.let { genericActions.onManual(it) } },
+            onManualClick = { error.manualLink?.let { appActions.onManual(it) } },
             onConfigDirClick = { error.configDir?.let { onConfigDirClick(it) } },
-            onLogDirClick = { genericActions.onLogDir() }
+            onLogDirClick = { appActions.onLogDir() }
         )
     }
 
@@ -143,10 +147,11 @@ fun NetworkListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NetworkListScreenContent(
+    vpnState: VpnState,
     networkList: List<NetworkInfo>,
     onNetworkClick: (String) -> Unit,
     onConfigDirClick: (String) -> Unit,
-    genericActions: GenericActions,
+    appActions: AppActions,
     onGenerateConfigClick: () -> Unit,
     onJoinNetworkClick: () -> Unit,
     onLockClick: (String) -> Unit,
@@ -159,17 +164,8 @@ fun NetworkListScreenContent(
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.app_name),
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                        Text(
-                                text = stringResource(R.string.status_activity_state_disconnected),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    },
+                    AppStatusHeader(vpnState)
+                },
                 actions = {
                     IconButton(onClick = { showCreateMenu = !showCreateMenu }) {
                         Icon(
@@ -197,8 +193,8 @@ fun NetworkListScreenContent(
                             }
                         )
                     }
-                    GenericActionsMenu(
-                        actions = genericActions
+                    AppActionsMenu(
+                        actions = appActions
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -415,12 +411,13 @@ fun NetworkListScreenPreview() {
             ),
             onNetworkClick = {},
             onConfigDirClick = {},
-            genericActions = GenericActions({}, {}, {}, {}),
+            appActions = AppActions({}, {}, {}, {}),
             onGenerateConfigClick = {},
             onJoinNetworkClick = {},
             onLockClick = {},
             onUnlockClick = {},
-            onDeleteClick = {}
+            onDeleteClick = {},
+            vpnState = VpnState.Disconnected,
         )
     }
 }
@@ -434,12 +431,13 @@ fun NetworkListScreenErrorPreview() {
                 networkList = emptyList(),
                 onNetworkClick = {},
                 onConfigDirClick = {},
-                genericActions = GenericActions({}, {}, {}, {}),
+                appActions = AppActions({}, {}, {}, {}),
                 onGenerateConfigClick = {},
                 onJoinNetworkClick = {},
                 onLockClick = {},
                 onUnlockClick = {},
-                onDeleteClick = {}
+                onDeleteClick = {},
+                vpnState = VpnState.Disconnected,
             )
             ErrorDialog(
                 error = ErrorNotification(

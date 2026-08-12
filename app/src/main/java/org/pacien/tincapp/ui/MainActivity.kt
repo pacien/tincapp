@@ -42,7 +42,7 @@ import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
 import org.pacien.tincapp.ui.common.AboutDialog
 import org.pacien.tincapp.ui.common.CrashDialog
-import org.pacien.tincapp.ui.common.DecryptKeysDialog
+import org.pacien.tincapp.ui.netlist.UnlockKeyDialog
 import org.pacien.tincapp.ui.common.ErrorDialog
 import org.pacien.tincapp.ui.common.ProgressDialog
 import org.pacien.tincapp.ui.common.WarningDialog
@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
 
                 when (val dialog = viewModel.activeDialog) {
                     is MainViewModel.ActiveDialog.Progress -> ProgressDialog(dialog.text)
-                    is MainViewModel.ActiveDialog.DecryptKeys -> DecryptKeysDialog(
+                    is MainViewModel.ActiveDialog.DecryptKeys -> UnlockKeyDialog(
                         onDismiss = { viewModel.dismissDialog() },
                         onConfirm = {
                             viewModel.dismissDialog()
