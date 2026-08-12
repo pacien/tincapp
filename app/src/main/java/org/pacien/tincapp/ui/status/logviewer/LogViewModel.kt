@@ -19,13 +19,15 @@
 package org.pacien.tincapp.ui.status.logviewer
 
 import androidx.lifecycle.ViewModel
-import org.pacien.tincapp.vpnservice.TincVpnService
+import org.pacien.tincapp.repository.VpnRepository
 
 /**
  * @author euxane
  */
 class LogViewModel : ViewModel() {
   private val logLevelNumeric = 5
-  val netName by lazy { TincVpnService.getCurrentNetName()!! }
-  val log by lazy { LogLiveData(netName, logLevelNumeric, 250) }
+  val log by lazy {
+    val netName = VpnRepository.currentNetName ?: ""
+    LogLiveData(netName, logLevelNumeric, 250)
+  }
 }

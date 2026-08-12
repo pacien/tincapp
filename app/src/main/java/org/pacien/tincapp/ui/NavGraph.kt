@@ -21,7 +21,8 @@ package org.pacien.tincapp.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavDestination.Companion.hasRoute
-import org.pacien.tincapp.vpnservice.VpnState
+import org.pacien.tincapp.repository.VpnRepository
+import org.pacien.tincapp.repository.VpnState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -99,7 +100,7 @@ fun NavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = if (TincVpnService.isConnected()) Status else NetworkList
+        startDestination = if (VpnRepository.isConnected) Status else NetworkList
     ) {
         composable<NetworkList> {
             val viewModel: StartViewModel = viewModel()
@@ -119,9 +120,8 @@ fun NavGraph(
             val subnetListViewModel: SubnetListViewModel = viewModel()
             val logViewModel: LogViewModel = viewModel()
             val graphViewModel: GraphViewModel = viewModel()
-            val vpnService = TincVpnService
-            val netName = vpnService.getCurrentNetName()
-            val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: VpnInterfaceConfiguration()
+            val netName = VpnRepository.currentNetName
+            val vpnCfg = VpnRepository.interfaceConfig ?: VpnInterfaceConfiguration()
 
             var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
 
@@ -132,13 +132,17 @@ fun NavGraph(
                 graphLiveData = graphViewModel.graphData,
                 logLiveData = logViewModel.log,
                 onNodeClick = { node ->
-                    Tinc.info(netName!!, node.name).thenAccept { info ->
-                        selectedNodeInfo = info
+                    netName?.let { name ->
+                        Tinc.info(name, node.name).thenAccept { info ->
+                            selectedNodeInfo = info
+                        }
                     }
                 },
                 onNodeNameClick = { nodeName ->
-                    Tinc.info(netName!!, nodeName).thenAccept { info ->
-                        selectedNodeInfo = info
+                    netName?.let { name ->
+                        Tinc.info(name, nodeName).thenAccept { info ->
+                            selectedNodeInfo = info
+                        }
                     }
                 },
                 vpnState = vpnState,

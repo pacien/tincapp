@@ -44,9 +44,14 @@ import org.pacien.tincapp.vpnservice.VpnServiceBuilderExtensions.applyCfg
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.keyring.TincKeyring
 import org.slf4j.LoggerFactory
+import org.pacien.tincapp.repository.VpnRepository
+import org.pacien.tincapp.repository.VpnState
 import java.io.FileNotFoundException
 import java.security.AccessControlException
-import androidx.core.content.edit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 /**
  * @author euxane
@@ -55,9 +60,11 @@ import androidx.core.content.edit
 class TincVpnService : VpnService() {
   private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
   private val connectivityChangeReceiver = ConnectivityChangeReceiver
+  private val serviceScope = CoroutineScope(Dispatchers.Main)
 
   override fun onDestroy() {
     stopVpn().join()
+    serviceScope.cancel()
     super.onDestroy()
   }
 
@@ -70,7 +77,7 @@ class TincVpnService : VpnService() {
       intent.action == Actions.ACTION_DISCONNECT ->
         stopVpn()
       intent.action == Actions.ACTION_SYSTEM_CONNECT ->
-        restorePreviousConnection()
+        serviceScope.launch { restorePreviousConnection() }
       else ->
         throw IllegalArgumentException("Invalid intent action received.")
     }
@@ -78,15 +85,15 @@ class TincVpnService : VpnService() {
     return Service.START_NOT_STICKY
   }
 
-  private fun restorePreviousConnection() {
-    val netName = getCurrentNetName()
+  private suspend fun restorePreviousConnection() {
+    val netName = VpnRepository.getNetName()
     if (netName == null) {
       log.info("No connection to restore.")
       return
     }
 
     log.info("Restoring previous connection to \"$netName\".")
-    startVpn(netName, getPassphrase())
+    startVpn(netName, VpnRepository.getPassphrase())
   }
 
   private fun startVpn(netName: String, passphrase: String? = null): Unit = synchronized(this) {
@@ -104,8 +111,8 @@ class TincVpnService : VpnService() {
       )
 
     log.info("Starting tinc daemon for network \"$netName\".")
-    VpnEvents.update(VpnState.Connecting)
-    if (isConnected() || getCurrentNetName() != null) stopVpn().join()
+    VpnRepository.updateState(VpnState.Connecting)
+    if (VpnRepository.isConnected || VpnRepository.currentNetName != null) stopVpn().join()
 
     val privateKeys = try {
       TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let { tincCfg ->
@@ -183,7 +190,7 @@ class TincVpnService : VpnService() {
     Executor.runAsyncTask { serveDeviceFd(serverSocket, deviceFd) }
 
     val daemon = Tincd.start(netName, DEVICE_FD_ABSTRACT_SOCKET, privateKeys.first, privateKeys.second)
-    setState(netName, passphrase, interfaceCfg, deviceFd, daemon)
+    VpnRepository.setState(netName, passphrase, interfaceCfg, deviceFd, daemon)
 
     waitForDaemonStartup().whenComplete { _, exception ->
       serverSocket.close()
@@ -197,7 +204,7 @@ class TincVpnService : VpnService() {
         )
       } else {
         log.info("tinc daemon started.")
-        VpnEvents.update(VpnState.Connected(netName))
+        VpnRepository.updateState(VpnState.Connected(netName))
       }
 
       if (interfaceCfg.reconnectOnNetworkChange)
@@ -213,8 +220,8 @@ class TincVpnService : VpnService() {
     getCurrentNetName()?.let {
       Tinc.stop(it).handle { _, _ ->
         log.info("All tinc daemons stopped.")
-        VpnEvents.update(VpnState.Disconnected)
-        setState(null, null, null, null, null)
+        VpnRepository.updateState(VpnState.Disconnected)
+        VpnRepository.setState(null, null, null, null, null)
       }
     } ?: CompletableFuture.completedFuture(Unit)
   }
@@ -231,7 +238,7 @@ class TincVpnService : VpnService() {
     else
       log.error(msg)
 
-    VpnEvents.update(VpnState.Disconnected)
+    VpnRepository.updateState(VpnState.Disconnected)
     App.alert(
       R.string.notification_error_title_unable_to_start_tinc,
       msg,
@@ -260,42 +267,16 @@ class TincVpnService : VpnService() {
   private fun waitForDaemonStartup() =
     Executor
       .runAsyncTask { Thread.sleep(SETUP_DELAY) }
-      .thenCompose { if (daemon!!.isDone) daemon!! else Executor.runAsyncTask { Unit } }
+      .thenCompose {
+        val daemon = VpnRepository.daemon
+        if (daemon != null && daemon.isDone) daemon else Executor.runAsyncTask { Unit }
+      }
 
   companion object {
     private const val SETUP_DELAY = 500L // ms
     private const val DEVICE_FD_ABSTRACT_SOCKET = "${BuildConfig.APPLICATION_ID}.daemon.socket"
 
-    private val STORE_NAME = this::class.java.`package`!!.name
-    private const val STORE_KEY_NETNAME = "netname"
-    private const val STORE_KEY_PASSPHRASE = "passphrase"
-
-    private val context by lazy { App.getContext() }
-    private val store by lazy { context.getSharedPreferences(STORE_NAME, Context.MODE_PRIVATE)!! }
-
-    private var interfaceCfg: VpnInterfaceConfiguration? = null
-    private var fd: ParcelFileDescriptor? = null
-    private var daemon: CompletableFuture<Unit>? = null
-
-    private fun saveConnection(netName: String?, passphrase: String?) =
-      store.edit {
-        putString(STORE_KEY_NETNAME, netName)
-            .putString(STORE_KEY_PASSPHRASE, passphrase)
-        }
-
-    private fun setState(netName: String?, passphrase: String?, interfaceCfg: VpnInterfaceConfiguration?,
-                         fd: ParcelFileDescriptor?, daemon: CompletableFuture<Unit>?) {
-      saveConnection(netName, passphrase)
-      TincVpnService.interfaceCfg = interfaceCfg
-      TincVpnService.fd = fd
-      TincVpnService.daemon = daemon
-    }
-
-    private fun getPassphrase(): String? = store.getString(STORE_KEY_PASSPHRASE, null)
-    fun getCurrentNetName(): String? = store.getString(STORE_KEY_NETNAME, null)
-
-    fun getCurrentInterfaceCfg() = interfaceCfg
-    fun isConnected() = !(daemon?.isDone ?: true)
+    fun getCurrentNetName(): String? = VpnRepository.currentNetName
 
     fun connect(netName: String, passphrase: String? = null) {
       App.notificationManager.dismissAll()

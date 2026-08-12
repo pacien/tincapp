@@ -39,7 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppInfo
-import org.pacien.tincapp.vpnservice.VpnState
+import org.pacien.tincapp.repository.VpnState
 
 @Composable
 fun AppStatusHeader(

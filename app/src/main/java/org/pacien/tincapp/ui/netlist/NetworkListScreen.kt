@@ -51,7 +51,7 @@ import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
 import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.TincTheme
-import org.pacien.tincapp.vpnservice.VpnState
+import org.pacien.tincapp.repository.VpnState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

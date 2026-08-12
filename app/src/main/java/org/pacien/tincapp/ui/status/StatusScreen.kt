@@ -69,7 +69,7 @@ import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.HeaderPrimary
 import org.pacien.tincapp.ui.theme.TextTitle
 import org.pacien.tincapp.ui.theme.TincTheme
-import org.pacien.tincapp.vpnservice.VpnState
+import org.pacien.tincapp.repository.VpnState
 
 enum class StatusTab(val titleRes: Int) {
     NETWORK_INFO(R.string.status_activity_title_network_info),

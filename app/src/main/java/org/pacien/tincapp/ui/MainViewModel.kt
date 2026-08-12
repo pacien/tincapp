@@ -25,12 +25,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.pacien.tincapp.vpnservice.VpnEvents
-import org.pacien.tincapp.vpnservice.VpnState
+import org.pacien.tincapp.repository.VpnRepository
+import org.pacien.tincapp.repository.VpnState
 
 class MainViewModel : ViewModel() {
 
-    val vpnState: StateFlow<VpnState> = VpnEvents.state
+    val vpnState: StateFlow<VpnState> = VpnRepository.vpnState
 
     var activeDialog by mutableStateOf<ActiveDialog?>(null)
         private set
