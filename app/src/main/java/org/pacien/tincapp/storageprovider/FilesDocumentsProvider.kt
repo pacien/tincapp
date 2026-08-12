@@ -32,8 +32,8 @@ import androidx.annotation.RequiresApi
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.utils.isParentOf
-import org.pacien.tincapp.utils.pathUnder
+import org.pacien.tincapp.utils.Files.isParentOf
+import org.pacien.tincapp.utils.Files.pathUnder
 import java.io.File
 import java.io.FileNotFoundException
 import kotlin.io.path.Path
