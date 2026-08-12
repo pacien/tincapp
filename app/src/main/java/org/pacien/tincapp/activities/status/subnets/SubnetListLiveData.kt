@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 /**
  * @author euxane
  */
-class SubnetListLiveData : SelfRefreshingLiveData<List<SubnetInfo>>(1, TimeUnit.SECONDS) {
+class SubnetListLiveData : SelfRefreshingLiveData<List<SubnetInfo>>(5, TimeUnit.SECONDS) {
   private val vpnService = TincVpnService
   private val tincCtl = Tinc
 

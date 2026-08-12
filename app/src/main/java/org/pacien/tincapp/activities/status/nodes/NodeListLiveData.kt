@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 /**
  * @author euxane
  */
-class NodeListLiveData : SelfRefreshingLiveData<List<NodeInfo>>(1, TimeUnit.SECONDS) {
+class NodeListLiveData : SelfRefreshingLiveData<List<NodeInfo>>(5, TimeUnit.SECONDS) {
   private val vpnService = TincVpnService
   private val tincCtl = Tinc
 
