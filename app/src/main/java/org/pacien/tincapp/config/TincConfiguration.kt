@@ -20,7 +20,7 @@ package org.pacien.tincapp.config
 
 import org.apache.commons.configuration2.Configuration
 import org.apache.commons.configuration2.builder.fluent.Configurations
-import org.pacien.tincapp.extensions.ApacheConfiguration.getFile
+import org.pacien.tincapp.config.ApacheConfigurationExtensions.getFile
 import java.io.File
 
 /**

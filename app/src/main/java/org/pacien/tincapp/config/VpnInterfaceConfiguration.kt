@@ -24,9 +24,9 @@ import org.apache.commons.configuration2.PropertiesConfiguration
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder
 import org.apache.commons.configuration2.builder.fluent.Configurations
 import org.apache.commons.configuration2.builder.fluent.Parameters
-import org.pacien.tincapp.extensions.ApacheConfiguration.getCidrList
-import org.pacien.tincapp.extensions.ApacheConfiguration.getIntList
-import org.pacien.tincapp.extensions.ApacheConfiguration.getStringList
+import org.pacien.tincapp.config.ApacheConfigurationExtensions.getCidrList
+import org.pacien.tincapp.config.ApacheConfigurationExtensions.getIntList
+import org.pacien.tincapp.config.ApacheConfigurationExtensions.getStringList
 import org.pacien.tincapp.extensions.Java.applyIgnoringException
 import java.io.File
 
