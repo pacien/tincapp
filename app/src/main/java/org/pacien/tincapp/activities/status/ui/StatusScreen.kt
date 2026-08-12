@@ -152,6 +152,7 @@ fun StatusScreen(
         }
     ) { paddingValues ->
         HorizontalPager(
+            userScrollEnabled = false,
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize()
