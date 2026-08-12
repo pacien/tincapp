@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp
+package org.pacien.tincapp.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -29,10 +29,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.pacien.tincapp.intent.VpnState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.NavDestination.Companion.hasRoute
+import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.common.RecentCrashHandler
 import org.pacien.tincapp.activities.start.ConnectionStarter
 import org.pacien.tincapp.context.App
@@ -41,11 +40,13 @@ import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
+import org.pacien.tincapp.ui.components.AboutDialog
+import org.pacien.tincapp.ui.components.CrashDialog
 import org.pacien.tincapp.ui.components.DecryptKeysDialog
+import org.pacien.tincapp.ui.components.ErrorDialog
 import org.pacien.tincapp.ui.components.ProgressDialog
+import org.pacien.tincapp.ui.components.WarningDialog
 import org.pacien.tincapp.ui.navigation.NavGraph
-import org.pacien.tincapp.ui.navigation.Start
-import org.pacien.tincapp.ui.navigation.Status
 import org.pacien.tincapp.ui.theme.TincTheme
 
 class MainActivity : ComponentActivity() {
@@ -102,11 +103,11 @@ class MainActivity : ComponentActivity() {
                             connectionStarter.tryStart(passphrase = it)
                         }
                     )
-                    is MainViewModel.ActiveDialog.About -> org.pacien.tincapp.ui.components.AboutDialog(
+                    is MainViewModel.ActiveDialog.About -> AboutDialog(
                         onDismiss = { viewModel.dismissDialog() },
                         onOpenWebsite = { openURL(getString(R.string.about_app_website_url), onError = { showErrorDialog(it) }) }
                     )
-                    is MainViewModel.ActiveDialog.Error -> org.pacien.tincapp.ui.components.ErrorDialog(
+                    is MainViewModel.ActiveDialog.Error -> ErrorDialog(
                         message = dialog.msg,
                         docTopic = dialog.docTopic,
                         onDismiss = { viewModel.dismissDialog() },
@@ -115,7 +116,7 @@ class MainActivity : ComponentActivity() {
                             openURL(url, onError = { showErrorDialog(it) })
                         }
                     )
-                    is MainViewModel.ActiveDialog.Warning -> org.pacien.tincapp.ui.components.WarningDialog(
+                    is MainViewModel.ActiveDialog.Warning -> WarningDialog(
                         message = dialog.msg,
                         docTopic = dialog.docTopic,
                         onDismiss = { viewModel.dismissDialog() },
@@ -128,7 +129,7 @@ class MainActivity : ComponentActivity() {
                             openURL(url, onError = { showErrorDialog(it) })
                         }
                     )
-                    is MainViewModel.ActiveDialog.Crash -> org.pacien.tincapp.ui.components.CrashDialog(
+                    is MainViewModel.ActiveDialog.Crash -> CrashDialog(
                         message = dialog.message,
                         onDismiss = { viewModel.dismissDialog() },
                         onSendReport = {

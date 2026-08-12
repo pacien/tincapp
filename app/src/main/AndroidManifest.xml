@@ -2,7 +2,7 @@
 
 <!--
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2023 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@
             android:required="false" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true"
@@ -65,7 +65,7 @@
 
         <activity-alias
             android:name=".activities.start.StartActivityAlias"
-            android:targetActivity=".MainActivity"
+            android:targetActivity=".ui.MainActivity"
             android:label="@string/app_launcher_name"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
