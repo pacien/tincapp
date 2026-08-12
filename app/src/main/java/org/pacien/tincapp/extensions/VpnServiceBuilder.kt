@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2018 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,6 +75,5 @@ object VpnServiceBuilder {
     .addDisallowedApplications(cfg.disallowedApplications)
     .allowFamilies(cfg.allowedFamilies)
     .allowBypass(cfg.allowBypass)
-    .setBlocking(cfg.blocking)
     .overrideMtu(cfg.mtu)
 }

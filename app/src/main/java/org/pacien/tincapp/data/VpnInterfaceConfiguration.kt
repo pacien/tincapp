@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2020 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
                                      val disallowedApplications: List<String> = emptyList(),
                                      val allowedFamilies: List<Int> = emptyList(),
                                      val allowBypass: Boolean = false,
-                                     val blocking: Boolean = false,
                                      val mtu: Int? = null,
                                      val reconnectOnNetworkChange: Boolean = true) {
   companion object {
@@ -53,7 +52,6 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
     private const val KEY_DISALLOWED_APPLICATIONS = "DisallowApplication"
     private const val KEY_ALLOWED_FAMILIES = "AllowFamily"
     private const val KEY_ALLOW_BYPASS = "AllowBypass"
-    private const val KEY_BLOCKING = "Blocking"
     private const val KEY_MTU = "MTU"
     private const val KEY_RECONNECT_ON_NETWORK_CHANGE = "ReconnectOnNetworkChange"
 
@@ -70,7 +68,6 @@ data class VpnInterfaceConfiguration(val addresses: List<CidrAddress> = emptyLis
       c.getStringList(KEY_DISALLOWED_APPLICATIONS),
       c.getIntList(KEY_ALLOWED_FAMILIES),
       c.getBoolean(KEY_ALLOW_BYPASS, false),
-      c.getBoolean(KEY_BLOCKING, false),
       c.getInteger(KEY_MTU, null),
       c.getBoolean(KEY_RECONNECT_ON_NETWORK_CHANGE, true))
 
