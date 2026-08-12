@@ -20,7 +20,7 @@ package org.pacien.tincapp.utils
 
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.utils.Files.makePrivate
+import org.pacien.tincapp.extensions.Files.makePrivate
 import java.io.File
 import java.io.FileWriter
 

@@ -27,7 +27,7 @@ import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.service.TincVpnService
-import org.pacien.tincapp.utils.Files.makePublic
+import org.pacien.tincapp.extensions.Files.makePublic
 import java.util.regex.Pattern
 import java.util.concurrent.CompletableFuture
 import org.pacien.tincapp.extensions.Java.failedFuture
