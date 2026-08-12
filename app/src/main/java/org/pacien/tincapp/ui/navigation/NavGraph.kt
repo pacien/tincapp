@@ -32,7 +32,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
-import org.pacien.tincapp.activities.configure.ConfigureViewModel
+import org.pacien.tincapp.activities.netlist.configure.ConfigureViewModel
 import org.pacien.tincapp.activities.netlist.NetworkListScreen
 import org.pacien.tincapp.activities.netlist.StartViewModel
 import org.pacien.tincapp.activities.status.nodes.NodeListViewModel

@@ -41,7 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.R
-import org.pacien.tincapp.activities.configure.*
+import org.pacien.tincapp.activities.netlist.configure.*
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.components.*
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
