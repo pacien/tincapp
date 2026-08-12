@@ -20,7 +20,7 @@ package org.pacien.tincapp.activities.start
 
 import org.pacien.tincapp.activities.common.SelfRefreshingLiveData
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.utils.TincKeyring
+import org.pacien.tincapp.keyring.TincKeyring
 import java.util.concurrent.TimeUnit
 
 /**

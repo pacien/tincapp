@@ -24,7 +24,7 @@ import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.data.TincConfiguration
 import org.pacien.tincapp.data.VpnInterfaceConfiguration
-import org.pacien.tincapp.utils.PemUtils
+import org.pacien.tincapp.keyring.PemUtils
 import java.io.FileNotFoundException
 
 /**

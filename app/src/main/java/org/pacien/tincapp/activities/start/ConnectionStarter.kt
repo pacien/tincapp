@@ -21,7 +21,7 @@ package org.pacien.tincapp.activities.start
 import android.net.VpnService
 import org.pacien.tincapp.MainActivity
 import org.pacien.tincapp.service.TincVpnService
-import org.pacien.tincapp.utils.TincKeyring
+import org.pacien.tincapp.keyring.TincKeyring
 
 /**
  * @author euxane

@@ -44,7 +44,7 @@ import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.VpnEvents
 import org.pacien.tincapp.intent.VpnState
-import org.pacien.tincapp.utils.TincKeyring
+import org.pacien.tincapp.keyring.TincKeyring
 import org.slf4j.LoggerFactory
 import java.io.FileNotFoundException
 import java.security.AccessControlException
