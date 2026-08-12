@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2023 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,7 +99,11 @@ class TincVpnService : VpnService() {
       return reportError(resources.getString(R.string.notification_error_message_passphrase_not_provided))
 
     if (!AppPaths.confDir(netName).exists())
-      return reportError(resources.getString(R.string.notification_error_message_no_configuration_for_network_format, netName), docTopic = "doc.html#configuration-files")
+      return reportError(
+        resources.getString(R.string.notification_error_message_no_configuration_for_network_format, netName),
+        configDir = netName,
+        docTopic = "doc.html#configuration-files"
+      )
 
     log.info("Starting tinc daemon for network \"$netName\".")
     VpnEvents.update(VpnState.Connecting)
@@ -131,12 +135,14 @@ class TincVpnService : VpnService() {
       return reportError(
         resources.getString(R.string.notification_error_message_network_config_not_found_format, e.defaultMessage()),
         e,
+        configDir = netName,
         docTopic = "doc.html#configuration-files"
       )
     } catch (e: ConversionException) {
       return reportError(
         resources.getString(R.string.notification_error_message_network_config_invalid_format, e.defaultMessage()),
         e,
+        configDir = netName,
         docTopic = "doc.html#network-interface",
       )
     } catch (e: Exception) {
