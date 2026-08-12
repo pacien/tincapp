@@ -19,7 +19,7 @@
 package org.pacien.tincapp.extensions
 
 import org.apache.commons.configuration2.Configuration
-import org.pacien.tincapp.data.CidrAddress
+import org.pacien.tincapp.config.CidrAddress
 import java.io.File
 
 /**

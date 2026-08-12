@@ -58,7 +58,7 @@ import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.activities.status.subnets.SubnetInfo
-import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.ui.components.GenericActions
 import org.pacien.tincapp.ui.components.GenericActionsMenu
 import org.pacien.tincapp.ui.theme.BackgroundSecondary

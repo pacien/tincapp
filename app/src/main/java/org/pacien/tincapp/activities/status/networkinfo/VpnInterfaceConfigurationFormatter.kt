@@ -21,7 +21,7 @@ package org.pacien.tincapp.activities.status.networkinfo
 import android.content.res.Resources
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.App
-import org.pacien.tincapp.data.CidrAddress
+import org.pacien.tincapp.config.CidrAddress
 
 /**
  * @author euxane

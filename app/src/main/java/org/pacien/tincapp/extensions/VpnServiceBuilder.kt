@@ -19,8 +19,8 @@
 package org.pacien.tincapp.extensions
 
 import android.net.VpnService
-import org.pacien.tincapp.data.CidrAddress
-import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import org.pacien.tincapp.config.CidrAddress
+import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.extensions.Java.applyIgnoringException
 
 /**

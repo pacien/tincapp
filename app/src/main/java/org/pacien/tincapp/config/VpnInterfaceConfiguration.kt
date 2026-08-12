@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.data
+package org.pacien.tincapp.config
 
 import org.apache.commons.configuration2.Configuration
 import org.apache.commons.configuration2.FileBasedConfiguration

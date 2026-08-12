@@ -16,24 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.data
+package org.pacien.tincapp.config
 
-import org.apache.commons.configuration2.ex.ConversionException
+import org.apache.commons.configuration2.Configuration
+import org.apache.commons.configuration2.builder.fluent.Configurations
+import org.pacien.tincapp.extensions.ApacheConfiguration.getFile
+import java.io.File
 
 /**
  * @author euxane
  */
-data class CidrAddress(val address: String, val prefix: Int) {
+data class TincConfiguration(val ed25519PrivateKeyFile: File? = null,
+                             val privateKeyFile: File? = null) {
   companion object {
-    private const val SEPARATOR = "/"
 
-    fun fromSlashSeparated(s: String) = try {
-      CidrAddress(s.substringBefore(SEPARATOR), Integer.parseInt(s.substringAfter(SEPARATOR)))
-    } catch (e: Exception) {
-      throw ConversionException(e.message, e)
-    }
+    private const val KEY_ED25519_PRIVATE_KEY_FILE = "Ed25519PrivateKeyFile"
+    private const val KEY_PRIVATE_KEY_FILE = "PrivateKeyFile"
+
+    fun fromTincConfiguration(f: File) = fromTincConfiguration(Configurations().properties(f))
+    private fun fromTincConfiguration(c: Configuration) = TincConfiguration(
+      c.getFile(KEY_ED25519_PRIVATE_KEY_FILE),
+      c.getFile(KEY_PRIVATE_KEY_FILE))
   }
-
-  fun toSlashSeparated() = address + SEPARATOR + prefix
-  override fun toString(): String = "$address/$prefix"
 }

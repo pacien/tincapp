@@ -27,7 +27,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -120,7 +119,7 @@ fun NavGraph(
             val graphViewModel: GraphViewModel = viewModel()
             val vpnService = TincVpnService
             val netName = vpnService.getCurrentNetName()
-            val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: org.pacien.tincapp.data.VpnInterfaceConfiguration()
+            val vpnCfg = vpnService.getCurrentInterfaceCfg() ?: org.pacien.tincapp.config.VpnInterfaceConfiguration()
 
             var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
 

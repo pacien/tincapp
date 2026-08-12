@@ -36,8 +36,8 @@ import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.Tincd
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.data.TincConfiguration
-import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import org.pacien.tincapp.config.TincConfiguration
+import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.extensions.Java.applyIgnoringException
 import org.pacien.tincapp.extensions.Java.defaultMessage
 import org.pacien.tincapp.extensions.VpnServiceBuilder.applyCfg

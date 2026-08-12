@@ -29,7 +29,7 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.status.networkinfo.VpnInterfaceConfigurationFormatter
 import org.pacien.tincapp.activities.status.nodes.NodeInfo
 import org.pacien.tincapp.activities.status.subnets.SubnetInfo
-import org.pacien.tincapp.data.VpnInterfaceConfiguration
+import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.ui.components.SectionTitle
 
 @Composable
