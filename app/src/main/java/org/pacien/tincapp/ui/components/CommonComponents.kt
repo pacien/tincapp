@@ -69,7 +69,7 @@ fun ListBlock(
 @Composable
 fun TincDivider(modifier: Modifier = Modifier) {
     HorizontalDivider(
-        modifier = modifier,
+        modifier = modifier.padding(8.dp),
         thickness = 1.dp,
         color = Separator
     )
