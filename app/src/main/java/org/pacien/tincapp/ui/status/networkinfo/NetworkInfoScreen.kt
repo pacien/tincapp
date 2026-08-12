@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.ui.status.ui
+package org.pacien.tincapp.ui.status.networkinfo
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,11 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import org.pacien.tincapp.R
-import org.pacien.tincapp.ui.status.networkinfo.VpnInterfaceConfigurationFormatter
 import org.pacien.tincapp.ui.status.nodes.NodeInfo
 import org.pacien.tincapp.ui.status.subnets.SubnetInfo
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.ui.common.SectionTitle
+import org.pacien.tincapp.ui.status.EmptyPlaceholder
+import org.pacien.tincapp.ui.status.ListBlock
+import org.pacien.tincapp.ui.status.NodeListItem
+import org.pacien.tincapp.ui.status.SubnetListItem
 
 @Composable
 fun NetworkInfoScreen(
@@ -51,59 +54,65 @@ fun NetworkInfoScreen(
         }
 
         item {
-            ListBlock(
-                title = stringResource(R.string.status_network_info_ip_addresses_label),
-                content = formatter.formatList(vpnInterfaceConfiguration.addresses, resources)
-            )
+          ListBlock(
+            title = stringResource(R.string.status_network_info_ip_addresses_label),
+            content = formatter.formatList(vpnInterfaceConfiguration.addresses, resources)
+          )
         }
 
         item {
-            ListBlock(
-                title = stringResource(R.string.status_network_info_routes_label),
-                content = formatter.formatList(vpnInterfaceConfiguration.routes, resources)
-            )
+          ListBlock(
+            title = stringResource(R.string.status_network_info_routes_label),
+            content = formatter.formatList(vpnInterfaceConfiguration.routes, resources)
+          )
         }
 
         item {
-            ListBlock(
-                title = stringResource(R.string.status_network_info_dns_servers_label),
-                content = formatter.formatList(vpnInterfaceConfiguration.dnsServers, resources)
-            )
+          ListBlock(
+            title = stringResource(R.string.status_network_info_dns_servers_label),
+            content = formatter.formatList(vpnInterfaceConfiguration.dnsServers, resources)
+          )
         }
 
         item {
-            ListBlock(
-                title = stringResource(R.string.status_network_info_search_domains_label),
-                content = formatter.formatList(vpnInterfaceConfiguration.searchDomains, resources)
-            )
+          ListBlock(
+            title = stringResource(R.string.status_network_info_search_domains_label),
+            content = formatter.formatList(vpnInterfaceConfiguration.searchDomains, resources)
+          )
         }
 
         if (vpnInterfaceConfiguration.allowedApplications.isNotEmpty()) {
             item {
-                ListBlock(
-                    title = stringResource(R.string.status_network_info_allowed_applications_label),
-                    content = formatter.formatList(vpnInterfaceConfiguration.allowedApplications, resources)
+              ListBlock(
+                title = stringResource(R.string.status_network_info_allowed_applications_label),
+                content = formatter.formatList(
+                  vpnInterfaceConfiguration.allowedApplications,
+                  resources
                 )
+              )
             }
         }
 
         if (vpnInterfaceConfiguration.disallowedApplications.isNotEmpty()) {
             item {
-                ListBlock(
-                    title = stringResource(R.string.status_network_info_disallowed_applications_label),
-                    content = formatter.formatList(vpnInterfaceConfiguration.disallowedApplications, resources)
+              ListBlock(
+                title = stringResource(R.string.status_network_info_disallowed_applications_label),
+                content = formatter.formatList(
+                  vpnInterfaceConfiguration.disallowedApplications,
+                  resources
                 )
+              )
             }
         }
 
         item {
-            ListBlock(
-                title = stringResource(R.string.status_network_info_allow_bypass_label),
-                content = stringResource(
-                    if (vpnInterfaceConfiguration.allowBypass) R.string.status_network_info_value_yes
-                    else R.string.status_network_info_value_no
-                )
+          ListBlock(
+            title = stringResource(R.string.status_network_info_allow_bypass_label),
+            content = stringResource(
+              if (vpnInterfaceConfiguration.allowBypass) R.string.status_network_info_value_yes
+              else R.string.status_network_info_value_no
             )
+          )
         }
 
         item {
@@ -112,15 +121,15 @@ fun NetworkInfoScreen(
 
         if (nodes.isEmpty()) {
             item {
-                EmptyPlaceholder(text = stringResource(R.string.status_node_list_empty_placeholder_text))
+              EmptyPlaceholder(text = stringResource(R.string.status_node_list_empty_placeholder_text))
             }
         } else {
             items(nodes) { node ->
-                NodeListItem(
-                    node = node,
-                    reachabilityText = node.reachabilityText(resources),
-                    onClick = { onNodeClick(node) }
-                )
+              NodeListItem(
+                node = node,
+                reachabilityText = node.reachabilityText(resources),
+                onClick = { onNodeClick(node) }
+              )
             }
         }
 
@@ -130,11 +139,11 @@ fun NetworkInfoScreen(
 
         if (subnets.isEmpty()) {
             item {
-                EmptyPlaceholder(text = stringResource(R.string.status_subnet_list_empty_placeholder_text))
+              EmptyPlaceholder(text = stringResource(R.string.status_subnet_list_empty_placeholder_text))
             }
         } else {
             items(subnets) { subnet ->
-                SubnetListItem(subnet = subnet)
+              SubnetListItem(subnet = subnet)
             }
         }
     }

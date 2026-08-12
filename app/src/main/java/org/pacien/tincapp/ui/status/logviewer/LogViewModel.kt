@@ -1,6 +1,6 @@
 /*
  * Tinc Mesh VPN: Android client and user interface
- * Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
+ * Copyright (C) 2017-2019 Euxane P. TRAN-GIRARD
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,23 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.ui.status.graph
+package org.pacien.tincapp.ui.status.logviewer
 
-import org.pacien.tincapp.ui.common.SelfRefreshingLiveData
-import org.pacien.tincapp.commands.Tinc
+import androidx.lifecycle.ViewModel
 import org.pacien.tincapp.service.TincVpnService
-import java.util.concurrent.TimeUnit
 
 /**
  * @author euxane
  */
-class GraphLiveData : SelfRefreshingLiveData<String>(5, TimeUnit.SECONDS) {
-  private val vpnService = TincVpnService
-  private val tincCtl = Tinc
-
-  override fun onRefresh() {
-    vpnService.getCurrentNetName()
-      ?.let { netName -> tincCtl.dumpGraph(netName) }
-      ?.thenAccept(this::postValue)
-  }
+class LogViewModel : ViewModel() {
+  private val logLevelNumeric = 5
+  val netName by lazy { TincVpnService.getCurrentNetName()!! }
+  val log by lazy { LogLiveData(netName, logLevelNumeric, 250) }
 }

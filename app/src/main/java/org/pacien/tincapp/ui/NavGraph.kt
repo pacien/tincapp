@@ -37,10 +37,10 @@ import org.pacien.tincapp.ui.netlist.NetworkListScreen
 import org.pacien.tincapp.ui.netlist.StartViewModel
 import org.pacien.tincapp.ui.status.nodes.NodeListViewModel
 import org.pacien.tincapp.ui.status.subnets.SubnetListViewModel
-import org.pacien.tincapp.ui.status.graph.GraphViewModel
-import org.pacien.tincapp.ui.status.ui.NodeInfoDialog
-import org.pacien.tincapp.ui.status.ui.StatusScreen
-import org.pacien.tincapp.ui.status.viewlog.LogViewModel
+import org.pacien.tincapp.ui.status.topograph.GraphViewModel
+import org.pacien.tincapp.ui.status.nodes.NodeInfoDialog
+import org.pacien.tincapp.ui.status.StatusScreen
+import org.pacien.tincapp.ui.status.logviewer.LogViewModel
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.R
 import org.pacien.tincapp.config.VpnInterfaceConfiguration

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.ui.status.ui
+package org.pacien.tincapp.ui.status.topograph
 
 import android.annotation.SuppressLint
 import android.webkit.JavascriptInterface

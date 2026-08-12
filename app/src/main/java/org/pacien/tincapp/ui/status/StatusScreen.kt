@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.ui.status.ui
+package org.pacien.tincapp.ui.status
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,6 +62,8 @@ import org.pacien.tincapp.ui.status.subnets.SubnetInfo
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.ui.common.GenericActions
 import org.pacien.tincapp.ui.common.GenericActionsMenu
+import org.pacien.tincapp.ui.status.topograph.GraphView
+import org.pacien.tincapp.ui.status.networkinfo.NetworkInfoScreen
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.HeaderPrimary
 import org.pacien.tincapp.ui.theme.TextTitle
@@ -236,7 +239,7 @@ fun LogView(
             SelectionContainer {
                 Text(
                     text = logText,
-                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                    fontFamily = FontFamily.Monospace,
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onBackground
                 )

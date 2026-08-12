@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.ui.status.viewlog
+package org.pacien.tincapp.ui.status.logviewer
 
 import org.pacien.tincapp.ui.common.SelfRefreshingLiveData
 import org.pacien.tincapp.commands.Executor
