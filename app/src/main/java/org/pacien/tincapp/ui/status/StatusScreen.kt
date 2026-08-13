@@ -40,10 +40,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -51,15 +47,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
-import org.pacien.tincapp.repository.NodeInfo
-import org.pacien.tincapp.repository.SubnetInfo
 import org.pacien.tincapp.ui.common.AppStatusHeader
 import org.pacien.tincapp.ui.common.AppActions
 import org.pacien.tincapp.ui.common.AppActionsMenu
