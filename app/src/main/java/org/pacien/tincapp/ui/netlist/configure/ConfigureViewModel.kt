@@ -99,14 +99,14 @@ class ConfigureViewModel : ViewModel() {
     }
 
     fun lockNetwork(netName: String, passphrase: String) {
-        execAction(R.string.configure_tools_private_keys_encryption_encrypting) {
+        execAction(R.string.configure_tools_lock_network_progress) {
             validateNetName(netName)
             TincApp.setPassphrase(netName, newPassphrase = passphrase)
         }
     }
 
     fun unlockNetwork(netName: String, passphrase: String) {
-        execAction(R.string.configure_tools_private_keys_encryption_encrypting) {
+        execAction(R.string.configure_tools_unlock_network_progress) {
             validateNetName(netName)
             TincApp.setPassphrase(netName, currentPassphrase = passphrase, newPassphrase = "")
         }
