@@ -55,13 +55,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
-import org.pacien.tincapp.ui.status.nodes.NodeInfo
-import org.pacien.tincapp.ui.status.subnets.SubnetInfo
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
+import org.pacien.tincapp.repository.NodeInfo
+import org.pacien.tincapp.repository.SubnetInfo
 import org.pacien.tincapp.ui.common.AppStatusHeader
 import org.pacien.tincapp.ui.common.AppActions
 import org.pacien.tincapp.ui.common.AppActionsMenu
@@ -83,13 +81,8 @@ enum class StatusTab(val titleRes: Int) {
 @Composable
 fun StatusScreen(
     vpnInterfaceConfiguration: VpnInterfaceConfiguration,
-    nodeListFlow: Flow<List<NodeInfo>>,
-    subnetListFlow: Flow<List<SubnetInfo>>,
-    graphFlow: Flow<String>,
-    logFlow: Flow<List<String>>,
-    onNodeClick: (NodeInfo) -> Unit,
-    onNodeNameClick: (String) -> Unit,
-    vpnState: VpnState,
+    uiState: StatusUiState,
+    onNodeClick: (String) -> Unit,
     onDisconnectClick: () -> Unit,
     appActions: AppActions,
     modifier: Modifier = Modifier
@@ -104,7 +97,7 @@ fun StatusScreen(
             Column {
                 TopAppBar(
                     title = {
-                        AppStatusHeader(vpnState)
+                        AppStatusHeader(uiState.vpnState)
                     },
                     actions = {
                         IconButton(onClick = onDisconnectClick) {
@@ -153,56 +146,29 @@ fun StatusScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) { pageIndex ->
-            val isCurrentPage = pagerState.currentPage == pageIndex
             when (tabs[pageIndex]) {
                 StatusTab.NETWORK_INFO -> {
-                    val nodes by nodeListFlow.collectAsStateActive(isCurrentPage, emptyList())
-                    val subnets by subnetListFlow.collectAsStateActive(isCurrentPage, emptyList())
                     NetworkInfoScreen(
                         vpnInterfaceConfiguration = vpnInterfaceConfiguration,
-                        nodes = nodes,
-                        onNodeClick = onNodeClick,
-                        subnets = subnets
+                        nodes = uiState.nodes,
+                        onNodeClick = { onNodeClick(it.name) },
+                        subnets = uiState.subnets
                     )
                 }
                 StatusTab.TOPOLOGY -> {
-                    val dotString by graphFlow.collectAsStateActive(isCurrentPage, "")
                     GraphView(
-                        dotString = dotString,
-                        onNodeClick = onNodeNameClick
+                        dotString = uiState.graphData,
+                        onNodeClick = onNodeClick
                     )
                 }
                 StatusTab.LOGS -> {
-                    val logLines by logFlow.collectAsStateActive(isCurrentPage, emptyList())
                     LogView(
-                        logText = logLines.joinToString("\n")
+                        logText = uiState.logs.joinToString("\n")
                     )
                 }
             }
         }
     }
-}
-
-/**
- * Collect a Flow as state only when [active] is true.
- *
- * When [active] becomes false, the state will keep its last value.
- * This is useful for stopping refreshes of self-refreshing Flows when not in focus.
- */
-@Composable
-fun <T> Flow<T>.collectAsStateActive(active: Boolean, initial: T): State<T> {
-    val state = remember { mutableStateOf(initial) }
-    val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(this, active, lifecycleOwner) {
-        if (active) {
-            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                collect { value ->
-                    state.value = value
-                }
-            }
-        }
-    }
-    return state
 }
 
 @Composable
@@ -244,19 +210,20 @@ fun StatusScreenPreview() {
     TincTheme {
         StatusScreen(
             vpnInterfaceConfiguration = VpnInterfaceConfiguration(),
-            nodeListFlow = flowOf(listOf(
-                NodeInfo("node1", "id1", "1.2.3.4", "1234", 0, 0, 0, 0, 0, 0, "node1", "node1", 1, 1500, 1500, 1500),
-                NodeInfo("node2", "id2", "5.6.7.8", "5678", 0, 0, 0, 0, 0, 0, "node1", "node1", 2, 1500, 1500, 1500)
-            )),
-            subnetListFlow = flowOf(listOf(
-                SubnetInfo("10.0.0.0/24", "node1"),
-                SubnetInfo("10.0.1.0/24", "node2")
-            )),
-            logFlow = flowOf(listOf("Log line 1", "Log line 2")),
-            graphFlow = flowOf(""),
+            uiState = StatusUiState(
+                vpnState = VpnState.Connected("test-net"),
+                nodes = listOf(
+                    NodeInfo("node1", "id1", "1.2.3.4", "1234", 0, 0, 0, 0, 0, 0, "node1", "node1", 1, 1500, 1500, 1500),
+                    NodeInfo("node2", "id2", "5.6.7.8", "5678", 0, 0, 0, 0, 0, 0, "node1", "node1", 2, 1500, 1500, 1500)
+                ),
+                subnets = listOf(
+                    SubnetInfo("10.0.0.0/24", "node1"),
+                    SubnetInfo("10.0.1.0/24", "node2")
+                ),
+                logs = listOf("Log line 1", "Log line 2"),
+                graphData = ""
+            ),
             onNodeClick = {},
-            onNodeNameClick = {},
-            vpnState = VpnState.Connected("test-net"),
             onDisconnectClick = {},
             appActions = AppActions({}, {}, {}, {})
         )

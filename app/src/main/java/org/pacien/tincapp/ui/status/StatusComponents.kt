@@ -35,8 +35,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import org.pacien.tincapp.ui.status.nodes.NodeInfo
-import org.pacien.tincapp.ui.status.subnets.SubnetInfo
+import org.pacien.tincapp.repository.NodeInfo
+import org.pacien.tincapp.repository.SubnetInfo
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
 import org.pacien.tincapp.ui.theme.ActivityVerticalMargin
 import org.pacien.tincapp.ui.theme.InfoListItemVerticalMargin

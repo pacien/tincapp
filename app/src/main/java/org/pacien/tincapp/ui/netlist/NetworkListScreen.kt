@@ -62,71 +62,44 @@ fun NetworkListScreen(
     onConfigDirClick: (String) -> Unit,
     appActions: AppActions
 ) {
-    val networkList by viewModel.networkList.collectAsStateWithLifecycle(emptyList())
-
-    var activeDialog by remember { mutableStateOf<ConfigureDialogType?>(null) }
-    var selectedNetwork by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NetworkListScreenContent(
         vpnState = vpnState,
-        networkList = networkList,
+        networkList = uiState.networkList,
         onNetworkClick = onNetworkClick,
         onConfigDirClick = onConfigDirClick,
         appActions = appActions,
-        onGenerateConfigClick = { activeDialog = ConfigureDialogType.GENERATE },
-        onJoinNetworkClick = { activeDialog = ConfigureDialogType.JOIN },
-        onLockClick = {
-            selectedNetwork = it
-            activeDialog = ConfigureDialogType.LOCK
-        },
-        onUnlockClick = {
-            selectedNetwork = it
-            activeDialog = ConfigureDialogType.UNLOCK
-        },
-        onDeleteClick = {
-            selectedNetwork = it
-            activeDialog = ConfigureDialogType.DELETE
-        }
+        onGenerateConfigClick = { viewModel.showDialog(ConfigureDialogType.GENERATE) },
+        onJoinNetworkClick = { viewModel.showDialog(ConfigureDialogType.JOIN) },
+        onLockClick = { viewModel.showDialog(ConfigureDialogType.LOCK, it) },
+        onUnlockClick = { viewModel.showDialog(ConfigureDialogType.UNLOCK, it) },
+        onDeleteClick = { viewModel.showDialog(ConfigureDialogType.DELETE, it) }
     )
 
-    when (activeDialog) {
+    when (uiState.activeDialog) {
         ConfigureDialogType.GENERATE -> GenerateConfigDialog(
             viewModel = configureViewModel,
-            onDismiss = {
-                activeDialog = null
-                viewModel.refresh()
-            }
+            onDismiss = { viewModel.dismissDialog() }
         )
         ConfigureDialogType.JOIN -> JoinNetworkDialog(
             viewModel = configureViewModel,
-            onDismiss = {
-                activeDialog = null
-                viewModel.refresh()
-            }
+            onDismiss = { viewModel.dismissDialog() }
         )
         ConfigureDialogType.LOCK -> LockNetworkDialog(
-            netName = selectedNetwork,
+            netName = uiState.selectedNetwork,
             viewModel = configureViewModel,
-            onDismiss = {
-                activeDialog = null
-                viewModel.refresh()
-            }
+            onDismiss = { viewModel.dismissDialog() }
         )
         ConfigureDialogType.UNLOCK -> UnlockNetworkDialog(
-            netName = selectedNetwork,
+            netName = uiState.selectedNetwork,
             viewModel = configureViewModel,
-            onDismiss = {
-                activeDialog = null
-                viewModel.refresh()
-            }
+            onDismiss = { viewModel.dismissDialog() }
         )
         ConfigureDialogType.DELETE -> DeleteNetworkDialog(
-            netName = selectedNetwork,
+            netName = uiState.selectedNetwork,
             viewModel = configureViewModel,
-            onDismiss = {
-                activeDialog = null
-                viewModel.refresh()
-            }
+            onDismiss = { viewModel.dismissDialog() }
         )
         null -> {}
     }
@@ -252,11 +225,6 @@ fun NetworkListScreenContent(
             }
         }
     }
-}
-
-
-enum class ConfigureDialogType {
-    GENERATE, JOIN, LOCK, UNLOCK, DELETE
 }
 
 @Composable

@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -38,12 +39,9 @@ import kotlinx.coroutines.launch
 import org.pacien.tincapp.ui.netlist.configure.ConfigureViewModel
 import org.pacien.tincapp.ui.netlist.NetworkListScreen
 import org.pacien.tincapp.ui.netlist.StartViewModel
-import org.pacien.tincapp.ui.status.nodes.NodeListViewModel
-import org.pacien.tincapp.ui.status.subnets.SubnetListViewModel
-import org.pacien.tincapp.ui.status.topograph.GraphViewModel
+import org.pacien.tincapp.ui.status.StatusViewModel
 import org.pacien.tincapp.ui.status.nodes.NodeInfoDialog
 import org.pacien.tincapp.ui.status.StatusScreen
-import org.pacien.tincapp.ui.status.logviewer.LogViewModel
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.R
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
@@ -118,53 +116,22 @@ fun NavGraph(
         }
 
         composable<Status> {
-            val nodeListViewModel: NodeListViewModel = viewModel()
-            val subnetListViewModel: SubnetListViewModel = viewModel()
-            val logViewModel: LogViewModel = viewModel()
-            val graphViewModel: GraphViewModel = viewModel()
-            val netName = VpnRepository.currentNetName
+            val statusViewModel: StatusViewModel = viewModel()
+            val uiState by statusViewModel.uiState.collectAsStateWithLifecycle()
             val vpnCfg = VpnRepository.interfaceConfig ?: VpnInterfaceConfiguration()
-            val scope = rememberCoroutineScope()
-
-            var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
 
             StatusScreen(
                 vpnInterfaceConfiguration = vpnCfg,
-                nodeListFlow = nodeListViewModel.nodeList,
-                subnetListFlow = subnetListViewModel.nodeList,
-                graphFlow = graphViewModel.graphData,
-                logFlow = logViewModel.log,
-                onNodeClick = { node ->
-                    netName?.let { name ->
-                        scope.launch {
-                            try {
-                                selectedNodeInfo = Tinc.info(name, node.name)
-                            } catch (e: Exception) {
-                                // handle error
-                            }
-                        }
-                    }
-                },
-                onNodeNameClick = { nodeName ->
-                    netName?.let { name ->
-                        scope.launch {
-                            try {
-                                selectedNodeInfo = Tinc.info(name, nodeName)
-                            } catch (e: Exception) {
-                                // handle error
-                            }
-                        }
-                    }
-                },
-                vpnState = vpnState,
+                uiState = uiState,
+                onNodeClick = { statusViewModel.onNodeClick(it) },
                 onDisconnectClick = onDisconnectClick,
                 appActions = appActions
             )
 
-            selectedNodeInfo?.let { info ->
+            uiState.selectedNodeInfo?.let { info ->
                 NodeInfoDialog(
                     nodeInfoText = info,
-                    onDismiss = { selectedNodeInfo = null }
+                    onDismiss = { statusViewModel.dismissNodeInfo() }
                 )
             }
         }

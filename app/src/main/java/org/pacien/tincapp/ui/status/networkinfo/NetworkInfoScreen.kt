@@ -26,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import org.pacien.tincapp.R
-import org.pacien.tincapp.ui.status.nodes.NodeInfo
-import org.pacien.tincapp.ui.status.subnets.SubnetInfo
+import org.pacien.tincapp.repository.NodeInfo
+import org.pacien.tincapp.repository.SubnetInfo
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.ui.common.SectionTitle
 import org.pacien.tincapp.ui.status.EmptyPlaceholder

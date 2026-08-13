@@ -24,14 +24,27 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.keyring.TincKeyring
+
+enum class ConfigureDialogType {
+    GENERATE, JOIN, LOCK, UNLOCK, DELETE
+}
+
+data class NetworkListUiState(
+    val networkList: List<NetworkInfo> = emptyList(),
+    val activeDialog: ConfigureDialogType? = null,
+    val selectedNetwork: String = ""
+)
 
 /**
  * ViewModel for StartActivity.
@@ -40,16 +53,18 @@ import org.pacien.tincapp.keyring.TincKeyring
 class StartViewModel(application: Application) : AndroidViewModel(application) {
     private val appPaths = AppPaths
     private val refreshTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    private val _activeDialog = MutableStateFlow<ConfigureDialogType?>(null)
+    private val _selectedNetwork = MutableStateFlow("")
 
     val networkList: StateFlow<List<NetworkInfo>> = refreshTrigger
         .onStart { emit(Unit) }
         .flatMapLatest {
             flow {
                 while (true) {
-                    val networkList = appPaths.confDir().list()?.sorted()?.map {
+                    val list = appPaths.confDir().list()?.sorted()?.map {
                         NetworkInfo(it, TincKeyring.needsPassphrase(it))
                     } ?: emptyList()
-                    emit(networkList)
+                    emit(list)
                     delay(1000)
                 }
             }
@@ -59,7 +74,29 @@ class StartViewModel(application: Application) : AndroidViewModel(application) {
             initialValue = emptyList()
         )
 
+    val uiState: StateFlow<NetworkListUiState> = combine(
+        networkList,
+        _activeDialog,
+        _selectedNetwork
+    ) { list, dialog, selected ->
+        NetworkListUiState(list, dialog, selected)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = NetworkListUiState()
+    )
+
     fun refresh() {
         refreshTrigger.tryEmit(Unit)
+    }
+
+    fun showDialog(type: ConfigureDialogType, netName: String = "") {
+        _selectedNetwork.value = netName
+        _activeDialog.value = type
+    }
+
+    fun dismissDialog() {
+        _activeDialog.value = null
+        refresh()
     }
 }

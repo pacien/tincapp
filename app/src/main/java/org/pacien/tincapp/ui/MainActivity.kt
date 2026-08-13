@@ -27,6 +27,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -92,61 +93,76 @@ class MainActivity : ComponentActivity() {
                     onDisconnectClick = { stopVpn() }
                 )
 
-                when (val dialog = viewModel.activeDialog) {
-                    is MainViewModel.ActiveDialog.Progress -> ProgressDialog(dialog.text)
-                    is MainViewModel.ActiveDialog.DecryptKeys -> UnlockKeyDialog(
-                        onDismiss = { viewModel.dismissDialog() },
-                        onConfirm = {
-                            viewModel.dismissDialog()
-                            connectionStarter.tryStart(passphrase = it)
-                        }
-                    )
-                    is MainViewModel.ActiveDialog.About -> AboutDialog(
-                        onDismiss = { viewModel.dismissDialog() },
-                        onOpenWebsite = { openURL(getString(R.string.about_app_website_url), onError = { showErrorDialog(it) }) }
-                    )
-                    is MainViewModel.ActiveDialog.Error -> ErrorDialog(
-                        title = dialog.title,
-                        message = dialog.msg,
-                        docTopic = dialog.docTopic,
-                        configDir = dialog.configDir,
-                        proposeLogs = dialog.proposeLogs,
-                        onDismiss = { viewModel.dismissDialog() },
-                        onOpenManual = {
-                            val url = getString(R.string.app_doc_url_format, it)
-                            openURL(url, onError = { showErrorDialog(it) })
-                        },
-                        onEditConfig = { openDocumentTree(BrowseFilesIntents.networkConfigDirDocId(it)) },
-                        onViewLogs = { openDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) }
-                    )
-                    is MainViewModel.ActiveDialog.Warning -> WarningDialog(
-                        message = dialog.msg,
-                        docTopic = dialog.docTopic,
-                        onDismiss = { viewModel.dismissDialog() },
-                        onContinue = {
-                            viewModel.dismissDialog()
-                            dialog.onContinue()
-                        },
-                        onOpenManual = {
-                            val url = getString(R.string.app_doc_url_format, it)
-                            openURL(url, onError = { showErrorDialog(it) })
-                        }
-                    )
-                    is MainViewModel.ActiveDialog.Crash -> CrashDialog(
-                        message = dialog.message,
-                        onDismiss = { viewModel.dismissDialog() },
-                        onSendReport = {
-                            viewModel.dismissDialog()
-                            dialog.onSendReport()
-                        }
-                    )
-                    null -> {}
-                }
+                MainDialogs(
+                    viewModel = viewModel,
+                    onOpenURL = { url -> openURL(url, onError = { showErrorDialog(it) }) },
+                    onOpenDocumentTree = { openDocumentTree(it) },
+                    onStartVpn = { passphrase -> connectionStarter.tryStart(passphrase = passphrase) }
+                )
             }
         }
 
         // not on recreation (e.g. theme change), which would replay the launch intent
         if (savedInstanceState == null) handleIntent(intent)
+    }
+
+    @Composable
+    private fun MainDialogs(
+        viewModel: MainViewModel,
+        onOpenURL: (String) -> Unit,
+        onOpenDocumentTree: (String) -> Unit,
+        onStartVpn: (String) -> Unit
+    ) {
+        when (val dialog = viewModel.activeDialog) {
+            is MainViewModel.ActiveDialog.Progress -> ProgressDialog(dialog.text)
+            is MainViewModel.ActiveDialog.DecryptKeys -> UnlockKeyDialog(
+                onDismiss = { viewModel.dismissDialog() },
+                onConfirm = {
+                    viewModel.dismissDialog()
+                    onStartVpn(it)
+                }
+            )
+            is MainViewModel.ActiveDialog.About -> AboutDialog(
+                onDismiss = { viewModel.dismissDialog() },
+                onOpenWebsite = { onOpenURL(getString(R.string.about_app_website_url)) }
+            )
+            is MainViewModel.ActiveDialog.Error -> ErrorDialog(
+                title = dialog.title,
+                message = dialog.msg,
+                docTopic = dialog.docTopic,
+                configDir = dialog.configDir,
+                proposeLogs = dialog.proposeLogs,
+                onDismiss = { viewModel.dismissDialog() },
+                onOpenManual = {
+                    val url = getString(R.string.app_doc_url_format, it)
+                    onOpenURL(url)
+                },
+                onEditConfig = { onOpenDocumentTree(BrowseFilesIntents.networkConfigDirDocId(it)) },
+                onViewLogs = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) }
+            )
+            is MainViewModel.ActiveDialog.Warning -> WarningDialog(
+                message = dialog.msg,
+                docTopic = dialog.docTopic,
+                onDismiss = { viewModel.dismissDialog() },
+                onContinue = {
+                    viewModel.dismissDialog()
+                    dialog.onContinue()
+                },
+                onOpenManual = {
+                    val url = getString(R.string.app_doc_url_format, it)
+                    onOpenURL(url)
+                }
+            )
+            is MainViewModel.ActiveDialog.Crash -> CrashDialog(
+                message = dialog.message,
+                onDismiss = { viewModel.dismissDialog() },
+                onSendReport = {
+                    viewModel.dismissDialog()
+                    dialog.onSendReport()
+                }
+            )
+            null -> {}
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
