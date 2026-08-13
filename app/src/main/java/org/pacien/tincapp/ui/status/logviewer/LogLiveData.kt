@@ -59,10 +59,14 @@ class LogLiveData(private val netName: String, private val logLevel: Int, privat
   }
 
   private fun captureProcessOutput(process: Process) {
-    process.inputStream?.use { inputStream ->
-      inputStream.bufferedReader().useLines { lines ->
-        lines.forEach { appendToLog(it) }
+    try {
+      process.inputStream?.use { inputStream ->
+        inputStream.bufferedReader().useLines { lines ->
+          lines.forEach { appendToLog(it) }
+        }
       }
+    } catch (_: Exception) {
+      // IOException is expected when the process is destroyed and streams are closed
     }
   }
 
