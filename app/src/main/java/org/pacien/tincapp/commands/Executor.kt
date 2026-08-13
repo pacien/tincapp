@@ -23,6 +23,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
 
 /**
@@ -41,10 +42,14 @@ internal object Executor {
 
   suspend fun callSuspend(cmd: Command): List<String> = withContext(Dispatchers.IO) {
     val process = run(cmd)
-    val exitCode = process.waitFor()
-    if (exitCode == 0) read(process.inputStream)
-    else throw CommandExecutionException(
-      read(process.errorStream).lastOrNull() ?: "Non-zero exit status ($exitCode)."
-    )
+    try {
+      val exitCode = runInterruptible { process.waitFor() }
+      if (exitCode == 0) read(process.inputStream)
+      else throw CommandExecutionException(
+        read(process.errorStream).lastOrNull() ?: "Non-zero exit status ($exitCode)."
+      )
+    } finally {
+      process.destroy()
+    }
   }
 }
