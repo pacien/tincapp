@@ -21,6 +21,8 @@ package org.pacien.tincapp.ui.netlist.configure
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QrCodeScanner
@@ -28,7 +30,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.journeyapps.barcodescanner.ScanContract
@@ -42,6 +47,8 @@ fun GenerateConfigDialog(
 ) {
     var netName by remember { mutableStateOf("") }
     var nodeName by remember { mutableStateOf("") }
+    val formIsComplete = netName.isNotBlank() && nodeName.isNotBlank()
+    val submit = { viewModel.generateConf(netName, nodeName) }
 
     ConfigureToolsState(viewModel, onSuccess = onDismiss)
 
@@ -49,6 +56,8 @@ fun GenerateConfigDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.configure_tools_generate_config_title)) },
         text = {
+            val focusManager = LocalFocusManager.current
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,7 +68,11 @@ fun GenerateConfigDialog(
                     onValueChange = { netName = it },
                     label = { Text(stringResource(R.string.configure_tools_generate_config_net_name_hint)) },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Next)
+                    })
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
@@ -67,14 +80,18 @@ fun GenerateConfigDialog(
                     onValueChange = { nodeName = it },
                     label = { Text(stringResource(R.string.configure_tools_generate_config_node_name_hint)) },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = {
+                        if (formIsComplete) submit()
+                    })
                 )
             }
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.generateConf(netName, nodeName) },
-                enabled = netName.isNotBlank() && nodeName.isNotBlank()
+                onClick = submit,
+                enabled = formIsComplete
             ) {
                 Text(stringResource(R.string.configure_tools_generate_config_action))
             }
@@ -94,6 +111,8 @@ fun JoinNetworkDialog(
 ) {
     var netName by remember { mutableStateOf("") }
     var invitationUrl by remember { mutableStateOf("") }
+    val formIsComplete = netName.isNotBlank() && invitationUrl.isNotBlank()
+    val submit = { viewModel.joinNetwork(netName, invitationUrl) }
 
     val scanLauncher = rememberLauncherForActivityResult(
         contract = ScanContract(),
@@ -112,6 +131,8 @@ fun JoinNetworkDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.configure_tools_join_network_title)) },
         text = {
+            val focusManager = LocalFocusManager.current
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -122,7 +143,11 @@ fun JoinNetworkDialog(
                     onValueChange = { netName = it },
                     label = { Text(stringResource(R.string.configure_tools_generate_config_net_name_hint)) },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Next)
+                    })
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
@@ -134,7 +159,11 @@ fun JoinNetworkDialog(
                         onValueChange = { invitationUrl = it },
                         label = { Text(stringResource(R.string.configure_tools_join_network_field_invitation_url_hint)) },
                         modifier = Modifier.weight(1f),
-                        singleLine = true
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = {
+                            if (formIsComplete) submit()
+                        })
                     )
                     IconButton(onClick = {
                         val options = ScanOptions()
@@ -153,8 +182,8 @@ fun JoinNetworkDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.joinNetwork(netName, invitationUrl) },
-                enabled = netName.isNotBlank() && invitationUrl.isNotBlank()
+                onClick = submit,
+                enabled = formIsComplete
             ) {
                 Text(stringResource(R.string.configure_tools_join_network_action))
             }
@@ -176,6 +205,8 @@ fun LockNetworkDialog(
     var passphrase by remember { mutableStateOf("") }
     var passphraseConfirm by remember { mutableStateOf("") }
     val mismatch = passphrase.isNotEmpty() && passphraseConfirm.isNotEmpty() && passphrase != passphraseConfirm
+    val formIsComplete = passphrase.isNotEmpty() && passphrase == passphraseConfirm
+    val submit = { viewModel.lockNetwork(netName, passphrase) }
 
     ConfigureToolsState(viewModel, onSuccess = onDismiss)
 
@@ -183,6 +214,8 @@ fun LockNetworkDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.configure_tools_lock_network_title)) },
         text = {
+            val focusManager = LocalFocusManager.current
+
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = netName,
@@ -195,7 +228,11 @@ fun LockNetworkDialog(
                     label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation(),
-                    singleLine = true
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(onNext = {
+                        focusManager.moveFocus(FocusDirection.Next)
+                    })
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
@@ -205,6 +242,10 @@ fun LockNetworkDialog(
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = {
+                        if (formIsComplete) submit()
+                    }),
                     isError = mismatch,
                     supportingText = {
                         if (mismatch) {
@@ -216,8 +257,8 @@ fun LockNetworkDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.lockNetwork(netName, passphrase) },
-                enabled = passphrase.isNotEmpty() && passphrase == passphraseConfirm
+                onClick = submit,
+                enabled = formIsComplete
             ) {
                 Text(stringResource(R.string.configure_tools_lock_network_action))
             }
@@ -237,6 +278,8 @@ fun UnlockNetworkDialog(
     onDismiss: () -> Unit
 ) {
     var passphrase by remember { mutableStateOf("") }
+    val submit = { viewModel.unlockNetwork(netName, passphrase) }
+    val formIsComplete = passphrase.isNotEmpty()
 
     ConfigureToolsState(viewModel, onSuccess = onDismiss)
 
@@ -256,14 +299,18 @@ fun UnlockNetworkDialog(
                     label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation(),
-                    singleLine = true
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(onDone = {
+                        if (formIsComplete) submit()
+                    }),
                 )
             }
         },
         confirmButton = {
             TextButton(
-                onClick = { viewModel.unlockNetwork(netName, passphrase) },
-                enabled = passphrase.isNotEmpty()
+                onClick = submit,
+                enabled = formIsComplete
             ) {
                 Text(stringResource(R.string.configure_tools_unlock_network_action))
             }
