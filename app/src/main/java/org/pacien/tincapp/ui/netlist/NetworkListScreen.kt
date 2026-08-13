@@ -132,7 +132,7 @@ fun NetworkListScreenContent(
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.configure_tools_generate_config_title),
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                     DropdownMenu(
@@ -160,7 +160,7 @@ fun NetworkListScreenContent(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }
