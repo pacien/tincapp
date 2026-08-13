@@ -23,7 +23,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.android.awaitFrame
 import org.pacien.tincapp.ui.theme.ActivityHorizontalMargin
 import org.pacien.tincapp.ui.theme.ActivitySectionTitleBottomMargin
 import org.pacien.tincapp.ui.theme.ActivitySectionTitleTopMargin
@@ -82,4 +86,19 @@ fun MenuDivider(modifier: Modifier = Modifier) {
     thickness = 1.dp,
     color = Separator
   )
+}
+
+@Composable
+fun Modifier.autoFocus(
+  focusRequester: FocusRequester = remember { FocusRequester() }
+): Modifier {
+  val keyboardController = LocalSoftwareKeyboardController.current
+
+  LaunchedEffect(focusRequester) {
+    awaitFrame()
+    focusRequester.requestFocus()
+    keyboardController?.show()
+  }
+
+  return this.focusRequester(focusRequester)
 }

@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 import org.pacien.tincapp.R
+import org.pacien.tincapp.ui.common.autoFocus
 
 @Composable
 fun GenerateConfigDialog(
@@ -67,7 +68,7 @@ fun GenerateConfigDialog(
                     value = netName,
                     onValueChange = { netName = it },
                     label = { Text(stringResource(R.string.configure_tools_generate_config_net_name_hint)) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().autoFocus(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     keyboardActions = KeyboardActions(onNext = {
@@ -142,7 +143,7 @@ fun JoinNetworkDialog(
                     value = netName,
                     onValueChange = { netName = it },
                     label = { Text(stringResource(R.string.configure_tools_generate_config_net_name_hint)) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().autoFocus(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     keyboardActions = KeyboardActions(onNext = {
@@ -226,7 +227,7 @@ fun LockNetworkDialog(
                     value = passphrase,
                     onValueChange = { passphrase = it },
                     label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().autoFocus(),
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -297,7 +298,7 @@ fun UnlockNetworkDialog(
                     value = passphrase,
                     onValueChange = { passphrase = it },
                     label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().autoFocus(),
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),

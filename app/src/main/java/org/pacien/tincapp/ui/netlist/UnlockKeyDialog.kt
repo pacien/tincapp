@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import org.pacien.tincapp.R
+import org.pacien.tincapp.ui.common.autoFocus
 
 @Composable
 fun UnlockKeyDialog(
@@ -43,7 +44,7 @@ fun UnlockKeyDialog(
           keyboardActions = KeyboardActions(onDone = {
             if (formIsComplete) submit()
           }),
-          modifier = Modifier.fillMaxWidth()
+          modifier = Modifier.fillMaxWidth().autoFocus()
         )
       }
     },
