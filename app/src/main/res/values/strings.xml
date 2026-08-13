@@ -131,6 +131,8 @@
 	<string name="configure_tools_join_network_joining">Joining network…</string>
 
 	<string name="configure_tools_lock_network_title">Lock network</string>
+	<string name="configure_tools_lock_network_confirm_passphrase">Confirm passphrase</string>
+	<string name="configure_tools_lock_network_error_mismatch">Passphrases do not match.</string>
 	<string name="configure_tools_lock_network_action">Lock</string>
 	<string name="configure_tools_unlock_network_title">Unlock network</string>
 	<string name="configure_tools_unlock_network_action">Unlock</string>

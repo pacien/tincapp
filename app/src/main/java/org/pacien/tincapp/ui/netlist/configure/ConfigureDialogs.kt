@@ -29,6 +29,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
@@ -173,6 +174,8 @@ fun LockNetworkDialog(
     onDismiss: () -> Unit
 ) {
     var passphrase by remember { mutableStateOf("") }
+    var passphraseConfirm by remember { mutableStateOf("") }
+    val mismatch = passphrase.isNotEmpty() && passphraseConfirm.isNotEmpty() && passphrase != passphraseConfirm
 
     ConfigureToolsState(viewModel, onSuccess = onDismiss)
 
@@ -191,14 +194,30 @@ fun LockNetworkDialog(
                     onValueChange = { passphrase = it },
                     label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation(),
                     singleLine = true
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = passphraseConfirm,
+                    onValueChange = { passphraseConfirm = it },
+                    label = { Text(stringResource(R.string.configure_tools_lock_network_confirm_passphrase)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation(),
+                    singleLine = true,
+                    isError = mismatch,
+                    supportingText = {
+                        if (mismatch) {
+                            Text(stringResource(R.string.configure_tools_lock_network_error_mismatch))
+                        }
+                    }
                 )
             }
         },
         confirmButton = {
             TextButton(
                 onClick = { viewModel.lockNetwork(netName, passphrase) },
-                enabled = passphrase.isNotEmpty()
+                enabled = passphrase.isNotEmpty() && passphrase == passphraseConfirm
             ) {
                 Text(stringResource(R.string.configure_tools_lock_network_action))
             }
@@ -236,6 +255,7 @@ fun UnlockNetworkDialog(
                     onValueChange = { passphrase = it },
                     label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation(),
                     singleLine = true
                 )
             }
