@@ -42,7 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.pacien.tincapp.R
 import org.pacien.tincapp.ui.netlist.configure.*
-import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 import org.pacien.tincapp.ui.common.AppStatusHeader
 import org.pacien.tincapp.ui.common.AppActions
 import org.pacien.tincapp.ui.common.AppActionsMenu
@@ -64,7 +63,6 @@ fun NetworkListScreen(
     appActions: AppActions
 ) {
     val networkList by viewModel.networkList.observeAsState(emptyList())
-    val errorNotification by viewModel.errorNotification.observeAsState()
 
     var activeDialog by remember { mutableStateOf<ConfigureDialogType?>(null) }
     var selectedNetwork by remember { mutableStateOf("") }
@@ -90,16 +88,6 @@ fun NetworkListScreen(
             activeDialog = ConfigureDialogType.DELETE
         }
     )
-
-    errorNotification?.let { error ->
-        ErrorDialog(
-            error = error,
-            onDismiss = { viewModel.dismissError() },
-            onManualClick = { error.manualLink?.let { appActions.onManual(it) } },
-            onConfigDirClick = { error.configDir?.let { onConfigDirClick(it) } },
-            onLogDirClick = { appActions.onLogDir() }
-        )
-    }
 
     when (activeDialog) {
         ConfigureDialogType.GENERATE -> GenerateConfigDialog(
@@ -272,48 +260,6 @@ enum class ConfigureDialogType {
 }
 
 @Composable
-fun ErrorDialog(
-    error: ErrorNotification,
-    onDismiss: () -> Unit,
-    onManualClick: () -> Unit,
-    onConfigDirClick: () -> Unit,
-    onLogDirClick: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = error.title,
-                color = MaterialTheme.colorScheme.error
-            )
-        },
-        text = {
-            Text(text = error.message)
-        },
-        confirmButton = {
-            error.manualLink?.let {
-                TextButton(onClick = onManualClick) {
-                    Text(stringResource(R.string.notification_error_action_help))
-                }
-            }
-            error.configDir?.let {
-                TextButton(onClick = onConfigDirClick) {
-                    Text(stringResource(R.string.start_network_action_edit_config))
-                }
-            }
-            if (error.proposeLogs) {
-                TextButton(onClick = onLogDirClick) {
-                    Text(stringResource(R.string.notification_error_action_view_logs))
-                }
-            }
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(android.R.string.ok))
-            }
-        }
-    )
-}
-
-@Composable
 fun NetworkListItem(
     name: String,
     needsPassphrase: Boolean,
@@ -419,39 +365,5 @@ fun NetworkListScreenPreview() {
             onDeleteClick = {},
             vpnState = VpnState.Disconnected,
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NetworkListScreenErrorPreview() {
-    TincTheme {
-        Box(modifier = Modifier.fillMaxSize()) {
-            NetworkListScreenContent(
-                networkList = emptyList(),
-                onNetworkClick = {},
-                onConfigDirClick = {},
-                appActions = AppActions({}, {}, {}, {}),
-                onGenerateConfigClick = {},
-                onJoinNetworkClick = {},
-                onLockClick = {},
-                onUnlockClick = {},
-                onDeleteClick = {},
-                vpnState = VpnState.Disconnected,
-            )
-            ErrorDialog(
-                error = ErrorNotification(
-                    title = "Configuration Error",
-                    message = "The configuration file 'tinc.conf' is missing. Please check the configuration directory.",
-                    manualLink = "",
-                    configDir = "",
-                    proposeLogs = true
-                ),
-                onDismiss = {},
-                onManualClick = {},
-                onConfigDirClick = {},
-                onLogDirClick = {}
-            )
-        }
     }
 }

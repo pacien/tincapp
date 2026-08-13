@@ -18,12 +18,16 @@
 
 package org.pacien.tincapp.repository
 
+import androidx.annotation.StringRes
 import android.os.ParcelFileDescriptor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -40,6 +44,21 @@ sealed class VpnState {
 }
 
 /**
+ * Represents transient events from the VPN service.
+ */
+sealed class VpnEvent {
+    data class Error(
+        @StringRes val titleRes: Int,
+        val msg: String,
+        val docTopic: String? = null,
+        val configDir: String? = null,
+        val proposeLogs: Boolean = false
+    ) : VpnEvent()
+
+    object ShowPassphraseDialog : VpnEvent()
+}
+
+/**
  * Singleton repository managing the VPN state and persistence.
  */
 object VpnRepository {
@@ -49,6 +68,9 @@ object VpnRepository {
 
     private val _state = MutableStateFlow<VpnState>(VpnState.Disconnected)
     val vpnState: StateFlow<VpnState> = _state.asStateFlow()
+
+    private val _events = MutableSharedFlow<VpnEvent>()
+    val events: SharedFlow<VpnEvent> = _events.asSharedFlow()
 
     private var _interfaceConfig: VpnInterfaceConfiguration? = null
     val interfaceConfig: VpnInterfaceConfiguration?
@@ -76,6 +98,12 @@ object VpnRepository {
 
     fun updateState(newState: VpnState) {
         _state.value = newState
+    }
+
+    fun emitEvent(event: VpnEvent) {
+        scope.launch {
+            _events.emit(event)
+        }
     }
 
     fun setState(

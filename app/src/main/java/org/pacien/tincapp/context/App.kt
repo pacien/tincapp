@@ -76,6 +76,11 @@ class App : Application() {
           .getApplicationInfo(BuildConfig.APPLICATION_ID, 0)
       }
 
+    /**
+     * Report an error that will be persisted and shown to the user.
+     * This is intended for "external" notifications when the app is in the background.
+     * If the app is in the foreground, MainViewModel will also reactive to this change.
+     */
     fun alert(
       @StringRes title: Int,
       msg: String,

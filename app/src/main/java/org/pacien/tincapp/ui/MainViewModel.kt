@@ -18,22 +18,31 @@
 
 package org.pacien.tincapp.ui
 
+import android.app.Application
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.pacien.tincapp.context.App
+import org.pacien.tincapp.repository.VpnEvent
 import org.pacien.tincapp.repository.VpnRepository
 import org.pacien.tincapp.repository.VpnState
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val vpnState: StateFlow<VpnState> = VpnRepository.vpnState
 
     var activeDialog by mutableStateOf<ActiveDialog?>(null)
         private set
+
+    private val notificationManager = App.notificationManager
+    private val notificationListener = OnSharedPreferenceChangeListener { _, _ ->
+        checkPersistentError()
+    }
 
     init {
         viewModelScope.launch {
@@ -45,6 +54,29 @@ class MainViewModel : ViewModel() {
                 }
             }
         }
+
+        viewModelScope.launch {
+            VpnRepository.events.collect { event ->
+                when (event) {
+                    is VpnEvent.Error -> showError(event.msg, event.docTopic)
+                    is VpnEvent.ShowPassphraseDialog -> showDecryptKeys()
+                }
+            }
+        }
+
+        notificationManager.registerListener(notificationListener)
+        checkPersistentError()
+    }
+
+    private fun checkPersistentError() {
+        notificationManager.getError()?.let { error ->
+            showError(error.message, error.manualLink)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        notificationManager.unregisterListener(notificationListener)
     }
 
     sealed class ActiveDialog {
@@ -85,6 +117,9 @@ class MainViewModel : ViewModel() {
     }
 
     fun dismissDialog() {
+        if (activeDialog is ActiveDialog.Error) {
+            notificationManager.dismissAll()
+        }
         activeDialog = null
     }
 }

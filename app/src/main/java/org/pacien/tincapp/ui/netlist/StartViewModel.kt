@@ -19,47 +19,22 @@
 package org.pacien.tincapp.ui.netlist
 
 import android.app.Application
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.pacien.tincapp.context.AppNotificationManager
-import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 
 /**
  * ViewModel for StartActivity.
  */
 class StartViewModel(application: Application) : AndroidViewModel(application) {
-    private val notificationManager = AppNotificationManager(application)
     private val networkListLiveData = NetworkListLiveData()
 
-    private val _errorNotification = MutableLiveData<ErrorNotification?>(notificationManager.getError())
-    val errorNotification: LiveData<ErrorNotification?> = _errorNotification
-
     val networkList: LiveData<List<NetworkInfo>> = networkListLiveData
-
-    private val notificationListener = OnSharedPreferenceChangeListener { _, _ ->
-        _errorNotification.postValue(notificationManager.getError())
-    }
-
-    init {
-        notificationManager.registerListener(notificationListener)
-    }
-
-    override fun onCleared() {
-        notificationManager.unregisterListener(notificationListener)
-    }
 
     fun refresh() {
         viewModelScope.launch {
             networkListLiveData.onRefresh()
         }
-        _errorNotification.value = notificationManager.getError()
-    }
-
-    fun dismissError() {
-        notificationManager.dismissAll()
     }
 }

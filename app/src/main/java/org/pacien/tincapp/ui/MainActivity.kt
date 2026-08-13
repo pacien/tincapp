@@ -34,7 +34,6 @@ import androidx.navigation.compose.rememberNavController
 import org.pacien.tincapp.R
 import org.pacien.tincapp.ui.common.RecentCrashHandler
 import org.pacien.tincapp.ui.netlist.ConnectionStarter
-import org.pacien.tincapp.context.App
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.openURL
 import org.pacien.tincapp.vpnservice.TincVpnService
@@ -59,7 +58,7 @@ class MainActivity : ComponentActivity() {
         if (result.resultCode == RESULT_OK) {
             connectionStarter.tryStart()
         } else {
-            App.alert(R.string.notification_error_title_unable_to_start_tinc, getString(R.string.notification_error_message_could_not_bind_iface))
+            showErrorDialog(getString(R.string.notification_error_message_could_not_bind_iface))
         }
     }
 
@@ -69,7 +68,7 @@ class MainActivity : ComponentActivity() {
         if (isGranted) {
             connectionStarter.tryStart()
         } else {
-            App.alert(R.string.notification_error_title_unable_to_start_tinc, getString(R.string.notification_error_message_local_network_permission_required))
+            showErrorDialog(getString(R.string.notification_error_message_local_network_permission_required))
         }
     }
 

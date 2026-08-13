@@ -47,6 +47,7 @@ import org.pacien.tincapp.vpnservice.VpnServiceBuilderExtensions.applyCfg
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.keyring.TincKeyring
 import org.slf4j.LoggerFactory
+import org.pacien.tincapp.repository.VpnEvent
 import org.pacien.tincapp.repository.VpnRepository
 import org.pacien.tincapp.repository.VpnState
 
@@ -258,6 +259,16 @@ class TincVpnService : VpnService() {
       log.error(msg)
 
     VpnRepository.updateState(VpnState.Disconnected)
+    VpnRepository.emitEvent(
+      VpnEvent.Error(
+        R.string.notification_error_title_unable_to_start_tinc,
+        msg,
+        docTopic,
+        configDir,
+        proposeLogs,
+      )
+    )
+
     App.alert(
       R.string.notification_error_title_unable_to_start_tinc,
       msg,
