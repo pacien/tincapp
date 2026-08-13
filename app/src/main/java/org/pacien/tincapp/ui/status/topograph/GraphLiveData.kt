@@ -30,9 +30,14 @@ class GraphLiveData : SelfRefreshingLiveData<String>(5, TimeUnit.SECONDS) {
   private val vpnService = TincVpnService
   private val tincCtl = Tinc
 
-  override fun onRefresh() {
-    vpnService.getCurrentNetName()
-      ?.let { netName -> tincCtl.dumpGraph(netName) }
-      ?.thenAccept(this::postValue)
+  override suspend fun onRefresh() {
+    vpnService.getCurrentNetName()?.let { netName ->
+      try {
+        val graph = tincCtl.dumpGraph(netName)
+        postValue(graph)
+      } catch (e: Exception) {
+        // handle error
+      }
+    }
   }
 }

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 class NetworkListLiveData : SelfRefreshingLiveData<List<NetworkInfo>>(1, TimeUnit.SECONDS) {
   private val appPaths = AppPaths
 
-  override fun onRefresh() {
+  override suspend fun onRefresh() {
     val networkList = appPaths.confDir().list()?.sorted()?.map {
       NetworkInfo(it, TincKeyring.needsPassphrase(it))
     } ?: emptyList()

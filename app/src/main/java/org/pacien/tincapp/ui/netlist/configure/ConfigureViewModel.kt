@@ -19,9 +19,11 @@
 package org.pacien.tincapp.ui.netlist.configure
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
@@ -29,8 +31,6 @@ import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.vpnservice.TincVpnService
 import org.pacien.tincapp.extensions.Files.makePublic
 import java.util.regex.Pattern
-import java.util.concurrent.CompletableFuture
-import org.pacien.tincapp.extensions.Java.failedFuture
 
 sealed class ConfigureUiState {
     object Idle : ConfigureUiState()
@@ -50,17 +50,20 @@ class ConfigureViewModel : ViewModel() {
         _uiState.value = ConfigureUiState.Idle
     }
 
-    private fun validateNetName(netName: String): CompletableFuture<Unit> =
-        if (netName !in reservedNetworkNames && networkNamePattern.matcher(netName).matches())
-            CompletableFuture.completedFuture(Unit)
-        else
-            failedFuture(NetworkNameInvalidException())
+    private fun validateNetName(netName: String) {
+        if (netName in reservedNetworkNames || !networkNamePattern.matcher(netName).matches()) {
+            throw NetworkNameInvalidException()
+        }
+    }
 
-    private fun execAction(labelResId: Int, action: CompletableFuture<Unit>, successResId: Int = R.string.configure_tools_message_network_configuration_written) {
+    private fun execAction(labelResId: Int, successResId: Int = R.string.configure_tools_message_network_configuration_written, action: suspend () -> Unit) {
         _uiState.value = ConfigureUiState.Loading(labelResId)
-        action.whenComplete { _, throwable ->
-            if (throwable != null) {
-                val cause = throwable.cause ?: throwable
+        viewModelScope.launch {
+            try {
+                action()
+                _uiState.value = ConfigureUiState.Success(successResId)
+            } catch (e: Exception) {
+                val cause = e.cause ?: e
                 if (cause is NetworkNameInvalidException) {
                     _uiState.value = ConfigureUiState.Error(messageResId = R.string.configure_tools_message_invalid_network_name)
                 } else if (cause is NetworkInUseException) {
@@ -71,70 +74,60 @@ class ConfigureViewModel : ViewModel() {
                     else
                         ConfigureUiState.Error(messageResId = R.string.generic_error_unknown)
                 }
-            } else {
-                _uiState.value = ConfigureUiState.Success(successResId)
             }
         }
     }
 
     fun generateConf(netName: String, nodeName: String) {
-        execAction(
-            R.string.configure_tools_generate_config_generating,
+        execAction(R.string.configure_tools_generate_config_generating) {
             validateNetName(netName)
-                .thenCompose { Tinc.init(netName, nodeName) }
-                .thenCompose { TincApp.removeScripts(netName) }
-                .thenCompose { TincApp.generateIfaceCfgTemplate(netName) }
-                .thenApply { AppPaths.confDir(netName).makePublic() }
-                .thenApply { Unit }
-        )
+            Tinc.init(netName, nodeName)
+            TincApp.removeScripts(netName)
+            TincApp.generateIfaceCfgTemplate(netName)
+            AppPaths.confDir(netName).makePublic()
+        }
     }
 
     fun joinNetwork(netName: String, url: String) {
-        execAction(
-            R.string.configure_tools_join_network_joining,
+        execAction(R.string.configure_tools_join_network_joining) {
             validateNetName(netName)
-                .thenCompose { Tinc.join(netName, url) }
-                .thenCompose { TincApp.removeScripts(netName) }
-                .thenCompose { TincApp.generateIfaceCfg(netName) }
-                .thenApply { AppPaths.confDir(netName).makePublic() }
-                .thenApply { Unit }
-        )
+            Tinc.join(netName, url)
+            TincApp.removeScripts(netName)
+            TincApp.generateIfaceCfg(netName)
+            AppPaths.confDir(netName).makePublic()
+        }
     }
 
     fun lockNetwork(netName: String, passphrase: String) {
-        execAction(
-            labelResId = R.string.configure_tools_private_keys_encryption_encrypting,
-            action = validateNetName(netName)
-                .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) }
-                .thenApply { Unit }
-        )
+        execAction(R.string.configure_tools_private_keys_encryption_encrypting) {
+            validateNetName(netName)
+            TincApp.setPassphrase(netName, newPassphrase = passphrase)
+        }
     }
 
     fun unlockNetwork(netName: String, passphrase: String) {
-        execAction(
-            labelResId = R.string.configure_tools_private_keys_encryption_encrypting,
-            action = validateNetName(netName)
-                .thenCompose { TincApp.setPassphrase(netName, currentPassphrase = passphrase, newPassphrase = "") }
-                .thenApply { Unit }
-        )
+        execAction(R.string.configure_tools_private_keys_encryption_encrypting) {
+            validateNetName(netName)
+            TincApp.setPassphrase(netName, currentPassphrase = passphrase, newPassphrase = "")
+        }
     }
 
     fun deleteNetwork(netName: String) {
         execAction(
             labelResId = R.string.configure_tools_delete_network_deleting,
-            successResId = R.string.configure_tools_message_network_deleted,
-            action = validateNetName(netName)
-                .thenCompose { ensureNotConnected(netName) }
-                .thenCompose { TincApp.deleteNetwork(netName) }
-                .thenApply { Unit }
-        )
+            successResId = R.string.configure_tools_message_network_deleted
+        ) {
+            validateNetName(netName)
+            ensureNotConnected(netName)
+            TincApp.deleteNetwork(netName)
+        }
     }
 
-    private fun ensureNotConnected(netName: String): CompletableFuture<Unit> =
-        if (netName != TincVpnService.getCurrentNetName())
-            CompletableFuture.completedFuture(Unit)
-        else
-            failedFuture(NetworkInUseException())
+    private fun ensureNotConnected(netName: String) {
+        if (netName == TincVpnService.getCurrentNetName()) {
+            throw NetworkInUseException()
+        }
+    }
 
     private class NetworkNameInvalidException : Exception()
     private class NetworkInUseException : Exception()

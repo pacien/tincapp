@@ -26,9 +26,12 @@ import android.net.LocalServerSocket
 import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
-import java.util.concurrent.CompletableFuture
+import java.io.FileNotFoundException
+import java.security.AccessControlException
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.apache.commons.configuration2.ex.ConversionException
-import org.bouncycastle.openssl.PEMException
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Executor
@@ -46,12 +49,6 @@ import org.pacien.tincapp.keyring.TincKeyring
 import org.slf4j.LoggerFactory
 import org.pacien.tincapp.repository.VpnRepository
 import org.pacien.tincapp.repository.VpnState
-import java.io.FileNotFoundException
-import java.security.AccessControlException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 
 /**
  * @author euxane
@@ -60,26 +57,31 @@ import kotlinx.coroutines.launch
 class TincVpnService : VpnService() {
   private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
   private val connectivityChangeReceiver = ConnectivityChangeReceiver
-  private val serviceScope = CoroutineScope(Dispatchers.Main)
+  private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+  private val vpnMutex = Mutex()
 
   override fun onDestroy() {
-    stopVpn().join()
-    serviceScope.cancel()
+    serviceScope.launch {
+      stopVpn()
+      serviceScope.cancel()
+    }
     super.onDestroy()
   }
 
   override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
     log.info("Intent received: {}", intent.toString())
 
-    when {
-      intent.action == Actions.ACTION_CONNECT && intent.scheme == Actions.TINC_SCHEME ->
-        startVpn(intent.data!!.schemeSpecificPart, intent.data!!.fragment)
-      intent.action == Actions.ACTION_DISCONNECT ->
-        stopVpn()
-      intent.action == Actions.ACTION_SYSTEM_CONNECT ->
-        serviceScope.launch { restorePreviousConnection() }
-      else ->
-        throw IllegalArgumentException("Invalid intent action received.")
+    serviceScope.launch {
+      when {
+        intent.action == Actions.ACTION_CONNECT && intent.scheme == Actions.TINC_SCHEME ->
+          startVpn(intent.data!!.schemeSpecificPart, intent.data!!.fragment)
+        intent.action == Actions.ACTION_DISCONNECT ->
+          stopVpn()
+        intent.action == Actions.ACTION_SYSTEM_CONNECT ->
+          restorePreviousConnection()
+        else ->
+          log.error("Invalid intent action received: ${intent.action}")
+      }
     }
 
     return Service.START_NOT_STICKY
@@ -96,7 +98,11 @@ class TincVpnService : VpnService() {
     startVpn(netName, VpnRepository.getPassphrase())
   }
 
-  private fun startVpn(netName: String, passphrase: String? = null): Unit = synchronized(this) {
+  private suspend fun startVpn(netName: String, passphrase: String? = null): Unit = vpnMutex.withLock {
+    startVpnLocked(netName, passphrase)
+  }
+
+  private suspend fun startVpnLocked(netName: String, passphrase: String? = null) {
     if (netName.isBlank())
       return reportError(resources.getString(R.string.notification_error_message_no_network_name_provided), docTopic = "doc.html#intent-api")
 
@@ -112,7 +118,7 @@ class TincVpnService : VpnService() {
 
     log.info("Starting tinc daemon for network \"$netName\".")
     VpnRepository.updateState(VpnState.Connecting)
-    if (VpnRepository.isConnected || VpnRepository.currentNetName != null) stopVpn().join()
+    if (VpnRepository.isConnected || VpnRepository.currentNetName != null) stopVpnInternal()
 
     val privateKeys = try {
       TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let { tincCfg ->
@@ -128,7 +134,7 @@ class TincVpnService : VpnService() {
       }
     } catch (e: FileNotFoundException) {
       Pair(null, null)
-    } catch (e: PEMException) {
+    } catch (e: org.bouncycastle.openssl.PEMException) {
       return reportError(resources.getString(R.string.notification_error_message_could_not_decrypt_private_keys_format, e.message))
     } catch (e: Exception) {
       return reportError(resources.getString(R.string.notification_error_message_could_not_read_private_key_format, e.defaultMessage()), e)
@@ -187,43 +193,56 @@ class TincVpnService : VpnService() {
     }
 
     val serverSocket = LocalServerSocket(DEVICE_FD_ABSTRACT_SOCKET)
-    Executor.runAsyncTask { serveDeviceFd(serverSocket, deviceFd) }
+    serviceScope.launch { serveDeviceFd(serverSocket, deviceFd) }
 
-    val daemon = Tincd.start(netName, DEVICE_FD_ABSTRACT_SOCKET, privateKeys.first, privateKeys.second)
-    VpnRepository.setState(netName, passphrase, interfaceCfg, deviceFd, daemon)
+    val daemonJob = serviceScope.launch(Dispatchers.IO) {
+      try {
+        Tincd.start(netName, DEVICE_FD_ABSTRACT_SOCKET, privateKeys.first, privateKeys.second)
+      } catch (e: Exception) {
+        log.error("tinc daemon exited with error", e)
+      }
+    }
+    VpnRepository.setState(netName, passphrase, interfaceCfg, deviceFd, daemonJob)
 
-    waitForDaemonStartup().whenComplete { _, exception ->
+    try {
+      waitForDaemonStartup()
+      log.info("tinc daemon started.")
+      VpnRepository.updateState(VpnState.Connected(netName))
+    } catch (e: Exception) {
+      reportError(
+        resources.getString(R.string.notification_error_message_daemon_exited, e.defaultMessage()),
+        e,
+        proposeLogs = true,
+      )
+      stopVpnInternal()
+    } finally {
       serverSocket.close()
       deviceFd.close()
-
-      if (exception != null) {
-        reportError(
-          resources.getString(R.string.notification_error_message_daemon_exited, exception.cause!!.defaultMessage()),
-          exception,
-          proposeLogs = true,
-        )
-      } else {
-        log.info("tinc daemon started.")
-        VpnRepository.updateState(VpnState.Connected(netName))
-      }
-
-      if (interfaceCfg.reconnectOnNetworkChange)
-        connectivityChangeReceiver.registerWatcher(this)
     }
+
+    if (interfaceCfg.reconnectOnNetworkChange)
+      connectivityChangeReceiver.registerWatcher(this, serviceScope)
   }
 
-  private fun stopVpn(): CompletableFuture<Unit> = synchronized(this) {
+  private suspend fun stopVpn(): Unit = vpnMutex.withLock {
+    stopVpnInternal()
+  }
+
+  private suspend fun stopVpnInternal() {
     log.info("Stopping any running tinc daemon.")
 
-    connectivityChangeReceiver.unregisterWatcher(this)
+    connectivityChangeReceiver.unregisterWatcher()
 
     getCurrentNetName()?.let {
-      Tinc.stop(it).handle { _, _ ->
-        log.info("All tinc daemons stopped.")
-        VpnRepository.updateState(VpnState.Disconnected)
-        VpnRepository.setState(null, null, null, null, null)
+      try {
+        Tinc.stop(it)
+      } catch (e: Exception) {
+        log.error("Error stopping tinc daemon", e)
       }
-    } ?: CompletableFuture.completedFuture(Unit)
+      log.info("All tinc daemons stopped.")
+      VpnRepository.updateState(VpnState.Disconnected)
+      VpnRepository.setState(null, null, null, null, null)
+    }
   }
 
   private fun reportError(
@@ -248,7 +267,7 @@ class TincVpnService : VpnService() {
     )
   }
 
-  private fun serveDeviceFd(serverSocket: LocalServerSocket, deviceFd: ParcelFileDescriptor) =
+  private suspend fun serveDeviceFd(serverSocket: LocalServerSocket, deviceFd: ParcelFileDescriptor) = withContext(Dispatchers.IO) {
     serverSocket.accept().let { socket ->
       try {
         if (socket.peerCredentials.uid != App.getApplicationInfo().uid)
@@ -263,14 +282,15 @@ class TincVpnService : VpnService() {
         socket.close()
       }
     }
+  }
 
-  private fun waitForDaemonStartup() =
-    Executor
-      .runAsyncTask { Thread.sleep(SETUP_DELAY) }
-      .thenCompose {
-        val daemon = VpnRepository.daemon
-        if (daemon != null && daemon.isDone) daemon else Executor.runAsyncTask { Unit }
-      }
+  private suspend fun waitForDaemonStartup() {
+    delay(SETUP_DELAY)
+    val daemon = VpnRepository.daemon
+    if (daemon != null && !daemon.isActive) {
+      throw Exception("Daemon exited prematurely")
+    }
+  }
 
   companion object {
     private const val SETUP_DELAY = 500L // ms

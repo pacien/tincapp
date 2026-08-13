@@ -23,6 +23,8 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.pacien.tincapp.context.AppNotificationManager
 import org.pacien.tincapp.context.AppNotificationManager.ErrorNotification
 
@@ -51,7 +53,9 @@ class StartViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun refresh() {
-        networkListLiveData.onRefresh()
+        viewModelScope.launch {
+            networkListLiveData.onRefresh()
+        }
         _errorNotification.value = notificationManager.getError()
     }
 

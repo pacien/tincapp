@@ -18,8 +18,9 @@
 
 package org.pacien.tincapp.commands
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.pacien.tincapp.R
-import org.pacien.tincapp.commands.Executor.runAsyncTask
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.config.TincConfiguration
@@ -48,27 +49,27 @@ object TincApp {
     throw FileNotFoundException(App.getResources().getString(R.string.notification_error_message_network_config_not_found_format, e.message!!))
   }
 
-  fun removeScripts(netName: String) = runAsyncTask {
+  suspend fun removeScripts(netName: String) = withContext(Dispatchers.IO) {
     listScripts(netName).forEach { it.delete() }
   }
 
-  fun deleteNetwork(netName: String) = runAsyncTask {
+  suspend fun deleteNetwork(netName: String) = withContext(Dispatchers.IO) {
     AppPaths.confDir(netName).deleteRecursively()
   }
 
-  fun generateIfaceCfg(netName: String) = runAsyncTask {
+  suspend fun generateIfaceCfg(netName: String) = withContext(Dispatchers.IO) {
     VpnInterfaceConfiguration
       .fromInvitation(AppPaths.invitationFile(netName))
       .write(AppPaths.netConfFile(netName))
   }
 
-  fun generateIfaceCfgTemplate(netName: String) = runAsyncTask {
+  suspend fun generateIfaceCfgTemplate(netName: String) = withContext(Dispatchers.IO) {
     App.getResources().openRawResource(R.raw.network).use { inputStream ->
       AppPaths.netConfFile(netName).outputStream().use { inputStream.copyTo(it) }
     }
   }
 
-  fun setPassphrase(netName: String, currentPassphrase: String? = null, newPassphrase: String?) = runAsyncTask {
+  suspend fun setPassphrase(netName: String, currentPassphrase: String? = null, newPassphrase: String?) = withContext(Dispatchers.IO) {
     listPrivateKeys(netName)
       .filter { it.exists() }
       .map { Pair(PemUtils.read(it), it) }

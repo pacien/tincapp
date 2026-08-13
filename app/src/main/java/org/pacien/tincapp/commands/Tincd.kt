@@ -18,7 +18,6 @@
 
 package org.pacien.tincapp.commands
 
-import java.util.concurrent.CompletableFuture
 import org.pacien.tincapp.context.AppPaths
 import java.io.File
 
@@ -26,8 +25,8 @@ import java.io.File
  * @author euxane
  */
 object Tincd {
-  fun start(netName: String, device: String, ed25519PrivateKey: File? = null, rsaPrivateKey: File? = null): CompletableFuture<Unit> =
-    Executor.call(Command(AppPaths.tincd().absolutePath)
+  suspend fun start(netName: String, device: String, ed25519PrivateKey: File? = null, rsaPrivateKey: File? = null) {
+    Executor.callSuspend(Command(AppPaths.tincd().absolutePath)
       .withOption("no-detach")
       .withOption("config", AppPaths.confDir(netName).absolutePath)
       .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
@@ -36,5 +35,6 @@ object Tincd {
       .withOption("option", "Device=@$device")
       .apply { if (ed25519PrivateKey != null) withOption("option", "Ed25519PrivateKeyFile=${ed25519PrivateKey.absolutePath}") }
       .apply { if (rsaPrivateKey != null) withOption("option", "PrivateKeyFile=${rsaPrivateKey.absolutePath}") }
-    ).thenApply { }
+    )
+  }
 }

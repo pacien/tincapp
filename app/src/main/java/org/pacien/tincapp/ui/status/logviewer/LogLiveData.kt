@@ -18,8 +18,8 @@
 
 package org.pacien.tincapp.ui.status.logviewer
 
+import kotlinx.coroutines.*
 import org.pacien.tincapp.ui.common.SelfRefreshingLiveData
-import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 class LogLiveData(private val netName: String, private val logLevel: Int, private val logLineSize: Int)
   : SelfRefreshingLiveData<List<String>>(250, TimeUnit.MILLISECONDS) {
 
-  private val executor = Executor
+  private val logScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
   private val log = LinkedList<String>()
   private lateinit var loggerProcess: Process
 
@@ -41,10 +41,11 @@ class LogLiveData(private val netName: String, private val logLevel: Int, privat
 
   override fun onInactive() {
     loggerProcess.destroy()
+    logScope.coroutineContext.cancelChildren()
     super.onInactive()
   }
 
-  override fun onRefresh() {
+  override suspend fun onRefresh() {
     synchronized(log) {
       val logView = ArrayList(log)
       postValue(logView)
@@ -53,7 +54,7 @@ class LogLiveData(private val netName: String, private val logLevel: Int, privat
 
   private fun startNewLogger(): Process {
     val newProcess = Tinc.log(netName, logLevel)
-    executor.runAsyncTask { captureProcessOutput(newProcess) }
+    logScope.launch(Dispatchers.IO) { captureProcessOutput(newProcess) }
     return newProcess
   }
 

@@ -18,9 +18,7 @@
 
 package org.pacien.tincapp.commands
 
-import java.util.concurrent.CompletableFuture
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.extensions.Java.failedFuture
 
 /**
  * @author euxane
@@ -31,52 +29,51 @@ object Tinc {
       .withOption("config", AppPaths.confDir(netName).absolutePath)
       .withOption("pidfile", AppPaths.pidFile(netName).absolutePath)
 
-  fun stop(netName: String): CompletableFuture<Unit> =
-    Executor.call(newCommand(netName).withArguments("stop"))
-      .thenApply { }
+  suspend fun stop(netName: String) {
+    Executor.callSuspend(newCommand(netName).withArguments("stop"))
+  }
 
-  fun retry(netName: String): CompletableFuture<Unit> =
-    Executor.call(newCommand(netName).withArguments("retry"))
-      .thenApply { }
+  suspend fun retry(netName: String) {
+    Executor.callSuspend(newCommand(netName).withArguments("retry"))
+  }
 
-  fun pid(netName: String): CompletableFuture<Int> =
-    Executor.call(newCommand(netName).withArguments("pid"))
-      .thenApply { Integer.parseInt(it.first()) }
+  suspend fun pid(netName: String): Int =
+    Executor.callSuspend(newCommand(netName).withArguments("pid")).let {
+      Integer.parseInt(it.first())
+    }
 
-  fun dumpNodes(netName: String, reachable: Boolean = false): CompletableFuture<List<String>> =
-    Executor.call(
+  suspend fun dumpNodes(netName: String, reachable: Boolean = false): List<String> =
+    Executor.callSuspend(
       if (reachable) newCommand(netName).withArguments("dump", "reachable", "nodes")
       else newCommand(netName).withArguments("dump", "nodes"))
 
-  fun dumpSubnets(netName: String): CompletableFuture<List<String>> =
-    Executor.call(
+  suspend fun dumpSubnets(netName: String): List<String> =
+    Executor.callSuspend(
       newCommand(netName).withArguments("dump", "subnets"))
 
-  fun dumpGraph(netName: String): CompletableFuture<String> =
-    Executor.call(newCommand(netName).withArguments("dump", "graph"))
-      .thenApply { it.joinToString("\n") }
+  suspend fun dumpGraph(netName: String): String =
+    Executor.callSuspend(newCommand(netName).withArguments("dump", "graph"))
+      .joinToString("\n")
 
-  fun info(netName: String, node: String): CompletableFuture<String> =
-    Executor.call(newCommand(netName).withArguments("info", node))
-      .thenApply { it.joinToString("\n") }
+  suspend fun info(netName: String, node: String): String =
+    Executor.callSuspend(newCommand(netName).withArguments("info", node))
+      .joinToString("\n")
 
-  fun init(netName: String, nodeName: String): CompletableFuture<String> =
-    if (netName.isBlank())
-      failedFuture(IllegalArgumentException("Network name cannot be blank."))
-    else
-      Executor.call(Command(AppPaths.tinc().absolutePath)
-        .withOption("config", AppPaths.confDir(netName).absolutePath)
-        .withArguments("init", nodeName))
-        .thenApply { it.joinToString("\n") }
+  suspend fun init(netName: String, nodeName: String): String {
+    if (netName.isBlank()) throw IllegalArgumentException("Network name cannot be blank.")
+    return Executor.callSuspend(Command(AppPaths.tinc().absolutePath)
+      .withOption("config", AppPaths.confDir(netName).absolutePath)
+      .withArguments("init", nodeName))
+      .joinToString("\n")
+  }
 
-  fun join(netName: String, invitationUrl: String): CompletableFuture<String> =
-    if (netName.isBlank())
-      failedFuture(IllegalArgumentException("Network name cannot be blank."))
-    else
-      Executor.call(Command(AppPaths.tinc().absolutePath)
-        .withOption("config", AppPaths.confDir(netName).absolutePath)
-        .withArguments("join", invitationUrl))
-        .thenApply { it.joinToString("\n") }
+  suspend fun join(netName: String, invitationUrl: String): String {
+    if (netName.isBlank()) throw IllegalArgumentException("Network name cannot be blank.")
+    return Executor.callSuspend(Command(AppPaths.tinc().absolutePath)
+      .withOption("config", AppPaths.confDir(netName).absolutePath)
+      .withArguments("join", invitationUrl))
+      .joinToString("\n")
+  }
 
   fun log(netName: String, level: Int? = null): Process =
     Executor.run(newCommand(netName)

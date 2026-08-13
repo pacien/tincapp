@@ -18,55 +18,69 @@
 
 package org.pacien.tincapp.vpnservice
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import org.pacien.tincapp.commands.Tinc
 import org.slf4j.LoggerFactory
 
 /**
  * @author euxane
  */
-object ConnectivityChangeReceiver : BroadcastReceiver() {
+object ConnectivityChangeReceiver {
   private val log by lazy { LoggerFactory.getLogger(this.javaClass)!! }
   private val tincCtl = Tinc
   private val tincVpnService = TincVpnService
+  private var watchJob: Job? = null
 
-  private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-    override fun onAvailable(network: Network) {
-      log.info("Network available: {}", network)
-      attemptReconnect()
+  private fun watch(context: Context): Flow<Unit> = callbackFlow {
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val callback = object : ConnectivityManager.NetworkCallback() {
+      override fun onAvailable(network: Network) {
+        log.info("Network available: {}", network)
+        trySend(Unit)
+      }
+    }
+    connectivityManager.registerDefaultNetworkCallback(callback)
+    awaitClose {
+      try {
+        connectivityManager.unregisterNetworkCallback(callback)
+      } catch (e: Exception) {
+        // already unregistered
+      }
     }
   }
 
-  override fun onReceive(context: Context, intent: Intent) {
-    log.info("Connectivity change intent received: {}", intent.toString())
-    if (isNetworkAvailable(intent)) attemptReconnect()
-  }
-
-  private fun attemptReconnect() {
+  private fun attemptReconnect(scope: CoroutineScope) {
     tincVpnService.getCurrentNetName()?.let { netName ->
       log.info("Sending immediate reconnection request to the tinc daemon.")
-      tincCtl.retry(netName)
+      scope.launch {
+        try {
+          tincCtl.retry(netName)
+        } catch (e: Exception) {
+          log.error("Failed to retry connection", e)
+        }
+      }
     }
   }
 
-  private fun isNetworkAvailable(intent: Intent) =
-    !intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
-
-  fun registerWatcher(context: Context) {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    connectivityManager.registerDefaultNetworkCallback(networkCallback)
+  fun registerWatcher(context: Context, scope: CoroutineScope) {
+    watchJob?.cancel()
+    watchJob = scope.launch {
+      watch(context).collect {
+        attemptReconnect(scope)
+      }
+    }
   }
 
-  fun unregisterWatcher(context: Context) {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    try {
-      connectivityManager.unregisterNetworkCallback(networkCallback)
-    } catch (e: Exception) {
-      // already unregistered
-    }
+  fun unregisterWatcher() {
+    watchJob?.cancel()
+    watchJob = null
   }
 }

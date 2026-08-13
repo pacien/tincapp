@@ -19,24 +19,28 @@
 package org.pacien.tincapp.ui.common
 
 import androidx.lifecycle.LiveData
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledFuture
+import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
 /**
  * @author euxane
  */
 abstract class SelfRefreshingLiveData<T>(private val refreshInterval: Long, private val timeUnit: TimeUnit) : LiveData<T>() {
-  private val scheduledExecutor = Executors.newSingleThreadScheduledExecutor()
-  private lateinit var scheduledFuture: ScheduledFuture<*>
+  private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+  private var refreshJob: Job? = null
 
   override fun onActive() {
-    scheduledFuture = scheduledExecutor.scheduleWithFixedDelay(this::onRefresh, 0, refreshInterval, timeUnit)
+    refreshJob = scope.launch {
+      while (isActive) {
+        onRefresh()
+        delay(timeUnit.toMillis(refreshInterval))
+      }
+    }
   }
 
   override fun onInactive() {
-    scheduledFuture.cancel(false)
+    refreshJob?.cancel()
   }
 
-  abstract fun onRefresh()
+  abstract suspend fun onRefresh()
 }

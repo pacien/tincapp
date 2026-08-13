@@ -18,21 +18,18 @@
 
 package org.pacien.tincapp.commands
 
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.Executors
-import java.util.function.Supplier
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * @author euxane
  */
 internal object Executor {
   class CommandExecutionException(msg: String) : Exception(msg)
-
-  private val threadPool = Executors.newCachedThreadPool()
 
   private fun read(stream: InputStream) = BufferedReader(InputStreamReader(stream)).readLines()
 
@@ -42,14 +39,12 @@ internal object Executor {
     throw CommandExecutionException(e.message ?: "Could not start process.")
   }
 
-  fun call(cmd: Command): CompletableFuture<List<String>> = run(cmd).let { process ->
-    supplyAsyncTask<List<String>> {
-      val exitCode = process.waitFor()
-      if (exitCode == 0) read(process.inputStream)
-      else throw CommandExecutionException(read(process.errorStream).lastOrNull() ?: "Non-zero exit status ($exitCode).")
-    }
+  suspend fun callSuspend(cmd: Command): List<String> = withContext(Dispatchers.IO) {
+    val process = run(cmd)
+    val exitCode = process.waitFor()
+    if (exitCode == 0) read(process.inputStream)
+    else throw CommandExecutionException(
+      read(process.errorStream).lastOrNull() ?: "Non-zero exit status ($exitCode)."
+    )
   }
-
-  fun runAsyncTask(r: () -> Unit) = CompletableFuture.supplyAsync(Supplier(r), threadPool)!!
-  fun <U> supplyAsyncTask(s: () -> U) = CompletableFuture.supplyAsync(Supplier(s), threadPool)!!
 }

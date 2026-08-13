@@ -18,20 +18,10 @@
 
 package org.pacien.tincapp.extensions
 
-import java.util.concurrent.CompletableFuture
-
 /**
  * @author euxane
  */
 object Java {
-
-  fun <T> CompletableFuture<T>.exceptionallyAccept(fn: (Throwable) -> Unit) = exceptionally { fn(it); null }!!
-
-  fun <T> failedFuture(t: Throwable): CompletableFuture<T> {
-    val future = CompletableFuture<T>()
-    future.completeExceptionally(t)
-    return future
-  }
 
   fun <A, R> applyIgnoringException(f: (A) -> R, x: A, alt: R? = null) = try {
     f(x)

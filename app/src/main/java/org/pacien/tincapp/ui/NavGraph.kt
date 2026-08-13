@@ -33,6 +33,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import org.pacien.tincapp.ui.netlist.configure.ConfigureViewModel
 import org.pacien.tincapp.ui.netlist.NetworkListScreen
 import org.pacien.tincapp.ui.netlist.StartViewModel
@@ -122,6 +124,7 @@ fun NavGraph(
             val graphViewModel: GraphViewModel = viewModel()
             val netName = VpnRepository.currentNetName
             val vpnCfg = VpnRepository.interfaceConfig ?: VpnInterfaceConfiguration()
+            val scope = rememberCoroutineScope()
 
             var selectedNodeInfo by remember { mutableStateOf<String?>(null) }
 
@@ -133,15 +136,23 @@ fun NavGraph(
                 logLiveData = logViewModel.log,
                 onNodeClick = { node ->
                     netName?.let { name ->
-                        Tinc.info(name, node.name).thenAccept { info ->
-                            selectedNodeInfo = info
+                        scope.launch {
+                            try {
+                                selectedNodeInfo = Tinc.info(name, node.name)
+                            } catch (e: Exception) {
+                                // handle error
+                            }
                         }
                     }
                 },
                 onNodeNameClick = { nodeName ->
                     netName?.let { name ->
-                        Tinc.info(name, nodeName).thenAccept { info ->
-                            selectedNodeInfo = info
+                        scope.launch {
+                            try {
+                                selectedNodeInfo = Tinc.info(name, nodeName)
+                            } catch (e: Exception) {
+                                // handle error
+                            }
                         }
                     }
                 },

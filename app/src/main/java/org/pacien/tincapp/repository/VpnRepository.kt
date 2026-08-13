@@ -21,6 +21,7 @@ package org.pacien.tincapp.repository
 import android.os.ParcelFileDescriptor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +29,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.context.App
-import java.util.concurrent.CompletableFuture
 
 /**
  * Represents the current state of the VPN service.
@@ -55,7 +55,7 @@ object VpnRepository {
         get() = _interfaceConfig
 
     var fd: ParcelFileDescriptor? = null
-    var daemon: CompletableFuture<Unit>? = null
+    var daemon: Job? = null
 
     var currentNetName: String? = null
         private set
@@ -72,7 +72,7 @@ object VpnRepository {
     }
 
     val isConnected: Boolean
-        get() = !(daemon?.isDone ?: true)
+        get() = _state.value is VpnState.Connected || _state.value is VpnState.Connecting
 
     fun updateState(newState: VpnState) {
         _state.value = newState
@@ -83,7 +83,7 @@ object VpnRepository {
         passphrase: String?,
         interfaceCfg: VpnInterfaceConfiguration?,
         fd: ParcelFileDescriptor?,
-        daemon: CompletableFuture<Unit>?
+        daemon: Job?
     ) {
         scope.launch {
             dataStore.saveConnection(netName, passphrase)

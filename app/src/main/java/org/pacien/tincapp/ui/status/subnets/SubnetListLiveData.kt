@@ -30,10 +30,14 @@ class SubnetListLiveData : SelfRefreshingLiveData<List<SubnetInfo>>(5, TimeUnit.
   private val vpnService = TincVpnService
   private val tincCtl = Tinc
 
-  override fun onRefresh() {
-    vpnService.getCurrentNetName()
-      ?.let { netName -> tincCtl.dumpSubnets(netName) }
-      ?.thenApply { list -> list.map { SubnetInfo.ofSubnetDump(it) } }
-      ?.thenAccept(this::postValue)
+  override suspend fun onRefresh() {
+    vpnService.getCurrentNetName()?.let { netName ->
+      try {
+        val list = tincCtl.dumpSubnets(netName)
+        postValue(list.map { SubnetInfo.ofSubnetDump(it) })
+      } catch (e: Exception) {
+        // handle error
+      }
+    }
   }
 }

@@ -30,10 +30,14 @@ class NodeListLiveData : SelfRefreshingLiveData<List<NodeInfo>>(5, TimeUnit.SECO
   private val vpnService = TincVpnService
   private val tincCtl = Tinc
 
-  override fun onRefresh() {
-    vpnService.getCurrentNetName()
-      ?.let { netName -> tincCtl.dumpNodes(netName) }
-      ?.thenApply { list -> list.map { NodeInfo.ofNodeDump(it) } }
-      ?.thenAccept(this::postValue)
+  override suspend fun onRefresh() {
+    vpnService.getCurrentNetName()?.let { netName ->
+      try {
+        val list = tincCtl.dumpNodes(netName)
+        postValue(list.map { NodeInfo.ofNodeDump(it) })
+      } catch (e: Exception) {
+        // handle error
+      }
+    }
   }
 }
