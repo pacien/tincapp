@@ -45,8 +45,8 @@
     <string name="crash_modal_action_send_report">Send rapport</string>
     <!-- key decryption modal -->
     <string name="decrypt_key_modal_title">Lås opp private tinc-nøkler</string>
-    <string name="decrypt_key_modal_field_passphrase">Passord</string>
-    <string name="decrypt_key_modal_action_unlock">Lås opp</string>
+    <string name="unlock_network_modal_field_passphrase">Passord</string>
+    <string name="unlock_network_modal_action_unlock">Lås opp</string>
     <!-- error notifications -->
     <string name="notification_error_channel_name">Feil</string>
     <string name="notification_error_action_open_manual">Åpne manual</string>

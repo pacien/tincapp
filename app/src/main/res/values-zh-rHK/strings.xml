@@ -45,8 +45,8 @@
     <string name="crash_modal_action_send_report">發送報告</string>
     <!-- key decryption modal -->
     <string name="decrypt_key_modal_title">解鎖 tinc 私鑰</string>
-    <string name="decrypt_key_modal_field_passphrase">密碼</string>
-    <string name="decrypt_key_modal_action_unlock">解鎖</string>
+    <string name="unlock_network_modal_field_passphrase">密碼</string>
+    <string name="unlock_network_modal_action_unlock">解鎖</string>
     <!-- error notifications -->
     <string name="notification_error_channel_name">錯誤</string>
     <string name="notification_error_action_open_manual">打開手冊</string>

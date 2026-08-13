@@ -226,7 +226,7 @@ fun LockNetworkDialog(
                 OutlinedTextField(
                     value = passphrase,
                     onValueChange = { passphrase = it },
-                    label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
+                    label = { Text(stringResource(R.string.unlock_network_modal_field_passphrase)) },
                     modifier = Modifier.fillMaxWidth().autoFocus(),
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,
@@ -297,7 +297,7 @@ fun UnlockNetworkDialog(
                 OutlinedTextField(
                     value = passphrase,
                     onValueChange = { passphrase = it },
-                    label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
+                    label = { Text(stringResource(R.string.unlock_network_modal_field_passphrase)) },
                     modifier = Modifier.fillMaxWidth().autoFocus(),
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true,

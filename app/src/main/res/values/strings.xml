@@ -62,10 +62,10 @@
 	<string name="crash_modal_dev_email" translatable="false">pacien.gplayfr@gmail.com</string>
 
 	<!-- key decryption modal -->
-	<string name="decrypt_key_modal_title">Unlock private tinc keys</string>
-	<string name="decrypt_key_modal_field_passphrase">Passphrase</string>
-	<string name="decrypt_key_modal_action_unlock">Unlock</string>
-	<string name="decrypt_key_modal_action_cancel" translatable="false">@string/generic_action_cancel</string>
+	<string name="unlock_network_modal_title">Unlock private keys</string>
+	<string name="unlock_network_modal_field_passphrase">Passphrase</string>
+	<string name="unlock_network_modal_action_unlock">Unlock</string>
+	<string name="unlock_network_modal_action_cancel" translatable="false">@string/generic_action_cancel</string>
 
 	<!-- error notifications -->
 	<string name="notification_error_channel_name">Errors</string>

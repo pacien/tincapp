@@ -31,13 +31,13 @@ fun UnlockKeyDialog(
 
   AlertDialog(
     onDismissRequest = onDismiss,
-    title = { Text(stringResource(R.string.decrypt_key_modal_title)) },
+    title = { Text(stringResource(R.string.unlock_network_modal_title)) },
     text = {
       Column {
         OutlinedTextField(
           value = passphrase,
           onValueChange = { passphrase = it },
-          label = { Text(stringResource(R.string.decrypt_key_modal_field_passphrase)) },
+          label = { Text(stringResource(R.string.unlock_network_modal_field_passphrase)) },
           visualTransformation = PasswordVisualTransformation(),
           singleLine = true,
           keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -53,12 +53,12 @@ fun UnlockKeyDialog(
         onClick = submit,
         enabled = formIsComplete
       ) {
-        Text(stringResource(R.string.decrypt_key_modal_action_unlock))
+        Text(stringResource(R.string.unlock_network_modal_action_unlock))
       }
     },
     dismissButton = {
       TextButton(onClick = onDismiss) {
-        Text(stringResource(R.string.decrypt_key_modal_action_cancel))
+        Text(stringResource(R.string.unlock_network_modal_action_cancel))
       }
     }
   )

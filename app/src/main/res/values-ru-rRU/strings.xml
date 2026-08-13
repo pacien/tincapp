@@ -44,8 +44,8 @@
     <string name="crash_modal_action_send_report">Отправить отчет</string>
     <!-- key decryption modal -->
     <string name="decrypt_key_modal_title">Разблокировать приватные ключи tinc</string>
-    <string name="decrypt_key_modal_field_passphrase">Кодовая фраза</string>
-    <string name="decrypt_key_modal_action_unlock">Разблокировать</string>
+    <string name="unlock_network_modal_field_passphrase">Кодовая фраза</string>
+    <string name="unlock_network_modal_action_unlock">Разблокировать</string>
     <!-- error notifications -->
     <string name="notification_error_channel_name">Ошибки</string>
     <string name="notification_error_action_open_manual">Открыть руководство</string>
