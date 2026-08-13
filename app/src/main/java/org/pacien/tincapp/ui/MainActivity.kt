@@ -106,13 +106,18 @@ class MainActivity : ComponentActivity() {
                         onOpenWebsite = { openURL(getString(R.string.about_app_website_url), onError = { showErrorDialog(it) }) }
                     )
                     is MainViewModel.ActiveDialog.Error -> ErrorDialog(
+                        title = dialog.title,
                         message = dialog.msg,
                         docTopic = dialog.docTopic,
+                        configDir = dialog.configDir,
+                        proposeLogs = dialog.proposeLogs,
                         onDismiss = { viewModel.dismissDialog() },
                         onOpenManual = {
                             val url = getString(R.string.app_doc_url_format, it)
                             openURL(url, onError = { showErrorDialog(it) })
-                        }
+                        },
+                        onEditConfig = { openDocumentTree(BrowseFilesIntents.networkConfigDirDocId(it)) },
+                        onViewLogs = { openDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) }
                     )
                     is MainViewModel.ActiveDialog.Warning -> WarningDialog(
                         message = dialog.msg,

@@ -63,23 +63,43 @@ fun ProgressDialog(text: String) {
 @Composable
 fun ErrorDialog(
   message: String,
+  title: String? = null,
   docTopic: String? = null,
+  configDir: String? = null,
+  proposeLogs: Boolean = false,
   onDismiss: () -> Unit,
-  onOpenManual: (String) -> Unit
+  onOpenManual: (String) -> Unit,
+  onEditConfig: (String) -> Unit = {},
+  onViewLogs: () -> Unit = {}
 ) {
   AlertDialog(
     onDismissRequest = onDismiss,
-    title = { Text(stringResource(R.string.generic_title_error)) },
+    title = {
+      Text(
+        text = title ?: stringResource(R.string.notification_error_title_unable_to_start_tinc),
+        color = MaterialTheme.colorScheme.error
+      )
+    },
     text = { Text(message) },
     confirmButton = {
-      TextButton(onClick = onDismiss) {
-        Text(stringResource(R.string.generic_action_dismiss))
-      }
-    },
-    dismissButton = {
-      if (docTopic != null) {
-        TextButton(onClick = { onOpenManual(docTopic) }) {
-          Text(stringResource(R.string.notification_error_action_help))
+      Row {
+        if (docTopic != null) {
+          TextButton(onClick = { onOpenManual(docTopic) }) {
+            Text(stringResource(R.string.notification_error_action_help))
+          }
+        }
+        if (configDir != null) {
+          TextButton(onClick = { onEditConfig(configDir) }) {
+            Text(stringResource(R.string.start_network_action_edit_config))
+          }
+        }
+        if (proposeLogs) {
+          TextButton(onClick = onViewLogs) {
+            Text(stringResource(R.string.notification_error_action_view_logs))
+          }
+        }
+        TextButton(onClick = onDismiss) {
+          Text(stringResource(R.string.generic_action_dismiss))
         }
       }
     }

@@ -58,7 +58,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             VpnRepository.events.collect { event ->
                 when (event) {
-                    is VpnEvent.Error -> showError(event.msg, event.docTopic)
+                    is VpnEvent.Error -> showError(
+                        msg = event.msg,
+                        title = App.getContext().getString(event.titleRes),
+                        docTopic = event.docTopic,
+                        configDir = event.configDir,
+                        proposeLogs = event.proposeLogs
+                    )
                     is VpnEvent.ShowPassphraseDialog -> showDecryptKeys()
                 }
             }
@@ -70,7 +76,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun checkPersistentError() {
         notificationManager.getError()?.let { error ->
-            showError(error.message, error.manualLink)
+            showError(
+                msg = error.message,
+                title = error.title,
+                docTopic = error.manualLink,
+                configDir = error.configDir,
+                proposeLogs = error.proposeLogs
+            )
         }
     }
 
@@ -83,7 +95,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         data class Progress(val text: String) : ActiveDialog()
         object DecryptKeys : ActiveDialog()
         object About : ActiveDialog()
-        data class Error(val msg: String, val docTopic: String? = null) : ActiveDialog()
+        data class Error(
+            val title: String? = null,
+            val msg: String,
+            val docTopic: String? = null,
+            val configDir: String? = null,
+            val proposeLogs: Boolean = false
+        ) : ActiveDialog()
         data class Warning(
             val msg: String,
             val docTopic: String? = null,
@@ -104,8 +122,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         activeDialog = ActiveDialog.About
     }
 
-    fun showError(msg: String, docTopic: String? = null) {
-        activeDialog = ActiveDialog.Error(msg, docTopic)
+    fun showError(
+        msg: String,
+        title: String? = null,
+        docTopic: String? = null,
+        configDir: String? = null,
+        proposeLogs: Boolean = false
+    ) {
+        activeDialog = ActiveDialog.Error(title, msg, docTopic, configDir, proposeLogs)
     }
 
     fun showWarning(msg: String, docTopic: String? = null, onContinue: () -> Unit) {
