@@ -92,11 +92,76 @@ class StatusViewModel : ViewModel() {
             initialValue = emptyList()
         )
 
+    val nodes: StateFlow<List<NodeInfo>> = VpnRepository.vpnState
+        .flatMapLatest { state ->
+            if (state is VpnState.Connected) {
+                flow {
+                    while (true) {
+                        try {
+                            val dump = Tinc.dumpNodes(state.netName)
+                            emit(dump.map { NodeInfo.ofNodeDump(it) })
+                        } catch (_: Exception) {
+                        }
+                        delay(5000)
+                    }
+                }.flowOn(Dispatchers.IO)
+            } else {
+                flowOf(emptyList())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    val subnets: StateFlow<List<SubnetInfo>> = VpnRepository.vpnState
+        .flatMapLatest { state ->
+            if (state is VpnState.Connected) {
+                flow {
+                    while (true) {
+                        try {
+                            val dump = Tinc.dumpSubnets(state.netName)
+                            emit(dump.map { SubnetInfo.ofSubnetDump(it) })
+                        } catch (_: Exception) {
+                        }
+                        delay(5000)
+                    }
+                }.flowOn(Dispatchers.IO)
+            } else {
+                flowOf(emptyList())
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    val graphData: StateFlow<String> = VpnRepository.vpnState
+        .flatMapLatest { state ->
+            if (state is VpnState.Connected) {
+                flow {
+                    while (true) {
+                        try {
+                            emit(Tinc.dumpGraph(state.netName))
+                        } catch (_: Exception) {
+                        }
+                        delay(5000)
+                    }
+                }.flowOn(Dispatchers.IO)
+            } else {
+                flowOf("")
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = ""
+        )
+
     val uiState: StateFlow<StatusUiState> = combine(
         VpnRepository.vpnState,
-        VpnRepository.nodes,
-        VpnRepository.subnets,
-        VpnRepository.graph,
+        nodes,
+        subnets,
+        graphData,
         logs,
         _selectedNodeInfo
     ) { params: Array<Any?> ->

@@ -31,8 +31,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.delay
-import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.context.App
 
@@ -74,17 +72,6 @@ object VpnRepository {
     private val _events = MutableSharedFlow<VpnEvent>()
     val events: SharedFlow<VpnEvent> = _events.asSharedFlow()
 
-    private val _nodes = MutableStateFlow<List<NodeInfo>>(emptyList())
-    val nodes: StateFlow<List<NodeInfo>> = _nodes.asStateFlow()
-
-    private val _subnets = MutableStateFlow<List<SubnetInfo>>(emptyList())
-    val subnets: StateFlow<List<SubnetInfo>> = _subnets.asStateFlow()
-
-    private val _graph = MutableStateFlow<String>("")
-    val graph: StateFlow<String> = _graph.asStateFlow()
-
-    private var pollJob: Job? = null
-
     private var _interfaceConfig: VpnInterfaceConfiguration? = null
     val interfaceConfig: VpnInterfaceConfiguration?
         get() = _interfaceConfig
@@ -111,39 +98,6 @@ object VpnRepository {
 
     fun updateState(newState: VpnState) {
         _state.value = newState
-        if (newState is VpnState.Connected) {
-            startPolling(newState.netName)
-        } else {
-            stopPolling()
-        }
-    }
-
-    private fun startPolling(netName: String) {
-        pollJob?.cancel()
-        pollJob = scope.launch(Dispatchers.IO) {
-            while (true) {
-                try {
-                    val nodesDump = Tinc.dumpNodes(netName)
-                    _nodes.value = nodesDump.map { NodeInfo.ofNodeDump(it) }
-
-                    val subnetsDump = Tinc.dumpSubnets(netName)
-                    _subnets.value = subnetsDump.map { SubnetInfo.ofSubnetDump(it) }
-
-                    _graph.value = Tinc.dumpGraph(netName)
-                } catch (e: Exception) {
-                    // Log or handle error
-                }
-                delay(5000)
-            }
-        }
-    }
-
-    private fun stopPolling() {
-        pollJob?.cancel()
-        pollJob = null
-        _nodes.value = emptyList()
-        _subnets.value = emptyList()
-        _graph.value = ""
     }
 
     fun emitEvent(event: VpnEvent) {
