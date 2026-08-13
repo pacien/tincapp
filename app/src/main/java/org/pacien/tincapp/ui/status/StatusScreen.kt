@@ -151,7 +151,7 @@ fun StatusScreen(
                 }
                 StatusTab.LOGS -> {
                     LogView(
-                        logText = uiState.logs.joinToString("\n")
+                        logText = uiState.daemonLogs.joinToString("\n")
                     )
                 }
             }
@@ -208,7 +208,7 @@ fun StatusScreenPreview() {
                     SubnetInfo("10.0.0.0/24", "node1"),
                     SubnetInfo("10.0.1.0/24", "node2")
                 ),
-                logs = listOf("Log line 1", "Log line 2"),
+                daemonLogs = listOf("Log line 1", "Log line 2"),
                 graphData = ""
             ),
             onNodeClick = {},

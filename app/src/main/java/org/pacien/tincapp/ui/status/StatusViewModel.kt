@@ -40,7 +40,7 @@ data class StatusUiState(
     val nodes: List<NodeInfo> = emptyList(),
     val subnets: List<SubnetInfo> = emptyList(),
     val graphData: String = "",
-    val logs: List<String> = emptyList(),
+    val daemonLogs: List<String> = emptyList(),
     val selectedNodeInfo: String? = null
 )
 
@@ -49,15 +49,15 @@ class StatusViewModel : ViewModel() {
 
     private val _selectedNodeInfo = MutableStateFlow<String?>(null)
 
-    private val logLevelNumeric = 5
-    private val logLineSize = 250
+    private val daemonLogLevelNumeric = 5
+    private val daemonLogLineSize = 250
 
-    val logs: StateFlow<List<String>> = VpnRepository.vpnState
+    val daemonLogs: StateFlow<List<String>> = VpnRepository.vpnState
         .flatMapLatest { state ->
             if (state is VpnState.Connected) {
                 channelFlow {
                     val logList = LinkedList<String>()
-                    val loggerProcess = Tinc.log(state.netName, logLevelNumeric)
+                    val loggerProcess = Tinc.log(state.netName, daemonLogLevelNumeric)
 
                     val captureJob = launch(Dispatchers.IO) {
                         try {
@@ -65,7 +65,7 @@ class StatusViewModel : ViewModel() {
                                 inputStream.bufferedReader().useLines { lines ->
                                     lines.forEach { line ->
                                         synchronized(logList) {
-                                            if (logList.size >= logLineSize) logList.removeFirst()
+                                            if (logList.size >= daemonLogLineSize) logList.removeFirst()
                                             logList.addLast(line)
                                         }
                                     }
@@ -165,7 +165,7 @@ class StatusViewModel : ViewModel() {
         nodes,
         subnets,
         graphData,
-        logs,
+        daemonLogs,
         _selectedNodeInfo
     ) { params: Array<Any?> ->
         StatusUiState(
@@ -173,7 +173,7 @@ class StatusViewModel : ViewModel() {
             nodes = params[1] as List<NodeInfo>,
             subnets = params[2] as List<SubnetInfo>,
             graphData = params[3] as String,
-            logs = params[4] as List<String>,
+            daemonLogs = params[4] as List<String>,
             selectedNodeInfo = params[5] as String?
         )
     }.stateIn(
