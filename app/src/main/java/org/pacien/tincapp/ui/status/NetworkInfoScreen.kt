@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.ui.status.networkinfo
+package org.pacien.tincapp.ui.status
 
+import android.content.res.Resources
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,14 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import org.pacien.tincapp.R
-import org.pacien.tincapp.ui.status.NodeInfo
-import org.pacien.tincapp.ui.status.SubnetInfo
+import org.pacien.tincapp.config.CidrAddress
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
+import org.pacien.tincapp.context.App
 import org.pacien.tincapp.ui.common.SectionTitle
-import org.pacien.tincapp.ui.status.EmptyPlaceholder
-import org.pacien.tincapp.ui.status.ListBlock
-import org.pacien.tincapp.ui.status.NodeListItem
-import org.pacien.tincapp.ui.status.SubnetListItem
 
 @Composable
 fun NetworkInfoScreen(
@@ -43,7 +40,6 @@ fun NetworkInfoScreen(
     subnets: List<SubnetInfo>,
     modifier: Modifier = Modifier
 ) {
-    val formatter = VpnInterfaceConfigurationFormatter
     val resources = LocalResources.current
 
     LazyColumn(
@@ -56,28 +52,28 @@ fun NetworkInfoScreen(
         item {
           ListBlock(
             title = stringResource(R.string.status_network_info_ip_addresses_label),
-            content = formatter.formatList(vpnInterfaceConfiguration.addresses, resources)
+            content = formatNetInfoList(vpnInterfaceConfiguration.addresses, resources)
           )
         }
 
         item {
           ListBlock(
             title = stringResource(R.string.status_network_info_routes_label),
-            content = formatter.formatList(vpnInterfaceConfiguration.routes, resources)
+            content = formatNetInfoList(vpnInterfaceConfiguration.routes, resources)
           )
         }
 
         item {
           ListBlock(
             title = stringResource(R.string.status_network_info_dns_servers_label),
-            content = formatter.formatList(vpnInterfaceConfiguration.dnsServers, resources)
+            content = formatNetInfoList(vpnInterfaceConfiguration.dnsServers, resources)
           )
         }
 
         item {
           ListBlock(
             title = stringResource(R.string.status_network_info_search_domains_label),
-            content = formatter.formatList(vpnInterfaceConfiguration.searchDomains, resources)
+            content = formatNetInfoList(vpnInterfaceConfiguration.searchDomains, resources)
           )
         }
 
@@ -85,7 +81,7 @@ fun NetworkInfoScreen(
             item {
               ListBlock(
                 title = stringResource(R.string.status_network_info_allowed_applications_label),
-                content = formatter.formatList(
+                content = formatNetInfoList(
                   vpnInterfaceConfiguration.allowedApplications,
                   resources
                 )
@@ -97,7 +93,7 @@ fun NetworkInfoScreen(
             item {
               ListBlock(
                 title = stringResource(R.string.status_network_info_disallowed_applications_label),
-                content = formatter.formatList(
+                content = formatNetInfoList(
                   vpnInterfaceConfiguration.disallowedApplications,
                   resources
                 )
@@ -147,4 +143,15 @@ fun NetworkInfoScreen(
             }
         }
     }
+}
+
+fun formatNetInfoList(list: List<Any>?, resources: Resources = App.getResources()) = when {
+  !list.isNullOrEmpty() -> list.joinToString("\n", transform = ::formatNetInfoListElement)
+  else -> resources.getString(R.string.status_network_info_value_none)
+}
+
+private fun formatNetInfoListElement(element: Any) = when (element) {
+  is CidrAddress -> element.toSlashSeparated()
+  is String -> element
+  else -> element.toString()
 }

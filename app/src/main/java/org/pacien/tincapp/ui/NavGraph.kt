@@ -24,9 +24,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import org.pacien.tincapp.repository.VpnRepository
 import org.pacien.tincapp.repository.VpnState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,20 +32,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
 import org.pacien.tincapp.ui.netlist.configure.ConfigureViewModel
 import org.pacien.tincapp.ui.netlist.NetworkListScreen
 import org.pacien.tincapp.ui.netlist.StartViewModel
 import org.pacien.tincapp.ui.status.StatusViewModel
-import org.pacien.tincapp.ui.status.nodes.NodeInfoDialog
+import org.pacien.tincapp.ui.status.NodeInfoDialog
 import org.pacien.tincapp.ui.status.StatusScreen
-import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.R
 import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.ui.common.AppActions
 import org.pacien.tincapp.intent.openURL
-import org.pacien.tincapp.vpnservice.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
 

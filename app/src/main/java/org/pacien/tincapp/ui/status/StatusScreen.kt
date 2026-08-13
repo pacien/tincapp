@@ -53,8 +53,6 @@ import org.pacien.tincapp.config.VpnInterfaceConfiguration
 import org.pacien.tincapp.ui.common.AppStatusHeader
 import org.pacien.tincapp.ui.common.AppActions
 import org.pacien.tincapp.ui.common.AppActionsMenu
-import org.pacien.tincapp.ui.status.topograph.GraphView
-import org.pacien.tincapp.ui.status.networkinfo.NetworkInfoScreen
 import org.pacien.tincapp.ui.theme.BackgroundSecondary
 import org.pacien.tincapp.ui.theme.HeaderPrimary
 import org.pacien.tincapp.ui.theme.TextTitle

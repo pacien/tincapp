@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.pacien.tincapp.ui.status.nodes
+package org.pacien.tincapp.ui.status
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
