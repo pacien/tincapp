@@ -20,21 +20,46 @@ package org.pacien.tincapp.ui.netlist
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.keyring.TincKeyring
 
 /**
  * ViewModel for StartActivity.
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class StartViewModel(application: Application) : AndroidViewModel(application) {
-    private val networkListLiveData = NetworkListLiveData()
+    private val appPaths = AppPaths
+    private val refreshTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
 
-    val networkList: LiveData<List<NetworkInfo>> = networkListLiveData
+    val networkList: StateFlow<List<NetworkInfo>> = refreshTrigger
+        .onStart { emit(Unit) }
+        .flatMapLatest {
+            flow {
+                while (true) {
+                    val networkList = appPaths.confDir().list()?.sorted()?.map {
+                        NetworkInfo(it, TincKeyring.needsPassphrase(it))
+                    } ?: emptyList()
+                    emit(networkList)
+                    delay(1000)
+                }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     fun refresh() {
-        viewModelScope.launch {
-            networkListLiveData.onRefresh()
-        }
+        refreshTrigger.tryEmit(Unit)
     }
 }

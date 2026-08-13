@@ -19,10 +19,46 @@
 package org.pacien.tincapp.ui.status.subnets
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.stateIn
+import org.pacien.tincapp.commands.Tinc
+import org.pacien.tincapp.repository.VpnRepository
+import org.pacien.tincapp.repository.VpnState
 
 /**
  * @author euxane
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class SubnetListViewModel : ViewModel() {
-  val nodeList by lazy { SubnetListLiveData() }
+  private val tincCtl = Tinc
+
+  val nodeList: StateFlow<List<SubnetInfo>> = VpnRepository.vpnState
+    .flatMapLatest { state ->
+      if (state is VpnState.Connected) {
+        flow {
+          while (true) {
+            try {
+              val list = tincCtl.dumpSubnets(state.netName)
+              emit(list.map { SubnetInfo.ofSubnetDump(it) })
+            } catch (e: Exception) {
+              // handle error
+            }
+            delay(5000)
+          }
+        }
+      } else {
+        flowOf(emptyList())
+      }
+    }.stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(5000),
+      initialValue = emptyList()
+    )
 }

@@ -39,7 +39,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -52,9 +51,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
 import org.pacien.tincapp.ui.status.nodes.NodeInfo
@@ -81,10 +83,10 @@ enum class StatusTab(val titleRes: Int) {
 @Composable
 fun StatusScreen(
     vpnInterfaceConfiguration: VpnInterfaceConfiguration,
-    nodeListLiveData: LiveData<List<NodeInfo>>,
-    subnetListLiveData: LiveData<List<SubnetInfo>>,
-    graphLiveData: LiveData<String>,
-    logLiveData: LiveData<List<String>>,
+    nodeListFlow: Flow<List<NodeInfo>>,
+    subnetListFlow: Flow<List<SubnetInfo>>,
+    graphFlow: Flow<String>,
+    logFlow: Flow<List<String>>,
     onNodeClick: (NodeInfo) -> Unit,
     onNodeNameClick: (String) -> Unit,
     vpnState: VpnState,
@@ -154,8 +156,8 @@ fun StatusScreen(
             val isCurrentPage = pagerState.currentPage == pageIndex
             when (tabs[pageIndex]) {
                 StatusTab.NETWORK_INFO -> {
-                    val nodes by nodeListLiveData.observeAsStateActive(isCurrentPage, emptyList())
-                    val subnets by subnetListLiveData.observeAsStateActive(isCurrentPage, emptyList())
+                    val nodes by nodeListFlow.collectAsStateActive(isCurrentPage, emptyList())
+                    val subnets by subnetListFlow.collectAsStateActive(isCurrentPage, emptyList())
                     NetworkInfoScreen(
                         vpnInterfaceConfiguration = vpnInterfaceConfiguration,
                         nodes = nodes,
@@ -164,14 +166,14 @@ fun StatusScreen(
                     )
                 }
                 StatusTab.TOPOLOGY -> {
-                    val dotString by graphLiveData.observeAsStateActive(isCurrentPage, "")
+                    val dotString by graphFlow.collectAsStateActive(isCurrentPage, "")
                     GraphView(
                         dotString = dotString,
                         onNodeClick = onNodeNameClick
                     )
                 }
                 StatusTab.LOGS -> {
-                    val logLines by logLiveData.observeAsStateActive(isCurrentPage, emptyList())
+                    val logLines by logFlow.collectAsStateActive(isCurrentPage, emptyList())
                     LogView(
                         logText = logLines.joinToString("\n")
                     )
@@ -182,23 +184,22 @@ fun StatusScreen(
 }
 
 /**
- * Observe a LiveData as state only when [active] is true.
+ * Collect a Flow as state only when [active] is true.
  *
  * When [active] becomes false, the state will keep its last value.
- * This is useful for stopping refreshes of [SelfRefreshingLiveData] when not in focus.
+ * This is useful for stopping refreshes of self-refreshing Flows when not in focus.
  */
 @Composable
-fun <T> LiveData<T>.observeAsStateActive(active: Boolean, initial: T): State<T> {
+fun <T> Flow<T>.collectAsStateActive(active: Boolean, initial: T): State<T> {
     val state = remember { mutableStateOf(initial) }
-    DisposableEffect(this, active) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(this, active, lifecycleOwner) {
         if (active) {
-            val observer = Observer<T> { state.value = it }
-            observeForever(observer)
-            onDispose {
-                removeObserver(observer)
+            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                collect { value ->
+                    state.value = value
+                }
             }
-        } else {
-            onDispose {}
         }
     }
     return state
@@ -243,16 +244,16 @@ fun StatusScreenPreview() {
     TincTheme {
         StatusScreen(
             vpnInterfaceConfiguration = VpnInterfaceConfiguration(),
-            nodeListLiveData = MutableLiveData(listOf(
+            nodeListFlow = flowOf(listOf(
                 NodeInfo("node1", "id1", "1.2.3.4", "1234", 0, 0, 0, 0, 0, 0, "node1", "node1", 1, 1500, 1500, 1500),
                 NodeInfo("node2", "id2", "5.6.7.8", "5678", 0, 0, 0, 0, 0, 0, "node1", "node1", 2, 1500, 1500, 1500)
             )),
-            subnetListLiveData = MutableLiveData(listOf(
+            subnetListFlow = flowOf(listOf(
                 SubnetInfo("10.0.0.0/24", "node1"),
                 SubnetInfo("10.0.1.0/24", "node2")
             )),
-            logLiveData = MutableLiveData(listOf("Log line 1", "Log line 2")),
-            graphLiveData = MutableLiveData(""),
+            logFlow = flowOf(listOf("Log line 1", "Log line 2")),
+            graphFlow = flowOf(""),
             onNodeClick = {},
             onNodeNameClick = {},
             vpnState = VpnState.Connected("test-net"),

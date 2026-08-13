@@ -34,7 +34,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,7 +62,7 @@ fun NetworkListScreen(
     onConfigDirClick: (String) -> Unit,
     appActions: AppActions
 ) {
-    val networkList by viewModel.networkList.observeAsState(emptyList())
+    val networkList by viewModel.networkList.collectAsStateWithLifecycle(emptyList())
 
     var activeDialog by remember { mutableStateOf<ConfigureDialogType?>(null) }
     var selectedNetwork by remember { mutableStateOf("") }

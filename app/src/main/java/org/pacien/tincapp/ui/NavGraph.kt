@@ -130,10 +130,10 @@ fun NavGraph(
 
             StatusScreen(
                 vpnInterfaceConfiguration = vpnCfg,
-                nodeListLiveData = nodeListViewModel.nodeList,
-                subnetListLiveData = subnetListViewModel.nodeList,
-                graphLiveData = graphViewModel.graphData,
-                logLiveData = logViewModel.log,
+                nodeListFlow = nodeListViewModel.nodeList,
+                subnetListFlow = subnetListViewModel.nodeList,
+                graphFlow = graphViewModel.graphData,
+                logFlow = logViewModel.log,
                 onNodeClick = { node ->
                     netName?.let { name ->
                         scope.launch {

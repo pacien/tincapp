@@ -19,10 +19,46 @@
 package org.pacien.tincapp.ui.status.topograph
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.stateIn
+import org.pacien.tincapp.commands.Tinc
+import org.pacien.tincapp.repository.VpnRepository
+import org.pacien.tincapp.repository.VpnState
 
 /**
  * @author euxane
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class GraphViewModel : ViewModel() {
-  val graphData by lazy { GraphLiveData() }
+  private val tincCtl = Tinc
+
+  val graphData: StateFlow<String> = VpnRepository.vpnState
+    .flatMapLatest { state ->
+      if (state is VpnState.Connected) {
+        flow {
+          while (true) {
+            try {
+              val graph = tincCtl.dumpGraph(state.netName)
+              emit(graph)
+            } catch (e: Exception) {
+              // handle error
+            }
+            delay(5000)
+          }
+        }
+      } else {
+        flowOf("")
+      }
+    }.stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(5000),
+      initialValue = ""
+    )
 }
