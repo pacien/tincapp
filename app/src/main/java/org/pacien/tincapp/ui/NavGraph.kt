@@ -26,6 +26,7 @@ import org.pacien.tincapp.repository.VpnState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -59,13 +60,14 @@ fun NavGraph(
     onDisconnectClick: () -> Unit
 ) {
     val context = LocalContext.current
+    val appDocUrlFormat = stringResource(R.string.app_doc_url_format)
 
-    val appActions = remember(onAboutClick, onShowError, onOpenDocumentTree) {
+    val appActions = remember(onAboutClick, onShowError, onOpenDocumentTree, appDocUrlFormat, context) {
         AppActions(
             onOpenNetworksDir = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_NETWORKS) },
             onLogDir = { onOpenDocumentTree(FilesDocumentsProvider.VIRTUAL_ROOT_LOGS) },
             onManual = { topic ->
-                val url = context.getString(R.string.app_doc_url_format, topic ?: "doc.html")
+                val url = appDocUrlFormat.format(topic ?: "doc.html")
                 context.openURL(url, onError = { msg -> onShowError(msg, null) })
             },
             onAbout = onAboutClick
