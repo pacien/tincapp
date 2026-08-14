@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
@@ -50,7 +49,7 @@ data class NetworkListUiState(
  * ViewModel for StartActivity.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
-class StartViewModel(application: Application) : AndroidViewModel(application) {
+class NetworkListViewModel(application: Application) : AndroidViewModel(application) {
     private val appPaths = AppPaths
     private val refreshTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     private val _activeDialog = MutableStateFlow<ConfigureDialogType?>(null)

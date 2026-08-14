@@ -34,7 +34,7 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
 import org.pacien.tincapp.ui.netlist.configure.ConfigureViewModel
 import org.pacien.tincapp.ui.netlist.NetworkListScreen
-import org.pacien.tincapp.ui.netlist.StartViewModel
+import org.pacien.tincapp.ui.netlist.NetworkListViewModel
 import org.pacien.tincapp.ui.status.StatusViewModel
 import org.pacien.tincapp.ui.status.NodeInfoDialog
 import org.pacien.tincapp.ui.status.StatusScreen
@@ -97,7 +97,7 @@ fun NavGraph(
         startDestination = if (VpnRepository.isConnected) Status else NetworkList
     ) {
         composable<NetworkList> {
-            val viewModel: StartViewModel = viewModel()
+            val viewModel: NetworkListViewModel = viewModel()
             val configureViewModel: ConfigureViewModel = viewModel()
             NetworkListScreen(
                 viewModel = viewModel,
