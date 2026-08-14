@@ -19,8 +19,6 @@
 package org.pacien.tincapp.vpnservice
 
 import android.annotation.SuppressLint
-import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.net.LocalServerSocket
 import android.net.VpnService
@@ -34,7 +32,6 @@ import kotlinx.coroutines.sync.withLock
 import org.apache.commons.configuration2.ex.ConversionException
 import org.pacien.tincapp.BuildConfig
 import org.pacien.tincapp.R
-import org.pacien.tincapp.commands.Executor
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.Tincd
 import org.pacien.tincapp.context.App
@@ -50,6 +47,7 @@ import org.slf4j.LoggerFactory
 import org.pacien.tincapp.repository.VpnEvent
 import org.pacien.tincapp.repository.VpnRepository
 import org.pacien.tincapp.repository.VpnState
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * @author euxane
@@ -73,19 +71,21 @@ class TincVpnService : VpnService() {
     log.info("Intent received: {}", intent.toString())
 
     serviceScope.launch {
-      when {
-        intent.action == Actions.ACTION_CONNECT && intent.scheme == Actions.TINC_SCHEME ->
+      when (intent.action) {
+        Actions.ACTION_CONNECT if intent.scheme == Actions.TINC_SCHEME ->
           startVpn(intent.data!!.schemeSpecificPart, intent.data!!.fragment)
-        intent.action == Actions.ACTION_DISCONNECT ->
+
+        Actions.ACTION_DISCONNECT ->
           stopVpn()
-        intent.action == Actions.ACTION_SYSTEM_CONNECT ->
+
+        Actions.ACTION_SYSTEM_CONNECT ->
           restorePreviousConnection()
-        else ->
-          log.error("Invalid intent action received: ${intent.action}")
+
+        else -> log.error("Invalid intent action received: ${intent.action}")
       }
     }
 
-    return Service.START_NOT_STICKY
+    return START_NOT_STICKY
   }
 
   private suspend fun restorePreviousConnection() {
@@ -135,7 +135,7 @@ class TincVpnService : VpnService() {
             tincCfg.privateKeyFile ?: AppPaths.defaultRsaPrivateKeyFile(netName),
             passphrase))
       }
-    } catch (e: FileNotFoundException) {
+    } catch (_: FileNotFoundException) {
       Pair(null, null)
     } catch (e: org.bouncycastle.openssl.PEMException) {
       return reportError(resources.getString(R.string.notification_error_message_could_not_decrypt_private_keys_format, e.message))
@@ -298,7 +298,7 @@ class TincVpnService : VpnService() {
   }
 
   private suspend fun waitForDaemonStartup() {
-    delay(SETUP_DELAY)
+    delay(SETUP_DELAY.milliseconds)
     val daemon = VpnRepository.daemon
     if (daemon != null && !daemon.isActive) {
       throw Exception("Daemon exited prematurely")
