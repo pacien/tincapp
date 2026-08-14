@@ -59,8 +59,7 @@ ExternalProject_Add(lzo
   ${lzo_SOURCE}
   CONFIGURE_COMMAND <SOURCE_DIR>/configure ${xCONFIG} --disable-shared
   BUILD_COMMAND     make -j8
-  INSTALL_COMMAND   make install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
-                    rm -r <BINARY_DIR>
+  INSTALL_COMMAND   make install DESTDIR=${CMAKE_CURRENT_BINARY_DIR}
 )
 
 ExternalProject_Add(libressl
@@ -68,8 +67,7 @@ ExternalProject_Add(libressl
   CONFIGURE_COMMAND <SOURCE_DIR>/configure ${xCONFIG} --disable-shared
   BUILD_COMMAND     make -j8 -C crypto
   INSTALL_COMMAND   make -C crypto install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
-                    make -C include install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
-                    rm -r <BINARY_DIR>
+                    make -C include install DESTDIR=${CMAKE_CURRENT_BINARY_DIR}
 )
 
 ExternalProject_Add(tinc
@@ -84,15 +82,25 @@ ExternalProject_Add(tinc
                       --disable-curses
                       --disable-readline
   BUILD_COMMAND     make -j8 -C src
-  INSTALL_COMMAND   make -C src install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
-                    ${CMAKE_COMMAND} -E copy
-                      ${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tinc
-                      ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtinc.so &&
-                    ${CMAKE_COMMAND} -E copy
-                      ${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tincd
-                      ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtincd.so &&
-                    rm -r <BINARY_DIR>
+  INSTALL_COMMAND   make -C src install DESTDIR=${CMAKE_CURRENT_BINARY_DIR}
+)
+
+add_custom_command(
+  OUTPUT  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtinc.so
+          ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtincd.so
+  COMMAND ${CMAKE_COMMAND} -E copy
+          ${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tinc
+          ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtinc.so
+  COMMAND ${CMAKE_COMMAND} -E copy
+          ${CMAKE_CURRENT_BINARY_DIR}/usr/local/sbin/tincd
+          ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtincd.so
+  DEPENDS tinc
+)
+
+add_custom_target(tinc_bin ALL
+  DEPENDS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtinc.so
+          ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/libtincd.so
 )
 
 add_library(main SHARED src/main/c/main.c)
-add_dependencies(main tinc)
+add_dependencies(main tinc_bin)
