@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.map
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "vpn_settings")
 
 class VpnDataStore(
-    private val context: Context,
+    context: Context,
     private val dataStore: DataStore<Preferences> = context.dataStore
 ) {
 
