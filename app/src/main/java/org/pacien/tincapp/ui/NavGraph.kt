@@ -92,9 +92,13 @@ fun NavGraph(
         }
     }
 
+    val startDestination = remember {
+        if (VpnRepository.isConnected) Status else NetworkList
+    }
+
     NavHost(
         navController = navController,
-        startDestination = if (VpnRepository.isConnected) Status else NetworkList
+        startDestination = startDestination
     ) {
         composable<NetworkList> {
             val viewModel: NetworkListViewModel = viewModel()
