@@ -118,8 +118,10 @@ class TincVpnService : VpnService() {
       )
 
     log.info("Starting tinc daemon for network \"$netName\".")
+    if (VpnRepository.currentNetName != null || VpnRepository.vpnState.value !is VpnState.Disconnected)
+      stopVpnInternal()
+
     VpnRepository.updateState(VpnState.Connecting)
-    if (VpnRepository.isConnected || VpnRepository.currentNetName != null) stopVpnInternal()
 
     val privateKeys = try {
       TincConfiguration.fromTincConfiguration(AppPaths.existing(AppPaths.tincConfFile(netName))).let { tincCfg ->
