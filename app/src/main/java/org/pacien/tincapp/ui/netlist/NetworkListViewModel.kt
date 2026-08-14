@@ -55,22 +55,23 @@ class NetworkListViewModel(application: Application) : AndroidViewModel(applicat
     private val _activeDialog = MutableStateFlow<ConfigureDialogType?>(null)
     private val _selectedNetwork = MutableStateFlow("")
 
+    private fun fetchNetworkList() = appPaths.confDir().list()?.sorted()?.map {
+        NetworkInfo(it, TincKeyring.needsPassphrase(it))
+    } ?: emptyList()
+
     val networkList: StateFlow<List<NetworkInfo>> = refreshTrigger
         .onStart { emit(Unit) }
         .flatMapLatest {
             flow {
                 while (true) {
-                    val list = appPaths.confDir().list()?.sorted()?.map {
-                        NetworkInfo(it, TincKeyring.needsPassphrase(it))
-                    } ?: emptyList()
-                    emit(list)
+                    emit(fetchNetworkList())
                     delay(1000)
                 }
             }
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
+            initialValue = fetchNetworkList()
         )
 
     val uiState: StateFlow<NetworkListUiState> = combine(
@@ -82,7 +83,7 @@ class NetworkListViewModel(application: Application) : AndroidViewModel(applicat
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = NetworkListUiState()
+        initialValue = NetworkListUiState(networkList = fetchNetworkList())
     )
 
     fun refresh() {
