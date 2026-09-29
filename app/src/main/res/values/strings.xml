@@ -166,6 +166,7 @@
 
 	<string name="status_activity_title_node_list">Nodes</string>
 	<string name="status_activity_title_topology">Topology</string>
+	<string name="status_topology_render_error">Could not render the network topology.</string>
 	<string name="status_log_empty_placeholder">No log entry yet.</string>
 	<string name="status_node_list_empty_placeholder_text" translatable="false">@string/generic_loading</string>
 	<string name="status_node_reachability_unreachable">unreachable</string>
