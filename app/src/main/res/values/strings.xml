@@ -75,11 +75,13 @@
 	<string name="notification_error_action_open_logs_dir">Open logs directory</string>
 	<string name="notification_error_action_view_logs">View logs</string>
 	<string name="notification_error_title_unable_to_start_tinc">Could not start tinc</string>
+	<string name="notification_error_title_daemon_stopped">tinc stopped</string>
 	<string name="notification_error_message_could_not_read_private_key_format">Could not read private tinc keys:\n%1$s</string>
 	<string name="notification_error_message_could_not_read_network_configuration_format">Could not read network interface configuration:\n%1$s</string>
 	<string name="notification_error_message_could_not_bind_iface">Could not bind network interface. Is another VPN running?</string>
 	<string name="notification_error_message_could_not_configure_iface">Could not apply network interface configuration:\n%1$s</string>
 	<string name="notification_error_message_daemon_exited">tinc daemon exited during startup:\n%1$s\nCheck the logs for more details.</string>
+	<string name="notification_error_message_daemon_exited_unexpectedly">tinc daemon exited unexpectedly.\nCheck the logs for more details.</string>
 	<string name="notification_error_message_passphrase_not_provided">No passphrase provided to unlock the keyring.</string>
 	<string name="notification_error_message_no_network_name_provided">No network name provided.</string>
 	<string name="notification_error_message_no_configuration_for_network_format">Could not find configuration for \"%1$s\" network.</string>

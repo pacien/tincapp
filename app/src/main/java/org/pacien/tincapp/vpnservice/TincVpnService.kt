@@ -24,6 +24,7 @@ import android.net.LocalServerSocket
 import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
+import androidx.annotation.StringRes
 import java.io.FileNotFoundException
 import java.security.AccessControlException
 import kotlinx.coroutines.*
@@ -201,11 +202,14 @@ class TincVpnService : VpnService() {
     val daemonJob = serviceScope.launch(Dispatchers.IO) {
       try {
         Tincd.start(netName, DEVICE_FD_ABSTRACT_SOCKET, privateKeys.first, privateKeys.second)
+      } catch (e: CancellationException) {
+        throw e
       } catch (e: Exception) {
         log.error("tinc daemon exited with error", e)
       }
     }
     VpnRepository.setState(netName, passphrase, interfaceCfg, deviceFd, daemonJob)
+    serviceScope.launch { watchDaemonExit(daemonJob) }
 
     try {
       waitForDaemonStartup()
@@ -225,6 +229,23 @@ class TincVpnService : VpnService() {
 
     if (interfaceCfg.reconnectOnNetworkChange)
       connectivityChangeReceiver.registerWatcher(this, serviceScope)
+  }
+
+  /**
+   * Tears the VPN down if the daemon exits on its own. Requested stops clear the current daemon first.
+   */
+  private suspend fun watchDaemonExit(daemon: Job) {
+    daemon.join()
+    vpnMutex.withLock {
+      if (VpnRepository.daemon !== daemon) return
+
+      reportError(
+        resources.getString(R.string.notification_error_message_daemon_exited_unexpectedly),
+        title = R.string.notification_error_title_daemon_stopped,
+        proposeLogs = true,
+      )
+      stopVpnInternal()
+    }
   }
 
   private suspend fun stopVpn(): Unit = vpnMutex.withLock {
@@ -254,6 +275,7 @@ class TincVpnService : VpnService() {
     docTopic: String? = null,
     configDir: String? = null,
     proposeLogs: Boolean = false,
+    @StringRes title: Int = R.string.notification_error_title_unable_to_start_tinc,
   ) {
     if (e != null)
       log.error(msg, e)
@@ -263,7 +285,7 @@ class TincVpnService : VpnService() {
     VpnRepository.updateState(VpnState.Disconnected)
     VpnRepository.emitEvent(
       VpnEvent.Error(
-        R.string.notification_error_title_unable_to_start_tinc,
+        title,
         msg,
         docTopic,
         configDir,
@@ -272,7 +294,7 @@ class TincVpnService : VpnService() {
     )
 
     App.alert(
-      R.string.notification_error_title_unable_to_start_tinc,
+      title,
       msg,
       docTopic,
       configDir,
