@@ -19,12 +19,12 @@
 package org.pacien.tincapp.activities.common
 
 import androidx.activity.ComponentActivity
-import org.apache.commons.io.input.ReversedLinesFileReader
 import org.pacien.tincapp.R
 import org.pacien.tincapp.context.AppPaths
 import org.pacien.tincapp.context.CrashRecorder
 import org.pacien.tincapp.intent.sendMail
 import java.io.File
+import java.io.RandomAccessFile
 
 /**
  * @author euxane
@@ -62,18 +62,26 @@ class RecentCrashHandler(private val parentActivity: ComponentActivity) {
       listOf(R.string.app_name, R.string.crash_modal_title).joinToString(" / ", transform = resources::getString),
       AppPaths.appLogFile().let { if (it.exists()) it.readLastLines(maxLines) else "" }
     )
-
-  private fun File.readLastLines(n: Int): String {
-    val reader = ReversedLinesFileReader.builder()
-      .setFile(this)
-      .setCharset(Charsets.UTF_8)
-      .get()
-    val lastLines = generateSequence(reader::readLine)
-      .takeWhile { line: String? -> line != null }
-      .take(n)
-      .toList()
-      .asReversed()
-
-    return lastLines.joinToString("\n")
-  }
 }
+
+/**
+ * Reads the last [n] lines of this file, without going through java.nio.file (API 26+).
+ */
+internal fun File.readLastLines(n: Int): String =
+  RandomAccessFile(this, "r").use { file ->
+    val chunk = ByteArray(8192)
+    var start = file.length()
+    var newlines = 0
+    while (start > 0 && newlines <= n) {
+      val size = minOf(chunk.size.toLong(), start).toInt()
+      start -= size
+      file.seek(start)
+      file.readFully(chunk, 0, size)
+      newlines += (0 until size).count { chunk[it] == '\n'.code.toByte() }
+    }
+
+    val tail = ByteArray((file.length() - start).toInt())
+    file.seek(start)
+    file.readFully(tail)
+    String(tail, Charsets.UTF_8).lines().dropLastWhile(String::isEmpty).takeLast(n).joinToString("\n")
+  }
