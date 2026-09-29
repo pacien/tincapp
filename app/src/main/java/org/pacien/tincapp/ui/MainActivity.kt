@@ -37,6 +37,7 @@ import org.pacien.tincapp.ui.common.RecentCrashHandler
 import org.pacien.tincapp.ui.netlist.ConnectionStarter
 import org.pacien.tincapp.intent.Actions
 import org.pacien.tincapp.intent.openURL
+import org.pacien.tincapp.repository.VpnState
 import org.pacien.tincapp.vpnservice.TincVpnService
 import org.pacien.tincapp.storageprovider.BrowseFilesIntents
 import org.pacien.tincapp.storageprovider.FilesDocumentsProvider
@@ -204,7 +205,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun stopVpn() {
-        viewModel.showProgress(getString(R.string.status_activity_disconnecting_vpn))
+        // no state change would dismiss it otherwise
+        if (viewModel.vpnState.value !is VpnState.Disconnected)
+            viewModel.showProgress(getString(R.string.status_activity_disconnecting_vpn))
+
         TincVpnService.disconnect()
     }
 
