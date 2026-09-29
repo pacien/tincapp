@@ -26,6 +26,7 @@ import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.service.TincVpnService
 import org.pacien.tincapp.utils.makePublic
 import java.util.regex.Pattern
 import java.util.concurrent.CompletableFuture
@@ -43,13 +44,14 @@ class ConfigureViewModel : ViewModel() {
     val uiState: StateFlow<ConfigureUiState> = _uiState.asStateFlow()
 
     private val networkNamePattern = Pattern.compile("^[^\\x00/]*$")
+    private val reservedNetworkNames = setOf("", ".", "..")
 
     fun resetState() {
         _uiState.value = ConfigureUiState.Idle
     }
 
     private fun validateNetName(netName: String): CompletableFuture<Unit> =
-        if (networkNamePattern.matcher(netName).matches())
+        if (netName !in reservedNetworkNames && networkNamePattern.matcher(netName).matches())
             CompletableFuture.completedFuture(Unit)
         else
             failedFuture(NetworkNameInvalidException())
@@ -61,6 +63,8 @@ class ConfigureViewModel : ViewModel() {
                 val cause = throwable.cause ?: throwable
                 if (cause is NetworkNameInvalidException) {
                     _uiState.value = ConfigureUiState.Error(messageResId = R.string.configure_tools_message_invalid_network_name)
+                } else if (cause is NetworkInUseException) {
+                    _uiState.value = ConfigureUiState.Error(messageResId = R.string.configure_tools_message_network_in_use)
                 } else {
                     _uiState.value = ConfigureUiState.Error(message = cause.localizedMessage ?: "Unknown error")
                 }
@@ -117,10 +121,18 @@ class ConfigureViewModel : ViewModel() {
             labelResId = R.string.configure_tools_delete_network_deleting,
             successResId = R.string.configure_tools_message_network_deleted,
             action = validateNetName(netName)
+                .thenCompose { ensureNotConnected(netName) }
                 .thenCompose { TincApp.deleteNetwork(netName) }
                 .thenApply { Unit }
         )
     }
 
+    private fun ensureNotConnected(netName: String): CompletableFuture<Unit> =
+        if (netName != TincVpnService.getCurrentNetName())
+            CompletableFuture.completedFuture(Unit)
+        else
+            failedFuture(NetworkInUseException())
+
     private class NetworkNameInvalidException : Exception()
+    private class NetworkInUseException : Exception()
 }

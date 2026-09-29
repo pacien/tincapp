@@ -104,6 +104,7 @@
 	<string name="configure_tools_message_invalid_network_name">Invalid network name.</string>
 	<string name="configure_tools_message_network_configuration_written">Network configuration written.</string>
 	<string name="configure_tools_message_network_deleted">Network configuration deleted.</string>
+	<string name="configure_tools_message_network_in_use">Disconnect from this network before deleting it.</string>
 
 	<string name="configure_activity_title_directories">Directories</string>
 	<string name="configure_browse_directories_action_open_networks_config">Open networks configuration directory</string>
