@@ -81,15 +81,14 @@ object VpnRepository {
 
     var currentNetName: String? = null
         private set
+
+    /** Kept in memory only: never persisted, for security. */
     var currentPassphrase: String? = null
         private set
 
     init {
         scope.launch {
             dataStore.netName.collect { currentNetName = it }
-        }
-        scope.launch {
-            dataStore.passphrase.collect { currentPassphrase = it }
         }
     }
 
@@ -114,7 +113,7 @@ object VpnRepository {
         daemon: Job?
     ) {
         scope.launch {
-            dataStore.saveConnection(netName, passphrase)
+            dataStore.saveConnection(netName)
         }
         currentNetName = netName
         currentPassphrase = passphrase
@@ -124,5 +123,5 @@ object VpnRepository {
     }
 
     suspend fun getNetName(): String? = currentNetName ?: dataStore.netName.first()
-    suspend fun getPassphrase(): String? = currentPassphrase ?: dataStore.passphrase.first()
+    fun getPassphrase(): String? = currentPassphrase
 }

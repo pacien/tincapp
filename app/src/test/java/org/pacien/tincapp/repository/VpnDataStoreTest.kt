@@ -49,20 +49,18 @@ class VpnDataStoreTest {
     fun testSaveAndRetrieveConnection() = runTest {
         val vpnDataStore = VpnDataStore(testContext, testDataStore)
         
-        vpnDataStore.saveConnection("my-net", "my-pass")
+        vpnDataStore.saveConnection("my-net")
         
         assertEquals("my-net", vpnDataStore.netName.first())
-        assertEquals("my-pass", vpnDataStore.passphrase.first())
     }
 
     @Test
     fun testClearConnection() = runTest {
         val vpnDataStore = VpnDataStore(testContext, testDataStore)
         
-        vpnDataStore.saveConnection("my-net", "my-pass")
-        vpnDataStore.saveConnection(null, null)
+        vpnDataStore.saveConnection("my-net")
+        vpnDataStore.saveConnection(null)
         
         assertEquals(null, vpnDataStore.netName.first())
-        assertEquals(null, vpnDataStore.passphrase.first())
     }
 }

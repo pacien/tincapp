@@ -27,16 +27,18 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "vpn_settings")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "vpn_settings",
+    produceMigrations = { context -> listOf(LegacyConnectionMigration(context)) }
+)
 
 class VpnDataStore(
     context: Context,
     private val dataStore: DataStore<Preferences> = context.dataStore
 ) {
 
-    private object PreferencesKeys {
+    internal object PreferencesKeys {
         val NET_NAME = stringPreferencesKey("net_name")
-        val PASSPHRASE = stringPreferencesKey("passphrase")
     }
 
     val netName: Flow<String?> = dataStore.data
@@ -44,23 +46,12 @@ class VpnDataStore(
             preferences[PreferencesKeys.NET_NAME]
         }
 
-    val passphrase: Flow<String?> = dataStore.data
-        .map { preferences ->
-            preferences[PreferencesKeys.PASSPHRASE]
-        }
-
-    suspend fun saveConnection(netName: String?, passphrase: String?) {
+    suspend fun saveConnection(netName: String?) {
         dataStore.edit { preferences ->
             if (netName != null) {
                 preferences[PreferencesKeys.NET_NAME] = netName
             } else {
                 preferences.remove(PreferencesKeys.NET_NAME)
-            }
-
-            if (passphrase != null) {
-                preferences[PreferencesKeys.PASSPHRASE] = passphrase
-            } else {
-                preferences.remove(PreferencesKeys.PASSPHRASE)
             }
         }
     }
