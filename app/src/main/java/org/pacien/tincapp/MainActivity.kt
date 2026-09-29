@@ -129,7 +129,8 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        handleIntent(intent)
+        // not on recreation (e.g. theme change), which would replay the launch intent
+        if (savedInstanceState == null) handleIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
