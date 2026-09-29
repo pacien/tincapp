@@ -45,11 +45,16 @@ abstract class ConfigurationToolDialogFragment : BaseDialogFragment() {
   protected fun execAction(@StringRes label: Int, action: CompletableFuture<Unit>) {
     ProgressModal.show(parentActivity, getString(label)).let { progressDialog ->
       action
-        .whenComplete { _, _ -> progressDialog.dismiss() }
+        .whenComplete { _, _ -> dismissOnUiThread(progressDialog) }
         .thenAccept { parentActivity.notify(R.string.configure_tools_message_network_configuration_written) }
         .exceptionallyAccept { parentActivity.runOnUiThread { parentActivity.showErrorDialog(it.cause!!.localizedMessage!!) } }
     }
   }
+
+  private fun dismissOnUiThread(dialog: AlertDialog) =
+    parentActivity.runOnUiThread(Runnable {
+      if (!parentActivity.isDestroyed) dialog.dismiss()
+    })
 
   protected fun validateNetName(netName: String): CompletableFuture<Unit> =
     if (networkNamePattern.matcher(netName).matches())
