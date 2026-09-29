@@ -222,6 +222,7 @@ class TincVpnService : VpnService() {
         proposeLogs = true,
       )
       stopVpnInternal()
+      return
     } finally {
       serverSocket.close()
       deviceFd.close()

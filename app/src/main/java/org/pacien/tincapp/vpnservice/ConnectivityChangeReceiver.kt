@@ -42,7 +42,14 @@ object ConnectivityChangeReceiver {
   private fun watch(context: Context): Flow<Unit> = callbackFlow {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val callback = object : ConnectivityManager.NetworkCallback() {
+      // the callback is immediately invoked for the current network, which the daemon has just started on
+      private var initialNetwork = connectivityManager.activeNetwork
+
       override fun onAvailable(network: Network) {
+        val isInitial = network == initialNetwork
+        initialNetwork = null
+        if (isInitial) return
+
         log.info("Network available: {}", network)
         trySend(Unit)
       }
