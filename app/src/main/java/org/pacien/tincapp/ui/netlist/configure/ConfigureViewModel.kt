@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import org.pacien.tincapp.R
 import org.pacien.tincapp.commands.Tinc
@@ -62,17 +63,14 @@ class ConfigureViewModel : ViewModel() {
             try {
                 action()
                 _uiState.value = ConfigureUiState.Success(successResId)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                val cause = e.cause ?: e
-                if (cause is NetworkNameInvalidException) {
-                    _uiState.value = ConfigureUiState.Error(messageResId = R.string.configure_tools_message_invalid_network_name)
-                } else if (cause is NetworkInUseException) {
-                    _uiState.value = ConfigureUiState.Error(messageResId = R.string.configure_tools_message_network_in_use)
-                } else {
-                    _uiState.value = if (cause.localizedMessage != null)
-                        ConfigureUiState.Error(message = cause.localizedMessage)
-                    else
-                        ConfigureUiState.Error(messageResId = R.string.generic_error_unknown)
+                _uiState.value = when {
+                    e is NetworkNameInvalidException -> ConfigureUiState.Error(messageResId = R.string.configure_tools_message_invalid_network_name)
+                    e is NetworkInUseException -> ConfigureUiState.Error(messageResId = R.string.configure_tools_message_network_in_use)
+                    e.localizedMessage != null -> ConfigureUiState.Error(message = e.localizedMessage)
+                    else -> ConfigureUiState.Error(messageResId = R.string.generic_error_unknown)
                 }
             }
         }
