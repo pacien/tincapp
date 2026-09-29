@@ -3,6 +3,11 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.47 -- 2026-11-01
+- new permission: "access nearby devices" required to reach tinc nodes on LAN
+- network.conf: remove internal "Blocking" interface setting (now ignored)
+- update Android SDK target to 37 (Android 17)
+
 ## v0.46 -- 2026-10-18
 - minimum supported system is now Android 7 (API 24)
 - added network topology graph tab on status screen
