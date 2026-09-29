@@ -72,25 +72,25 @@ object VpnRepository {
     private val _events = MutableSharedFlow<VpnEvent>()
     val events: SharedFlow<VpnEvent> = _events.asSharedFlow()
 
+    @Volatile
     private var _interfaceConfig: VpnInterfaceConfiguration? = null
     val interfaceConfig: VpnInterfaceConfiguration?
         get() = _interfaceConfig
 
+    @Volatile
     var fd: ParcelFileDescriptor? = null
+    @Volatile
     var daemon: Job? = null
 
+    /** Network of the running daemon, if any. The persisted one is only used for restoring. */
+    @Volatile
     var currentNetName: String? = null
         private set
 
     /** Kept in memory only: never persisted, for security. */
+    @Volatile
     var currentPassphrase: String? = null
         private set
-
-    init {
-        scope.launch {
-            dataStore.netName.collect { currentNetName = it }
-        }
-    }
 
     val isConnected: Boolean
         get() = _state.value is VpnState.Connected || _state.value is VpnState.Connecting
