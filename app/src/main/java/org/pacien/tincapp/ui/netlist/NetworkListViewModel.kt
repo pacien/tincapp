@@ -21,6 +21,7 @@ package org.pacien.tincapp.ui.netlist
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import org.pacien.tincapp.context.AppPaths
@@ -40,7 +42,8 @@ enum class ConfigureDialogType {
 }
 
 data class NetworkListUiState(
-    val networkList: List<NetworkInfo> = emptyList(),
+    /** Null until first loaded. */
+    val networkList: List<NetworkInfo>? = null,
     val activeDialog: ConfigureDialogType? = null,
     val selectedNetwork: String = ""
 )
@@ -59,7 +62,7 @@ class NetworkListViewModel(application: Application) : AndroidViewModel(applicat
         NetworkInfo(it, TincKeyring.needsPassphrase(it))
     } ?: emptyList()
 
-    val networkList: StateFlow<List<NetworkInfo>> = refreshTrigger
+    val networkList: StateFlow<List<NetworkInfo>?> = refreshTrigger
         .onStart { emit(Unit) }
         .flatMapLatest {
             flow {
@@ -67,11 +70,11 @@ class NetworkListViewModel(application: Application) : AndroidViewModel(applicat
                     emit(fetchNetworkList())
                     delay(1000)
                 }
-            }
+            }.flowOn(Dispatchers.IO)
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = fetchNetworkList()
+            initialValue = null
         )
 
     val uiState: StateFlow<NetworkListUiState> = combine(
@@ -83,7 +86,7 @@ class NetworkListViewModel(application: Application) : AndroidViewModel(applicat
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = NetworkListUiState(networkList = fetchNetworkList())
+        initialValue = NetworkListUiState()
     )
 
     fun refresh() {

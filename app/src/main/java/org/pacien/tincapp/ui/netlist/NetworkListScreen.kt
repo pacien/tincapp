@@ -108,7 +108,7 @@ fun NetworkListScreen(
 @Composable
 fun NetworkListScreenContent(
     vpnState: VpnState,
-    networkList: List<NetworkInfo>,
+    networkList: List<NetworkInfo>?,
     onNetworkClick: (String) -> Unit,
     onConfigDirClick: (String) -> Unit,
     appActions: AppActions,
@@ -178,7 +178,9 @@ fun NetworkListScreenContent(
                     SectionTitle(text = stringResource(R.string.start_network_list_title))
                 }
 
-                if (networkList.isEmpty()) {
+                if (networkList == null) {
+                    // still loading: avoid flashing the empty list notice
+                } else if (networkList.isEmpty()) {
                     item {
                         Text(
                             text = stringResource(R.string.start_network_list_empty_none_found),
