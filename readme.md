@@ -24,12 +24,11 @@ An Android client for tinc (<https://tinc-vpn.org/>).
   * <https://codeberg.org/pacien/tincapp> (mirror, merge requests accepted)
   * <https://github.com/pacien/tincapp> (mirror, merge requests accepted)
 
-* Build requirements (for Gradle `build` task):
-  * Android SDK Platform 37.0
-  * Android NDK r29
-  * Android Platform-Tools 36.1
-  * Android SDK Build tools 36.1
-  * CMake
-  * automake
-  * autoconf
-  * Host system: Linux
+* Build commands (from the Nix flake devshell):
+  * Debug APK: `./gradlew :app:assembleDebug`
+  * Release APK: `./gradlew :app:assembleRelease`
+  * Unit tests: `./gradlew :app:testDebugUnitTest`
+  * Kotlin/Java only, without the native part:
+    `./gradlew :app:compileDebugKotlin`
+  * Native part for a single ABI only: append
+    `-Pandroid.injected.build.abi=x86_64`
