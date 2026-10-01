@@ -31,4 +31,6 @@
 	</issue>
 
 	<issue id="MissingTranslation" severity="warning"/>
+	<!-- Translations of removed strings are cleaned up through Weblate -->
+	<issue id="ExtraTranslation" severity="warning"/>
 </lint>
