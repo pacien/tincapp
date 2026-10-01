@@ -25,3 +25,7 @@
 -dontwarn ch.qos.logback.core.net.*
 -dontwarn sun.misc.Unsafe
 -dontwarn build.IgnoreJava8API
+
+# graph-support: AWT and ImageIO rendering paths, unavailable and unused on Android
+-dontwarn java.awt.**
+-dontwarn javax.imageio.**
