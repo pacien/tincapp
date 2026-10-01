@@ -58,7 +58,7 @@ class StartActivity : BaseActivity() {
     setContentView(startActivityBinding.root)
     initNetworkListFragment()
 
-    if (intent.action == Actions.ACTION_CONNECT && intent.data?.schemeSpecificPart != null)
+    if (isFirstIntentDelivery(savedInstanceState) && intent.action == Actions.ACTION_CONNECT && intent.data?.schemeSpecificPart != null)
       connectionStarter.tryStart(intent.data!!.schemeSpecificPart, intent.data!!.fragment, false)
   }
 

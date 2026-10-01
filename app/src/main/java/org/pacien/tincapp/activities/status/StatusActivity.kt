@@ -63,7 +63,7 @@ class StatusActivity : BaseActivity() {
     setContentView(statusActivityBinding.root)
     statusActivityBinding.root.adapter = pagerAdapter
     supportActionBar.subtitle = getString(R.string.status_activity_state_connected_to_format, netName)
-    handleStartIntentAction(intent.action)
+    handleStartIntentAction(savedInstanceState)
   }
 
   override fun onCreateOptionsMenu(m: Menu): Boolean {
@@ -98,13 +98,10 @@ class StatusActivity : BaseActivity() {
   fun openLogViewer(m: MenuItem) =
     startActivity(Intent(this, ViewLogActivity::class.java))
 
-  private fun handleStartIntentAction(intentAction: String?) = when (intentAction) {
-    Actions.ACTION_DISCONNECT -> {
-      listNetworksAfterExit = false
-      stopVpn()
-    }
-
-    else -> listNetworksAfterExit = true
+  private fun handleStartIntentAction(savedInstanceState: Bundle?) {
+    val disconnectRequested = intent.action == Actions.ACTION_DISCONNECT && !isLaunchedFromHistory()
+    listNetworksAfterExit = !disconnectRequested
+    if (disconnectRequested && savedInstanceState == null) stopVpn()
   }
 
   private fun stopVpn() {

@@ -44,6 +44,13 @@ abstract class BaseActivity : AppCompatActivity() {
     setStatusBarTheme()
   }
 
+  protected fun isLaunchedFromHistory() =
+    (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
+
+  // The launch intent is re-delivered on re-creation and when re-opened from the recent tasks.
+  protected fun isFirstIntentDelivery(savedInstanceState: Bundle?) =
+    savedInstanceState == null && !isLaunchedFromHistory()
+
   // Ensure contrast of system status bar text and icons on light background,
   // due to edge-to-edge rendering starting with API 35.
   private fun setStatusBarTheme() {
