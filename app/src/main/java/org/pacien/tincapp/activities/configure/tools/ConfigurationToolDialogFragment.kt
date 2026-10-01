@@ -20,12 +20,11 @@ package org.pacien.tincapp.activities.configure.tools
 
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import java8.util.concurrent.CompletableFuture
 import org.pacien.tincapp.R
 import org.pacien.tincapp.activities.BaseDialogFragment
-import org.pacien.tincapp.activities.common.ProgressModal
-import org.pacien.tincapp.extensions.Java.exceptionallyAccept
 import java.util.regex.Pattern
 
 /**
@@ -42,19 +41,8 @@ abstract class ConfigurationToolDialogFragment : BaseDialogFragment() {
       .setNegativeButton(R.string.generic_action_cancel) { _, _ -> }
       .create()
 
-  protected fun execAction(@StringRes label: Int, action: CompletableFuture<Unit>) {
-    ProgressModal.show(parentActivity, getString(label)).let { progressDialog ->
-      action
-        .whenComplete { _, _ -> dismissOnUiThread(progressDialog) }
-        .thenAccept { parentActivity.notify(R.string.configure_tools_message_network_configuration_written) }
-        .exceptionallyAccept { parentActivity.runOnUiThread { parentActivity.showErrorDialog(it.cause!!.localizedMessage!!) } }
-    }
-  }
-
-  private fun dismissOnUiThread(dialog: AlertDialog) =
-    parentActivity.runOnUiThread(Runnable {
-      if (!parentActivity.isDestroyed) dialog.dismiss()
-    })
+  protected fun execAction(@StringRes label: Int, action: CompletableFuture<Unit>) =
+    ViewModelProvider(requireActivity())[ConfigurationToolViewModel::class.java].run(label, action)
 
   protected fun validateNetName(netName: String): CompletableFuture<Unit> =
     if (networkNamePattern.matcher(netName).matches())
