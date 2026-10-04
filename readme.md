@@ -32,3 +32,11 @@ An Android client for tinc (<https://tinc-vpn.org/>).
     `./gradlew :app:compileDebugKotlin`
   * Native part for a single ABI only: append
     `-Pandroid.injected.build.abi=x86_64`
+    (test-only APK, to install with `adb install -t`)
+
+* Emulator (from the Nix flake devshell):
+  * Create a device: `avdmanager create avd -n tincapp -k
+    'system-images;android-37.0;google_apis_ps16k;x86_64'`
+  * Start it: `emulator -avd tincapp` (append `-no-window` for headless)
+  * Install and run the debug APK: `./gradlew :app:installDebug`
+  * Instrumented tests: `./gradlew :app:connectedDebugAndroidTest`

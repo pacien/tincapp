@@ -45,6 +45,12 @@
         ndkVersions = [ ndkVersion ];
         includeCmake = true;
         cmakeVersions = [ cmakeVersion ];
+
+        # For Android Studio's device manager and instrumented tests
+        includeEmulator = true;
+        includeSystemImages = true;
+        systemImageTypes = [ "google_apis" ];
+        abiVersions = [ "x86_64" ];
       };
 
       androidHome = "${android.androidsdk}/libexec/android-sdk";
@@ -54,7 +60,7 @@
       devShells.${system}.default = pkgs.mkShellNoCC {
         packages = [
           jdk
-          android.platform-tools
+          android.androidsdk
 
           # Host tools for the native deps built through CMake ExternalProject
           pkgs.autoconf
