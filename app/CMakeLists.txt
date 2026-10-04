@@ -1,5 +1,5 @@
 # Tinc Mesh VPN: Android client and user interface
-# Copyright (C) 2017-2022 Euxane P. TRAN-GIRARD
+# Copyright (C) 2017-2026 Euxane P. TRAN-GIRARD
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,11 +14,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.19) # string(JSON)
 include(ExternalProject)
 
 set(CC_OPTIMISATION_FLAGS "-ffunction-sections -fdata-sections")
 set(LD_OPTIMISATION_FLAGS "-Wl,--gc-sections")
+
+# Source archives of the native dependencies, also used by the Nix build
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/native-sources.json" NATIVE_SOURCES)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS native-sources.json)
+
+# Directory providing the source archives instead of downloading them,
+# for offline builds.
+set(SOURCE_ARCHIVES_DIR "$ENV{TINCAPP_SOURCE_ARCHIVES_DIR}")
+
+function(native_source name)
+  string(JSON url GET "${NATIVE_SOURCES}" ${name} url)
+  string(JSON sha256 GET "${NATIVE_SOURCES}" ${name} sha256)
+  if(SOURCE_ARCHIVES_DIR)
+    get_filename_component(file "${url}" NAME)
+    set(url "${SOURCE_ARCHIVES_DIR}/${file}")
+  endif()
+  set(${name}_SOURCE URL "${url}" URL_HASH "SHA256=${sha256}" PARENT_SCOPE)
+endfunction()
+
+native_source(lzo)
+native_source(libressl)
+native_source(tinc)
 
 set(xCONFIG
   "CC=${CMAKE_C_COMPILER} \
@@ -34,8 +56,7 @@ set(xCONFIG
 )
 
 ExternalProject_Add(lzo
-  URL               http://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz
-  URL_HASH          SHA1=4924676a9bae5db58ef129dc1cebce3baa3c4b5d
+  ${lzo_SOURCE}
   CONFIGURE_COMMAND <SOURCE_DIR>/configure ${xCONFIG} --disable-shared
   BUILD_COMMAND     make -j8
   INSTALL_COMMAND   make install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
@@ -43,8 +64,7 @@ ExternalProject_Add(lzo
 )
 
 ExternalProject_Add(libressl
-  URL               https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-4.3.2.tar.gz
-  URL_HASH          SHA256=edf01aee24c65d69e6a9efcb9d44bcda682ff9d4f3bbbd95e794e1dfa90847b5
+  ${libressl_SOURCE}
   CONFIGURE_COMMAND <SOURCE_DIR>/configure ${xCONFIG} --disable-shared
   BUILD_COMMAND     make -j8 -C crypto
   INSTALL_COMMAND   make -C crypto install DESTDIR=${CMAKE_CURRENT_BINARY_DIR} &&
@@ -54,8 +74,7 @@ ExternalProject_Add(libressl
 
 ExternalProject_Add(tinc
   DEPENDS           lzo libressl
-  URL               https://tinc-vpn.org/packages/tinc-1.1pre18.tar.gz
-  URL_HASH          SHA256=2757ddc62cf64b411f569db2fa85c25ec846c0db110023f6befb33691f078986
+  ${tinc_SOURCE}
   # Backport from https://github.com/pacien/tinc/commit/14de269d013f72d797c3baf249fdec65bdbcee89
   PATCH_COMMAND     patch -p1 < ${PROJECT_SOURCE_DIR}/src/main/c/tinc-async-resolver.patch
   CONFIGURE_COMMAND autoreconf -fsi <SOURCE_DIR> &&

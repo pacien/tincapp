@@ -1,0 +1,14 @@
+{
+  "lzo": {
+    "url": "http://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz",
+    "sha256": "c0f892943208266f9b6543b3ae308fab6284c5c90e627931446fb49b4221a072"
+  },
+  "libressl": {
+    "url": "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-4.3.2.tar.gz",
+    "sha256": "edf01aee24c65d69e6a9efcb9d44bcda682ff9d4f3bbbd95e794e1dfa90847b5"
+  },
+  "tinc": {
+    "url": "https://tinc-vpn.org/packages/tinc-1.1pre18.tar.gz",
+    "sha256": "2757ddc62cf64b411f569db2fa85c25ec846c0db110023f6befb33691f078986"
+  }
+}
