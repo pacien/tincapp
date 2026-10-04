@@ -27,7 +27,8 @@ import android.widget.ListView
  */
 
 fun <T> ArrayAdapter<T>.setElements(elements: Collection<T>?) {
-  if (elements == null) return
+  // Leave unchanged lists as they are (avoid view change cancelling pending clicks)
+  if (elements == null || elements.toList() == List(count, ::getItem)) return
 
   synchronized(this) {
     setNotifyOnChange(false)
