@@ -54,31 +54,95 @@
       };
 
       androidHome = "${android.androidsdk}/libexec/android-sdk";
+      aapt2 = "${androidHome}/build-tools/${buildToolsVersion}/aapt2";
       jdk = pkgs.jdk21;
+      gradle = pkgs.gradle_9;
+
+      # Host tools for the native deps built through CMake ExternalProject
+      nativeHostTools = with pkgs; [
+        autoconf
+        automake
+        libtool
+        gnumake
+        m4
+        perl
+      ];
+
+      # Source archives of the native deps, otherwise downloaded by CMake
+      nativeSourceArchives = pkgs.linkFarmFromDrvs "tincapp-native-source-archives" (
+        map (source: pkgs.fetchurl { inherit (source) url sha256; }) (
+          builtins.attrValues (builtins.fromJSON (builtins.readFile ./app/native-sources.json))
+        )
+      );
+
+      debugApk = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+        pname = "tincapp-debug-apk";
+        version = "dev";
+
+        src = pkgs.lib.fileset.toSource {
+          root = ./.;
+          fileset = pkgs.lib.fileset.unions [
+            ./app
+            ./gradle
+            ./build.gradle
+            ./settings.gradle
+            ./gradle.properties
+          ];
+        };
+
+        nativeBuildInputs = [
+          gradle
+          jdk
+        ]
+        ++ nativeHostTools;
+
+        # Update with: nix build .#debug-apk.mitmCache.updateScript && ./result
+        mitmCache = gradle.fetchDeps {
+          pkg = finalAttrs.finalPackage;
+          data = ./nix/debug-apk-deps.json;
+          useBwrap = false;
+        };
+
+        gradleBuildTask = ":app:assembleDebug";
+        gradleUpdateTask = finalAttrs.gradleBuildTask;
+        gradleFlags = [
+          "-Dorg.gradle.java.home=${jdk.home}"
+          "-Pandroid.aapt2FromMavenOverride=${aapt2}"
+        ];
+
+        env = {
+          ANDROID_HOME = androidHome;
+          TINCAPP_SOURCE_ARCHIVES_DIR = nativeSourceArchives;
+        };
+
+        # Writable Android user directory
+        preBuild = ''
+          export ANDROID_USER_HOME="$(mktemp -d)"
+        '';
+
+        installPhase = ''
+          install -D app/build/outputs/apk/debug/app-debug.apk "$out/app-debug.apk"
+        '';
+
+        dontFixup = true;
+      });
     in
     {
+      packages.${system}.debug-apk = debugApk;
+
       devShells.${system}.default = pkgs.mkShellNoCC {
         packages = [
           jdk
           android.androidsdk
-
-          # Host tools for the native deps built through CMake ExternalProject
-          pkgs.autoconf
-          pkgs.automake
-          pkgs.libtool
-          pkgs.gnumake
-          pkgs.m4
-          pkgs.perl
-        ];
+        ]
+        ++ nativeHostTools;
 
         JAVA_HOME = jdk.home;
         ANDROID_HOME = androidHome;
 
         # Use patched aapt2 from the SDK instead of generic one fetched from
         # Maven, which does not run on NixOS.
-        GRADLE_OPTS =
-          "-Dorg.gradle.project.android.aapt2FromMavenOverride="
-          + "${androidHome}/build-tools/${buildToolsVersion}/aapt2";
+        GRADLE_OPTS = "-Dorg.gradle.project.android.aapt2FromMavenOverride=${aapt2}";
 
         # The Android Gradle Plugin prefers sdk.dir from local.properties over
         # ANDROID_HOME.

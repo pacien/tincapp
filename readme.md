@@ -24,15 +24,20 @@ An Android client for tinc (<https://tinc-vpn.org/>).
   * <https://codeberg.org/pacien/tincapp> (mirror, merge requests accepted)
   * <https://github.com/pacien/tincapp> (mirror, merge requests accepted)
 
-* Build commands (from the Nix flake devshell):
-  * Debug APK: `./gradlew :app:assembleDebug`
-  * Release APK: `./gradlew :app:assembleRelease`
-  * Unit tests: `./gradlew :app:testDebugUnitTest`
-  * Kotlin/Java only, without the native part:
-    `./gradlew :app:compileDebugKotlin`
-  * Native part for a single ABI only: append
-    `-Pandroid.injected.build.abi=x86_64`
-    (test-only APK, to install with `adb install -t`)
+* Build commands:
+  * With Gradle from the Nix flake devshell:
+    * Debug APK: `./gradlew :app:assembleDebug`
+    * Release APK: `./gradlew :app:assembleRelease`
+    * Unit tests: `./gradlew :app:testDebugUnitTest`
+    * Kotlin/Java only, without the native part:
+      `./gradlew :app:compileDebugKotlin`
+    * Native part for a single ABI only:
+      append `-Pandroid.injected.build.abi=x86_64`
+      (test-only APK, to install with `adb install -t`)
+  * With Nix (sandboxed):
+    * Debug APK: `nix build .#debug-apk`
+    * Update locked Gradle deps (`nix/debug-apk-deps.json`):
+      `nix build .#debug-apk.mitmCache.updateScript && ./result`
 
 * Emulator (from the Nix flake devshell):
   * Create a device: `avdmanager create avd -n tincapp -k
