@@ -20,7 +20,7 @@ plugins {
   id 'com.android.application'
   id 'kotlin-android'
   id 'kotlin-kapt'
-  id 'com.github.triplet.play' version '2.1.0'
+  id 'com.github.triplet.play' version '2.1.0' apply false
 }
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -108,8 +108,15 @@ repositories {
   google()
 }
 
-play {
-  if (keystoreAvailable) serviceAccountCredentials = file(keystoreProperties['apiKeyFile'])
-  track = 'beta'
-  resolutionStrategy = "auto"
+def playCredentialsPath = keystoreProperties['apiKeyFile']
+def playCredentialsFile = playCredentialsPath ? file(playCredentialsPath) : null
+
+if (playCredentialsFile?.exists()) {
+  apply plugin: 'com.github.triplet.play'
+
+  play {
+    serviceAccountCredentials = playCredentialsFile
+    track = 'beta'
+    resolutionStrategy = "auto"
+  }
 }
