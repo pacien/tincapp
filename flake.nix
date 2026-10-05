@@ -105,7 +105,13 @@
           '';
       aapt2 = "${androidHome}/build-tools/${buildToolsVersion}/aapt2";
       jdk = pkgs.jdk21;
-      gradle = pkgs.gradle_9;
+      # Same version as the Gradle wrapper
+      gradle =
+        (pkgs.gradle-packages.mkGradle {
+          version = "9.7.0";
+          hash = "sha256-hPu6Rcf0xkq8d0YOHAD1Qen5YOPH7SU48e3hnqzYc64=";
+          defaultJava = jdk;
+        }).wrapped;
 
       # Host tools for the native deps built through CMake ExternalProject
       nativeHostTools = with pkgs; [
