@@ -25,6 +25,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.pacien.tincapp.activities.configure.ConfigureActivity
@@ -33,6 +34,9 @@ import java.util.regex.Pattern
 
 @RunWith(AndroidJUnit4::class)
 class ConfigurationScreenTest {
+  @get:Rule
+  val screenshots = Screenshots.Rule()
+
   private val netName = "testnet"
   private var scenario: ActivityScenario<ConfigureActivity>? = null
 
@@ -79,6 +83,7 @@ class ConfigurationScreenTest {
 
     setPassphrase(current = "wrong horse", new = "")
     waitFor(text(R.string.generic_title_error))
+    Screenshots.take("error")
     assertTrue(TincKeyring.needsPassphrase(netName))
   }
 
@@ -86,11 +91,13 @@ class ConfigurationScreenTest {
   fun opensNetworksDirectoryInFileManager() {
     waitFor(text(R.string.configure_browse_directories_action_open_networks_config)).click()
     waitFor(By.pkg(Pattern.compile(".*documentsui")).text(netName))
+    Screenshots.take("networks-directory")
   }
 
   @Test
   fun opensLogsDirectoryInFileManager() {
     waitFor(text(R.string.configure_browse_directories_action_open_logs)).click()
     waitFor(By.pkg(Pattern.compile(".*documentsui")).text("tincapp.log"))
+    Screenshots.take("logs-directory")
   }
 }

@@ -43,9 +43,11 @@ An Android client for tinc (<https://tinc-vpn.org/>).
         `nix build -L .#checks.x86_64-linux.instrumented-tests`
       * End-to-end VPN test (`test/vpn`):
         `nix build -L .#checks.x86_64-linux.vpn-test`
-        (or all checks: `nix flake check`)
       * Interactive driver for debug:
         `nix run .#checks.x86_64-linux.vpn-test.driverInteractive`
+      * Tests recordings (not bit-reproducible):
+        `nix build .#vpn-test-report` and
+        `nix build .#instrumented-tests-report`.
 
 * Emulator (from the Nix flake devshell):
   * Create a device: `avdmanager create avd -n tincapp -k

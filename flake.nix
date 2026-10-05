@@ -68,6 +68,41 @@
       };
       testAndroidHome = "${testAndroid.androidsdk}/libexec/android-sdk";
       testSystemImage = "system-images;android-36;default;x86_64";
+
+      vpnTest =
+        withReport:
+        import ./tests/vpn/vpn-test.nix {
+          inherit pkgs jdk debugApk withReport;
+          androidSdk = testAndroid.androidsdk;
+          androidHome = testAndroidHome;
+          systemImage = testSystemImage;
+        };
+
+      # Instrumented tests (app/src/androidTest), on a fresh emulated device
+      instrumentedTests =
+        withReport:
+        pkgs.runCommand "instrumented-tests${pkgs.lib.optionalString withReport "-report"}"
+          {
+            nativeBuildInputs = [
+              pkgs.python3
+              testAndroid.androidsdk
+              jdk
+            ];
+            requiredSystemFeatures = [ "kvm" ];
+            ANDROID_HOME = testAndroidHome;
+            JAVA_HOME = jdk.home;
+            TINCAPP_TEST_SYSTEM_IMAGE = testSystemImage;
+            PYTHONPATH = pkgs.lib.fileset.toSource {
+              root = ./tests;
+              fileset = ./tests/android_device.py;
+            };
+          }
+          ''
+            export HOME="$TMPDIR"
+            python3 ${./tests/instrumented_tests.py} \
+              ${debugApk}/app-debug.apk ${debugApk}/app-debug-androidTest.apk \
+              ${if withReport then "--report $out" else "&& touch $out"}
+          '';
       aapt2 = "${androidHome}/build-tools/${buildToolsVersion}/aapt2";
       jdk = pkgs.jdk21;
       gradle = pkgs.gradle_9;
@@ -144,40 +179,17 @@
       });
     in
     {
-      packages.${system}.debug-apk = debugApk;
-
+      # Reproducible test results
       checks.${system} = {
-        vpn-test = import ./tests/vpn/vpn-test.nix {
-          inherit pkgs jdk debugApk;
-          androidSdk = testAndroid.androidsdk;
-          androidHome = testAndroidHome;
-          systemImage = testSystemImage;
-        };
+        vpn-test = vpnTest false;
+        instrumented-tests = instrumentedTests false;
+      };
 
-        # Instrumented tests (app/src/androidTest), on a fresh emulated device
-        instrumented-tests =
-          pkgs.runCommand "instrumented-tests"
-            {
-              nativeBuildInputs = [
-                pkgs.python3
-                testAndroid.androidsdk
-                jdk
-              ];
-              requiredSystemFeatures = [ "kvm" ];
-              ANDROID_HOME = testAndroidHome;
-              JAVA_HOME = jdk.home;
-              TINCAPP_TEST_SYSTEM_IMAGE = testSystemImage;
-              PYTHONPATH = pkgs.lib.fileset.toSource {
-                root = ./tests;
-                fileset = ./tests/android_device.py;
-              };
-            }
-            ''
-              export HOME="$TMPDIR"
-              python3 ${./tests/instrumented_tests.py} \
-                ${debugApk}/app-debug.apk ${debugApk}/app-debug-androidTest.apk
-              touch $out
-            '';
+      # Test reports with screenshots and screen recordings, not reproducible
+      packages.${system} = {
+        debug-apk = debugApk;
+        vpn-test-report = vpnTest true;
+        instrumented-tests-report = instrumentedTests true;
       };
 
       devShells.${system}.default = pkgs.mkShellNoCC {

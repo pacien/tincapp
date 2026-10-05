@@ -24,6 +24,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.pacien.tincapp.activities.start.StartActivity
@@ -31,6 +32,9 @@ import org.pacien.tincapp.context.AppPaths
 
 @RunWith(AndroidJUnit4::class)
 class NetworkGenerationTest {
+  @get:Rule
+  val screenshots = Screenshots.Rule()
+
   private var scenario: ActivityScenario<StartActivity>? = null
 
   @Before
@@ -64,15 +68,18 @@ class NetworkGenerationTest {
     waitUntil { files.forEach { assertTrue("$it exists", netDir.resolve(it).isFile) } }
     assertTrue(netDir.resolve("tinc.conf").readText().contains("Name = android"))
     waitForGone(text(R.string.configure_tools_generate_config_generating))
+    Screenshots.take("generated")
 
     device.pressBack()
     waitFor(text("testnet"))
+    Screenshots.take("listed")
   }
 
   @Test
   fun rejectsInvalidNetworkName() {
     generate("test/net", "android")
     waitFor(text(R.string.configure_tools_message_invalid_network_name))
+    Screenshots.take("rejected")
     assertEquals(emptyList<String>(), AppPaths.confDir().list()!!.toList())
   }
 }

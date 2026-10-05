@@ -31,6 +31,7 @@
   systemImage,
   jdk,
   debugApk,
+  withReport ? false, # screenshots and screen recording, making the output not reproducible
 }:
 
 let
@@ -125,7 +126,7 @@ let
     );
 in
 pkgs.testers.runNixOSTest {
-  name = "tincapp-vpn";
+  name = "tincapp-vpn${pkgs.lib.optionalString withReport "-report"}";
 
   extraPythonPackages = p: [ (androidDeviceModule p) ];
 
@@ -165,7 +166,7 @@ pkgs.testers.runNixOSTest {
     };
 
   testScript = ''
-    import os, subprocess, tempfile
+    import contextlib, os, subprocess, tempfile
     from pathlib import Path
 
     os.environ["PATH"] = "${pkgs.lib.makeBinPath [ androidSdk jdk pkgs.gnutar ]}:" + os.environ["PATH"]
@@ -175,6 +176,7 @@ pkgs.testers.runNixOSTest {
     from android_device import APP_PACKAGE, Emulator, wait_until
 
     tinc = "tinc.${netName}"
+    with_report = ${if withReport then "True" else "False"}
     work_dir = Path(tempfile.mkdtemp(prefix="tincapp-vpn-test-"))
     os.environ["HOME"] = str(work_dir)  # adb and emulator console keys
     emulator = Emulator(work_dir)
@@ -229,14 +231,22 @@ pkgs.testers.runNixOSTest {
         with subtest("UI: join through an invitation, connect, see the mesh, disconnect"):
             url = computer.succeed(f"runuser -u tinc-${netName} -- {tinc} invite phone").strip()
             computer.succeed("systemctl reload tinc.${netName}.service")  # load the new invitation key
-            passed, report = device.instrument(f"{APP_PACKAGE}.test", {
-                "class": f"{APP_PACKAGE}.PeerNetworkTest",
-                "invitationUrl": url,
-                "address": "${addresses.phone}",
-                "computerAddress": "${addresses.computer}",
-                "laptopAddress": "${addresses.laptop}",
-            })
+            report_dir = Path(os.environ.get("out", work_dir)) / "peer-network-ui"
+            with contextlib.ExitStack() as context:
+                if with_report:
+                    report_dir.mkdir(parents=True, exist_ok=True)
+                    context.enter_context(device.recording(report_dir / "recording.mp4"))
+                passed, report = device.instrument(f"{APP_PACKAGE}.test", {
+                    "class": f"{APP_PACKAGE}.PeerNetworkTest",
+                    "invitationUrl": url,
+                    "address": "${addresses.phone}",
+                    "computerAddress": "${addresses.computer}",
+                    "laptopAddress": "${addresses.laptop}",
+                })
             print(report)
+            if with_report:
+                (report_dir / "report.txt").write_text(report)
+                device.pull_screenshots(report_dir)
             assert passed and "OK (1 test)" in report, "instrumented peer network test failed"
 
         with subtest("connect a static network through the Intent API"):

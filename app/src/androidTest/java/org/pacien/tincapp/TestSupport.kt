@@ -26,6 +26,8 @@ import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.context.App
@@ -61,10 +63,14 @@ fun field(id: String): BySelector = By.res(context.packageName, id)
 
 fun waitFor(selector: BySelector, timeout: Duration = 30.seconds): UiObject2 =
   device.wait(Until.findObject(selector), timeout.inWholeMilliseconds)
-    ?: throw AssertionError("timed out after $timeout waiting for $selector")
+    ?: run {
+      Screenshots.take("failure")
+      throw AssertionError("timed out after $timeout waiting for $selector")
+    }
 
 fun waitForGone(selector: BySelector, timeout: Duration = 30.seconds) {
   if (!device.wait(Until.gone(selector), timeout.inWholeMilliseconds)) {
+    Screenshots.take("failure")
     throw AssertionError("timed out after $timeout waiting for $selector to disappear")
   }
 }
@@ -76,7 +82,10 @@ fun waitUntil(timeout: Duration = 30.seconds, check: () -> Unit) {
     try {
       return check()
     } catch (e: Throwable) {
-      if (System.nanoTime() > deadline) throw e
+      if (System.nanoTime() > deadline) {
+        Screenshots.take("failure")
+        throw e
+      }
       Thread.sleep(250)
     }
   }
@@ -127,5 +136,27 @@ object Networks {
   fun configureInterface(netName: String, nodeName: String, address: String, route: String) {
     AppPaths.netConfFile(netName).writeText("Address = $address/32\nRoute = $route\n")
     File(AppPaths.hostsDir(netName), nodeName).appendText("Subnet = $address/32\n")
+  }
+}
+
+/**
+ * Screenshots of the steps of the running test, collected in the app's cache directory for test reports.
+ * Test classes register [Screenshots.Rule] to name them after the running test.
+ */
+object Screenshots {
+  private var test = "unknown"
+  private var step = 0
+
+  val dir get() = File(context.cacheDir, "test-screenshots").apply { mkdirs() }
+
+  fun take(stepName: String) {
+    device.takeScreenshot(File(dir, "$test.${"%02d".format(++step)}-$stepName.png"))
+  }
+
+  class Rule : TestWatcher() {
+    override fun starting(description: Description) {
+      test = "${description.testClass.simpleName}.${description.methodName}"
+      step = 0
+    }
   }
 }

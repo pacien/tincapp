@@ -25,6 +25,7 @@ import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Assume.assumeTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.pacien.tincapp.activities.configure.ConfigureActivity
@@ -39,6 +40,9 @@ import kotlin.time.Duration.Companion.seconds
  */
 @RunWith(AndroidJUnit4::class)
 class PeerNetworkTest {
+  @get:Rule
+  val screenshots = Screenshots.Rule()
+
   private val arguments = InstrumentationRegistry.getArguments()
   private val netName = "invited"
   private var scenario: ActivityScenario<*>? = null
@@ -79,9 +83,11 @@ class PeerNetworkTest {
     waitFor(text(R.string.status_activity_title_node_list)).click()
     assertNodeReachability("computer", string(R.string.status_node_reachability_direct_connection))
     assertNodeReachability("laptop", string(R.string.status_node_reachability_via_format, "computer"))
+    Screenshots.take("nodes")
 
     waitFor(text(R.string.status_activity_title_subnet_list)).click()
     listOf("computerAddress", "laptopAddress").forEach { waitFor(text(arguments.getString(it)!!)) }
+    Screenshots.take("subnets")
 
     clickMenuItem(R.string.status_activity_menu_disconnect)
     waitFor(text(netName))

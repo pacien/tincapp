@@ -23,6 +23,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.After
 import org.junit.Assert.assertNull
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.pacien.tincapp.activities.start.StartActivity
@@ -31,6 +32,9 @@ import kotlin.time.Duration.Companion.seconds
 
 @RunWith(AndroidJUnit4::class)
 class ConnectionTest {
+  @get:Rule
+  val screenshots = Screenshots.Rule()
+
   private val netName = "testnet"
   private val nodeName = "android"
   private val address = "10.0.0.2"
@@ -59,6 +63,7 @@ class ConnectionTest {
 
   private fun unlock(passphrase: String) {
     waitFor(text(R.string.decrypt_key_modal_title))
+    Screenshots.take("passphrase-dialog")
     typeInto("passphrase", passphrase)
     waitFor(text(R.string.decrypt_key_modal_action_unlock)).click()
   }
@@ -71,20 +76,25 @@ class ConnectionTest {
     waitForConnection()
 
     waitFor(text("$address/32"))
+    Screenshots.take("network")
 
     waitFor(text(R.string.status_activity_title_node_list)).click()
     waitFor(text(nodeName))
+    Screenshots.take("nodes")
 
     waitFor(text(R.string.status_activity_title_subnet_list)).click()
     waitFor(text(address)) // tinc omits the prefix length of single addresses
     waitFor(text(nodeName))
+    Screenshots.take("subnets")
 
     clickMenuItem(R.string.status_activity_menu_show_log)
     waitFor(textStartingWith(string(R.string.log_view_state_level_format, "")))
+    Screenshots.take("log")
     device.pressBack()
 
     clickMenuItem(R.string.status_activity_menu_disconnect)
     waitFor(text(netName))
+    Screenshots.take("disconnected")
     waitUntil { assertNull(TincVpnService.getCurrentNetName()) }
   }
 
@@ -93,6 +103,7 @@ class ConnectionTest {
     Networks.create(netName, nodeName)
     connect()
     waitForError()
+    Screenshots.take("error")
   }
 
   @Test

@@ -21,12 +21,15 @@ Requires on PATH: adb, avdmanager, emulator (with ANDROID_HOME and JAVA_HOME set
 TINCAPP_TEST_SYSTEM_IMAGE.
 """
 
+import contextlib
+import io
 import os
 import random
 import shlex
 import signal
 import socket
 import subprocess
+import tarfile
 import time
 from pathlib import Path
 
@@ -115,6 +118,25 @@ class Device:
         options = "".join(f" -e {key} {shlex.quote(value)}" for key, value in (arguments or {}).items())
         report = self.shell(f"am instrument -w{options} {test_package}/{runner}", timeout=900)
         return "\nOK (" in report and "FAILURES!!!" not in report, report
+
+    @contextlib.contextmanager
+    def recording(self, destination: Path, time_limit=180):
+        """Records the screen while in the context (up to the time limit), into the destination video file."""
+        remote = "/data/local/tmp/tincapp-test-recording.mp4"
+        recorder = subprocess.Popen(["adb", "-s", self.serial, "shell", f"screenrecord --time-limit {time_limit} {remote}"])
+        try:
+            yield
+        finally:
+            subprocess.run(["adb", "-s", self.serial, "shell", "pkill -INT screenrecord"], capture_output=True)
+            recorder.wait(30)
+            time.sleep(1)  # let the recorder finalise the file
+            self.adb("pull", remote, str(destination))
+
+    def pull_screenshots(self, destination: Path):
+        """Copies the screenshots taken by the instrumented tests."""
+        archive = self.run_as_app("tar -c -C cache test-screenshots", text=False)
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            tar.extractall(destination, filter="data")
 
     def save_diagnostics(self, out_dir: Path):
         for name, command in [("app.log", lambda: self.run_as_app("cat cache/logs/*")),
