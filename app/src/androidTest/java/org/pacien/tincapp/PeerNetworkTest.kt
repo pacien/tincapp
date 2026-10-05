@@ -28,8 +28,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.pacien.tincapp.activities.configure.ConfigureActivity
-import org.pacien.tincapp.activities.start.StartActivity
 import org.pacien.tincapp.context.AppPaths
 import kotlin.time.Duration.Companion.seconds
 
@@ -45,7 +43,7 @@ class PeerNetworkTest {
 
   private val arguments = InstrumentationRegistry.getArguments()
   private val netName = "invited"
-  private var scenario: ActivityScenario<*>? = null
+  private var scenario: ActivityScenario<MainActivity>? = null
 
   @Before
   fun setUp() {
@@ -60,36 +58,30 @@ class PeerNetworkTest {
     Device.reset()
   }
 
-  private fun assertNodeReachability(node: String, reachability: String) =
-    waitUntil(60.seconds) { assertTrue("$node $reachability", waitFor(text(node)).parent.hasObject(text(reachability))) }
-
   @Test
   fun joinsThroughInvitationAndReachesPeers() {
-    scenario = ActivityScenario.launch(ConfigureActivity::class.java)
-    waitFor(text(R.string.configure_tools_action_join_network_via_invitation_url_qr_code)).click()
-    typeInto("net_name", netName)
-    typeInto("invitation_url", arguments.getString("invitationUrl")!!)
-    waitFor(text(R.string.configure_tools_join_network_action)).click()
+    scenario = ActivityScenario.launch(MainActivity::class.java)
+    clickIcon(R.string.configure_tools_generate_config_title)
+    click(R.string.configure_tools_action_join_network_via_invitation_url)
+    typeInto(R.string.configure_tools_generate_config_net_name_hint, netName)
+    typeInto(R.string.configure_tools_join_network_field_invitation_url_hint, arguments.getString("invitationUrl")!!)
+    click(R.string.configure_tools_join_network_action)
     waitUntil(60.seconds) {
       assertTrue(AppPaths.netConfFile(netName).readText().contains(arguments.getString("address")!!))
     }
     waitForGone(text(R.string.configure_tools_join_network_joining), 60.seconds)
-    scenario?.close()
+    waitForGone(text(R.string.configure_tools_join_network_title)) // the dialog, also having the name typed in
 
-    scenario = ActivityScenario.launch(StartActivity::class.java)
     waitFor(text(netName)).click()
     waitFor(text(R.string.status_activity_state_connected_to_format, netName), 60.seconds)
 
-    waitFor(text(R.string.status_activity_title_node_list)).click()
-    assertNodeReachability("computer", string(R.string.status_node_reachability_direct_connection))
-    assertNodeReachability("laptop", string(R.string.status_node_reachability_via_format, "computer"))
-    Screenshots.take("nodes")
+    // Updated as the daemon discovers the mesh
+    scrollTo(row("computer", string(R.string.status_node_reachability_direct_connection)), 60.seconds)
+    scrollTo(row("laptop", string(R.string.status_node_reachability_via_format, "computer")), 60.seconds)
+    listOf("computerAddress", "laptopAddress").forEach { scrollTo(text(arguments.getString(it)!!)) }
+    Screenshots.take("nodes-and-subnets")
 
-    waitFor(text(R.string.status_activity_title_subnet_list)).click()
-    listOf("computerAddress", "laptopAddress").forEach { waitFor(text(arguments.getString(it)!!)) }
-    Screenshots.take("subnets")
-
-    clickMenuItem(R.string.status_activity_menu_disconnect)
+    clickIcon(R.string.status_activity_menu_disconnect)
     waitFor(text(netName))
   }
 }

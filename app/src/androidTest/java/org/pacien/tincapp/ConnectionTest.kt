@@ -20,14 +20,15 @@ package org.pacien.tincapp
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.uiautomator.By
 import org.junit.After
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.pacien.tincapp.activities.start.StartActivity
 import org.pacien.tincapp.service.TincVpnService
+import java.util.regex.Pattern
 import kotlin.time.Duration.Companion.seconds
 
 @RunWith(AndroidJUnit4::class)
@@ -38,7 +39,7 @@ class ConnectionTest {
   private val netName = "testnet"
   private val nodeName = "android"
   private val address = "10.0.0.2"
-  private var scenario: ActivityScenario<StartActivity>? = null
+  private var scenario: ActivityScenario<MainActivity>? = null
 
   @Before
   fun setUp() {
@@ -53,7 +54,7 @@ class ConnectionTest {
   }
 
   private fun connect() {
-    if (scenario == null) scenario = ActivityScenario.launch(StartActivity::class.java)
+    if (scenario == null) scenario = ActivityScenario.launch(MainActivity::class.java)
     waitFor(text(netName)).click()
   }
 
@@ -61,11 +62,32 @@ class ConnectionTest {
 
   private fun waitForError() = waitFor(text(R.string.notification_error_title_unable_to_start_tinc), 60.seconds)
 
+  private fun dismissError() {
+    click(android.R.string.ok)
+    waitForGone(text(R.string.notification_error_title_unable_to_start_tinc))
+  }
+
   private fun unlock(passphrase: String) {
     waitFor(text(R.string.decrypt_key_modal_title))
     Screenshots.take("passphrase-dialog")
-    typeInto("passphrase", passphrase)
-    waitFor(text(R.string.decrypt_key_modal_action_unlock)).click()
+    typeInto(R.string.decrypt_key_modal_field_passphrase, passphrase)
+    click(R.string.decrypt_key_modal_action_unlock)
+  }
+
+  /**
+   * Taps this single node, drawn at the centre of the graph, until the graph is rendered and shows its details.
+   * The graph is a web page, without accessibility nodes to look for.
+   */
+  private fun showNodeInfoFromGraph() {
+    val graph = waitFor(By.clazz("android.webkit.WebView"))
+    waitUntil {
+      graph.click()
+      waitFor(text(R.string.status_node_info_dialog_title), 2.seconds)
+    }
+    waitFor(text(nodeName))
+    Screenshots.take("node-info")
+    click(R.string.status_node_info_dialog_close_action)
+    waitForGone(text(R.string.status_node_info_dialog_title))
   }
 
   @Test
@@ -78,21 +100,19 @@ class ConnectionTest {
     waitFor(text("$address/32"))
     Screenshots.take("network")
 
-    waitFor(text(R.string.status_activity_title_node_list)).click()
-    waitFor(text(nodeName))
-    Screenshots.take("nodes")
+    scrollTo(row(nodeName, string(R.string.status_node_reachability_this_node)))
+    scrollTo(text(address)) // subnet, tinc omitting the prefix length of single addresses
+    Screenshots.take("nodes-and-subnets")
 
-    waitFor(text(R.string.status_activity_title_subnet_list)).click()
-    waitFor(text(address)) // tinc omits the prefix length of single addresses
-    waitFor(text(nodeName))
-    Screenshots.take("subnets")
+    click(R.string.status_activity_title_topology)
+    showNodeInfoFromGraph()
+    Screenshots.take("topology")
 
-    clickMenuItem(R.string.status_activity_menu_show_log)
-    waitFor(textStartingWith(string(R.string.log_view_state_level_format, "")))
+    click(R.string.status_activity_title_log_view)
+    waitFor(By.text(Pattern.compile(".+\n.+", Pattern.DOTALL))) // some log lines
     Screenshots.take("log")
-    device.pressBack()
 
-    clickMenuItem(R.string.status_activity_menu_disconnect)
+    clickIcon(R.string.status_activity_menu_disconnect)
     waitFor(text(netName))
     Screenshots.take("disconnected")
     waitUntil { assertNull(TincVpnService.getCurrentNetName()) }
@@ -114,6 +134,7 @@ class ConnectionTest {
     connect()
     unlock("wrong horse")
     waitForError()
+    dismissError()
 
     connect()
     unlock("correct horse")

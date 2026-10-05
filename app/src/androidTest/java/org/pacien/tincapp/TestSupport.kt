@@ -23,6 +23,7 @@ import androidx.annotation.StringRes
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.BySelector
+import androidx.test.uiautomator.Direction
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
@@ -39,8 +40,8 @@ import java.util.regex.Pattern
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-// UI Automator rather than Espresso: Espresso waits for the AsyncTask pool to be idle, which never happens while
-// the app runs the tinc daemon.
+// UI Automator, which also reaches the system's file manager, and sees Compose screens through their accessibility
+// nodes.
 
 val context get() = InstrumentationRegistry.getInstrumentation().targetContext
 val device: UiDevice get() = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
@@ -57,9 +58,11 @@ fun text(text: String): BySelector = By.text(Pattern.compile(Pattern.quote(text)
 
 fun text(@StringRes id: Int, vararg args: Any) = text(string(id, *args))
 
-fun textStartingWith(prefix: String): BySelector = By.text(Pattern.compile(Pattern.quote(prefix) + ".*", Pattern.DOTALL))
+/** Matches a text field by its label. */
+fun field(@StringRes label: Int): BySelector = By.clazz("android.widget.EditText").hasChild(text(label))
 
-fun field(id: String): BySelector = By.res(context.packageName, id)
+/** Matches a clickable list row by the texts of its cells. */
+fun row(vararg cells: String): BySelector = cells.fold(By.clickable(true)) { row, cell -> row.hasChild(text(cell)) }
 
 fun waitFor(selector: BySelector, timeout: Duration = 30.seconds): UiObject2 =
   device.wait(Until.findObject(selector), timeout.inWholeMilliseconds)
@@ -91,23 +94,49 @@ fun waitUntil(timeout: Duration = 30.seconds, check: () -> Unit) {
   }
 }
 
-/** Clicks an action bar item, shown as an icon or in the overflow menu depending on the screen width. */
-fun clickMenuItem(@StringRes title: Int) {
-  device.findObject(By.desc(string(title)))?.click()
-    ?: run {
-      waitFor(By.desc("More options")).click()
-      waitFor(text(title)).click()
+/** Scrolls the screen's list until the selected element is shown, as lists only lay out their visible items. */
+fun scrollTo(selector: BySelector, timeout: Duration = 30.seconds): UiObject2 {
+  val deadline = System.nanoTime() + timeout.inWholeNanoseconds
+  while (System.nanoTime() < deadline) {
+    device.findObject(selector)?.let { return it }
+    device.findObject(By.scrollable(true))?.run {
+      scrollUntil(Direction.DOWN, Until.findObject(selector))?.let { return it }
+      while (scroll(Direction.UP, 1f)) continue
     }
+    Thread.sleep(250)
+  }
+  return waitFor(selector, timeout = 0.seconds)
 }
 
-fun typeInto(fieldId: String, value: String) {
-  waitFor(field(fieldId)).text = value
+fun click(@StringRes label: Int) = waitFor(text(label)).click()
+
+fun clickIcon(@StringRes description: Int) = waitFor(By.desc(string(description))).click()
+
+/** Clicks an item of the top bar's overflow menu, which follows the menus of the list items. */
+fun clickAppMenuItem(@StringRes title: Int) {
+  waitFor(By.desc(string(R.string.generic_action_menu)))
+  device.findObjects(By.desc(string(R.string.generic_action_menu))).last().click()
+  click(title)
+}
+
+fun clickNetworkMenuItem(netName: String, @StringRes title: Int) {
+  waitFor(text(netName)).parent.findObject(By.desc(string(R.string.generic_action_menu))).click()
+  click(title)
+}
+
+fun typeInto(@StringRes fieldLabel: Int, value: String) {
+  waitFor(field(fieldLabel)).text = value
 }
 
 object Device {
-  /** Pre-grants the VPN consent, and starts from the home screen. */
+  /**
+   * Pre-grants the VPN consent, and starts from the home screen.
+   * Also stops the file manager, which would otherwise keep showing directories deleted by [reset], and then fall
+   * back to another root.
+   */
   fun prepare() {
     shell("appops set ${context.packageName} ACTIVATE_VPN allow")
+    listOf("com.android.documentsui", "com.google.android.documentsui").forEach { shell("am force-stop $it") }
     device.pressHome()
   }
 

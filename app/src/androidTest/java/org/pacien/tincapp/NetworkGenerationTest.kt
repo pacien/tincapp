@@ -27,7 +27,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.pacien.tincapp.activities.start.StartActivity
 import org.pacien.tincapp.context.AppPaths
 
 @RunWith(AndroidJUnit4::class)
@@ -35,13 +34,13 @@ class NetworkGenerationTest {
   @get:Rule
   val screenshots = Screenshots.Rule()
 
-  private var scenario: ActivityScenario<StartActivity>? = null
+  private var scenario: ActivityScenario<MainActivity>? = null
 
   @Before
   fun setUp() {
     Device.prepare()
     Device.reset()
-    scenario = ActivityScenario.launch(StartActivity::class.java)
+    scenario = ActivityScenario.launch(MainActivity::class.java)
   }
 
   @After
@@ -52,25 +51,22 @@ class NetworkGenerationTest {
 
   private fun generate(netName: String, nodeName: String) {
     waitFor(text(R.string.start_network_list_empty_none_found))
-    clickMenuItem(R.string.start_activity_menu_configure)
-    waitFor(text(R.string.configure_tools_action_generate_node_configuration_and_keys)).click()
-    typeInto("new_net_name", netName)
-    typeInto("new_node_name", nodeName)
-    waitFor(text(R.string.configure_tools_generate_config_action)).click()
+    clickIcon(R.string.configure_tools_generate_config_title)
+    click(R.string.configure_tools_action_create_node_configuration_and_keys)
+    typeInto(R.string.configure_tools_generate_config_net_name_hint, netName)
+    typeInto(R.string.configure_tools_generate_config_node_name_hint, nodeName)
+    click(R.string.configure_tools_generate_config_action)
   }
 
   @Test
-  fun generatesNetworkFromConfigurationScreen() {
+  fun generatesNetworkFromNetworkList() {
     generate("testnet", "android")
 
     val netDir = AppPaths.confDir("testnet")
     val files = listOf("tinc.conf", "network.conf", "ed25519_key.priv", "rsa_key.priv", "hosts/android")
     waitUntil { files.forEach { assertTrue("$it exists", netDir.resolve(it).isFile) } }
     assertTrue(netDir.resolve("tinc.conf").readText().contains("Name = android"))
-    waitForGone(text(R.string.configure_tools_generate_config_generating))
-    Screenshots.take("generated")
-
-    device.pressBack()
+    waitForGone(text(R.string.configure_tools_generate_config_title)) // the dialog, also having the name typed in
     waitFor(text("testnet"))
     Screenshots.take("listed")
   }
