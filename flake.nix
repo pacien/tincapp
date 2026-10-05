@@ -117,7 +117,7 @@
           useBwrap = false;
         };
 
-        gradleBuildTask = ":app:assembleDebug";
+        gradleBuildTask = ":app:assembleDebug :app:assembleDebugAndroidTest";
         gradleUpdateTask = finalAttrs.gradleBuildTask;
         gradleFlags = [
           "-Dorg.gradle.java.home=${jdk.home}"
@@ -136,6 +136,8 @@
 
         installPhase = ''
           install -D app/build/outputs/apk/debug/app-debug.apk "$out/app-debug.apk"
+          install -D app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            "$out/app-debug-androidTest.apk"
         '';
 
         dontFixup = true;
@@ -144,11 +146,38 @@
     {
       packages.${system}.debug-apk = debugApk;
 
-      checks.${system}.vpn-test = import ./tests/vpn/vpn-test.nix {
-        inherit pkgs jdk debugApk;
-        androidSdk = testAndroid.androidsdk;
-        androidHome = testAndroidHome;
-        systemImage = testSystemImage;
+      checks.${system} = {
+        vpn-test = import ./tests/vpn/vpn-test.nix {
+          inherit pkgs jdk debugApk;
+          androidSdk = testAndroid.androidsdk;
+          androidHome = testAndroidHome;
+          systemImage = testSystemImage;
+        };
+
+        # Instrumented tests (app/src/androidTest), on a fresh emulated device
+        instrumented-tests =
+          pkgs.runCommand "instrumented-tests"
+            {
+              nativeBuildInputs = [
+                pkgs.python3
+                testAndroid.androidsdk
+                jdk
+              ];
+              requiredSystemFeatures = [ "kvm" ];
+              ANDROID_HOME = testAndroidHome;
+              JAVA_HOME = jdk.home;
+              TINCAPP_TEST_SYSTEM_IMAGE = testSystemImage;
+              PYTHONPATH = pkgs.lib.fileset.toSource {
+                root = ./tests;
+                fileset = ./tests/android_device.py;
+              };
+            }
+            ''
+              export HOME="$TMPDIR"
+              python3 ${./tests/instrumented_tests.py} \
+                ${debugApk}/app-debug.apk ${debugApk}/app-debug-androidTest.apk
+              touch $out
+            '';
       };
 
       devShells.${system}.default = pkgs.mkShellNoCC {

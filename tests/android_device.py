@@ -109,6 +109,11 @@ class Device:
     def ping(self, address, count=3):
         return self.shell(f"ping -c {count} -W 5 {address}")
 
+    def instrument(self, test_package, runner="androidx.test.runner.AndroidJUnitRunner"):
+        """Runs instrumented tests, returning whether they all passed, and their report."""
+        report = self.shell(f"am instrument -w {test_package}/{runner}", timeout=900)
+        return "\nOK (" in report and "FAILURES!!!" not in report, report
+
     def save_diagnostics(self, out_dir: Path):
         for name, command in [("app.log", lambda: self.run_as_app("cat cache/logs/*")),
                               ("crash.txt", lambda: self.adb("logcat", "-d", "-b", "crash")),

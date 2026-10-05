@@ -38,8 +38,11 @@ An Android client for tinc (<https://tinc-vpn.org/>).
     * Debug APK: `nix build .#debug-apk`
     * Update locked Gradle deps (`nix/debug-apk-deps.json`):
       `nix build .#debug-apk.mitmCache.updateScript && ./result`
-    * End-to-end VM test (`tests/vpn`):
-      * Run: `nix build -L .#checks.x86_64-linux.vpn-test`
+    * Nix VM test (`tests/vpn`):
+      * Instrumented UI tests:
+        `nix build -L .#checks.x86_64-linux.instrumented-tests`
+      * End-to-end VPN test (`test/vpn`):
+        `nix build -L .#checks.x86_64-linux.vpn-test`
         (or all checks: `nix flake check`)
       * Interactive driver for debug:
         `nix run .#checks.x86_64-linux.vpn-test.driverInteractive`
@@ -52,4 +55,3 @@ An Android client for tinc (<https://tinc-vpn.org/>).
   * Instrumented tests (`app/src/androidTest`):
     `./gradlew :app:connectedDebugAndroidTest`
     (on all connected devices, or the one given by `ANDROID_SERIAL`)
-
