@@ -54,6 +54,20 @@
       };
 
       androidHome = "${android.androidsdk}/libexec/android-sdk";
+
+      # Separate SDK for the automated tests on an AOSP system image
+      # (without Google apps and their background setup making things flaky).
+      # (Note: AOSP image releases are lagging by one API level.)
+      testAndroid = pkgs.androidenv.composeAndroidPackages {
+        platformVersions = [ "36" ];
+        includeCmake = false;
+        includeEmulator = true;
+        includeSystemImages = true;
+        systemImageTypes = [ "default" ];
+        abiVersions = [ "x86_64" ];
+      };
+      testAndroidHome = "${testAndroid.androidsdk}/libexec/android-sdk";
+      testSystemImage = "system-images;android-36;default;x86_64";
       aapt2 = "${androidHome}/build-tools/${buildToolsVersion}/aapt2";
       jdk = pkgs.jdk21;
       gradle = pkgs.gradle_9;
@@ -129,6 +143,13 @@
     in
     {
       packages.${system}.debug-apk = debugApk;
+
+      checks.${system}.vpn-test = import ./tests/vpn/vpn-test.nix {
+        inherit pkgs jdk debugApk;
+        androidSdk = testAndroid.androidsdk;
+        androidHome = testAndroidHome;
+        systemImage = testSystemImage;
+      };
 
       devShells.${system}.default = pkgs.mkShellNoCC {
         packages = [
