@@ -49,4 +49,7 @@ An Android client for tinc (<https://tinc-vpn.org/>).
     'system-images;android-37.0;google_apis_ps16k;x86_64'`
   * Start it: `emulator -avd tincapp` (append `-no-window` for headless)
   * Install and run the debug APK: `./gradlew :app:installDebug`
-  * Instrumented tests: `./gradlew :app:connectedDebugAndroidTest`
+  * Instrumented tests (`app/src/androidTest`):
+    `./gradlew :app:connectedDebugAndroidTest`
+    (on all connected devices, or the one given by `ANDROID_SERIAL`)
+
