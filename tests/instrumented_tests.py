@@ -35,7 +35,8 @@ try:
     device = emulator.start()
     device.install_app(args.apk)
     device.adb("install", "-r", "-t", str(args.test_apk))
-    passed, report = device.instrument(f"{APP_PACKAGE}.test")
+    # Tests with real peers are run by the end-to-end VPN test instead.
+    passed, report = device.instrument(f"{APP_PACKAGE}.test", {"notClass": f"{APP_PACKAGE}.PeerNetworkTest"})
     print(report)
     if not passed:
         device.save_diagnostics(work_dir)

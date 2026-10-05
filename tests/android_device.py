@@ -23,6 +23,7 @@ TINCAPP_TEST_SYSTEM_IMAGE.
 
 import os
 import random
+import shlex
 import signal
 import socket
 import subprocess
@@ -109,9 +110,10 @@ class Device:
     def ping(self, address, count=3):
         return self.shell(f"ping -c {count} -W 5 {address}")
 
-    def instrument(self, test_package, runner="androidx.test.runner.AndroidJUnitRunner"):
+    def instrument(self, test_package, arguments=None, runner="androidx.test.runner.AndroidJUnitRunner"):
         """Runs instrumented tests, returning whether they all passed, and their report."""
-        report = self.shell(f"am instrument -w {test_package}/{runner}", timeout=900)
+        options = "".join(f" -e {key} {shlex.quote(value)}" for key, value in (arguments or {}).items())
+        report = self.shell(f"am instrument -w{options} {test_package}/{runner}", timeout=900)
         return "\nOK (" in report and "FAILURES!!!" not in report, report
 
     def save_diagnostics(self, out_dir: Path):
