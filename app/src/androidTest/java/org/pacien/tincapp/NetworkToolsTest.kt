@@ -30,7 +30,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.utils.TincKeyring
+import org.pacien.tincapp.keyring.TincKeyring
+import org.pacien.tincapp.ui.MainActivity
 import java.util.regex.Pattern
 
 /** Tools of the network list: passphrase protection, deletion, and configuration directories. */
@@ -56,21 +57,22 @@ class NetworkToolsTest {
     Device.reset()
   }
 
-  private fun lock(passphrase: String) {
+  private fun lock(passphrase: String, confirmation: String = passphrase) {
     clickNetworkMenuItem(netName, R.string.start_network_action_lock)
-    typeInto(R.string.decrypt_key_modal_field_passphrase, passphrase)
-    click(R.string.configure_tools_lock_network_action)
+    typeInto(R.string.unlock_network_modal_field_passphrase, passphrase)
+    typeInto(R.string.configure_tools_lock_network_confirm_passphrase, confirmation)
   }
 
   private fun unlock(passphrase: String) {
     clickNetworkMenuItem(netName, R.string.start_network_action_unlock)
-    typeInto(R.string.decrypt_key_modal_field_passphrase, passphrase)
+    typeInto(R.string.unlock_network_modal_field_passphrase, passphrase)
     click(R.string.configure_tools_unlock_network_action)
   }
 
   private fun waitForKeysEncrypted(encrypted: Boolean) {
     waitUntil { assertEquals(encrypted, TincKeyring.needsPassphrase(netName)) }
-    waitForGone(text(R.string.configure_tools_private_keys_encryption_encrypting))
+    waitForGone(text(R.string.configure_tools_lock_network_progress))
+    waitForGone(text(R.string.configure_tools_unlock_network_progress))
   }
 
   private fun waitForFileManager(fileName: String) =
@@ -79,6 +81,7 @@ class NetworkToolsTest {
   @Test
   fun encryptsAndDecryptsPrivateKeys() {
     lock("correct horse")
+    click(R.string.configure_tools_lock_network_action)
     waitForKeysEncrypted(true)
 
     unlock("correct horse")
@@ -86,8 +89,18 @@ class NetworkToolsTest {
   }
 
   @Test
+  fun rejectsMismatchedPassphraseConfirmation() {
+    lock("correct horse", confirmation = "wrong horse")
+    waitFor(text(R.string.configure_tools_lock_network_error_mismatch))
+    Screenshots.take("mismatch")
+    assertFalse(waitFor(text(R.string.configure_tools_lock_network_action)).parent.isEnabled)
+    assertFalse(TincKeyring.needsPassphrase(netName))
+  }
+
+  @Test
   fun rejectsWrongCurrentPassphrase() {
     lock("correct horse")
+    click(R.string.configure_tools_lock_network_action)
     waitForKeysEncrypted(true)
 
     unlock("wrong horse")

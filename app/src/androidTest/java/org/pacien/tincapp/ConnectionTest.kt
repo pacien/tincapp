@@ -27,7 +27,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.ui.MainActivity
+import org.pacien.tincapp.vpnservice.TincVpnService
 import java.util.regex.Pattern
 import kotlin.time.Duration.Companion.seconds
 
@@ -63,15 +64,15 @@ class ConnectionTest {
   private fun waitForError() = waitFor(text(R.string.notification_error_title_unable_to_start_tinc), 60.seconds)
 
   private fun dismissError() {
-    click(android.R.string.ok)
+    click(R.string.generic_action_dismiss)
     waitForGone(text(R.string.notification_error_title_unable_to_start_tinc))
   }
 
   private fun unlock(passphrase: String) {
-    waitFor(text(R.string.decrypt_key_modal_title))
+    waitFor(text(R.string.unlock_network_modal_title))
     Screenshots.take("passphrase-dialog")
-    typeInto(R.string.decrypt_key_modal_field_passphrase, passphrase)
-    click(R.string.decrypt_key_modal_action_unlock)
+    typeInto(R.string.unlock_network_modal_field_passphrase, passphrase)
+    click(R.string.unlock_network_modal_action_unlock)
   }
 
   /**

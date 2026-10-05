@@ -28,6 +28,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.ui.MainActivity
 
 @RunWith(AndroidJUnit4::class)
 class NetworkGenerationTest {

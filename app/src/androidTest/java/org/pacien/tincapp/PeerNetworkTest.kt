@@ -29,6 +29,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.pacien.tincapp.context.AppPaths
+import org.pacien.tincapp.ui.MainActivity
 import kotlin.time.Duration.Companion.seconds
 
 /**

@@ -27,15 +27,15 @@ import androidx.test.uiautomator.Direction
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
+import kotlinx.coroutines.runBlocking
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import org.pacien.tincapp.commands.Tinc
 import org.pacien.tincapp.commands.TincApp
 import org.pacien.tincapp.context.App
 import org.pacien.tincapp.context.AppPaths
-import org.pacien.tincapp.service.TincVpnService
+import org.pacien.tincapp.vpnservice.TincVpnService
 import java.io.File
-import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -153,12 +153,11 @@ object Device {
 
 object Networks {
   /** Creates a network configuration as the configuration screen's generation tool does. */
-  fun create(netName: String, nodeName: String, passphrase: String? = null) {
+  fun create(netName: String, nodeName: String, passphrase: String? = null) = runBlocking {
     Tinc.init(netName, nodeName)
-      .thenCompose { TincApp.removeScripts(netName) }
-      .thenCompose { TincApp.generateIfaceCfgTemplate(netName) }
-      .thenCompose { TincApp.setPassphrase(netName, newPassphrase = passphrase) }
-      .get(30, TimeUnit.SECONDS)
+    TincApp.removeScripts(netName)
+    TincApp.generateIfaceCfgTemplate(netName)
+    TincApp.setPassphrase(netName, newPassphrase = passphrase)
   }
 
   /** Sets the node's address, as users do by editing the generated templates. */
