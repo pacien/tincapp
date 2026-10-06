@@ -3,6 +3,15 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.45 -- 2026-10-06
+- fix app crash when displaying the network list on some devices
+- fix app crash when a configuration tool completes after leaving its screen
+- fix repeated (dis)connection via Android Intent
+- fix click/touch cancellation in UI between list refresh
+- patch tinc to resolve `Address` and `Proxy` host names in the background
+  (a slow or unresponsive DNS server no longer holds up the daemon)
+- update Chinese and Russian translations
+
 ## v0.44 -- 2026-07-30
 - update Android SDK target to 36 (Android 16)
 - update LibreSSL to 4.3.2
