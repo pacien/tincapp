@@ -222,6 +222,11 @@
           touch "$local_properties"
           sed -i '/^sdk\.dir=/d' "$local_properties"
           echo "sdk.dir=${androidHome}" >> "$local_properties"
+
+          # Keep virtual devices in the project, where both avdmanager and the
+          # emulator look for them (their defaults differ).
+          export ANDROID_AVD_HOME="$loc/avd.local"
+          mkdir -p "$ANDROID_AVD_HOME"
         '';
       };
     };
