@@ -3,11 +3,15 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
-## v0.46 -- (next release)
-- minimum system supported: Android 7 (API 24)
-- GUI update: network creation and config now done on the main screen
-- bugfix: new files with conflicting names now handled in config dir
-- config dir: ".txt" extension now automatically stripped for config files
+## v0.46 -- 2026-10-18
+- minimum supported system is now Android 7 (API 24)
+- added network topology graph tab on status screen
+- moved config creation and edition menus to network list screen
+- added warning on missing text editor app on device needed for editing config
+- fixed imported file names (strip .txt extension added by some file managers)
+- fixed config file import being ignored on conflicting names
+- fixed spurious reconnect from external app Intents
+- fixed crash report on Android 7
 
 ## v0.45 -- 2026-10-06
 - fix app crash when displaying the network list on some devices
