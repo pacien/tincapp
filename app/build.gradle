@@ -22,7 +22,6 @@ plugins {
   id 'com.android.application'
   id 'com.android.legacy-kapt' version '9.3.1'
   id 'kotlinx-serialization'
-  id 'com.github.triplet.play' version '4.0.0' apply false
   id 'org.jetbrains.kotlin.plugin.compose'
 }
 
@@ -156,17 +155,4 @@ dependencies {
 repositories {
   mavenCentral()
   google()
-}
-
-def playCredentialsPath = keystoreProperties['apiKeyFile']
-def playCredentialsFile = playCredentialsPath ? file(playCredentialsPath) : null
-
-if (playCredentialsFile?.exists()) {
-  apply plugin: 'com.github.triplet.play'
-
-  play {
-    serviceAccountCredentials = playCredentialsFile
-    track = 'beta'
-    resolutionStrategy = "auto"
-  }
 }
