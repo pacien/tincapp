@@ -29,7 +29,7 @@
     <string name="generic_action_open_web_page">打开网页</string>
     <!-- about modal -->
 	<string name="about_app_menu_manual">手册</string>
-	<string name="about_app_menu_about">关于</string>
+    <string name="about_app_menu_about">关于</string>
     <string name="about_app_short_desc">tinc mesh VPN 守护进程的 Android 绑定和用户界面。</string>
     <string name="about_app_copyright">版权所有 © 2017–2026 Euxane P. TRAN-GIRARD 及其贡献者。</string>
     <string name="about_app_license">软件根据 GNU 通用公共许可证第3版的条款进行分发。</string>
@@ -71,7 +71,6 @@
 	<string name="configure_tools_message_invalid_network_name">网络名称无效。</string>
     <string name="configure_tools_message_network_configuration_written">网络配置写入成功。</string>
     <string name="configure_activity_title_tools">工具</string>
-    <string name="configure_tools_action_generate_node_configuration_and_keys">生成节点配置和密钥</string>
     <string name="configure_tools_action_encrypt_decrypt_private_keys">加密或解密私钥</string>
     <string name="configure_tools_generate_config_title">新建网络</string>
     <string name="configure_tools_generate_config_net_name_hint">Tinc 网络名称</string>
@@ -90,7 +89,6 @@
     <!-- Status activity -->
 	<string name="status_activity_state_connected_to_format">已连接至 %s</string>
     <string name="status_activity_menu_disconnect">断开连接</string>
-    <string name="status_activity_menu_show_log">显示日志</string>
     <string name="status_activity_disconnecting_vpn">正在断开 VPN…</string>
     <string name="status_activity_title_network_info">网络信息</string>
     <string name="status_network_info_network_name_label">网络名称</string>
@@ -109,11 +107,6 @@
     <string name="status_node_reachability_unknown">…</string>
     <string name="status_node_info_dialog_title">节点信息</string>
     <string name="status_activity_title_subnet_list">子网</string>
-    <!-- Log viewer activity -->
-	<string name="log_view_state_level_format">日志级别：%s</string>
-    <string name="log_view_state_paused">日志已暂停</string>
-    <string name="log_view_menu_toggle_logging">切换日志记录</string>
-    <string name="log_view_menu_share_log">分享日志</string>
     <string name="notification_error_action_open_config_dir">打开配置目录</string>
     <string name="notification_error_action_open_logs_dir">打开日志目录</string>
     <string name="configure_activity_title_directories">目录</string>
