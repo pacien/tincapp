@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 --><resources>
     <!-- generic strings -->
-	<string name="generic_title_error">Ошибка</string>
+    <string name="generic_title_error">Ошибка</string>
     <string name="generic_loading">Загрузка…</string>
     <string name="generic_yes">да</string>
     <string name="generic_no">нет</string>
@@ -27,7 +27,7 @@
     <string name="generic_action_apply">Применить</string>
     <string name="generic_action_open_web_page">Открыть веб-страницу</string>
     <!-- about modal -->
-	<string name="about_app_menu_manual">Руководство</string>
+    <string name="about_app_menu_manual">Руководство</string>
     <string name="about_app_menu_about">О программе</string>
     <string name="about_app_short_desc">Привязка к Android и пользовательский интерфейс для демона tinc mesh VPN.</string>
     <string name="about_app_copyright">Copyright © 2017-2026 Euxane P. TRAN-GIRARD и соавторы.</string>
@@ -37,17 +37,17 @@
     <string name="about_app_supported_abis_format">Версия ABI: %1$s</string>
     <string name="about_app_open_project_website">Веб-сайт проекта</string>
     <!-- crash modal -->
-	<string name="crash_modal_title">Сбой приложения</string>
+    <string name="crash_modal_title">Сбой приложения</string>
     <string name="crash_modal_message">Приложение столкнулось с фатальной ошибкой.</string>
     <string name="crash_modal_crash_logged">Сведения о сбое сохранены в \"%1$s\".</string>
     <string name="crash_modal_action_send_email">Отправить электронное письмо</string>
     <string name="crash_modal_action_send_report">Отправить отчет</string>
     <!-- key decryption modal -->
-	<string name="decrypt_key_modal_title">Разблокировать приватные ключи tinc</string>
+    <string name="decrypt_key_modal_title">Разблокировать приватные ключи tinc</string>
     <string name="decrypt_key_modal_field_passphrase">Кодовая фраза</string>
     <string name="decrypt_key_modal_action_unlock">Разблокировать</string>
     <!-- error notifications -->
-	<string name="notification_error_channel_name">Ошибки</string>
+    <string name="notification_error_channel_name">Ошибки</string>
     <string name="notification_error_action_open_manual">Открыть руководство</string>
     <string name="notification_error_title_unable_to_start_tinc">Не удалось запустить tinc</string>
     <string name="notification_error_message_could_not_read_private_key_format">Не удалось прочитать закрытые ключи tinc:\n%1$s</string>
@@ -62,13 +62,13 @@
     <string name="notification_error_message_network_config_invalid_format">Недопустимая конфигурация сети в network.conf:\n%1$s</string>
     <string name="notification_error_message_could_not_decrypt_private_keys_format">Не удалось расшифровать закрытые ключи:\n%1$s</string>
     <!-- Start activity -->
-	<string name="start_activity_menu_configure">Конфигурировать</string>
+    <string name="start_activity_menu_configure">Конфигурировать</string>
     <string name="start_network_list_warning_text">Трафик с этого устройства будет частично или полностью перенаправляться в выбранную сеть и через нее в соответствии с вашей конфигурацией. Никогда не подключайтесь к сети tinc, которой вы не доверяете.</string>
     <string name="start_network_list_title">Подключиться к сети</string>
     <string name="start_network_list_empty_none_found">Не удалось найти никакой конфигурации сети.</string>
     <string name="start_starting_vpn">Запуск VPN…</string>
     <!-- Configure activity -->
-	<string name="configure_tools_message_invalid_network_name">Недопустимое имя сети.</string>
+    <string name="configure_tools_message_invalid_network_name">Недопустимое имя сети.</string>
     <string name="configure_tools_message_network_configuration_written">Записана конфигурация сети.</string>
     <string name="configure_activity_title_tools">Инструменты</string>
     <string name="configure_tools_action_encrypt_decrypt_private_keys">Шифровать или дешифровать закрытые ключи</string>
@@ -87,7 +87,7 @@
     <string name="configure_tools_private_key_encryption_new_passphrase">Новая кодовая фраза\n (оставьте пустой для расшифровки)</string>
     <string name="configure_tools_private_keys_encryption_encrypting">Шифрование/дешифрование закрытых ключей tinc</string>
     <!-- Status activity -->
-	<string name="status_activity_state_connected_to_format">Подключен к %s</string>
+    <string name="status_activity_state_connected_to_format">Подключен к %s</string>
     <string name="status_activity_menu_disconnect">Разъединить</string>
     <string name="status_activity_disconnecting_vpn">Отключение от VPN…</string>
     <string name="status_activity_title_network_info">Сеть</string>

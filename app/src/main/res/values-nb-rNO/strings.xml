@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 --><resources>
     <!-- generic strings -->
-	<string name="generic_title_error">Feil</string>
+    <string name="generic_title_error">Feil</string>
     <string name="generic_loading">Laster…</string>
     <string name="generic_yes">ja</string>
     <string name="generic_no">nei</string>
@@ -28,7 +28,7 @@
     <string name="generic_action_apply">Bruk</string>
     <string name="generic_action_open_web_page">Åpne nettside</string>
     <!-- about modal -->
-	<string name="about_app_menu_manual">Manual</string>
+    <string name="about_app_menu_manual">Manual</string>
     <string name="about_app_menu_about">Om</string>
     <string name="about_app_short_desc">Android-binding og brukergrensesnitt tiltenkt maskenett-VPN-nissen for Tinc.</string>
     <string name="about_app_copyright">Copyright © 2017–2026 Euxane P. TRAN-GIRARD og bidragsytere.</string>
@@ -38,17 +38,17 @@
     <string name="about_app_supported_abis_format">Enhets-ABI-er: %1$s</string>
     <string name="about_app_open_project_website">Prosjektnettside</string>
     <!-- crash modal -->
-	<string name="crash_modal_title">Programkræsj</string>
+    <string name="crash_modal_title">Programkræsj</string>
     <string name="crash_modal_message">Programmet støtte på en uopprettelig feil.</string>
     <string name="crash_modal_crash_logged">Kræsjdetaljer lagret i \"%1$s\".</string>
     <string name="crash_modal_action_send_email">Send e-post</string>
     <string name="crash_modal_action_send_report">Send rapport</string>
     <!-- key decryption modal -->
-	<string name="decrypt_key_modal_title">Lås opp private tinc-nøkler</string>
+    <string name="decrypt_key_modal_title">Lås opp private tinc-nøkler</string>
     <string name="decrypt_key_modal_field_passphrase">Passord</string>
     <string name="decrypt_key_modal_action_unlock">Lås opp</string>
     <!-- error notifications -->
-	<string name="notification_error_channel_name">Feil</string>
+    <string name="notification_error_channel_name">Feil</string>
     <string name="notification_error_action_open_manual">Åpne manual</string>
     <string name="notification_error_title_unable_to_start_tinc">Kunne ikke starte tinc</string>
     <string name="notification_error_message_could_not_read_private_key_format">Kunne ikke lese private tinc-nøkler:\n%1$s</string>
@@ -63,12 +63,12 @@
     <string name="notification_error_message_network_config_invalid_format">Ugyldig nettverksoppsett i network.conf:\n%1$s</string>
     <string name="notification_error_message_could_not_decrypt_private_keys_format">Kunne ikke dekryptere private nøkler:\n%1$s</string>
     <!-- Start activity -->
-	<string name="start_activity_menu_configure">Sett opp</string>
+    <string name="start_activity_menu_configure">Sett opp</string>
     <string name="start_network_list_title">Koble til nettverk</string>
     <string name="start_network_list_empty_none_found">Kunne ikke finne noe nettverksoppsett.</string>
     <string name="start_starting_vpn">Starter VPN…</string>
     <!-- Configure activity -->
-	<string name="configure_tools_message_invalid_network_name">Ugyldig nettverksnavn.</string>
+    <string name="configure_tools_message_invalid_network_name">Ugyldig nettverksnavn.</string>
     <string name="configure_tools_message_network_configuration_written">Nettverksoppsett skrevet.</string>
     <string name="configure_activity_title_tools">Verktøy</string>
     <string name="configure_tools_action_encrypt_decrypt_private_keys">Krypter eller dekrypter private nøkler.</string>
@@ -87,7 +87,7 @@
     <string name="configure_tools_private_key_encryption_new_passphrase">Nytt passord\n(la stå tomt for å dekryptere)</string>
     <string name="configure_tools_private_keys_encryption_encrypting">Krypterer/dekrypterer private tinc-nøkler.</string>
     <!-- Status activity -->
-	<string name="status_activity_state_connected_to_format">Tilkoblet %s</string>
+    <string name="status_activity_state_connected_to_format">Tilkoblet %s</string>
     <string name="status_activity_menu_disconnect">Koble fra</string>
     <string name="status_activity_disconnecting_vpn">Kobler fra VPN…</string>
     <string name="status_activity_title_network_info">Nettverk</string>

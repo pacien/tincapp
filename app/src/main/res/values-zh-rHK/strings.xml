@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 --><resources>
     <!-- generic strings -->
-	<string name="generic_title_error">錯誤</string>
+    <string name="generic_title_error">錯誤</string>
     <string name="generic_loading">正在加載…</string>
     <string name="generic_yes">是</string>
     <string name="generic_no">否</string>
@@ -28,7 +28,7 @@
     <string name="generic_action_apply">應用</string>
     <string name="generic_action_open_web_page">打開網頁</string>
     <!-- about modal -->
-	<string name="about_app_menu_manual">手冊</string>
+    <string name="about_app_menu_manual">手冊</string>
     <string name="about_app_menu_about">關於</string>
     <string name="about_app_short_desc">tinc mesh VPN 守護進程的 Android 綁定和用户界面。</string>
     <string name="about_app_copyright">版權所有 © 2017–2026 Euxane P. TRAN-GIRARD 及其貢獻者。</string>
@@ -38,17 +38,17 @@
     <string name="about_app_supported_abis_format">設備 ABI：%1$s</string>
     <string name="about_app_open_project_website">項目網站</string>
     <!-- crash modal -->
-	<string name="crash_modal_title">應用程序崩潰</string>
+    <string name="crash_modal_title">應用程序崩潰</string>
     <string name="crash_modal_message">該應用程序遇到致命錯誤。</string>
     <string name="crash_modal_crash_logged">崩潰的詳細信息已保存到“%1$s”。</string>
     <string name="crash_modal_action_send_email">發送電子郵件</string>
     <string name="crash_modal_action_send_report">發送報告</string>
     <!-- key decryption modal -->
-	<string name="decrypt_key_modal_title">解鎖 tinc 私鑰</string>
+    <string name="decrypt_key_modal_title">解鎖 tinc 私鑰</string>
     <string name="decrypt_key_modal_field_passphrase">密碼</string>
     <string name="decrypt_key_modal_action_unlock">解鎖</string>
     <!-- error notifications -->
-	<string name="notification_error_channel_name">錯誤</string>
+    <string name="notification_error_channel_name">錯誤</string>
     <string name="notification_error_action_open_manual">打開手冊</string>
     <string name="notification_error_title_unable_to_start_tinc">無法啟動 tinc</string>
     <string name="notification_error_message_could_not_read_private_key_format">無法讀取 tinc 私鑰：\n%1$s</string>
@@ -63,12 +63,12 @@
     <string name="notification_error_message_network_config_invalid_format">network.conf 中的網絡配置無效：\n%1$s</string>
     <string name="notification_error_message_could_not_decrypt_private_keys_format">無法解密私鑰：\n%1$s</string>
     <!-- Start activity -->
-	<string name="start_activity_menu_configure">配置</string>
+    <string name="start_activity_menu_configure">配置</string>
     <string name="start_network_list_title">連接到網絡</string>
     <string name="start_network_list_empty_none_found">未找到網絡配置。</string>
     <string name="start_starting_vpn">正在啟動 VPN…</string>
     <!-- Configure activity -->
-	<string name="configure_tools_message_invalid_network_name">網絡名稱無效。</string>
+    <string name="configure_tools_message_invalid_network_name">網絡名稱無效。</string>
     <string name="configure_tools_message_network_configuration_written">網絡配置寫入成功。</string>
     <string name="configure_activity_title_tools">工具</string>
     <string name="configure_tools_action_encrypt_decrypt_private_keys">加密或解密私鑰</string>
@@ -87,7 +87,7 @@
     <string name="configure_tools_private_key_encryption_new_passphrase">新密碼\n（空白以解密）</string>
     <string name="configure_tools_private_keys_encryption_encrypting">加密/解密私鑰</string>
     <!-- Status activity -->
-	<string name="status_activity_state_connected_to_format">已連接至 %s</string>
+    <string name="status_activity_state_connected_to_format">已連接至 %s</string>
     <string name="status_activity_menu_disconnect">斷開連接</string>
     <string name="status_activity_disconnecting_vpn">正在斷開 VPN…</string>
     <string name="status_activity_title_network_info">網絡信息</string>
