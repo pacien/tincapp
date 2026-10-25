@@ -1,20 +1,3 @@
-Main features:
- • Does NOT require root privilege
- • Uses conventional tinc configuration files
- • Configurable VPN access/bypass per Android application
- • Support for password-protected private keys
- • Connection management through a graphical user interface
- • Automatable using third party Android applications via Intents
+Virtually connects devices (mobiles, computers, servers, …) securely over the Internet as if they were on the same local network, using the tinc mesh networking protocol.
 
-Notes:
- • This application is only a VPN client, which is not tied to any VPN service provider by default.
- • It requires an existing tinc network to connect to.
- • For more information about the tinc VPN protocol, see https://www.tinc-vpn.org/
-
-Platform specific limitations of the Android client:
- • Operates with tinc in router mode only
- • Connects to only one tinc network at a time
- • No support for hook scripts
-
-See the project's website for more information (setup guide, documentation, sources, issues):
- • https://tincapp.euxane.eu
+See tincapp.euxane.eu for the setup guide, help, and source code.

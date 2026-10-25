@@ -1,1 +1,1 @@
-Tinc mesh VPN client and user interface
+An Android client for tinc
