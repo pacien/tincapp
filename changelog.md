@@ -3,6 +3,11 @@
 This file lists notable changes that have been made to the application on each release.
 Releases are tracked and referred to using git tags.
 
+## v0.48 -- 2026-11-13
+- passphrase input now required after reboot for protected networks
+- notify when the tinc daemon stops unexpectedly
+- fixed intermittent log view crash
+
 ## v0.47 -- 2026-11-01
 - new permission: "access nearby devices" required to reach tinc nodes on LAN
 - network.conf: remove internal "Blocking" interface setting (now ignored)
