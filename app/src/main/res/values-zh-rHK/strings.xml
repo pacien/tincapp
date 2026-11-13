@@ -43,8 +43,6 @@
     <string name="crash_modal_crash_logged">崩潰的詳細信息已保存到“%1$s”。</string>
     <string name="crash_modal_action_send_email">發送電子郵件</string>
     <string name="crash_modal_action_send_report">發送報告</string>
-    <!-- key decryption modal -->
-    <string name="decrypt_key_modal_title">解鎖 tinc 私鑰</string>
     <string name="unlock_network_modal_field_passphrase">密碼</string>
     <string name="unlock_network_modal_action_unlock">解鎖</string>
     <!-- error notifications -->
@@ -71,7 +69,6 @@
     <string name="configure_tools_message_invalid_network_name">網絡名稱無效。</string>
     <string name="configure_tools_message_network_configuration_written">網絡配置寫入成功。</string>
     <string name="configure_activity_title_tools">工具</string>
-    <string name="configure_tools_action_encrypt_decrypt_private_keys">加密或解密私鑰</string>
     <string name="configure_tools_generate_config_title">新建網絡</string>
     <string name="configure_tools_generate_config_net_name_hint">Tinc 網絡名稱</string>
     <string name="configure_tools_generate_config_node_name_hint">此節點名稱</string>
@@ -82,10 +79,6 @@
     <string name="configure_tools_join_network_action_scan_qr_code_action">掃描 QR 碼</string>
     <string name="configure_tools_join_network_action">加入</string>
     <string name="configure_tools_join_network_joining">加入網絡…</string>
-    <string name="configure_tools_private_keys_encryption_title">私鑰加密</string>
-    <string name="configure_tools_private_key_encryption_current_passphrase">當前密碼\n（沒有則為空）</string>
-    <string name="configure_tools_private_key_encryption_new_passphrase">新密碼\n（空白以解密）</string>
-    <string name="configure_tools_private_keys_encryption_encrypting">加密/解密私鑰</string>
     <!-- Status activity -->
     <string name="status_activity_state_connected_to_format">已連接至 %s</string>
     <string name="status_activity_menu_disconnect">斷開連接</string>

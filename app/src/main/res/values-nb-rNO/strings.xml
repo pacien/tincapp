@@ -43,8 +43,6 @@
     <string name="crash_modal_crash_logged">Kræsjdetaljer lagret i \"%1$s\".</string>
     <string name="crash_modal_action_send_email">Send e-post</string>
     <string name="crash_modal_action_send_report">Send rapport</string>
-    <!-- key decryption modal -->
-    <string name="decrypt_key_modal_title">Lås opp private tinc-nøkler</string>
     <string name="unlock_network_modal_field_passphrase">Passord</string>
     <string name="unlock_network_modal_action_unlock">Lås opp</string>
     <!-- error notifications -->
@@ -71,7 +69,6 @@
     <string name="configure_tools_message_invalid_network_name">Ugyldig nettverksnavn.</string>
     <string name="configure_tools_message_network_configuration_written">Nettverksoppsett skrevet.</string>
     <string name="configure_activity_title_tools">Verktøy</string>
-    <string name="configure_tools_action_encrypt_decrypt_private_keys">Krypter eller dekrypter private nøkler.</string>
     <string name="configure_tools_generate_config_title">Nytt nettverk</string>
     <string name="configure_tools_generate_config_net_name_hint">tinc-nettverksnavn</string>
     <string name="configure_tools_generate_config_node_name_hint">Navn på denne noden</string>
@@ -82,10 +79,6 @@
     <string name="configure_tools_join_network_action_scan_qr_code_action">Skann QR-kode</string>
     <string name="configure_tools_join_network_action">Ta del</string>
     <string name="configure_tools_join_network_joining">Tar del i nettverk…</string>
-    <string name="configure_tools_private_keys_encryption_title">Kryptering av private nøkler</string>
-    <string name="configure_tools_private_key_encryption_current_passphrase">Nåværende passord\n(la stå tomt for å ikke bruke)</string>
-    <string name="configure_tools_private_key_encryption_new_passphrase">Nytt passord\n(la stå tomt for å dekryptere)</string>
-    <string name="configure_tools_private_keys_encryption_encrypting">Krypterer/dekrypterer private tinc-nøkler.</string>
     <!-- Status activity -->
     <string name="status_activity_state_connected_to_format">Tilkoblet %s</string>
     <string name="status_activity_menu_disconnect">Koble fra</string>

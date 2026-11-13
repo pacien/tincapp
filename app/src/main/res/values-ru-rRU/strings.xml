@@ -42,8 +42,6 @@
     <string name="crash_modal_crash_logged">Сведения о сбое сохранены в \"%1$s\".</string>
     <string name="crash_modal_action_send_email">Отправить электронное письмо</string>
     <string name="crash_modal_action_send_report">Отправить отчет</string>
-    <!-- key decryption modal -->
-    <string name="decrypt_key_modal_title">Разблокировать приватные ключи tinc</string>
     <string name="unlock_network_modal_field_passphrase">Кодовая фраза</string>
     <string name="unlock_network_modal_action_unlock">Разблокировать</string>
     <!-- error notifications -->
@@ -71,7 +69,6 @@
     <string name="configure_tools_message_invalid_network_name">Недопустимое имя сети.</string>
     <string name="configure_tools_message_network_configuration_written">Записана конфигурация сети.</string>
     <string name="configure_activity_title_tools">Инструменты</string>
-    <string name="configure_tools_action_encrypt_decrypt_private_keys">Шифровать или дешифровать закрытые ключи</string>
     <string name="configure_tools_generate_config_title">Новая сеть</string>
     <string name="configure_tools_generate_config_net_name_hint">имя сети tinc</string>
     <string name="configure_tools_generate_config_node_name_hint">Имя этого узла</string>
@@ -82,10 +79,6 @@
     <string name="configure_tools_join_network_action_scan_qr_code_action">Сканировать QR-код</string>
     <string name="configure_tools_join_network_action">Присоединиться</string>
     <string name="configure_tools_join_network_joining">Присоединяемся к сети…</string>
-    <string name="configure_tools_private_keys_encryption_title">Шифрование закрытых ключей</string>
-    <string name="configure_tools_private_key_encryption_current_passphrase">Текущая кодовая фраза\n (оставьте пустой, если нет)</string>
-    <string name="configure_tools_private_key_encryption_new_passphrase">Новая кодовая фраза\n (оставьте пустой для расшифровки)</string>
-    <string name="configure_tools_private_keys_encryption_encrypting">Шифрование/дешифрование закрытых ключей tinc</string>
     <!-- Status activity -->
     <string name="status_activity_state_connected_to_format">Подключен к %s</string>
     <string name="status_activity_menu_disconnect">Разъединить</string>
